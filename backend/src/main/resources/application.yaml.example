@@ -1,0 +1,3 @@
+sping:
+  profiles:
+    active: dev
