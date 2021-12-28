@@ -17,32 +17,32 @@ public class Report {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
-    @NotNull(message = "Il peso non può essere vuto")
+    @NotNull(message = "Il peso non può essere vuoto")
     @Min(value=1 , message = "Il peso non può essere uno")
     private Float peso;
-    @NotNull(message = "Il pesoStimato non può essere vuto")
+    @NotNull(message = "Il pesoStimato non può essere vuoto")
     @Column(name = "peso_stimato")
     @Min(value=1 , message = "Il pesoStimato non può essere uno")
     private Float pesoStimato;
-    @NotNull(message = "Il crfBicipite non può essere vuto")
+    @NotNull(message = "Il crfBicipite non può essere vuoto")
     @Column(name = "crf_bicipite")
     @Min(value=1 , message = "Il crfBicipite non può essere uno")
     private Float crfBicipite;
-    @NotNull(message = "Il crfAddome non può essere vuto")
+    @NotNull(message = "Il crfAddome non può essere vuoto")
     @Column(name = "crf_addome")
     @Min(value=1 , message = "Il crfAddome non può essere uno")
     private Float crfAddome;
-    @NotNull(message = "Il crf_Quadricipide non può essere vuto")
+    @NotNull(message = "Il crf_Quadricipide non può essere vuoto")
     @Column(name = "crf_quadricipite")
     @Min(value=1 , message = "Il crfQuadricipite non può essere uno")
     private Float crfQuadricipite;
-    @NotNull(message = "Il data_crezione non può essere vuto")
+    @NotNull(message = "Il data_crezione non può essere vuoto")
     @Column(name = "data_creazione")
     private LocalDateTime dataCreazione;
-    @NotNull(message = "Il dataAggiornameneto non può essere vuto")
+    @NotNull(message = "Il dataAggiornameneto non può essere vuoto")
     @Column(name = "data_aggiornamento")
     private LocalDateTime dataAggiornamento;
-    @NotNull(message = "Il peso non può essere vuto")
+    @NotNull(message = "Il peso non può essere vuoto")
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Utente cliente;
