@@ -9,6 +9,7 @@ import {
     Route
 } from "react-router-dom";
 import RegistrazioneForm from "./RegistrazioneForm";
+import IscrizioneCliente from "./IscrizioneCliente";
 
 const App = () => {
     return (
@@ -18,6 +19,7 @@ const App = () => {
                 <Routes>
                     <Route path="/registrati" element={<RegistrazioneForm/>}/>
                     <Route path="/login" element={<Login />} />
+                    <Route path="/iscrizioneCliente" element={<IscrizioneCliente/>}/>
                 </Routes>
             </BrowserRouter>
         </Flex>
