@@ -51,4 +51,20 @@ public class GestioneUtenzaController {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
+    /**
+     * Questo metodo prende i parametri inseriti per modificare nel body della richiesta http e li passa al service
+     * @param utente rappresenta l'insieme dei dati personali di un utente
+     * @return utente rappresenta l'utente con i nuovi dati inserito nel database
+     */
+    @PostMapping("cliente/update")
+    ResponseEntity<Object> modificaDatiPersonaliCliente(@RequestBody Utente utente) {
+        try {
+            Utente newUtente = service.inserimentoDatiPersonaliCliente(utente);
+            return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
+                    newUtente);
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
 }

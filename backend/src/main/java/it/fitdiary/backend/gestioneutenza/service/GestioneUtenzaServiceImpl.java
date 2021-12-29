@@ -54,4 +54,31 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
         newUtente.setCap(utente.getCap());
         return utenteRepository.save(newUtente);
     }
+    /**
+     * Questo metodo permette di inserire i dati da modificare nel sistema ad un cliente
+     * @param utente rappresenta l'insieme dei dati personali di un utente
+     * @return utente rappresenta l'utente con i nuovi dati inserito nel database
+     * @throws IllegalArgumentException lancia l'errore generato da un input errato
+     */
+    @Override
+    public Utente modificaDatiPersonaliCliente(Utente utente) throws IllegalArgumentException {
+        Utente newUtente = utenteRepository.findById(utente.getId()).orElse(null);
+        if (utente == null) {
+            throw new IllegalArgumentException("Utente non valido");
+        }
+        if (newUtente == null) {
+            throw new IllegalArgumentException("Utente non presente del Database");
+        }
+        newUtente.setNome(utente.getNome());
+        newUtente.setCognome(utente.getCognome());
+        newUtente.setDataAggiornamento(utente.getDataAggiornamento());
+        newUtente.setEmail(utente.getEmail());
+        newUtente.setPassword(passwordEncoder.encode(utente.getPassword()));
+        newUtente.setDataNascita(utente.getDataNascita());
+        newUtente.setTelefono(utente.getTelefono());
+        newUtente.setCitta(utente.getCitta());
+        newUtente.setVia(utente.getVia());
+        newUtente.setCap(utente.getCap());
+        return utenteRepository.save(newUtente);
+    }
 }
