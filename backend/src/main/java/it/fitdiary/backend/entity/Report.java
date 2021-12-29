@@ -1,5 +1,6 @@
 package it.fitdiary.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,6 +50,7 @@ public class Report {
     private LocalDateTime dataAggiornamento;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "cliente_id")
     private Utente cliente;
 }
