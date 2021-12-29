@@ -14,21 +14,21 @@ import java.time.LocalDateTime;
 @SpringBootApplication
 public class BackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(BackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(BackendApplication.class, args);
+    }
 
-	@Bean
-	PasswordEncoder passwordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	CommandLineRunner run(RuoloRepository ruoloRepository){
-		return  args -> {
-			ruoloRepository.save(new Ruolo(null,"PREPARATORE",LocalDateTime.now(),LocalDateTime.now()));
-			ruoloRepository.save(new Ruolo(null,"CLIENTE",LocalDateTime.now(),LocalDateTime.now()));
-			ruoloRepository.save(new Ruolo(null,"ADMIN",LocalDateTime.now(),LocalDateTime.now()));
-		};
-	}
+    @Bean
+    CommandLineRunner run(RuoloRepository ruoloRepository) {
+        return args -> {
+            ruoloRepository.save(new Ruolo(null, "PREPARATORE", LocalDateTime.now(), LocalDateTime.now()));
+            ruoloRepository.save(new Ruolo(null, "CLIENTE", LocalDateTime.now(), LocalDateTime.now()));
+            ruoloRepository.save(new Ruolo(null, "ADMIN", LocalDateTime.now(), LocalDateTime.now()));
+        };
+    }
 }
