@@ -9,7 +9,11 @@ public class EmailServiceImpl implements EmailService {
 
 
     private JavaMailSender emailSender;
-
+    /**
+     * Questa funzione invia un email che contiene la password di un utente
+     * @param email contiene l' indirizzo email dell utente che deve ricevere le credenziali
+     * @param password contiene la password dell utente che gli permetterà di eseguire il primo accesso
+     */
     public void sendSimpleMessage(String email,String password) {
 
         SimpleMailMessage message = new SimpleMailMessage();
