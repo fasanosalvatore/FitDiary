@@ -81,4 +81,32 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
         newUtente.setCap(utente.getCap());
         return utenteRepository.save(newUtente);
     }
+
+    /**
+     * Questo metodo permette di aggiornare i dati presenti nel database di un utente
+     * @param preparatore rappresenta l' insieme di tutti i dati personali di un preparatore che devono essere aggiornati
+     * @return updatedPerparatore rappresenta l' insieme di dati personali di un perparatore aggiornati
+     * @throws IllegalArgumentException lancia l'errore generato da un input errato
+     */
+    @Override
+    public Utente modificaDatiPersonaliPreparatore(Utente preparatore) throws IllegalArgumentException {
+        Utente updatedPerparatore = utenteRepository.findById(preparatore.getId()).orElse(null);
+        if (preparatore == null) {
+            throw new IllegalArgumentException("Utente non valido");
+        }
+        if (updatedPerparatore == null) {
+            throw new IllegalArgumentException("Utente non presente del Database");
+        }
+        updatedPerparatore.setNome(preparatore.getNome());
+        updatedPerparatore.setCognome(preparatore.getCognome());
+        updatedPerparatore.setDataAggiornamento(preparatore.getDataAggiornamento());
+        updatedPerparatore.setEmail(preparatore.getEmail());
+        updatedPerparatore.setPassword(passwordEncoder.encode(preparatore.getPassword()));
+        updatedPerparatore.setDataNascita(preparatore.getDataNascita());
+        updatedPerparatore.setTelefono(preparatore.getTelefono());
+        updatedPerparatore.setCitta(preparatore.getCitta());
+        updatedPerparatore.setVia(preparatore.getVia());
+        updatedPerparatore.setCap(preparatore.getCap());
+        return utenteRepository.save(updatedPerparatore);
+    }
 }

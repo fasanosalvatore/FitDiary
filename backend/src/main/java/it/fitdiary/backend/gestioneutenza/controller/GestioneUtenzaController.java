@@ -67,4 +67,20 @@ public class GestioneUtenzaController {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
+
+    /**
+     * Questo metodo prende in input un preparatore di tipo Utente che contiene i dati da modificare dalbody della richiesta http e li passa al service
+     * @param preparatore rappersenta l' insieme dei dati persoanli da aggoirnare di un preparatore
+     * @return upadtedPreparatore rappresenta l' utente con i nuovi dati inseriti nel database
+     */
+    @PostMapping("preparatore/update")
+    ResponseEntity<Object> modificaDatiPersonaliCliente(@RequestBody Utente preparatore){
+        try{
+            Utente updatedPrepartore = service.modificaDatiPersonaliPreparatore(preparatore);
+            return ResponseHandler.generateResponse(HttpStatus.CREATED,"preparatore",
+                    updatedPrepartore);
+        }catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
 }
