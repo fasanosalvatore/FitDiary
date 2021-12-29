@@ -1,5 +1,8 @@
 package it.fitdiary.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,14 +34,13 @@ public class Utente {
     @NotBlank(message="Il cognome non può essere vuoto")
     private String cognome;
     @NotNull(message="L'email non può essere nulla")
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     @Size(min=1, max=50, message="Lunghezza email non valida")
     @Email(message="Formato email non valida")
     private String email;
     @NotNull(message="La password non può essere nulla")
     @Column(length = 255)
     @Size(min=8, max=255, message="Lunghezza password non valida")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message="Formato password non valido")
     private String password;
     @NotNull(message="Attivo non può essere nullo")
     private Boolean attivo;
@@ -68,16 +70,19 @@ public class Utente {
     @Size(min=1, max=20, message="Lunghezza città non valida")
     private String citta;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     @JoinColumn(name = "preparatore_id")
     private Utente preparatore;
     @NotNull(message="Il ruolo non può essere nullo")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ruolo_id")
     private Ruolo ruolo;
     @OneToMany(mappedBy = "cliente")
     private List<Protocollo> listaProtocolli;
     @OneToMany(mappedBy = "preparatore")
+    @JsonManagedReference
     private List<Utente> listaClienti;
     @OneToMany(mappedBy = "cliente")
+    @JsonManagedReference
     private List<Report> listaReport;
 }
