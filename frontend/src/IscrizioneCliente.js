@@ -26,7 +26,7 @@ export default function IscrizioneCliente() {
             setTimeout(() => {
                 const request = JSON.stringify(values, null, 2);
                 console.log(request)
-                fetch("http://localhost:8080/api/v1/utenti/create", {
+                fetch("http://localhost:8080/api/v1/utenti/createcliente", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
