@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from "react-router-dom";
 import {
     Button,
     FormControl,
@@ -114,7 +115,7 @@ export default function RegistrazioneForm() {
                         <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
                             Prosegui al pagamento
                         </Button>
-                        <Text align={"center"} fontSize={"large"}>Hai gia un account? Login</Text>
+                        <Text align={"center"} fontSize={"large"}>Hai gia un account? <Link to="/login">Login</Link></Text>
                     </GridItem>
                 </SimpleGrid>
             </form>
