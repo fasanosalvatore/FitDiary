@@ -140,6 +140,14 @@ public class GestioneUtenzaController {
             throw new RuntimeException("Refresh token is missing");
         }
     }
+
+    /**
+     * Questo metodo permette di effettuare l' expire del token per effettuare il logout
+     *
+     * @param request  richiesta Http
+     * @param response risposta Http
+     * @throws IOException
+     */
     public void expireToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
