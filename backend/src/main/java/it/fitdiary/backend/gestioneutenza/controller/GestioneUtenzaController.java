@@ -6,10 +6,7 @@ import it.fitdiary.backend.utility.ResponseHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -41,7 +38,7 @@ public class GestioneUtenzaController {
      * @param utente rappresenta l'insieme dei dati personali di un utente
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
-    @PostMapping("cliente/create")
+    @PostMapping("cliente")
     ResponseEntity<Object> inserimentoDatiPersonaliCliente(@RequestBody Utente utente) {
         try {
             Utente newUtente = service.inserimentoDatiPersonaliCliente(utente);
@@ -57,10 +54,10 @@ public class GestioneUtenzaController {
      * @param utente rappresenta l'insieme dei dati personali di un utente
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
-    @PostMapping("cliente/update")
+    @PutMapping("cliente")
     ResponseEntity<Object> modificaDatiPersonaliCliente(@RequestBody Utente utente) {
         try {
-            Utente newUtente = service.inserimentoDatiPersonaliCliente(utente);
+            Utente newUtente = service.modificaDatiPersonaliCliente(utente);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
                     newUtente);
         } catch (IllegalArgumentException e) {
@@ -73,8 +70,8 @@ public class GestioneUtenzaController {
      * @param preparatore rappersenta l' insieme dei dati persoanli da aggoirnare di un preparatore
      * @return upadtedPreparatore rappresenta l' utente con i nuovi dati inseriti nel database
      */
-    @PostMapping("preparatore/update")
-    ResponseEntity<Object> modificaDatiPersonaliCliente(@RequestBody Utente preparatore){
+    @PutMapping("preparatore")
+    ResponseEntity<Object> modificaDatiPersonaliPreparatore(@RequestBody Utente preparatore){
         try{
             Utente updatedPrepartore = service.modificaDatiPersonaliPreparatore(preparatore);
             return ResponseHandler.generateResponse(HttpStatus.CREATED,"preparatore",
