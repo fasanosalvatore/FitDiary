@@ -45,7 +45,7 @@ export default function Login() {
     return (
         <VStack w="full" h="full" p={[5, 10, 20]}>
             <VStack spacing={3} alignItems="flex-start" pb={5}>
-                <Heading size="3xl">Login</Heading>
+                <Heading size="2xl">Login</Heading>
             </VStack>
             <form style={{width: "100%"}} onSubmit={mySubmit}>
                 <SimpleGrid columns={2} columnGap={5} rowGap={5} w="full">
