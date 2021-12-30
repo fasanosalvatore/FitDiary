@@ -60,8 +60,8 @@ public class GestioneUtenzaController {
         }
         Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
         Map<String, Object> params = new HashMap<>();
-        params.put("email",newUtente.getEmail());
-        params.put("name",newUtente.getNome()+" "+newUtente.getCognome());
+        params.put("email", newUtente.getEmail());
+        params.put("name", newUtente.getNome() + " " + newUtente.getCognome());
         Customer customer = null;
         try {
             customer = Customer.create(params);
@@ -70,7 +70,7 @@ public class GestioneUtenzaController {
                     "la comunicazione con stripe ha avuto un errore");
         }
         Map<String, Object> response = new HashMap<>();
-        System.out.println("customerId"+customer.getId());
+        System.out.println("customerId" + customer.getId());
         response.put("customerId", customer.getId());
         response.put("utente", newUtente);
         return ResponseHandler.generateResponse(HttpStatus.CREATED, "response",
@@ -260,5 +260,27 @@ public class GestioneUtenzaController {
 
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, "fail"
                 , errors);
+    }
+
+    /**
+     * Questo metodo permette di visualizzare il profilo dell'utente autenticato
+     *
+     * @param request richiesta Http
+     * @return Utente autenticato
+     * @throws IOException
+     */
+    @GetMapping("profilo")
+    public ResponseEntity<Object> visualizzaProfilo(HttpServletRequest request) throws IOException {
+        Principal principal = request.getUserPrincipal();
+        String email = principal.getName();
+        try {
+            Utente utente = service.getUtenteByEmail(email);
+            return ResponseHandler.generateResponse(HttpStatus.OK, "utente", utente
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+
     }
 }

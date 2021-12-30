@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE");
         http.authorizeRequests().antMatchers("/api/v1/utenti/preparatore/**").hasAuthority("PREPARATORE");
         http.authorizeRequests().antMatchers("/api/v1/utenti/createcliente/**").hasAuthority("PREPARATORE");
+        http.authorizeRequests().antMatchers("/api/v1/utenti/profilo/**").authenticated();
         http.authorizeRequests().antMatchers("/api/v1/utenti/login/**", "/api/v1/utenti/token/refresh/**", "/api/v1/utenti/token/expire/**").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
