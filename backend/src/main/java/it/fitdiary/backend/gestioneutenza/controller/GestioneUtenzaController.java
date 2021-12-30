@@ -23,6 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
@@ -78,7 +79,7 @@ public class GestioneUtenzaController {
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
     @PostMapping("cliente")
-    ResponseEntity<Object> inserimentoDatiPersonaliCliente(@RequestBody Utente utente) {
+    ResponseEntity<Object> inserimentoDatiPersonaliCliente(@Valid @RequestBody Utente utente) {
         try {
             Utente newUtente = service.inserimentoDatiPersonaliCliente(utente);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
@@ -95,7 +96,8 @@ public class GestioneUtenzaController {
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
     @PutMapping("cliente")
-    ResponseEntity<Object> modificaDatiPersonaliCliente(@RequestBody Utente utente) {
+    ResponseEntity<Object> modificaDatiPersonaliCliente(@Valid
+                                                        @RequestBody  Utente utente) {
         try {
             Utente newUtente = service.modificaDatiPersonaliCliente(utente);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
@@ -112,7 +114,7 @@ public class GestioneUtenzaController {
      * @return upadtedPreparatore rappresenta l' utente con i nuovi dati inseriti nel database
      */
     @PutMapping("preparatore")
-    ResponseEntity<Object> modificaDatiPersonaliPreparatore(@Validated @RequestBody Utente preparatore) {
+    ResponseEntity<Object> modificaDatiPersonaliPreparatore(@Valid @RequestBody Utente preparatore) {
         HttpServletRequest request =((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Principal principal = request.getUserPrincipal();
         String emailPreparatore = principal.getName();
