@@ -197,6 +197,10 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
         if (email == null) {
             throw new IllegalArgumentException("Email non valida");
         }
-        return utenteRepository.findByEmail(email);
+        Utente u = utenteRepository.findByEmail(email);
+        if(u==null){
+            throw new IllegalArgumentException("Utente non trovato");
+        }
+        return u;
     }
 }
