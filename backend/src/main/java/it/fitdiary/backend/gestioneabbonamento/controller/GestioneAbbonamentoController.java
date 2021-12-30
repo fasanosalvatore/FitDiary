@@ -1,5 +1,6 @@
 package it.fitdiary.backend.gestioneabbonamento.controller;
 
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
 import com.stripe.model.StripeObject;
@@ -23,15 +24,17 @@ import java.util.Map;
 public class GestioneAbbonamentoController {
     /**
      * Questo metodo permette ad un prepratore di acquistare un abbonamento su stripe
-     * @param payload richista http del frontend contente customer id di stripe
+     *
+     * @param customerId richista http del frontend contente customer id di stripe
      * @return clientsecret codice con cui stripe identifica il cliente
      * @throws StripeException
      */
     @PostMapping("/acquista")
-    public ResponseEntity<Object> acquistaAbbonamento(@RequestBody com.fasterxml.jackson.databind.JsonNode payload) throws StripeException {
+    public ResponseEntity<Object> acquistaAbbonamento(@RequestBody String customerId) throws StripeException {
+        Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
         SubscriptionCreateParams subCreateParams = SubscriptionCreateParams
                 .builder()
-                .setCustomer(payload.get("customerId").asText())
+                .setCustomer(customerId)
                 .addItem(
                         SubscriptionCreateParams
                                 .Item.builder()
@@ -47,6 +50,6 @@ public class GestioneAbbonamentoController {
         response.put("subscriptionId", subscription.getId());
         response.put("clientSecret", subscription.getLatestInvoiceObject().getPaymentIntentObject().getClientSecret());
         return ResponseHandler.generateResponse(HttpStatus.CREATED, "Utente", StripeObject.PRETTY_PRINT_GSON.toJson(response));
-
     }
 }
+
