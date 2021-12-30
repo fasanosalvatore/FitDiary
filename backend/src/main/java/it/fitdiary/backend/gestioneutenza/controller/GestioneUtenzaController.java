@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Customer;
 import com.stripe.param.CustomerCreateParams;
@@ -53,14 +54,13 @@ public class GestioneUtenzaController {
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-        CustomerCreateParams customerParams = CustomerCreateParams
-                .builder()
-                .setEmail(newUtente.getEmail())
-                .setName(newUtente.getNome() + " " + newUtente.getCognome())
-                .build();
+        Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
+        Map<String, Object> params = new HashMap<>();
+        params.put("email",newUtente.getEmail());
+        params.put("name",newUtente.getNome()+" "+newUtente.getCognome());
         Customer customer = null;
         try {
-            customer = Customer.create(customerParams);
+            customer = Customer.create(params);
         } catch (StripeException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY,
                     "la comunicazione con stripe ha avuto un errore");
@@ -97,7 +97,7 @@ public class GestioneUtenzaController {
      */
     @PutMapping("cliente")
     ResponseEntity<Object> modificaDatiPersonaliCliente(@Valid
-                                                        @RequestBody  Utente utente) {
+                                                        @RequestBody Utente utente) {
         try {
             Utente newUtente = service.modificaDatiPersonaliCliente(utente);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
@@ -115,11 +115,11 @@ public class GestioneUtenzaController {
      */
     @PutMapping("preparatore")
     ResponseEntity<Object> modificaDatiPersonaliPreparatore(@Valid @RequestBody Utente preparatore) {
-        HttpServletRequest request =((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Principal principal = request.getUserPrincipal();
         String emailPreparatore = principal.getName();
         try {
-            Utente updatedPrepartore = service.modificaDatiPersonaliPreparatore(preparatore,emailPreparatore);
+            Utente updatedPrepartore = service.modificaDatiPersonaliPreparatore(preparatore, emailPreparatore);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "preparatore",
                     updatedPrepartore);
         } catch (IllegalArgumentException e) {
@@ -177,7 +177,7 @@ public class GestioneUtenzaController {
      * @throws IOException
      */
     @GetMapping("token/expire")
-    public void expireToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void expireToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
