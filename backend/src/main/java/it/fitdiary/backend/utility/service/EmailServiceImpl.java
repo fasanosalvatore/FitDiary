@@ -9,21 +9,20 @@ public class EmailServiceImpl implements EmailService {
 
 
     private JavaMailSender emailSender;
+
     /**
-     * Questa funzione invia un email che contiene la password di un utente
-     * @param email contiene l' indirizzo email dell utente che deve ricevere le credenziali
-     * @param password contiene la password dell utente che gli permetterà di eseguire il primo accesso
+     * Questa funzione invia un email ad un indirzzo preso in input, con relativo oggetto e testo
+     * @param destinatario indirizzo di chi deve ricevere l' indirizzo e-mail
+     * @param oggetto oggetto da inserire nell' email
+     * @param testo testo che deve contenere l' email
      */
-    public void sendSimpleMessage(String email,String password) {
+    public void sendSimpleMessage(String destinatario, String oggetto, String testo) {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply@fitDiary.com");
-        message.setTo(email);
-        message.setSubject("Credenziali accesso FitDiary");
-        message.setText("Salve gentile cliente le diamo il benvenut* in FitDiary, di seguito trova le sue credenziali di accesso alla nostra piattaforma:" +
-                        "email: "+email+
-                        "password"+password+
-                        "Cordiali saluti dal team FitDiary");
+        message.setTo(destinatario);
+        message.setSubject(oggetto);
+        message.setText(testo);
         emailSender.send(message);
     }
 
