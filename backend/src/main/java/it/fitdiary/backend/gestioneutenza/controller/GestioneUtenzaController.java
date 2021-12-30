@@ -5,6 +5,9 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
+import com.stripe.param.CustomerCreateParams;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
@@ -48,7 +51,22 @@ public class GestioneUtenzaController {
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
+        CustomerCreateParams customerParams = CustomerCreateParams
+                .builder()
+                .setEmail(newUtente.getEmail())
+                .setName(newUtente.getNome() + " " + newUtente.getCognome())
+                .build();
+        Customer customer = null;
+        try {
+            customer = Customer.create(customerParams);
+        } catch (StripeException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY,
+                    "la comunicazione con stripe ha avuto un errore");
+        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("customerId", customer.getId());
+        response.put("utente", newUtente);
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, "response",
                 newUtente);
     }
 

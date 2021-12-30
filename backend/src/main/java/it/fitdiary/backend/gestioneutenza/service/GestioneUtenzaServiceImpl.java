@@ -32,6 +32,10 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
+        if (utenteRepository.existsByEmail(utente.getEmail())){
+            throw new IllegalArgumentException("email già presente nel " +
+                    "database");
+        }
         utente.setRuolo(ruoloRepository.findByNome("PREPARATORE"));
         utente.setAttivo(false);
         utente.setPassword(passwordEncoder.encode(utente.getPassword()));
