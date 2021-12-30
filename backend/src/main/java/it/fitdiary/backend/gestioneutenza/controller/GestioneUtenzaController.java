@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -92,7 +93,7 @@ public class GestioneUtenzaController {
      * @return upadtedPreparatore rappresenta l' utente con i nuovi dati inseriti nel database
      */
     @PutMapping("preparatore")
-    ResponseEntity<Object> modificaDatiPersonaliPreparatore(@RequestBody Utente preparatore) {
+    ResponseEntity<Object> modificaDatiPersonaliPreparatore(@Validated @RequestBody Utente preparatore) {
         HttpServletRequest request =((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Principal principal = request.getUserPrincipal();
         String emailPreparatore = principal.getName();
