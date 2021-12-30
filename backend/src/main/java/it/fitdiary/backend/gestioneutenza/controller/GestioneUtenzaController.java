@@ -24,6 +24,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
@@ -97,7 +101,7 @@ public class GestioneUtenzaController {
      */
     @PutMapping("cliente")
     ResponseEntity<Object> modificaDatiPersonaliCliente(@Valid
-                                                        @RequestBody  Utente utente) {
+                                                        @RequestBody Utente utente) {
         try {
             Utente newUtente = service.modificaDatiPersonaliCliente(utente);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
@@ -115,11 +119,11 @@ public class GestioneUtenzaController {
      */
     @PutMapping("preparatore")
     ResponseEntity<Object> modificaDatiPersonaliPreparatore(@Valid @RequestBody Utente preparatore) {
-        HttpServletRequest request =((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Principal principal = request.getUserPrincipal();
         String emailPreparatore = principal.getName();
         try {
-            Utente updatedPrepartore = service.modificaDatiPersonaliPreparatore(preparatore,emailPreparatore);
+            Utente updatedPrepartore = service.modificaDatiPersonaliPreparatore(preparatore, emailPreparatore);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "preparatore",
                     updatedPrepartore);
         } catch (IllegalArgumentException e) {
@@ -177,7 +181,7 @@ public class GestioneUtenzaController {
      * @throws IOException
      */
     @GetMapping("token/expire")
-    public void expireToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void expireToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
@@ -209,6 +213,42 @@ public class GestioneUtenzaController {
         } else {
             throw new RuntimeException("Refresh token is missing");
         }
+    }
+
+    /**
+     * Questo metodo permette di creare un cliente da parte di un preparatore
+     *
+     * @param nome    nome del cliente
+     * @param cognome cognome del cliente
+     * @param email   email del cliente
+     * @return cliente creato
+     */
+    @PostMapping("createcliente")
+    ResponseEntity<Object> iscrizioneCliente(@RequestParam(name = "nome")
+                                             @NotNull(message = "Il nome non può essere nullo")
+                                             @Size(min = 1, max = 50, message = "Lunghezza nome non valida")
+                                             @NotBlank(message = "Il nome non può essere vuoto") String nome,
+                                             @NotNull(message = "Il cognome non può essere nullo")
+                                             @Size(min = 1, max = 50, message = "Lunghezza cognome non valida")
+                                             @NotBlank(message = "Il cognome non può essere vuoto")
+                                             @RequestParam(name = "cognome") String cognome,
+                                             @NotNull(message = "L'email non può essere nulla")
+                                             @Size(min = 1, max = 50, message = "Lunghezza email non valida")
+                                             @Email(message = "Formato email non valida")
+                                             @RequestParam(name = "email") String email) {
+        HttpServletRequest request =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                        .getRequest();
+        Principal principal = request.getUserPrincipal();
+        String emailPreparatore = principal.getName();
+        Utente newCliente = null;
+        try {
+            newCliente = service.inserisciCliente(nome, cognome, email, emailPreparatore);
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, "cliente",
+                newCliente);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
