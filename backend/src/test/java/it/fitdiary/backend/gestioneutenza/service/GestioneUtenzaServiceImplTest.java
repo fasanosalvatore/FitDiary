@@ -66,9 +66,9 @@ public class GestioneUtenzaServiceImplTest {
     public void modificaDatiPersonaliPreparatore() {
         Ruolo ruolo = new Ruolo(2L, "PREPARATORE", null, null);
         Utente utente = new Utente(1L, "Michele", "De Marco", "dani5@gmail.com", "Trappo#98", true,
-                LocalDate.parse("2000-03-03"), null, null, null, "3459666587", "Francesco La Francesca", "84126", "Salerno", null, r, null, null, null);
+                LocalDate.parse("2000-03-03"), null, null, null, "3459666587", "Francesco La Francesca", "84126", "Salerno", null, ruolo, null, null, null);
         Utente updatedUtente = new Utente(1L, "Daniele", "De Marco", "diodani5@gmail.com", "Trappo#98", true,
-                null, null, null, null, null, null, null, null, null, r, null, null, null);
+                null, null, null, null, null, null, null, null, null, ruolo, null, null, null);
         when(utenteRepository.findById(updatedUtente.getId())).thenReturn(java.util.Optional.of(updatedUtente));
         when(utenteRepository.save(utente)).thenReturn(utente);
         when(passwordEncoder.encode(utente.getPassword())).thenReturn(utente.getPassword());
