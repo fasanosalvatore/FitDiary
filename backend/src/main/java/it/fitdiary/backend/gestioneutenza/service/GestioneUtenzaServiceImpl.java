@@ -123,8 +123,8 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
      * @throws IllegalArgumentException lancia l'errore generato da un input errato
      */
     @Override
-    public Utente modificaDatiPersonaliPreparatore(Utente preparatore) throws IllegalArgumentException {
-        Utente updatedPerparatore = utenteRepository.findById(preparatore.getId()).orElse(null);
+    public Utente modificaDatiPersonaliPreparatore(Utente preparatore,String email) throws IllegalArgumentException {
+        Utente updatedPerparatore = utenteRepository.findByEmail(email);
         if (preparatore == null) {
             throw new IllegalArgumentException("Utente non valido");
         }

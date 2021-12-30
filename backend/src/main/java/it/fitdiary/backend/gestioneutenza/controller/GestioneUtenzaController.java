@@ -13,10 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,8 +93,11 @@ public class GestioneUtenzaController {
      */
     @PutMapping("preparatore")
     ResponseEntity<Object> modificaDatiPersonaliPreparatore(@RequestBody Utente preparatore) {
+        HttpServletRequest request =((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Principal principal = request.getUserPrincipal();
+        String emailPreparatore = principal.getName();
         try {
-            Utente updatedPrepartore = service.modificaDatiPersonaliPreparatore(preparatore);
+            Utente updatedPrepartore = service.modificaDatiPersonaliPreparatore(preparatore,emailPreparatore);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "preparatore",
                     updatedPrepartore);
         } catch (IllegalArgumentException e) {

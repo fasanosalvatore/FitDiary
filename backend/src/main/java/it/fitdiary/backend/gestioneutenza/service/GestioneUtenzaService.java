@@ -12,7 +12,7 @@ public interface GestioneUtenzaService {
 
     Utente modificaDatiPersonaliCliente(Utente utente);
 
-    Utente modificaDatiPersonaliPreparatore(Utente utente);
+    Utente modificaDatiPersonaliPreparatore(Utente utente,String email);
 
     Utente getUtenteByEmail(String email);
 }
