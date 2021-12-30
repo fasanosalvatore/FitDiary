@@ -148,6 +148,7 @@ public class GestioneUtenzaController {
      * @param response risposta Http
      * @throws IOException
      */
+    @GetMapping("token/expire")
     public void expireToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
