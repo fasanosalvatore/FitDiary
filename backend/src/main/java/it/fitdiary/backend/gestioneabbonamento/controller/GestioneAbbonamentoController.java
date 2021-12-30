@@ -21,7 +21,12 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "api/v1/abbonamento")
 public class GestioneAbbonamentoController {
-
+    /**
+     * Questo metodo permette ad un prepratore di acquistare un abbonamento su stripe
+     * @param payload richista http del frontend contente customer id di stripe
+     * @return clientsecret codice con cui stripe identifica il cliente
+     * @throws StripeException
+     */
     @PostMapping("/acquista")
     public ResponseEntity<Object> acquistaAbbonamento(@RequestBody com.fasterxml.jackson.databind.JsonNode payload) throws StripeException {
         SubscriptionCreateParams subCreateParams = SubscriptionCreateParams
