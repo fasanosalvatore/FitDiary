@@ -1,10 +1,13 @@
 package it.fitdiary.backend.gestioneutenza.service;
 
+import com.github.curiousoddman.rgxgen.RgxGen;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
+import it.fitdiary.backend.utility.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,13 +29,14 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
     private final UtenteRepository utenteRepository;
     private final RuoloRepository ruoloRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Override
     public Utente registrazione(Utente utente) throws IllegalArgumentException {
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
-        if (utenteRepository.existsByEmail(utente.getEmail())){
+        if (utenteRepository.existsByEmail(utente.getEmail())) {
             throw new IllegalArgumentException("email già presente nel " +
                     "database");
         }
@@ -40,6 +44,40 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
         utente.setAttivo(false);
         utente.setPassword(passwordEncoder.encode(utente.getPassword()));
         return utenteRepository.save(utente);
+    }
+
+    /**
+     * Questo metodo permette di inserire un cliente e di associarlo ad un preparatore
+     *
+     * @param nome      nome del cliente
+     * @param cognome   cognome del cliente
+     * @param email     email del cliente
+     * @param emailPrep email del preparatore
+     * @return utente inserito nel sistema
+     * @throws IllegalArgumentException
+     */
+    @Override
+    public Utente inserisciCliente(String nome, String cognome, String email, String emailPrep) throws IllegalArgumentException {
+        Utente preparatore = utenteRepository.findByEmail(emailPrep);
+        if (preparatore == null) {
+            throw new IllegalArgumentException("Preparatore non valido");
+        }
+        Utente cliente = utenteRepository.findByEmail(email);
+        if (cliente != null) {
+            throw new IllegalArgumentException("Cliente già presente");
+        }
+        Utente newUtente = new Utente();
+        newUtente.setNome(nome);
+        newUtente.setCognome(cognome);
+        newUtente.setEmail(email);
+        newUtente.setRuolo(ruoloRepository.findByNome("CLIENTE"));
+        newUtente.setAttivo(true);
+        newUtente.setPreparatore(preparatore);
+        RgxGen rgxGen = new RgxGen("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$");
+        String password = rgxGen.generate();
+        emailService.sendSimpleMessage(newUtente.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n"+password);
+        newUtente.setPassword(passwordEncoder.encode(password));
+        return utenteRepository.save(newUtente);
     }
 
     /**
@@ -127,7 +165,7 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
      * @throws IllegalArgumentException lancia l'errore generato da un input errato
      */
     @Override
-    public Utente modificaDatiPersonaliPreparatore(Utente preparatore,String email) throws IllegalArgumentException {
+    public Utente modificaDatiPersonaliPreparatore(Utente preparatore, String email) throws IllegalArgumentException {
         Utente updatedPerparatore = utenteRepository.findByEmail(email);
         if (preparatore == null) {
             throw new IllegalArgumentException("Utente non valido");

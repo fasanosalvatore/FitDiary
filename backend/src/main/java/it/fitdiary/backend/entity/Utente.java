@@ -1,6 +1,7 @@
 package it.fitdiary.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,7 @@ public class Utente {
     @NotNull(message="La data di nascita non può essere nulla")
     @Column(name = "data_nascita")
     @Past(message="La data di nascita non può essere successiva o coincidente alla data odierna")
-    private LocalDate dataNascita;
+    private LocalDate dataNascita=LocalDate.parse("1990-01-01");
     @Column(name = "data_creazione")
     private LocalDateTime dataCreazione;
     @Column(name = "data_aggiornamento")
@@ -69,8 +70,7 @@ public class Utente {
     @Column(length = 20)
     @Size(min=1, max=20, message="Lunghezza città non valida")
     private String citta;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @ManyToOne
     @JoinColumn(name = "preparatore_id")
     private Utente preparatore;
     @NotNull(message="Il ruolo non può essere nullo")
@@ -80,7 +80,7 @@ public class Utente {
     @OneToMany(mappedBy = "cliente")
     private List<Protocollo> listaProtocolli;
     @OneToMany(mappedBy = "preparatore")
-    @JsonManagedReference
+    @JsonIgnore
     private List<Utente> listaClienti;
     @OneToMany(mappedBy = "cliente")
     @JsonManagedReference

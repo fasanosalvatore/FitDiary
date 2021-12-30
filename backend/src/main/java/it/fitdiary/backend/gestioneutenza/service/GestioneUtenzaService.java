@@ -12,7 +12,9 @@ public interface GestioneUtenzaService {
 
     Utente modificaDatiPersonaliCliente(Utente utente);
 
-    Utente modificaDatiPersonaliPreparatore(Utente utente,String email);
+    Utente modificaDatiPersonaliPreparatore(Utente utente, String email);
 
     Utente getUtenteByEmail(String email);
+
+    Utente inserisciCliente(String nome, String cognome, String email, String emailPrep);
 }
