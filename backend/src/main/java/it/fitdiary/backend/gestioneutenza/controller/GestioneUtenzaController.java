@@ -70,10 +70,11 @@ public class GestioneUtenzaController {
                     "la comunicazione con stripe ha avuto un errore");
         }
         Map<String, Object> response = new HashMap<>();
+        System.out.println("customerId"+customer.getId());
         response.put("customerId", customer.getId());
         response.put("utente", newUtente);
         return ResponseHandler.generateResponse(HttpStatus.CREATED, "response",
-                newUtente);
+                response);
     }
 
     /**
