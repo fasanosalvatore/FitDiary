@@ -22,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
@@ -206,5 +207,15 @@ public class GestioneUtenzaController {
         } else {
             throw new RuntimeException("Refresh token is missing");
         }
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValid(ConstraintViolationException e) {
+        Map<String, String> errors = new HashMap<>();
+
+        e.getConstraintViolations().forEach(constraintViolation -> errors.put(constraintViolation.getPropertyPath().toString(), constraintViolation.getMessage()));
+
+        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, "fail"
+                , errors);
     }
 }
