@@ -1,5 +1,7 @@
 package it.fitdiary.backend.utility.service;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -10,6 +12,11 @@ public class EmailServiceImpl implements EmailService {
 
     private JavaMailSender emailSender;
 
+    @Autowired
+    public EmailServiceImpl(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+
     /**
      * Questa funzione invia un email ad un indirzzo preso in input, con relativo oggetto e testo
      * @param destinatario indirizzo di chi deve ricevere l' indirizzo e-mail
@@ -19,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendSimpleMessage(String destinatario, String oggetto, String testo) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@fitDiary.com");
+        message.setFrom("mannaggiageova00@gmail.com");
         message.setTo(destinatario);
         message.setSubject(oggetto);
         message.setText(testo);
