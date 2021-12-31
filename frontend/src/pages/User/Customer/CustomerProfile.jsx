@@ -1,20 +1,17 @@
 import {
     Avatar,
     Box, Button,
-    Divider,
     Flex,
-    Grid,
     GridItem,
     Heading,
     HStack, Icon,
-    Image,
     SimpleGrid,
     Text,
     VStack
 } from "@chakra-ui/react";
-import {getUser} from "./fakeBackend";
+import {getUser} from "../../../fakeBackend";
 
-export default function ProfiloCliente() {
+export default function CustomerProfile() {
     const utente = getUser().data.utente;
     return (
         <Flex wrap={"wrap"}>

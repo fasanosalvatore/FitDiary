@@ -13,9 +13,9 @@ import {
     SimpleGrid, Text, useBreakpointValue, VStack
 } from "@chakra-ui/react";
 import {Link} from "react-router-dom";
-import config from "./config.json";
+import config from "../config.json";
 
-export default function PagamentoAbbonamentoForm() {
+export default function PaySubscriptionForm() {
     const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();

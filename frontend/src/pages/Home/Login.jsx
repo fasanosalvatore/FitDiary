@@ -1,6 +1,6 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import {
     Button,
     FormControl,
@@ -8,12 +8,11 @@ import {
     FormLabel,
     GridItem, Heading,
     Input,
-    SimpleGrid, Text, Tooltip,VStack
-}
-    from "@chakra-ui/react";
+    SimpleGrid, Text, Tooltip, VStack
+} from "@chakra-ui/react";
 
 export default function Login() {
-    const {register, handleSubmit,formState: {errors, isSubmitting}} = useForm();
+    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
 
     const mySubmit = async (e) => {
         e.preventDefault();
@@ -77,11 +76,12 @@ export default function Login() {
                             <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
-                    <GridItem colSpan={2} >
+                    <GridItem colSpan={2}>
                         <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
                             Login
                         </Button>
-                        <Text align={"center"} fontSize={"large"}>Non hai ancora un account su FitDiary? <Link to={"/registrati"}>Registrati</Link></Text>
+                        <Text align={"center"} fontSize={"large"}>Non hai ancora un account su FitDiary? <Link
+                            to={"/registrati"}>Registrati</Link></Text>
                     </GridItem>
                 </SimpleGrid>
             </form>

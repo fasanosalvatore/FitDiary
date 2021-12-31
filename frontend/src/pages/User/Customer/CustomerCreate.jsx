@@ -1,19 +1,15 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {Link} from "react-router-dom";
 import {
     Button,
     FormControl,
     FormErrorMessage,
     FormLabel,
-    GridItem, Heading,
-    Input, Radio,
-    RadioGroup,
-    SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, VStack
+    Heading,
+    Input, VStack
 } from "@chakra-ui/react";
 
-export default function IscrizioneCliente() {
+export default function CustomerCreate() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
 
     const mySubmit = async (e) => {

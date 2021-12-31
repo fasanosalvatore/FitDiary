@@ -1,27 +1,21 @@
 import React, {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
-import {Link} from "react-router-dom";
 import {
     Button,
     FormControl,
     FormErrorMessage,
     FormLabel,
-    Grid,
     GridItem,
     Heading,
     Input,
-    Radio,
-    RadioGroup,
     SimpleGrid,
-    Stack,
-    Text,
-    Tooltip,
     useBreakpointValue,
     VStack
 } from "@chakra-ui/react";
-import config from "./config.json";
+import config from "../../../config.json";
+import {getTrainer} from "../../../fakeBackend";
 
-export default function ModificaDatiPreparatore(props) {
+export default function TrainerEdit(props) {
     const urlEdit = `${config.SERVER_URL}/utenti/preparatore`;
     const {register, handleSubmit, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
@@ -29,38 +23,11 @@ export default function ModificaDatiPreparatore(props) {
     function isValidDate(value) {
         return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
     }
-    const resp = {
-        "data": {
-            "utente": {
-                "id": 4,
-                "nome": "Daniele",
-                "cognome": "Giaquinto",
-                "email": "Daniele.Giaq@gmail.it",
-                "password": "$2a$10$cDlRv6/3qzj79BmSU4X.Hu5rcyUT6v4oczfrwJFCC/APgMajQugMu",
-                "attivo": false,
-                "dataNascita": "2000-12-12",
-                "dataCreazione": null,
-                "dataAggiornamento": null,
-                "sesso": null,
-                "telefono": "3349677013",
-                "via": "P.zza Antonio Sant'elmo 2",
-                "cap": "84128",
-                "citta": "Salerno",
-                "preparatore": null,
-                "ruolo": {
-                    "id": 1,
-                    "nome": "PREPARATORE",
-                    "dataCreazione": "2021-12-31T00:10:18",
-                    "dataAggiornamento": "2021-12-31T00:10:18"
-                },
-                "listaProtocolli": null,
-                "listaReport": null
-            },
-        }, "status": "success"
-    };
+
+    const resp = getTrainer();
 
     useEffect(() => {
-        const fields = ['nome', 'cognome', 'email', 'dataNascita','telefono','via','cap','citta'];
+        const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
         fields.forEach(field => setValue(field, resp.data.utente[field]));
     })
 

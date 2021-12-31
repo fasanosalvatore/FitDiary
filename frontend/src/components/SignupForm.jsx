@@ -1,6 +1,6 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import config from './config.json'
+import config from '../config.json'
 import {Link} from "react-router-dom";
 import {
     Box,
@@ -14,7 +14,6 @@ import {
     SimpleGrid,
     Stack, Text, Tooltip, useBreakpointValue, VStack
 } from "@chakra-ui/react";
-import PagamentoAbbonamentoForm from "./PagamentoAbbonamentoForm";
 import {
     CardCvcElement,
     CardExpiryElement,
@@ -23,9 +22,8 @@ import {
     useElements,
     useStripe
 } from "@stripe/react-stripe-js";
-import {loadStripe} from '@stripe/stripe-js';
 
-export default function RegistrazioneForm() {
+export default function SignupForm() {
     const urlCreate = `${config.SERVER_URL}/utenti/create`;
     const urlAcquisto = `${config.SERVER_URL}/abbonamento/acquista`;
     const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
@@ -124,6 +122,8 @@ export default function RegistrazioneForm() {
             return false
         })
     }
+
+
 
     return (
         <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
@@ -246,6 +246,5 @@ export default function RegistrazioneForm() {
                 </GridItem>
             </SimpleGrid>
         </form>
-
     );
 }
