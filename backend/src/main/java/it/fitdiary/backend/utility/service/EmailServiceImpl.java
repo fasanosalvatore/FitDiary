@@ -24,9 +24,8 @@ public class EmailServiceImpl implements EmailService {
      * @param testo testo che deve contenere l' email
      */
     public void sendSimpleMessage(String destinatario, String oggetto, String testo) {
-
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("mannaggiageova00@gmail.com");
+        message.setFrom("fitdiary23@gmail.com");
         message.setTo(destinatario);
         message.setSubject(oggetto);
         message.setText(testo);
