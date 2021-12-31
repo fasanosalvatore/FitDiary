@@ -198,4 +198,44 @@ public class GestioneUtenzaServiceImplTest {
             gestioneUtenzaService.getUtenteByEmail(email);
         });
     }
+
+    @Test
+    public void registrazioneEmailError() {
+        when(this.utenteRepository.existsByEmail((String) any())).thenReturn(true);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
+                "@gmail" +
+                ".com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
+                null, null, "33985458", "Salvo D'Acquisto", "84047",
+                "Capaccio", null, ruoloPrep, null, null, null);
+        assertThrows(IllegalArgumentException.class,
+                () -> this.gestioneUtenzaService.registrazione(utente));
+        verify(this.utenteRepository).existsByEmail((String) any());
+    }
+    @Test
+    public void registrazione() {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
+                "@gmail" +
+                ".com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
+                null, null, "33985458", "Salvo D'Acquisto", "84047",
+                "Capaccio", null, ruoloPrep, null, null, null);
+        Utente newUtente = new Utente(1l, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com",
+                "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
+                null, null, "33985458", "Salvo D'Acquisto", "84047",
+                "Capaccio", null, ruoloPrep, null, null, null);
+        when(this.utenteRepository.save(utente)).thenReturn(newUtente);
+        when(this.utenteRepository.existsByEmail((String) any())).thenReturn(false);
+        when(this.ruoloRepository.findByNome((String) any())).thenReturn(ruoloPrep);
+        assertSame(newUtente,
+                this.gestioneUtenzaService.registrazione(utente));
+        verify(this.utenteRepository).existsByEmail((String) any());
+        verify(this.utenteRepository).save(utente);
+    }
+    @Test
+    public void registrazioneUtenteNull() {
+        assertThrows(IllegalArgumentException.class,
+                () -> this.gestioneUtenzaService.registrazione(null));
+    }
 }
