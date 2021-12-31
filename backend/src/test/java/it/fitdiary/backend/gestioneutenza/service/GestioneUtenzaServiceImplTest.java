@@ -164,4 +164,38 @@ public class GestioneUtenzaServiceImplTest {
             gestioneUtenzaService.inserisciCliente(nome, cognome, email, emailPrep);
         });
     }
+
+    @Test
+    public void getUtenteByEmail() {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        String email = "davide@gmail.com";
+        Utente utente = new Utente(1L, "Davide", "La Gamba", email, "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, null, null, "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPrep, null, null, null);
+        when(utenteRepository.findByEmail(email)).thenReturn(utente);
+        assertEquals(utente, gestioneUtenzaService.getUtenteByEmail(email));
+    }
+
+    @Test
+    public void getUtenteByEmailThrowsIllegalEmail() {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        String email = null;
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, null, null, "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPrep, null, null, null);
+        when(utenteRepository.findByEmail(email)).thenReturn(utente);
+        assertThrows(IllegalArgumentException.class, () -> {
+            gestioneUtenzaService.getUtenteByEmail(email);
+        });
+    }
+
+    @Test
+    public void getUtenteByEmailThrowsIllegalUtente() {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        String email = "davide@gmail.com";
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "fabrizio@gmail.com", "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, null, null, "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPrep, null, null, null);
+        when(utenteRepository.findByEmail(email)).thenReturn(null);
+        assertThrows(IllegalArgumentException.class, () -> {
+            gestioneUtenzaService.getUtenteByEmail(email);
+        });
+    }
 }
