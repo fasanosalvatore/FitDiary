@@ -3,14 +3,14 @@ package it.fitdiary.backend.gestioneutenza.service;
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import it.fitdiary.backend.utility.service.EmailServiceImpl;
+import it.fitdiary.backend.utility.PasswordGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -33,7 +33,13 @@ public class GestioneUtenzaServiceImplTest {
     @Mock
     private UtenteRepository utenteRepository;
     @Mock
+    private RuoloRepository ruoloRepository;
+    @Mock
     private BCryptPasswordEncoder passwordEncoder;
+    @Mock
+    private EmailServiceImpl emailService;
+    @Mock
+    private PasswordGenerator pwGen;
 
     public GestioneUtenzaServiceImplTest() {
     }
@@ -62,6 +68,7 @@ public class GestioneUtenzaServiceImplTest {
         when(passwordEncoder.encode(u.getPassword())).thenReturn(u.getPassword());
         assertEquals(u, gestioneUtenzaService.modificaDatiPersonaliCliente(u));
     }
+
     @Test
     public void modificaDatiPersonaliPreparatore() {
         Ruolo ruolo = new Ruolo(2L, "PREPARATORE", null, null);
@@ -75,4 +82,86 @@ public class GestioneUtenzaServiceImplTest {
         assertEquals(utente, gestioneUtenzaService.modificaDatiPersonaliCliente(utente));
     }
 
+    @Test
+    public void inserisciCliente() {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
+        String nome = "Rebecca";
+        String cognome = "Melenchi";
+        String email = "rebmel@gmail.com";
+        String emailPrep = "davide@gmail.com";
+        String password = "Melenchi123*";
+        Utente preparatore = new Utente(1L, "Davide", "La Gamba", emailPrep, "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, null, null, "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPrep, null, null, null);
+        Utente newUtentePre = new Utente(null, nome, cognome, email, password, true,
+                LocalDate.parse("1990-01-01"), null, null, null, null, null, null, null, preparatore, ruoloCliente, null, null, null);
+        Utente newUtentePost = new Utente(2L, nome, cognome, email, password, true,
+                LocalDate.parse("1990-01-01"), null, null, null, null, null, null, null, preparatore, ruoloCliente, null, null, null);
+        when(utenteRepository.findByEmail(emailPrep)).thenReturn(preparatore);
+        when(utenteRepository.findByEmail(email)).thenReturn(null);
+        when(utenteRepository.save(newUtentePre)).thenReturn(newUtentePost);
+        when(ruoloRepository.findByNome("CLIENTE")).thenReturn(ruoloCliente);
+        when(pwGen.generate()).thenReturn("Melenchi123*");
+        doNothing().when(emailService).sendSimpleMessage(newUtentePre.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n" + password);
+        when(passwordEncoder.encode(password)).thenReturn(password);
+        assertEquals(newUtentePost, gestioneUtenzaService.inserisciCliente(nome, cognome, email, emailPrep));
+    }
+
+    @Test
+    public void inserisciClientethrowsIllegalPrep() {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
+        String nome = "Rebecca";
+        String cognome = "Melenchi";
+        String email = "rebmel@gmail.com";
+        String emailPrep = "davide@gmail.com";
+        String password = "Melenchi123*";
+        Utente preparatore = new Utente(1L, "Davide", "La Gamba", emailPrep, "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, null, null, "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPrep, null, null, null);
+        Utente newUtentePre = new Utente(null, nome, cognome, email, password, true,
+                LocalDate.parse("1990-01-01"), null, null, null, null, null, null, null, preparatore, ruoloCliente, null, null, null);
+        Utente newUtentePost = new Utente(2L, nome, cognome, email, password, true,
+                LocalDate.parse("1990-01-01"), null, null, null, null, null, null, null, preparatore, ruoloCliente, null, null, null);
+        when(utenteRepository.findByEmail(emailPrep)).thenReturn(null);
+        when(utenteRepository.findByEmail(email)).thenReturn(null);
+        when(utenteRepository.save(newUtentePre)).thenReturn(newUtentePost);
+        when(ruoloRepository.findByNome("CLIENTE")).thenReturn(ruoloCliente);
+        when(pwGen.generate()).thenReturn("Melenchi123*");
+        doNothing().when(emailService).sendSimpleMessage(newUtentePre.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n" + password);
+        when(passwordEncoder.encode(password)).thenReturn(password);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            gestioneUtenzaService.inserisciCliente(nome, cognome, email, emailPrep);
+        });
+
+
+    }
+
+    @Test
+    public void inserisciClientethrowsIllegalCliente() {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
+        String nome = "Rebecca";
+        String cognome = "Melenchi";
+        String email = "rebmel@gmail.com";
+        String emailPrep = "davide@gmail.com";
+        String password = "Melenchi123*";
+        Utente preparatore = new Utente(1L, "Davide", "La Gamba", emailPrep, "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, null, null, "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPrep, null, null, null);
+        Utente newUtentePre = new Utente(null, nome, cognome, email, password, true,
+                LocalDate.parse("1990-01-01"), null, null, null, null, null, null, null, preparatore, ruoloCliente, null, null, null);
+        Utente newUtentePost = new Utente(2L, nome, cognome, email, password, true,
+                LocalDate.parse("1990-01-01"), null, null, null, null, null, null, null, preparatore, ruoloCliente, null, null, null);
+        when(utenteRepository.findByEmail(emailPrep)).thenReturn(preparatore);
+        when(utenteRepository.findByEmail(email)).thenReturn(newUtentePost);
+        when(utenteRepository.save(newUtentePre)).thenReturn(newUtentePost);
+        when(ruoloRepository.findByNome("CLIENTE")).thenReturn(ruoloCliente);
+        when(pwGen.generate()).thenReturn("Melenchi123*");
+        doNothing().when(emailService).sendSimpleMessage(newUtentePre.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n" + password);
+        when(passwordEncoder.encode(password)).thenReturn(password);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            gestioneUtenzaService.inserisciCliente(nome, cognome, email, emailPrep);
+        });
+    }
 }
