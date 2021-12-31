@@ -12,6 +12,7 @@ import {
 
 import IscrizioneCliente from "./IscrizioneCliente";
 import RegistrazionePage from "./RegistrazionePage";
+import ModificaDatiPreparatore from "./ModificaDatiPreparatore";
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
                     <Route path="/registrati" element={<RegistrazionePage/>}/>
                     <Route path="/login" element={<Login />} />
                     <Route path="/iscrizioneCliente" element={<IscrizioneCliente/>}/>
+                    <Route path="/modificaDatiPreparatore" element={<ModificaDatiPreparatore/>}/>
                 </Routes>
             </BrowserRouter>
         </Flex>
