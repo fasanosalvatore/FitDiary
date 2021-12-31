@@ -1,19 +1,17 @@
 package it.fitdiary.backend.gestioneutenza.service;
 
-import com.github.curiousoddman.rgxgen.RgxGen;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
 import it.fitdiary.backend.utility.service.EmailService;
+import it.fitdiary.backend.utility.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,6 +27,7 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
     private final UtenteRepository utenteRepository;
     private final RuoloRepository ruoloRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordGenerator passwordGenerator;
     private final EmailService emailService;
 
     @Override
@@ -73,11 +72,11 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
         newUtente.setRuolo(ruoloRepository.findByNome("CLIENTE"));
         newUtente.setAttivo(true);
         newUtente.setPreparatore(preparatore);
-        RgxGen rgxGen = new RgxGen("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$");
-        String password = rgxGen.generate();
-        emailService.sendSimpleMessage(newUtente.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n"+password);
+        String password = passwordGenerator.generate();
+        //emailService.sendSimpleMessage(newUtente.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n"+password);
         newUtente.setPassword(passwordEncoder.encode(password));
-        return utenteRepository.save(newUtente);
+        Utente newCliente= utenteRepository.save(newUtente);
+        return newCliente;
     }
 
     /**
