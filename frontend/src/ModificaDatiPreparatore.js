@@ -22,7 +22,7 @@ import {
 import config from "./config.json";
 
 export default function ModificaDatiPreparatore(props) {
-    const urlEdit = `${config.SERVER_URL}/utenti/modificaDatiPreparatore`;
+    const urlEdit = `${config.SERVER_URL}/utenti/preparatore`;
     const {register, handleSubmit, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
 
