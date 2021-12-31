@@ -8,16 +8,19 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import RegistrazioneForm from "./RegistrazioneForm";
+
+
 import IscrizioneCliente from "./IscrizioneCliente";
+import RegistrazionePage from "./RegistrazionePage";
+
 
 const App = () => {
     return (
-    <Container maxW={"container.md"} p={[0,10,20]} >
-        <Flex h="100vh" py={[0,10,20]} >
+    <Container maxW={"container.xl"} p={[0,10,20]} >
+        <Flex py={[0,10,20]} >
             <BrowserRouter>
                 <Routes>
-                    <Route path="/registrati" element={<RegistrazioneForm/>}/>
+                    <Route path="/registrati" element={<RegistrazionePage/>}/>
                     <Route path="/login" element={<Login />} />
                     <Route path="/iscrizioneCliente" element={<IscrizioneCliente/>}/>
                 </Routes>
