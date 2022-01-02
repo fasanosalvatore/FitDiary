@@ -99,7 +99,7 @@ public class GestioneUtenzaServiceImplTest {
                 LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
         when(utenteRepository.findByEmail(utenteNonModificato.getEmail())).thenReturn(utenteModificato);
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null,null));
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliPreparatore(null,null));
 
     }
     @Test
@@ -112,12 +112,12 @@ public class GestioneUtenzaServiceImplTest {
         when(utenteRepository.findById(updatedUtente.getId())).thenReturn(java.util.Optional.of(updatedUtente));
         when(utenteRepository.save(utente)).thenReturn(utente);
         when(passwordEncoder.encode(utente.getPassword())).thenReturn(utente.getPassword());
-        assertEquals(utente, gestioneUtenzaService.modificaDatiPersonaliCliente(updatedUtente,updatedUtente.getEmail()));
+        assertEquals(utente, gestioneUtenzaService.modificaDatiPersonaliPreparatore(updatedUtente,updatedUtente.getEmail()));
     }
     @Test
     public void modificaDatiPersonaliPreparatoreUtenteNullo() {
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null,null));
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliPreparatore(null,null));
     }
     @Test
     public void modificaDatiPersonaliPreparatoreUtenteNonPresenteNelDataBase() {
@@ -128,7 +128,7 @@ public class GestioneUtenzaServiceImplTest {
                 null, null, null, null, null, null, null, null, null, ruolo, null, null, null);
         when(utenteRepository.findById(updatedUtente.getId())).thenReturn(java.util.Optional.of(updatedUtente));
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null,null));
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliPreparatore(null,null));
 
     }
 
