@@ -39,21 +39,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/v1/utenti/login");
-        http.csrf().disable();
-        http.cors().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/v1/utenti/create/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE");
-        http.authorizeRequests().antMatchers(HttpMethod.PUT, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE");
-        http.authorizeRequests().antMatchers("/api/v1/utenti/preparatore/**").hasAuthority("PREPARATORE");
-        http.authorizeRequests().antMatchers("/api/v1/utenti/createcliente/**").hasAuthority("PREPARATORE");
-        http.authorizeRequests().antMatchers("/api/v1/utenti/profilo/**").authenticated();
-        http.authorizeRequests().antMatchers("/api/v1/utenti/login/**", "/api/v1/utenti/token/refresh/**", "/api/v1/utenti/token/expire/**").permitAll();
-        http.authorizeRequests().anyRequest().authenticated();
-        http.addFilter(customAuthenticationFilter);
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.exceptionHandling((e) -> e.accessDeniedHandler(new AccessDeniedHandler() {
+        http.csrf().disable()
+        .cors().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests().antMatchers("/api/v1/utenti/preparatore/**").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE")
+        .antMatchers(HttpMethod.PUT, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE")
+        .antMatchers("/api/v1/utenti/preparatore/**").hasAuthority("PREPARATORE")
+        .antMatchers("/api/v1/utenti/createcliente/**").hasAuthority("PREPARATORE")
+        .antMatchers("/api/v1/utenti/profilo/**").authenticated()
+        .antMatchers("/api/v1/utenti/login/**", "/api/v1/utenti/token/refresh/**", "/api/v1/utenti/token/expire/**").permitAll()
+        .anyRequest().authenticated();
+        http.addFilter(customAuthenticationFilter)
+        .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling((e) -> e.accessDeniedHandler(new AccessDeniedHandler() {
             @Override
             public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
