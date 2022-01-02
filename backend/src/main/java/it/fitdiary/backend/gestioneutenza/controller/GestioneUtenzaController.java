@@ -80,13 +80,11 @@ public class GestioneUtenzaController {
 
     /**
      * Questo metodo prende i parametri inseriti nel body della richiesta http e li passa al service
-     *
-     *
-     * @param utente rappresenta l'insieme dei dati personali di un utente
+    * @param utente rappresenta l'insieme dei dati personali di un utente
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
     @PostMapping("cliente")
-    ResponseEntity<Object> inserimentoDatiPersonaliCliente(@Valid @RequestBody Utente utente) {
+    ResponseEntity<Object> inserimentoDatiPersonaliCliente( @RequestBody Utente utente) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Principal principal = request.getUserPrincipal();
         String emailCliente = principal.getName();
@@ -101,13 +99,11 @@ public class GestioneUtenzaController {
 
     /**
      * Questo metodo prende i parametri inseriti per modificare nel body della richiesta http e li passa al service
-     * @param  email
      * @param utente rappresenta l'insieme dei dati personali di un utente
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
     @PutMapping("cliente")
-    ResponseEntity<Object> modificaDatiPersonaliCliente(@Valid
-                                                        @RequestBody Utente utente) {
+    ResponseEntity<Object> modificaDatiPersonaliCliente(@RequestBody Utente utente) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Principal principal = request.getUserPrincipal();
         String emailCliente = principal.getName();
