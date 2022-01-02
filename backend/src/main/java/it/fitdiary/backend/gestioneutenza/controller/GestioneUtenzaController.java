@@ -50,7 +50,7 @@ public class GestioneUtenzaController {
         this.service = service;
     }
 
-    @PostMapping("create")
+    @PostMapping("preparatore")
     ResponseEntity<Object> registrazione(@RequestBody Utente utente) {
         Utente newUtente = null;
         try {
@@ -60,12 +60,12 @@ public class GestioneUtenzaController {
         }
         Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
         Map<String, Object> params = new HashMap<>();
-        params.put("email", newUtente.getEmail());
-        params.put("name", newUtente.getNome() + " " + newUtente.getCognome());
+        params.put("email", utente.getEmail());
+        params.put("name", utente.getNome() + " " + utente.getCognome());
         Customer customer = null;
         try {
             customer = Customer.create(params);
-        } catch (StripeException e) {
+        } catch (Exception e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY,
                     "la comunicazione con stripe ha avuto un errore");
         }
