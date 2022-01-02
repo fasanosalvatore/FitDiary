@@ -232,5 +232,56 @@ class GestioneUtenzaControllerTest {
 
                 is2xxSuccessful());
     }
+
+    @Test
+    void refreshTokenSuccess() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
+                , "Davide123*", true, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaWFxdWlAZ21haWwuY29tIiwicm9sZXMiOlsiUFJFUEFSQVRPUkUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJleHAiOjE2NDExNjQwNzB9.SvNcHf2RahtEwyIyS-PRx7XFLDQ-VtHQtT_e3Y_X7mQ");
+        when(gestioneUtenzaService.getUtenteByEmail("giaqui@gmail.com")).thenReturn(utente);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    void refreshTokenFailure() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
+                , "Davide123*", true, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer ");
+        when(gestioneUtenzaService.getUtenteByEmail("giaqui@gmail.com")).thenReturn(utente);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    void refreshTokenNoToken() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
+                , "Davide123*", true, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "");
+        when(gestioneUtenzaService.getUtenteByEmail("giaqui@gmail.com")).thenReturn(utente);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
 }
 
