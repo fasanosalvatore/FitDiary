@@ -14,6 +14,7 @@ import CustomerIndex from "./pages/User/Customer/CustomerIndex";
 import Index from "./pages/Home/Index";
 import CustomerInsertInfo from "./pages/User/Customer/CustomerInsertInfo";
 import CustomerEditInfo from "./pages/User/Customer/CustomerEditInfo";
+import authService from "./services/auth.service";
 
 let rootElement = document.getElementById("root");
 
@@ -25,6 +26,7 @@ ReactDOM.render(
                 <Route path="/" element={<App/>}>
                     <Route index element={<Index/>}/>
                     <Route path="/login" element={<Login/>}/>
+                    <Route path="/logout" render={()=>{authService.logout()}}/>
                     <Route path="/signup" element={<Signup/>}/>
                     <Route path="/customer" element={<CustomerIndex/>}>
                         <Route path="me" element={<CustomerProfile/>}/>

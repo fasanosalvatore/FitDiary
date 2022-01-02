@@ -34,6 +34,8 @@ import {
 } from 'react-icons/fi';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
+import {BiExit} from "react-icons/bi";
+import authService from "../services/auth.service";
 
 export const Logo = createIcon({
     displayName: 'Logo',
@@ -56,13 +58,14 @@ export const Logo = createIcon({
         </g>
     ),
 })
+const user=authService.getCurrentUser();
 
 const LinkItems = [
     { name: 'Home', icon: FiHome, to: "/" },
-    { name: 'Login', icon: FiTrendingUp, to: "/login" },
     { name: 'Registrati', icon: FiCompass, to: "/signup" },
     { name: 'Profilo', icon: FiSettings, to: "/customer/me" },
     { name: 'test', icon: FiSettings, to: "/test" },
+    { name: user ? 'Logout' : 'Login',icon:user ? BiExit : FiTrendingUp,to: "/login"}
 ];
 
 export default function SidebarWithHeader({children}) {
@@ -113,8 +116,10 @@ const SidebarContent = ({ onClose, ...rest }) => {
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
+
                 <NavItem key={link.name} icon={link.icon} to={link.to}>
                     {link.name}
+
                 </NavItem>
             ))}
         </Box>
@@ -214,6 +219,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                                     <FiChevronDown />
                                 </Box>
                             </HStack>
+
                         </MenuButton>
                         <MenuList
                             bg={useColorModeValue('white', 'gray.900')}
@@ -222,9 +228,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
                             <MenuItem>Settings</MenuItem>
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider />
-                            <MenuItem>Sign out</MenuItem>
+                            <MenuItem>Sign out </MenuItem>
                         </MenuList>
                     </Menu>
+
                 </Flex>
             </HStack>
         </Flex>
