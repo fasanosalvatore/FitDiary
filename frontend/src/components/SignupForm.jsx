@@ -81,12 +81,8 @@ export default function SignupForm() {
     //Gestione pagamento
 
     async function handlePayment(customerId) {
+
         const cardNumber = elements.getElement(CardNumberElement);
-
-        const request = JSON.stringify(customerId);
-
-        console.log("REQUEST CLIENT ID: "+request)
-
 
         let newSubscriptionResp = await fetch(urlAcquisto, {
             method: 'POST',
@@ -116,11 +112,7 @@ export default function SignupForm() {
             console.log("PAYMENT SUCCESS")
             console.log(e)
             return true
-        }).catch(e =>{
-            console.log("PAYMENT ERROR")
-            console.log(e)
-            return false
-        })
+        }).catch(handleFail)
     }
 
 
@@ -134,7 +126,7 @@ export default function SignupForm() {
                         <Input type="text" placeholder="Mario" {...register("nome", {
                             required: "Il nome è obbligatorio",
                             maxLength: {value: 50, message: "Il nome è troppo lungo"},
-                            pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato nome non valido"}
+                            pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato nome non valido"}
                         })} />
                         <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
                     </FormControl>
@@ -145,7 +137,7 @@ export default function SignupForm() {
                         <Input type="text" placeholder="Rossi" {...register("cognome", {
                             required: "Il cognome è obbligatorio",
                             maxLength: {value: 50, message: "Il cognome è troppo lungo"},
-                            pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato cognome non valido"}
+                            pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato cognome non valido"}
                         })} />
                         <FormErrorMessage>{errors.cognome && errors.cognome.message}</FormErrorMessage>
                     </FormControl>
@@ -234,7 +226,7 @@ export default function SignupForm() {
                 </GridItem>
                 <GridItem colSpan={colSpan} w="100%">
                     <FormLabel htmlFor="CVV">CVV</FormLabel>
-                    <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
+                    <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5} >
                         <CardCvcElement/>
                     </Box>
                 </GridItem>
