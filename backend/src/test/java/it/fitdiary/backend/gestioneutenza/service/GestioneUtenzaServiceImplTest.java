@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -47,28 +48,60 @@ public class GestioneUtenzaServiceImplTest {
     @Test
     public void inserimentoDatiPersonaliCliente() {
         Ruolo r = new Ruolo(2L, "CLIENTE", null, null);
-        Utente u = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
-                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
-        Utente ut = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+        Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 null, null, null, null, null, null, null, null, null, r, null, null, null);
-        when(utenteRepository.findById(ut.getId())).thenReturn(java.util.Optional.of(ut));
-        when(utenteRepository.save(u)).thenReturn(u);
-        assertEquals(u, gestioneUtenzaService.inserimentoDatiPersonaliCliente(u));
+        Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
+        when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(java.util.Optional.of(utenteModificato));
+        when(utenteRepository.save(utenteModificato)).thenReturn(utenteModificato);
+        assertEquals(utenteModificato, gestioneUtenzaService.inserimentoDatiPersonaliCliente(utenteModificato));
     }
+    @Test
+    public void inserimentoDatiPersonaliClienteUtenteNullo() {
+        assertThrows(IllegalArgumentException.class,
+                () -> this.gestioneUtenzaService.inserimentoDatiPersonaliCliente(null));
+    }
+    @Test
+    public void inserimentoDatiPersonaliClienteUtenteNonPresenteNelDataBase() {
+        Ruolo r = new Ruolo(2L, "CLIENTE", null, null);
+        Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                null, null, null, null, null, null, null, null, null, r, null, null, null);
+        Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
+        when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(java.util.Optional.of(utenteModificato));
+        assertThrows(IllegalArgumentException.class,
+                () -> this.gestioneUtenzaService.inserimentoDatiPersonaliCliente(null));
 
+    }
     @Test
     public void modificaDatiPersonaliCliente() {
         Ruolo r = new Ruolo(2L, "CLIENTE", null, null);
-        Utente u = new Utente(1L, "Francesca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
-                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
-        Utente ut = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+        Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 null, null, null, null, null, null, null, null, null, r, null, null, null);
-        when(utenteRepository.findById(ut.getId())).thenReturn(java.util.Optional.of(ut));
-        when(utenteRepository.save(u)).thenReturn(u);
-        when(passwordEncoder.encode(u.getPassword())).thenReturn(u.getPassword());
-        assertEquals(u, gestioneUtenzaService.modificaDatiPersonaliCliente(u));
+        Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
+        when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(Optional.of(utenteModificato));
+        when(utenteRepository.save(utenteModificato)).thenReturn(utenteModificato);
+        when(passwordEncoder.encode(utenteModificato.getPassword())).thenReturn(utenteModificato.getPassword());
+        assertEquals(utenteModificato, gestioneUtenzaService.modificaDatiPersonaliCliente(utenteModificato));
     }
+    @Test
+    public void modificaDatiPersonaliClienteUtenteNullo() {
+        assertThrows(IllegalArgumentException.class,
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null));
+    }
+    @Test
+    public void modificaDatiPersonaliClienteUtenteNonPresenteNelDataBase() {
+        Ruolo r = new Ruolo(2L, "CLIENTE", null, null);
+        Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                null, null, null, null, null, null, null, null, null, r, null, null, null);
+        Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
+        when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(java.util.Optional.of(utenteModificato));
+        assertThrows(IllegalArgumentException.class,
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null));
 
+    }
     @Test
     public void modificaDatiPersonaliPreparatore() {
         Ruolo ruolo = new Ruolo(2L, "PREPARATORE", null, null);
@@ -80,6 +113,23 @@ public class GestioneUtenzaServiceImplTest {
         when(utenteRepository.save(utente)).thenReturn(utente);
         when(passwordEncoder.encode(utente.getPassword())).thenReturn(utente.getPassword());
         assertEquals(utente, gestioneUtenzaService.modificaDatiPersonaliCliente(utente));
+    }
+    @Test
+    public void modificaDatiPersonaliPreparatoreUtenteNullo() {
+        assertThrows(IllegalArgumentException.class,
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null));
+    }
+    @Test
+    public void modificaDatiPersonaliPreparatoreUtenteNonPresenteNelDataBase() {
+        Ruolo ruolo = new Ruolo(2L, "PREPARATORE", null, null);
+        Utente utente = new Utente(1L, "Michele", "De Marco", "dani5@gmail.com", "Trappo#98", true,
+                LocalDate.parse("2000-03-03"), null, null, null, "3459666587", "Francesco La Francesca", "84126", "Salerno", null, ruolo, null, null, null);
+        Utente updatedUtente = new Utente(1L, "Daniele", "De Marco", "diodani5@gmail.com", "Trappo#98", true,
+                null, null, null, null, null, null, null, null, null, ruolo, null, null, null);
+        when(utenteRepository.findById(updatedUtente.getId())).thenReturn(java.util.Optional.of(updatedUtente));
+        assertThrows(IllegalArgumentException.class,
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null));
+
     }
 
     @Test

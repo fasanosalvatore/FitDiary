@@ -30,6 +30,7 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
     private final PasswordGenerator passwordGenerator;
     private final EmailService emailService;
 
+
     @Override
     public Utente registrazione(Utente utente) throws IllegalArgumentException {
         if (utente == null) {
@@ -112,10 +113,10 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
      */
     @Override
     public Utente inserimentoDatiPersonaliCliente(Utente utente) throws IllegalArgumentException {
-        Utente newUtente = utenteRepository.findById(utente.getId()).orElse(null);
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
+        Utente newUtente = utenteRepository.findById(utente.getId()).orElse(null);
         if (newUtente == null) {
             throw new IllegalArgumentException("Utente non presente del Database");
         }
@@ -136,10 +137,11 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
      */
     @Override
     public Utente modificaDatiPersonaliCliente(Utente utente) throws IllegalArgumentException {
-        Utente newUtente = utenteRepository.findById(utente.getId()).orElse(null);
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
+        Utente newUtente = utenteRepository.findById(utente.getId()).orElse(null);
+
         if (newUtente == null) {
             throw new IllegalArgumentException("Utente non presente del Database");
         }
