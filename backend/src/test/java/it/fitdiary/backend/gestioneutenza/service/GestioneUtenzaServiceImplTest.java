@@ -112,12 +112,12 @@ public class GestioneUtenzaServiceImplTest {
         when(utenteRepository.findById(updatedUtente.getId())).thenReturn(java.util.Optional.of(updatedUtente));
         when(utenteRepository.save(utente)).thenReturn(utente);
         when(passwordEncoder.encode(utente.getPassword())).thenReturn(utente.getPassword());
-        assertEquals(utente, gestioneUtenzaService.modificaDatiPersonaliCliente(utente));
+        assertEquals(utente, gestioneUtenzaService.modificaDatiPersonaliCliente(updatedUtente,updatedUtente.getEmail()));
     }
     @Test
     public void modificaDatiPersonaliPreparatoreUtenteNullo() {
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null));
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null,null));
     }
     @Test
     public void modificaDatiPersonaliPreparatoreUtenteNonPresenteNelDataBase() {
@@ -128,7 +128,7 @@ public class GestioneUtenzaServiceImplTest {
                 null, null, null, null, null, null, null, null, null, ruolo, null, null, null);
         when(utenteRepository.findById(updatedUtente.getId())).thenReturn(java.util.Optional.of(updatedUtente));
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null));
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null,null));
 
     }
 
