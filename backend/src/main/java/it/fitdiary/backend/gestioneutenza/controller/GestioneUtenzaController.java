@@ -12,6 +12,7 @@ import com.stripe.param.CustomerCreateParams;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
+import it.fitdiary.backend.utility.service.NuovoCliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -219,30 +220,20 @@ public class GestioneUtenzaController {
     /**
      * Questo metodo permette di creare un cliente da parte di un preparatore
      *
-     * @param nome    nome del cliente
-     * @param cognome cognome del cliente
-     * @param email   email del cliente
+     * @param cliente Nuovo cliente con nome, cognome ed email
      * @return cliente creato
      */
     @PostMapping("createcliente")
-    ResponseEntity<Object> iscrizioneCliente(@RequestParam(name = "nome")
-                                             @NotNull(message = "Il nome non può essere nullo")
-                                             @Size(min = 1, max = 50, message = "Lunghezza nome non valida")
-                                             @NotBlank(message = "Il nome non può essere vuoto") String nome,
-                                             @NotNull(message = "Il cognome non può essere nullo")
-                                             @Size(min = 1, max = 50, message = "Lunghezza cognome non valida")
-                                             @NotBlank(message = "Il cognome non può essere vuoto")
-                                             @RequestParam(name = "cognome") String cognome,
-                                             @NotNull(message = "L'email non può essere nulla")
-                                             @Size(min = 1, max = 50, message = "Lunghezza email non valida")
-                                             @Email(message = "Formato email non valida")
-                                             @RequestParam(name = "email") String email) {
+    ResponseEntity<Object> iscrizioneCliente(@RequestBody NuovoCliente cliente) {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                         .getRequest();
         Principal principal = request.getUserPrincipal();
         String emailPreparatore = principal.getName();
         Utente newCliente = null;
+        String email= cliente.getEmail();
+        String nome= cliente.getNome();
+        String cognome= cliente.getCognome();
         try {
             newCliente = service.inserisciCliente(nome, cognome, email, emailPreparatore);
         } catch (IllegalArgumentException e) {
