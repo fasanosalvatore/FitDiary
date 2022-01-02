@@ -134,5 +134,45 @@ class GestioneUtenzaControllerTest {
     }
 
 
+
+    @Test
+    void visualizzaProfiloSuccess() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
+                , "Davide123*", true, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+
+        Principal principal= ()->"User";
+        when(gestioneUtenzaService.getUtenteByEmail(principal.getName())).thenReturn(utente);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/utenti/profilo").principal(principal);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    void visualizzaProfiloBadRequest() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
+                , "Davide123*", true, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+
+        Principal principal= ()->"User";
+        when(gestioneUtenzaService.getUtenteByEmail(principal.getName())).thenThrow(IllegalArgumentException.class);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/utenti/profilo").principal(principal);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
 }
 
