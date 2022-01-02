@@ -86,7 +86,7 @@ public class GestioneUtenzaController {
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
     @PostMapping("cliente")
-    ResponseEntity<Object> inserimentoDatiPersonaliCliente(@Valid @RequestBody Utente utente) {
+    ResponseEntity<Object> inserimentoDatiPersonaliCliente(@RequestBody Utente utente) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Principal principal = request.getUserPrincipal();
         String emailCliente = principal.getName();
@@ -101,12 +101,12 @@ public class GestioneUtenzaController {
 
     /**
      * Questo metodo prende i parametri inseriti per modificare nel body della richiesta http e li passa al service
-     * @param  email
+     *
      * @param utente rappresenta l'insieme dei dati personali di un utente
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
     @PutMapping("cliente")
-    ResponseEntity<Object> modificaDatiPersonaliCliente(@Valid
+    ResponseEntity<Object> modificaDatiPersonaliCliente(
                                                         @RequestBody Utente utente) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         Principal principal = request.getUserPrincipal();
@@ -178,7 +178,12 @@ public class GestioneUtenzaController {
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         } else {
-            throw new RuntimeException("Refresh token is missing");
+            response.setHeader("error", "Refresh token mancante");
+            response.setStatus(FORBIDDEN.value());
+            Map<String, String> error = new HashMap<>();
+            error.put("error_message", "Refresh token mancante");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            new ObjectMapper().writeValue(response.getOutputStream(), error);
         }
     }
 
