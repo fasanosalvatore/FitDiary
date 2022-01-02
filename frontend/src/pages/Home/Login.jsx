@@ -1,6 +1,7 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Link} from "react-router-dom";
+import AuthService from "../../services/auth.service.js";
 import {
     Button,
     FormControl,
@@ -8,35 +9,34 @@ import {
     FormLabel,
     GridItem, Heading,
     Input,
-    SimpleGrid, Text, Tooltip, VStack
+    SimpleGrid, Text, Tooltip, VStack,useToast
 } from "@chakra-ui/react";
+
+import config from "../../config.json";
 
 export default function Login() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
-
-    const mySubmit = async (e) => {
-        e.preventDefault();
-
-        await handleSubmit(onSubmit)(e);
-    }
-
+    const urlLogin=`${config.SERVER_URL}/utenti/login`;
+    const toast=useToast();
     function onSubmit(values) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const request = JSON.stringify(values, null, 2);
-                console.log(request)
-                fetch("http://localhost:8080/api/v1/utenti/login", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: request
-                })
-                    .then(response => response.json())   // restituisce un JSON
-                    .then(data => console.log(data))
-                resolve()
-            }, 1500)
-        })
+       const resp={
+           method: "POST",
+           headers: {'Content-Type': 'application/json'},
+           body: JSON.stringify(values)
+       }
+       AuthService.login(values.email,values.password).then( () => {
+           this.props.history.push("/customer/me");
+           window.location.reload();
+       },error =>{
+          toast({
+              title: 'Account not created.',
+              description: "We've not created your account "+ error.message,
+              status: 'failed',
+              duration: 9000,
+              isClosable: true,
+          })
+       } )
+
     }
 
     console.log(errors);
@@ -46,7 +46,7 @@ export default function Login() {
             <VStack spacing={3} alignItems="flex-start" pb={5}>
                 <Heading size="2xl">Login</Heading>
             </VStack>
-            <form style={{width: "100%"}} onSubmit={mySubmit}>
+            <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                 <SimpleGrid columns={2} columnGap={5} rowGap={5} w="full">
                     <GridItem colSpan={2}>
                         <FormControl id={"email"} isInvalid={errors.email}>
