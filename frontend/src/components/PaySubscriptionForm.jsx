@@ -15,7 +15,7 @@ import {
 import {Link} from "react-router-dom";
 import config from "../config.json";
 
-export default function PaySubscriptionForm() {
+export default function PaySubscriptionForm(props) {
     const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();
@@ -26,24 +26,15 @@ export default function PaySubscriptionForm() {
         return "";
     }
 
-    async function handleOnSubmitUser(e) {
-        e.preventDefault();
+    async function handlePayment() {
         const cardNumber = elements.getElement(CardNumberElement);
-
-        const customerId = "cus_KsFIkjw8Eku2k2"; //possato dal back-end
-
-
-        const request = JSON.stringify(customerId);
-
-        console.log("REQUEST CLIENT ID: "+request)
-
 
         let newSubscriptionResp = await fetch(urlAcquisto, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: customerId
+            body: props.customerId
         });
 
         newSubscriptionResp = await newSubscriptionResp.json();
@@ -62,13 +53,15 @@ export default function PaySubscriptionForm() {
                     card:cardNumber,
                 },
             }
-        )
-
-        console.log("PAYEMENT INTENT: "+payementIntent);
-
-        if (error) {
-
-        }
+        ).then(e =>{
+            console.log("PAYMENT SUCCESS")
+            console.log(e)
+            return true
+        }).catch(e =>{
+            console.log("PAYMENT ERROR")
+            console.log(e)
+            return false
+        })
     }
 
     const mySubmit = async (e) => {

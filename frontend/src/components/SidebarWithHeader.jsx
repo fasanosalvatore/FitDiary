@@ -62,6 +62,7 @@ const LinkItems = [
     { name: 'Login', icon: FiTrendingUp, to: "/login" },
     { name: 'Registrati', icon: FiCompass, to: "/signup" },
     { name: 'Profilo', icon: FiSettings, to: "/customer/me" },
+    { name: 'test', icon: FiSettings, to: "/test" },
 ];
 
 export default function SidebarWithHeader({children}) {
