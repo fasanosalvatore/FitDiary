@@ -74,7 +74,7 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
         newUtente.setAttivo(true);
         newUtente.setPreparatore(preparatore);
         String password = passwordGenerator.generate();
-        //emailService.sendSimpleMessage(newUtente.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n"+password);
+        emailService.sendSimpleMessage(newUtente.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n"+password);
         newUtente.setPassword(passwordEncoder.encode(password));
         Utente newCliente= utenteRepository.save(newUtente);
         return newCliente;
