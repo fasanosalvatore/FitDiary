@@ -97,7 +97,7 @@ public class GestioneUtenzaServiceImplTest {
                 null, null, null, null, null, null, null, null, null, r, null, null, null);
         Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
-        when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(java.util.Optional.of(utenteModificato));
+        when(utenteRepository.findByEmail(utenteNonModificato.getEmail())).thenReturn(utenteModificato);
         assertThrows(IllegalArgumentException.class,
                 () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null,null));
 
