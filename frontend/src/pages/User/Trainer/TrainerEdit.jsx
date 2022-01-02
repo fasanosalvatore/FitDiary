@@ -73,7 +73,7 @@ export default function TrainerEdit(props) {
                             <Input type="text"  {...register("nome", {
                                 maxLength: {
                                     value: 50, message: "Il nome è troppo lungo"
-                                }, pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato nome non valido"}
+                                }, pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato nome non valido"}
                             })} />
                             <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
                         </FormControl>
@@ -85,7 +85,7 @@ export default function TrainerEdit(props) {
                         <Input type="text" {...register("cognome", {
                             maxLength: {
                                 value: 50, message: "Il cognome è troppo lungo"
-                            }, pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato cognome non valido"}
+                            }, pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato cognome non valido"}
                         })} />
                         <FormErrorMessage>{errors.cognome && errors.cognome.message}</FormErrorMessage>
                     </GridItem>
@@ -131,7 +131,7 @@ export default function TrainerEdit(props) {
                         <Input type="text" {...register("via", {
                             maxLength: {
                                 value: 50, message: "Il via è troppo lungo"
-                            }, pattern: {value: /^[A-Z][A-Z a-z]*/i, message: "Formato via non valido"}
+                            }, pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato via non valido"}
                         })} />
                         <FormErrorMessage>{errors.via && errors.via.message}</FormErrorMessage>
                     </GridItem>
@@ -153,7 +153,7 @@ export default function TrainerEdit(props) {
                         <Input type="text" {...register("citta", {
                             maxLength: {
                                 value: 20, message: "Il nome della citta' è troppo lungo"
-                            }, pattern: {value: /^[A-Z][A-Z a-z]*/i, message: "Formato citta non valido"}
+                            }, pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato citta non valido"}
                         })} />
                         <FormErrorMessage>{errors.citta && errors.citta.message}</FormErrorMessage>
                     </GridItem>

@@ -188,7 +188,7 @@ export default function SignupForm() {
                                 required: "Il campo password è obbligatorio",
                                 maxLength: {value: 255, message: "Password troppo lunga"},
                                 pattern: {
-                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&])[A-Za-z\d@$!%*?^#()<>+&]{8,}$/i,
+                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&\.])[A-Za-z\d@$!%*?^#()<>+&.]{8,}$/i,
                                     message: "Formato password non valido"
                                 }
                             })} />
