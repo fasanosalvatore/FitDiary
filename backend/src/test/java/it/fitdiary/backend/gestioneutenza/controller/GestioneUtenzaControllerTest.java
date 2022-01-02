@@ -71,43 +71,10 @@ class GestioneUtenzaControllerTest {
     void iscrizioneClienteSuccess() throws Exception {
         Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
 
-        String nome="Fabrizio";
-        String cognome="Vitale";
-        String email="fabrizio@gmail.com";
-        String emailPrep="davide@gmail.com";
-        String clienteJson = "{\n" +
-                "    \"nome\": \"Fabrizio\",\n" +
-                "    \"cognome\": \"Vitale\",\n" +
-                "    \"email\": \"fabrizio@gmail.com\"\n" +
-                "}";
-        Utente preparatore = new Utente(1L, "Davide", "La Gamba", emailPrep
-              , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
-                null, null, ruoloPrep, null, null, null);
-        Utente newCliente = new Utente(2L, nome, cognome, email
-               , "Fabrizio123*", true, LocalDate.parse("2000-03-03"), null,
-                null, "M", null, null, null,
-                null, preparatore, ruoloPrep, null, null, null);
-
-        Principal principal= ()->"User";
-        when(gestioneUtenzaService.inserisciCliente(nome, cognome, email,principal.getName())).thenReturn(newCliente);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-        }
-
-    @Test
-    void iscrizioneClienteBadRequest() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
-
-        String nome="Fabrizio";
-        String cognome="Vitale";
-        String email="fabrizio@gmail.com";
-        String emailPrep="davide@gmail.com";
+        String nome = "Fabrizio";
+        String cognome = "Vitale";
+        String email = "fabrizio@gmail.com";
+        String emailPrep = "davide@gmail.com";
         String clienteJson = "{\n" +
                 "    \"nome\": \"Fabrizio\",\n" +
                 "    \"cognome\": \"Vitale\",\n" +
@@ -123,7 +90,40 @@ class GestioneUtenzaControllerTest {
                 null, "M", null, null, null,
                 null, preparatore, ruoloPrep, null, null, null);
 
-        Principal principal= ()->"User";
+        Principal principal = () -> "User";
+        when(gestioneUtenzaService.inserisciCliente(nome, cognome, email, principal.getName())).thenReturn(newCliente);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    void iscrizioneClienteBadRequest() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+
+        String nome = "Fabrizio";
+        String cognome = "Vitale";
+        String email = "fabrizio@gmail.com";
+        String emailPrep = "davide@gmail.com";
+        String clienteJson = "{\n" +
+                "    \"nome\": \"Fabrizio\",\n" +
+                "    \"cognome\": \"Vitale\",\n" +
+                "    \"email\": \"fabrizio@gmail.com\"\n" +
+                "}";
+        Utente preparatore = new Utente(1L, "Davide", "La Gamba", emailPrep
+                , "Davide123*", true, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+        Utente newCliente = new Utente(2L, nome, cognome, email
+                , "Fabrizio123*", true, LocalDate.parse("2000-03-03"), null,
+                null, "M", null, null, null,
+                null, preparatore, ruoloPrep, null, null, null);
+
+        Principal principal = () -> "User";
         when(gestioneUtenzaService.inserisciCliente(nome, cognome, email, principal.getName())).thenThrow(IllegalArgumentException.class);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
@@ -132,7 +132,6 @@ class GestioneUtenzaControllerTest {
                 .perform(requestBuilder);
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
-
 
 
     @Test
@@ -145,7 +144,7 @@ class GestioneUtenzaControllerTest {
                 null, "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
 
-        Principal principal= ()->"User";
+        Principal principal = () -> "User";
         when(gestioneUtenzaService.getUtenteByEmail(principal.getName())).thenReturn(utente);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/profilo").principal(principal);
@@ -165,7 +164,7 @@ class GestioneUtenzaControllerTest {
                 null, "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
 
-        Principal principal= ()->"User";
+        Principal principal = () -> "User";
         when(gestioneUtenzaService.getUtenteByEmail(principal.getName())).thenThrow(IllegalArgumentException.class);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/profilo").principal(principal);
@@ -173,6 +172,65 @@ class GestioneUtenzaControllerTest {
                 .build()
                 .perform(requestBuilder);
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    void inserimentoDatiPersonaliCliente()
+            throws Exception {
+        Ruolo r = new Ruolo(2L, "CLIENTE", null, null);
+        String clienteJson = "{\n" +
+                "    \"dataNascita\": \"2000-10-30\",\n" +
+                "    \"telefono\": \"389485921\",\n" +
+                "    \"via\": \"Francesco rinaldo\",\n" +
+                "    \"cap\": \"94061\",\n" +
+                "    \"citta\": \"Agropoli\"\n" +
+               "}";
+        Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                null, null, null, null, null, null, null, null, null, r, null, null, null);
+        Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
+        Principal principal = () -> "User";
+        when(gestioneUtenzaService.inserimentoDatiPersonaliCliente(utenteNonModificato, principal.getName())).thenReturn(utenteModificato);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.post("/api/v1/utenti/cliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().
+
+                is2xxSuccessful());
+    }
+
+
+
+    @Test
+    void modificaDatiPersonaliCliente() throws Exception {
+        Ruolo r = new Ruolo(2L, "CLIENTE", null, null);
+        String clienteJson = "{\n" +
+                "    \"nome\": \"Francesca\",\n" +
+                "    \"cognome\": \"Di Matteo\",\n" +
+                "    \"email\": \"beccadimatteoo@gmail.com\",\n" +
+                "    \"password\": \"Becca123*\",\n" +
+                "    \"dataNascita\": \"2000-10-30\",\n" +
+                "    \"telefono\": \"389485921\",\n" +
+                "    \"via\": \"Francesco rinaldo\",\n" +
+                "    \"cap\": \"94061\",\n" +
+                "    \"citta\": \"Agropoli\"\n" +
+                "}";
+        Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                null, null, null, null, null, null, null, null, null, r, null, null, null);
+        Utente utenteModificato = new Utente(1L, "Francesca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
+        Principal principal = () -> "User";
+        when(gestioneUtenzaService.modificaDatiPersonaliCliente(utenteNonModificato, principal.getName())).thenReturn(utenteModificato);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.put("/api/v1/utenti/cliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().
+
+                is2xxSuccessful());
     }
 }
 
