@@ -80,13 +80,17 @@ public class GestioneUtenzaController {
     /**
      * Questo metodo prende i parametri inseriti nel body della richiesta http e li passa al service
      *
+     *
      * @param utente rappresenta l'insieme dei dati personali di un utente
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
     @PostMapping("cliente")
     ResponseEntity<Object> inserimentoDatiPersonaliCliente(@Valid @RequestBody Utente utente) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Principal principal = request.getUserPrincipal();
+        String emailCliente = principal.getName();
         try {
-            Utente newUtente = service.inserimentoDatiPersonaliCliente(utente);
+            Utente newUtente = service.inserimentoDatiPersonaliCliente(utente,emailCliente);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
                     newUtente);
         } catch (IllegalArgumentException e) {
@@ -96,15 +100,18 @@ public class GestioneUtenzaController {
 
     /**
      * Questo metodo prende i parametri inseriti per modificare nel body della richiesta http e li passa al service
-     *
+     * @param  email
      * @param utente rappresenta l'insieme dei dati personali di un utente
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      */
     @PutMapping("cliente")
     ResponseEntity<Object> modificaDatiPersonaliCliente(@Valid
                                                         @RequestBody Utente utente) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        Principal principal = request.getUserPrincipal();
+        String emailCliente = principal.getName();
         try {
-            Utente newUtente = service.modificaDatiPersonaliCliente(utente);
+            Utente newUtente = service.modificaDatiPersonaliCliente(utente,emailCliente);
             return ResponseHandler.generateResponse(HttpStatus.CREATED, "utente",
                     newUtente);
         } catch (IllegalArgumentException e) {

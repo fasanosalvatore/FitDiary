@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface GestioneUtenzaService {
     Utente registrazione(Utente utente);
 
-    Utente inserimentoDatiPersonaliCliente(Utente utente);
+    Utente inserimentoDatiPersonaliCliente(Utente utente,String email);
 
-    Utente modificaDatiPersonaliCliente(Utente utente);
+    Utente modificaDatiPersonaliCliente(Utente utente,String email);
 
     Utente modificaDatiPersonaliPreparatore(Utente utente, String email);
 

@@ -108,15 +108,16 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
      * Questo metodo permette di inserire i dati nel sistema ad un cliente
      *
      * @param utente rappresenta l'insieme dei dati personali di un utente
+     * @param email
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      * @throws IllegalArgumentException lancia l'errore generato da un input errato
      */
     @Override
-    public Utente inserimentoDatiPersonaliCliente(Utente utente) throws IllegalArgumentException {
+    public Utente inserimentoDatiPersonaliCliente(Utente utente,String email) throws IllegalArgumentException {
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
-        Utente newUtente = utenteRepository.findById(utente.getId()).orElse(null);
+        Utente newUtente = utenteRepository.findByEmail(email);
         if (newUtente == null) {
             throw new IllegalArgumentException("Utente non presente del Database");
         }
@@ -130,17 +131,17 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
 
     /**
      * Questo metodo permette di inserire i dati da modificare nel sistema ad un cliente
-     *
+     * @param email
      * @param utente rappresenta l'insieme dei dati personali di un utente
      * @return utente rappresenta l'utente con i nuovi dati inserito nel database
      * @throws IllegalArgumentException lancia l'errore generato da un input errato
      */
     @Override
-    public Utente modificaDatiPersonaliCliente(Utente utente) throws IllegalArgumentException {
+    public Utente modificaDatiPersonaliCliente(Utente utente,String email) throws IllegalArgumentException {
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
-        Utente newUtente = utenteRepository.findById(utente.getId()).orElse(null);
+        Utente newUtente = utenteRepository.findByEmail(email);
 
         if (newUtente == null) {
             throw new IllegalArgumentException("Utente non presente del Database");
