@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3000/",
   "dependencies": {
     "@chakra-ui/icon": "^2.0.0",
     "@chakra-ui/react": "1.7.3",
@@ -12,7 +13,9 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.24.0",
     "framer-motion": "^5.5.5",
+    "http-proxy-middleware": "^2.0.1",
     "next": "^12.0.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -21,8 +24,7 @@
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "web-vitals": "^2.1.2",
-    "axios": "^0.24.0"
+    "web-vitals": "^2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
