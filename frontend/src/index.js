@@ -12,6 +12,8 @@ import TrainerEdit from "./pages/User/Trainer/TrainerEdit";
 import TrainerIndex from "./pages/User/Trainer/TrainerIndex";
 import CustomerIndex from "./pages/User/Customer/CustomerIndex";
 import Index from "./pages/Home/Index";
+import CustomerInsertInfo from "./pages/User/Customer/CustomerInsertInfo";
+import CustomerEditInfo from "./pages/User/Customer/CustomerEditInfo";
 
 let rootElement = document.getElementById("root");
 
@@ -32,6 +34,7 @@ ReactDOM.render(
                         <Route path="edit" element={<TrainerEdit/>}/>
                         <Route path="addCustomer" element={<CustomerCreate/>}/>
                     </Route>
+                    <Route path="/test" element={<CustomerEditInfo/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
