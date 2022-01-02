@@ -52,14 +52,14 @@ public class GestioneUtenzaServiceImplTest {
                 null, null, null, null, null, null, null, null, null, r, null, null, null);
         Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
-        when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(java.util.Optional.of(utenteModificato));
+        when(utenteRepository.findByEmail(utenteNonModificato.getEmail())).thenReturn((utenteModificato));
         when(utenteRepository.save(utenteModificato)).thenReturn(utenteModificato);
-        assertEquals(utenteModificato, gestioneUtenzaService.inserimentoDatiPersonaliCliente(utenteModificato));
+        assertEquals(utenteModificato, gestioneUtenzaService.inserimentoDatiPersonaliCliente(utenteModificato,utenteModificato.getEmail()));
     }
     @Test
     public void inserimentoDatiPersonaliClienteUtenteNullo() {
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.inserimentoDatiPersonaliCliente(null));
+                () -> this.gestioneUtenzaService.inserimentoDatiPersonaliCliente(null,null));
     }
     @Test
     public void inserimentoDatiPersonaliClienteUtenteNonPresenteNelDataBase() {
@@ -70,7 +70,7 @@ public class GestioneUtenzaServiceImplTest {
                 LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
         when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(java.util.Optional.of(utenteModificato));
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.inserimentoDatiPersonaliCliente(null));
+                () -> this.gestioneUtenzaService.inserimentoDatiPersonaliCliente(null,null));
 
     }
     @Test
@@ -80,15 +80,15 @@ public class GestioneUtenzaServiceImplTest {
                 null, null, null, null, null, null, null, null, null, r, null, null, null);
         Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
-        when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(Optional.of(utenteModificato));
+        when(utenteRepository.findByEmail(utenteNonModificato.getEmail())).thenReturn((utenteModificato));
         when(utenteRepository.save(utenteModificato)).thenReturn(utenteModificato);
         when(passwordEncoder.encode(utenteModificato.getPassword())).thenReturn(utenteModificato.getPassword());
-        assertEquals(utenteModificato, gestioneUtenzaService.modificaDatiPersonaliCliente(utenteModificato));
+        assertEquals(utenteModificato, gestioneUtenzaService.modificaDatiPersonaliCliente(utenteModificato,utenteModificato.getEmail()));
     }
     @Test
     public void modificaDatiPersonaliClienteUtenteNullo() {
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null));
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null,null));
     }
     @Test
     public void modificaDatiPersonaliClienteUtenteNonPresenteNelDataBase() {
@@ -99,7 +99,7 @@ public class GestioneUtenzaServiceImplTest {
                 LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
         when(utenteRepository.findById(utenteNonModificato.getId())).thenReturn(java.util.Optional.of(utenteModificato));
         assertThrows(IllegalArgumentException.class,
-                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null));
+                () -> this.gestioneUtenzaService.modificaDatiPersonaliCliente(null,null));
 
     }
     @Test
