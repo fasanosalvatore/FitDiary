@@ -44,13 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/utenti" +
                         "/preparatore" +
-                        "/**").permitAll()
+                        "/**", "/api/v1/abbonamento/acquista/**").permitAll()
         .antMatchers(HttpMethod.POST, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE")
         .antMatchers(HttpMethod.PUT, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE")
         .antMatchers("/api/v1/utenti/preparatore/**").hasAuthority("PREPARATORE")
         .antMatchers("/api/v1/utenti/createcliente/**").hasAuthority("PREPARATORE")
         .antMatchers("/api/v1/utenti/profilo/**").authenticated()
-        .antMatchers("/api/v1/utenti/login/**", "/api/v1/utenti/token/refresh/**", "/api/v1/utenti/token/expire/**").permitAll()
+        .antMatchers("/api/v1/utenti/login/**", "/api/v1/utenti/token/refresh/**", "/api/v1/utenti/token/expire/**", "/api/v1/utenti/preparatore/**", "/api/v1/abbonamento/acquista/**").permitAll()
         .anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter)
         .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
