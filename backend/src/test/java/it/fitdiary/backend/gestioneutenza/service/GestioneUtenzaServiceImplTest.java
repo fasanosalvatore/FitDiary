@@ -109,8 +109,8 @@ public class GestioneUtenzaServiceImplTest {
                 LocalDate.parse("2000-03-03"), null, null, null, "3459666587", "Francesco La Francesca", "84126", "Salerno", null, ruolo, null, null, null);
         Utente updatedUtente = new Utente(1L, "Daniele", "De Marco", "diodani5@gmail.com", "Trappo#98", true,
                 null, null, null, null, null, null, null, null, null, ruolo, null, null, null);
-        when(utenteRepository.findById(updatedUtente.getId())).thenReturn(java.util.Optional.of(updatedUtente));
-        when(utenteRepository.save(utente)).thenReturn(utente);
+        when(utenteRepository.findByEmail(utente.getEmail())).thenReturn(updatedUtente);
+        when(utenteRepository.save(updatedUtente)).thenReturn(updatedUtente);
         when(passwordEncoder.encode(utente.getPassword())).thenReturn(utente.getPassword());
         assertEquals(utente, gestioneUtenzaService.modificaDatiPersonaliPreparatore(updatedUtente,updatedUtente.getEmail()));
     }
