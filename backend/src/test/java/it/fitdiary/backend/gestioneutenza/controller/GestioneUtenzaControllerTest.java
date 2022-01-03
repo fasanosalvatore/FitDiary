@@ -242,7 +242,7 @@ class GestioneUtenzaControllerTest {
                 null, "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaWFxdWlAZ21haWwuY29tIiwicm9sZXMiOlsiUFJFUEFSQVRPUkUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJleHAiOjE2NDExNjQwNzB9.SvNcHf2RahtEwyIyS-PRx7XFLDQ-VtHQtT_e3Y_X7mQ");
+                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaWFxdWlAZ21haWwuY29tIiwicm9sZXMiOlsiUFJFUEFSQVRPUkUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4ifQ.SLEYSBP8EtDRvjPqxrEum7UmPwZ3qT1bSM4PJDwmWaM");
         when(gestioneUtenzaService.getUtenteByEmail("giaqui@gmail.com")).thenReturn(utente);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
