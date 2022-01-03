@@ -52,6 +52,11 @@ public class GestioneUtenzaController {
         this.service = service;
     }
 
+    /**
+     * questa funzione permette di registrare un nuovo preparatore
+     * @param utente nuovo preparatore
+     * @return preparatore con l'id o errrori e fail
+     */
     @PostMapping("preparatore")
     ResponseEntity<Object> registrazione(@RequestBody Utente utente) {
         if (!utente.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)" +

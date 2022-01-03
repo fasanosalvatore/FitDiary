@@ -30,7 +30,13 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
     private final PasswordGenerator passwordGenerator;
     private final EmailService emailService;
 
-
+    /**
+     * questa funzione permette di registrare un nuovo preparatore
+     * @param utente nuovo preparatore
+     * @return preparatore con l'id
+     * @throws IllegalArgumentException in caso di email già presente nel db
+     * o utente non valido
+     */
     @Override
     public Utente registrazione(Utente utente) throws IllegalArgumentException {
         if (utente == null) {
