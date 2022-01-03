@@ -139,6 +139,36 @@ class GestioneUtenzaControllerTest {
                 .perform(requestBuilder);
         actualPerformResult.andExpect(MockMvcResultMatchers.status().is5xxServerError());
     }
+    @Test
+    void registrazioneNewUserReturnErrorPassword() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        String utenteJson = "{\n" +
+                "    \"nome\": \"Daniele\",\n" +
+                "    \"cognome\": \"De Marco\",\n" +
+                "    \"dataNascita\": \"2000-03-03\",\n" +
+                "    \"sesso\": \"M\",\n" +
+                "    \"email\": \"fabrizio@gmail.com\",\n" +
+                "    \"password\": \"Daniele123*\",\n" +
+                "    \"confermaPassword\": \"Daniele123*\"\n" +
+                "}";
+        Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, null, null, null, null);
+        Utente newUtente = new Utente(1L, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+        when(gestioneUtenzaService.registrazione(utente)).thenReturn(newUtente);
+        when(mock(Customer.class).getId()).thenReturn("custumerId");
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.post("/api/v1/utenti/preparatore").content(utenteJson).contentType(MediaType.APPLICATION_JSON);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
 
     @Test
     void iscrizioneClienteSuccess() throws Exception {
