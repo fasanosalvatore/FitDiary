@@ -148,8 +148,8 @@ class GestioneUtenzaControllerTest {
                 "    \"dataNascita\": \"2000-03-03\",\n" +
                 "    \"sesso\": \"M\",\n" +
                 "    \"email\": \"fabrizio@gmail.com\",\n" +
-                "    \"password\": \"Daniele123*\",\n" +
-                "    \"confermaPassword\": \"Daniele123*\"\n" +
+                "    \"password\": \"Daniele123\",\n" +
+                "    \"confermaPassword\": \"Daniele123\"\n" +
                 "}";
         Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
                 "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
@@ -167,7 +167,7 @@ class GestioneUtenzaControllerTest {
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
