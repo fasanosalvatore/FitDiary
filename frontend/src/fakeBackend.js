@@ -122,6 +122,11 @@ let userFull = {
     "status": "success"
 };
 
+let currentUser = {
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWFxdWlAZ21haWwuY29tIiwicm9sZXMiOlsiUFJFUEFSQVRPUkUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJleHAiOjE2NDEwODQzNzh9.EkW-6T5Pso5ttM6gKJXwnP03iUdWNbvXDK7tRQOsLU4",
+    "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWFxdWlAZ21haWwuY29tIiwicm9sZXMiOlsiUFJFUEFSQVRPUkUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJleHAiOjE2NDEwODU1Nzh9.KzYei4HKf6OOJstqYnWBXeRaQ3jdug47OtPMbgpVzFo"
+}
+
 export function getUser() {
     return user;
 }
@@ -131,4 +136,8 @@ export function getUserFull() {
 
 export function getTrainer() {
     return trainer;
+}
+
+export function getCurrentFakeUser(){
+    return currentUser;
 }

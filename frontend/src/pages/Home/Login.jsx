@@ -1,6 +1,6 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {Link} from "react-router-dom";
+import {Link, useHistory, useNavigate, withRouter} from "react-router-dom";
 import AuthService from "../../services/auth.service.js";
 import {
     Button,
@@ -18,6 +18,7 @@ export default function Login() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const urlLogin=`${config.SERVER_URL}/utenti/login`;
     const toast=useToast();
+    const navigate = useNavigate();
     function onSubmit(values) {
        const resp={
            method: "POST",
@@ -25,16 +26,15 @@ export default function Login() {
            body: JSON.stringify(values)
        }
        AuthService.login(values.email,values.password).then( () => {
-           this.props.history.push("/customer/me");
-           window.location.reload();
+           navigate("/customer/me");
        },error =>{
-          toast({
+          /*toast({
               title: 'Account not created.',
               description: "We've not created your account "+ error.message,
               status: 'failed',
               duration: 9000,
               isClosable: true,
-          })
+          })*/
        } )
 
     }

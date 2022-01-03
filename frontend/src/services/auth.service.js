@@ -3,13 +3,14 @@ import config from "../config.json";
 
 
 const urlLogin = `${config.SERVER_URL}/utenti/login`;
+const urlProfile = `${config.SERVER_URL}/utenti/profilo`;
 
 class AuthService {
-    login(username, password) {
+    async login(username, password) {
         const formData = new FormData();
         formData.append("email", username);
         formData.append("password", password);
-        return axios({
+        const respAuth = await axios({
             url: urlLogin,
             method: "POST",
             headers: {
@@ -17,14 +18,23 @@ class AuthService {
             },
             data: formData
         })
-            .then(response => {
-                console.log(response);
-                if (response.access_token) {
-                    localStorage.setItem("user", JSON.stringify(response));
-                }
-
-                return response.data;
-            });
+        console.log(respAuth.data.access_token)
+        const respUser = await axios({
+            url: urlProfile,
+            method: "GET",
+            headers: {
+                'Authorization': "Bearer "+respAuth.data.access_token,
+            }
+        })
+        console.log(respUser)
+        const completeUser ={
+            utente: respUser.data.data.utente,
+            access_token: respAuth.data.access_token,
+            refresh_token: respAuth.data.refresh_token,
+        }
+        console.log(completeUser)
+        localStorage.setItem('user', JSON.stringify(completeUser));
+        return respAuth.data;
     }
 
     logout() {

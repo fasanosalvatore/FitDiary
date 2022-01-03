@@ -24,7 +24,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 export default function SignupForm() {
-    const urlCreate = `${config.SERVER_URL}/utenti/create`;
+    const urlCreate = `${config.SERVER_URL}/utenti/preparatore`;
     const urlAcquisto = `${config.SERVER_URL}/abbonamento/acquista`;
     const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
