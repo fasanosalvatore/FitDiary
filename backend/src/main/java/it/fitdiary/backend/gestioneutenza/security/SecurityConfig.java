@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/utenti" +
                         "/preparatore" +
-                        "/**", "/api/v1/abbonamento/acquista/**").permitAll()
+                        "/**", "/api/v1/abbonamento/acquista/**", "/api/v1/utenti/login").permitAll()
         .antMatchers(HttpMethod.POST, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE")
         .antMatchers(HttpMethod.PUT, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE")
         .antMatchers("/api/v1/utenti/preparatore/**").hasAuthority("PREPARATORE")
