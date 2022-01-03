@@ -1,5 +1,8 @@
 package it.fitdiary.backend.gestioneutenza.controller;
 
+import com.stripe.exception.InvalidRequestException;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
@@ -7,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -24,8 +28,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {GestioneUtenzaController.class})
 @ExtendWith(SpringExtension.class)
@@ -50,7 +56,7 @@ class GestioneUtenzaControllerTest {
                 "    \"confermaPassword\": \"Daniele123*\"\n" +
                 "}";
         Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
-                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03" +
+                "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
                 "-03"), null,
                 null, "M", null, null, null,
                 null, null, null, null, null, null);
@@ -59,12 +65,79 @@ class GestioneUtenzaControllerTest {
                 null, "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         when(gestioneUtenzaService.registrazione(utente)).thenReturn(newUtente);
+        when(mock(Customer.class).getId()).thenReturn("custumerId");
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.post("/api/v1/utenti/preparatore").content(utenteJson).contentType(MediaType.APPLICATION_JSON);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
         actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    void registrazioneNewUserReturnClientError() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        String utenteJson = "{\n" +
+                "    \"nome\": \"Daniele\",\n" +
+                "    \"cognome\": \"De Marco\",\n" +
+                "    \"dataNascita\": \"2000-03-03\",\n" +
+                "    \"sesso\": \"M\",\n" +
+                "    \"email\": \"fabrizio@gmail.com\",\n" +
+                "    \"password\": \"Daniele123*\",\n" +
+                "    \"confermaPassword\": \"Daniele123*\"\n" +
+                "}";
+        Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, null, null, null, null);
+        Utente newUtente = new Utente(1L, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+        when(gestioneUtenzaService.registrazione(utente)).thenThrow(IllegalArgumentException.class);
+        when(mock(Customer.class).getId()).thenReturn("customerId");
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.post("/api/v1/utenti/preparatore").content(utenteJson).contentType(MediaType.APPLICATION_JSON);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is4xxClientError());
+    }
+
+    @Test
+    void registrazioneNewUserReturnServerError() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        String utenteJson = "{\n" +
+                "    \"nome\": \"Daniele\",\n" +
+                "    \"cognome\": \"De Marco\",\n" +
+                "    \"dataNascita\": \"2000-03-03\",\n" +
+                "    \"sesso\": \"M\",\n" +
+                "    \"email\": \"fabrizio@gmail.com\",\n" +
+                "    \"password\": \"Daniele123*\",\n" +
+                "    \"confermaPassword\": \"Daniele123*\"\n" +
+                "}";
+        Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
+                "-03"), null,
+                null, "M", null, null, null,
+                null, null, null, null, null, null);
+        Utente newUtente = new Utente(1L, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
+                null, "M", null, null, null,
+                null, null, ruoloPrep, null, null, null);
+        Map<String, Object> params = new HashMap<>();
+        params.put("email", newUtente.getEmail());
+        params.put("name", newUtente.getNome() + " " + newUtente.getCognome());
+        when(gestioneUtenzaService.registrazione(utente)).thenReturn(newUtente);
+        MockedStatic<Customer> customer = Mockito.mockStatic(Customer.class);
+        customer.when(() -> Customer.create(params)).thenThrow(InvalidRequestException.class);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.post("/api/v1/utenti/preparatore").content(utenteJson).contentType(MediaType.APPLICATION_JSON);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is5xxServerError());
     }
 
     @Test

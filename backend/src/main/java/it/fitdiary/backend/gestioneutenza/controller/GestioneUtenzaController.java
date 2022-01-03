@@ -61,8 +61,8 @@ public class GestioneUtenzaController {
         }
         Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
         Map<String, Object> params = new HashMap<>();
-        params.put("email", utente.getEmail());
-        params.put("name", utente.getNome() + " " + utente.getCognome());
+        params.put("email", newUtente.getEmail());
+        params.put("name", newUtente.getNome() + " " + newUtente.getCognome());
         Customer customer = null;
         try {
             customer = Customer.create(params);
