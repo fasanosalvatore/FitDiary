@@ -54,8 +54,9 @@ public class GestioneUtenzaController {
 
     @PostMapping("preparatore")
     ResponseEntity<Object> registrazione(@RequestBody Utente utente) {
-        if (Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])" +
-                "[A-Za-z\\d@$!%*?&]{8,}$",utente.getPassword())){
+        if (!utente.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)" +
+                "(?=.*[@$!%*?&])" +
+                "[A-Za-z\\d@$!%*?&]{8,}$")){
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     "password",
                     "password non valida");
