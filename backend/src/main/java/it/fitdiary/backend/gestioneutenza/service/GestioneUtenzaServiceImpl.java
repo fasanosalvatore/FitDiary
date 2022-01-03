@@ -41,7 +41,7 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
                     "database");
         }
         utente.setRuolo(ruoloRepository.findByNome("PREPARATORE"));
-        utente.setAttivo(false);
+        utente.setAttivo(true);
         utente.setPassword(passwordEncoder.encode(utente.getPassword()));
         return utenteRepository.save(utente);
     }

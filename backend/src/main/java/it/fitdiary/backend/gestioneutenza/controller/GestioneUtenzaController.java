@@ -35,6 +35,7 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -53,6 +54,12 @@ public class GestioneUtenzaController {
 
     @PostMapping("preparatore")
     ResponseEntity<Object> registrazione(@RequestBody Utente utente) {
+        if (Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])" +
+                "[A-Za-z\\d@$!%*?&]{8,}$",utente.getPassword())){
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                    "password",
+                    "password non valida");
+        }
         Utente newUtente = null;
         try {
             newUtente = service.registrazione(utente);
