@@ -34,3 +34,4 @@ build/
 
 ### Config Files ###
 *.yaml
+*.sql

@@ -20,25 +20,13 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Protocollo {
+public class Protocollo extends BaseEntityWithTimestamp {
     /**
      * id protocollo.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    /**
-     * data crazione protocollo.
-     */
-    @NotNull(message = "Data di creazione non può essere nullo")
-    @Column(name = "data_creazione")
-    private LocalDateTime dataCreazione;
-    /**
-     * data aggiornamento protocollo.
-     */
-    @NotNull(message = "La data di aggiornamento non può essere nullo")
-    @Column(name = "data_aggiornamento")
-    private LocalDateTime dataAggiornamento;
     /**
      * data scadenza protocollo.
      */

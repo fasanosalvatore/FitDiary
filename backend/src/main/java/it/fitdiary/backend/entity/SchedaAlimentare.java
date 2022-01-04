@@ -25,7 +25,7 @@ public class SchedaAlimentare {
      * id della scheda alimentare.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * kcalAssunte della scheda alimentare.

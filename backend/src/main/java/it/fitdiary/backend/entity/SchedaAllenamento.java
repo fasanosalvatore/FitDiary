@@ -30,7 +30,7 @@ public class SchedaAllenamento {
      * id della scheda allenamento.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * frequenza della scheda allenamento.

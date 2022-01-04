@@ -22,58 +22,71 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class Alimento {
     /**
-     * int 50.
+     * Lunghezza massima campo nome.
      */
-    private static final int INT50 = 50;
+    private static final int MAX_NAME_LENGTH = 50;
     /**
-     * int 20.
+     * Lunghezza massima campo pasto.
      */
-    private static final int INT20 = 20;
+    private static final int MAX_PASTO_LENGTH = 20;
     /**
-     * int 10.
+     * Lunghezza massima campo giorno.
      */
-    private static final int INT10 = 10;
+    private static final int MAX_DAY_LENGTH = 10;
     /**
-     * id alimento.
+     * Valore minimo KCal.
+     */
+    public static final int MIN_KCAL_VALUE = 0;
+    /**
+     * Valore Minimo Grammi.
+     */
+    public static final int MIN_G_VALUE = 1;
+    /**
+     * ID alimento.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * nome alimento.
+     * Nome alimento.
      */
     @NotNull(message = "Il nome non può essere nullo")
-    @Column(length = INT50)
-    @Size(min = 1, max = INT50, message = "Lunghezza nome non valida")
+    @Column(length = MAX_NAME_LENGTH)
+    @Size(min = MIN_G_VALUE, max = MAX_NAME_LENGTH,
+            message = "Lunghezza nome non valida")
     @NotBlank(message = "Il nome non può essere vuoto")
     private String nome;
     /**
      * pasto.
      */
     @NotNull(message = "Il pasto non può essere nullo")
-    @Column(length = INT20)
-    @Size(min = 1, max = INT20, message = "Lunghezza pasto non valida")
+    @Column(length = MAX_PASTO_LENGTH)
+    @Size(min = MIN_G_VALUE, max = MAX_PASTO_LENGTH,
+            message = "Lunghezza pasto non valida")
     @NotBlank(message = "Il pasto non può essere vuoto")
     private String pasto;
     /**
      * giorno.
      */
     @NotNull(message = "Il giorno non può essere nullo")
-    @Column(length = INT10)
-    @Size(min = 1, max = INT10, message = "Lunghezza giorno non valida")
+    @Column(length = MAX_DAY_LENGTH)
+    @Size(min = MIN_G_VALUE, max = MAX_DAY_LENGTH,
+            message = "Lunghezza giorno non valida")
     @NotBlank(message = "Il giorno non può essere vuoto")
     private String giorno;
     /**
      * kcal alimento.
      */
     @NotNull(message = "Le kcal non possono essere nulle")
-    @Min(value = 0, message = "Le kcal non possono essere minori di zero")
+    @Min(value = MIN_KCAL_VALUE,
+            message = "Le kcal non possono essere minori di zero")
     private Integer kcal;
     /**
      * grammi alimento.
      */
     @NotNull(message = "I grammi non possono essere nulli")
-    @Min(value = 1, message = "I grammi non possono essere minori di uno")
+    @Min(value = MIN_G_VALUE,
+            message = "I grammi non possono essere minori di uno")
     private Float grammi;
     /**
      * scheda alimantere.

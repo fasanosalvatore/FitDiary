@@ -45,7 +45,7 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void registrazioneNewUserReturnCreated() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
         String utenteJson = "{\n" +
                 "    \"nome\": \"Daniele\",\n" +
                 "    \"cognome\": \"De Marco\",\n" +
@@ -57,12 +57,10 @@ class GestioneUtenzaControllerTest {
                 "}";
         Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
                 "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, null, null, null, null);
         Utente newUtente = new Utente(1L, "Daniele", "De Marco", "fabrizio" +
-                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
-                null, "M", null, null, null,
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         when(gestioneUtenzaService.registrazione(utente)).thenReturn(newUtente);
         when(mock(Customer.class).getId()).thenReturn("custumerId");
@@ -76,7 +74,7 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void registrazioneNewUserReturnClientError() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
         String utenteJson = "{\n" +
                 "    \"nome\": \"Daniele\",\n" +
                 "    \"cognome\": \"De Marco\",\n" +
@@ -88,12 +86,10 @@ class GestioneUtenzaControllerTest {
                 "}";
         Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
                 "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, null, null, null, null);
         Utente newUtente = new Utente(1L, "Daniele", "De Marco", "fabrizio" +
-                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
-                null, "M", null, null, null,
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         when(gestioneUtenzaService.registrazione(utente)).thenThrow(IllegalArgumentException.class);
         when(mock(Customer.class).getId()).thenReturn("customerId");
@@ -107,7 +103,7 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void registrazioneNewUserReturnServerError() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
         String utenteJson = "{\n" +
                 "    \"nome\": \"Daniele\",\n" +
                 "    \"cognome\": \"De Marco\",\n" +
@@ -119,12 +115,10 @@ class GestioneUtenzaControllerTest {
                 "}";
         Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
                 "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, null, null, null, null);
         Utente newUtente = new Utente(1L, "Daniele", "De Marco", "fabrizio" +
-                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
-                null, "M", null, null, null,
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         Map<String, Object> params = new HashMap<>();
         params.put("email", newUtente.getEmail());
@@ -141,7 +135,7 @@ class GestioneUtenzaControllerTest {
     }
     @Test
     void registrazioneNewUserReturnErrorPassword() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
         String utenteJson = "{\n" +
                 "    \"nome\": \"Daniele\",\n" +
                 "    \"cognome\": \"De Marco\",\n" +
@@ -153,12 +147,10 @@ class GestioneUtenzaControllerTest {
                 "}";
         Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
                 "@gmail.com", "Daniele123*", null, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, null, null, null, null);
         Utente newUtente = new Utente(1L, "Daniele", "De Marco", "fabrizio" +
-                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), null,
-                null, "M", null, null, null,
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         when(gestioneUtenzaService.registrazione(utente)).thenReturn(newUtente);
         when(mock(Customer.class).getId()).thenReturn("custumerId");
@@ -172,7 +164,7 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void iscrizioneClienteSuccess() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
 
         String nome = "Fabrizio";
         String cognome = "Vitale";
@@ -185,12 +177,10 @@ class GestioneUtenzaControllerTest {
                 "}";
         Utente preparatore = new Utente(1L, "Davide", "La Gamba", emailPrep
                 , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         Utente newCliente = new Utente(2L, nome, cognome, email
-                , "Fabrizio123*", true, LocalDate.parse("2000-03-03"), null,
-                null, "M", null, null, null,
+                , "Fabrizio123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
                 null, preparatore, ruoloPrep, null, null, null);
 
         Principal principal = () -> "User";
@@ -205,7 +195,7 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void iscrizioneClienteBadRequest() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
 
         String nome = "Fabrizio";
         String cognome = "Vitale";
@@ -218,12 +208,10 @@ class GestioneUtenzaControllerTest {
                 "}";
         Utente preparatore = new Utente(1L, "Davide", "La Gamba", emailPrep
                 , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         Utente newCliente = new Utente(2L, nome, cognome, email
-                , "Fabrizio123*", true, LocalDate.parse("2000-03-03"), null,
-                null, "M", null, null, null,
+                , "Fabrizio123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
                 null, preparatore, ruoloPrep, null, null, null);
 
         Principal principal = () -> "User";
@@ -239,12 +227,11 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void visualizzaProfiloSuccess() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
 
         Utente utente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
                 , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
 
         Principal principal = () -> "User";
@@ -259,12 +246,11 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void visualizzaProfiloBadRequest() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
 
         Utente utente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
                 , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
 
         Principal principal = () -> "User";
@@ -280,7 +266,7 @@ class GestioneUtenzaControllerTest {
     @Test
     void inserimentoDatiPersonaliCliente()
             throws Exception {
-        Ruolo r = new Ruolo(2L, "CLIENTE", null, null);
+        Ruolo r = new Ruolo(2L, "CLIENTE");
         String clienteJson = "{\n" +
                 "    \"dataNascita\": \"2000-10-30\",\n" +
                 "    \"telefono\": \"389485921\",\n" +
@@ -289,9 +275,9 @@ class GestioneUtenzaControllerTest {
                 "    \"citta\": \"Agropoli\"\n" +
                "}";
         Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
-                null, null, null, null, null, null, null, null, null, r, null, null, null);
+                null, null, null, null, null, null, null, r, null, null, null);
         Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
-                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
+                LocalDate.parse("2000-10-30"), null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
         Principal principal = () -> "User";
         when(gestioneUtenzaService.inserimentoDatiPersonaliCliente(utenteNonModificato, principal.getName())).thenReturn(utenteModificato);
         MockHttpServletRequestBuilder requestBuilder =
@@ -308,7 +294,7 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void modificaDatiPersonaliCliente() throws Exception {
-        Ruolo r = new Ruolo(2L, "CLIENTE", null, null);
+        Ruolo r = new Ruolo(2L, "CLIENTE");
         String clienteJson = "{\n" +
                 "    \"nome\": \"Francesca\",\n" +
                 "    \"cognome\": \"Di Matteo\",\n" +
@@ -321,9 +307,9 @@ class GestioneUtenzaControllerTest {
                 "    \"citta\": \"Agropoli\"\n" +
                 "}";
         Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
-                null, null, null, null, null, null, null, null, null, r, null, null, null);
+                null, null, null, null, null, null, null, r, null, null, null);
         Utente utenteModificato = new Utente(1L, "Francesca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
-                LocalDate.parse("2000-10-30"), null, null, null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
+                LocalDate.parse("2000-10-30"), null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null);
         Principal principal = () -> "User";
         when(gestioneUtenzaService.modificaDatiPersonaliCliente(utenteNonModificato, principal.getName())).thenReturn(utenteModificato);
         MockHttpServletRequestBuilder requestBuilder =
@@ -338,11 +324,10 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void refreshTokenSuccess() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
         Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
                 , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaWFxdWlAZ21haWwuY29tIiwicm9sZXMiOlsiUFJFUEFSQVRPUkUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4ifQ.SLEYSBP8EtDRvjPqxrEum7UmPwZ3qT1bSM4PJDwmWaM");
@@ -355,11 +340,10 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void refreshTokenFailure() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
         Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
                 , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer ");
@@ -372,11 +356,10 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void refreshTokenNoToken() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE");
         Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
                 , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), null,
-                null, "M", null, null, null,
+                "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "");

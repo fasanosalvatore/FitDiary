@@ -21,82 +21,89 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Utente {
+public class Utente extends BaseEntityWithTimestamp {
     /**
      * Costante per valore intero di 50.
      */
-    public static final int INT50 = 50;
+    public static final int MAX_NAME_LENGTH = 50;
     /**
      * Costante per valore intero di 255.
      */
-    public static final int INT255 = 255;
+    public static final int MAX_PASSWORD_LENGTH = 255;
     /**
      * Costante per valore intero di 8.
      */
-    public static final int INT8 = 8;
+    public static final int MIN_PASSWORD_LENGTH = 8;
     /**
      * Costante per valore intero di 15.
      */
-    public static final int INT15 = 15;
+    public static final int MAX_PHONE_LENGTH = 15;
     /**
      * Costante per valore intero di 4.
      */
-    public static final int INT4 = 4;
+    public static final int MIN_PHONE_LENGTH = 4;
     /**
      * Costante per valore intero di 1.
      */
-    public static final int INT1 = 1;
+    public static final int MIN_NAME_LENGTH = 1;
     /**
      * Costante per valore intero di 5.
      */
-    public static final int INT5 = 5;
+    public static final int CAP_LENGTH = 5;
     /**
      * Costante per valore intero di 20.
      */
-    public static final int INT20 = 20;
+    public static final int MAX_CITY_LENGTH = 20;
+    /**
+     * Lunghezza campo sesso.
+     */
+    public static final int SEX_LENGTH = 1;
     /**
      * Id dell'utente.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * Nome dell'utente.
      */
     @NotNull(message = "Il nome non può essere nullo")
-    @Column(length = INT50)
-    @Size(min = INT1, max = INT50, message = "Lunghezza nome non valida")
+    @Column(length = MAX_NAME_LENGTH)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH,
+            message = "Lunghezza nome non valida")
     @NotBlank(message = "Il nome non può essere vuoto")
     private String nome;
     /**
      * Cognome dell'utente.
      */
     @NotNull(message = "Il cognome non può essere nullo")
-    @Column(length = INT50)
-    @Size(min = INT1, max = INT50, message = "Lunghezza cognome non valida")
+    @Column(length = MAX_NAME_LENGTH)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH,
+            message = "Lunghezza cognome non valida")
     @NotBlank(message = "Il cognome non può essere vuoto")
     private String cognome;
     /**
      * Email dell'utente.
      */
     @NotNull(message = "L'email non può essere nulla")
-    @Column(length = INT50, unique = true)
-    @Size(min = INT1, max = INT50, message = "Lunghezza email non valida")
+    @Column(length = MAX_NAME_LENGTH, unique = true)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH,
+            message = "Lunghezza email non valida")
     @Email(message = "Formato email non valida")
     private String email;
     /**
      * Password dell'utente.
      */
     @NotNull(message = "La password non può essere nulla")
-    @Column(length = INT255)
-    @Size(min = INT8, max = INT255, message = "Lunghezza password non valida")
+    @Column(length = MAX_PASSWORD_LENGTH)
+    @Size(min = MIN_PASSWORD_LENGTH, max = MAX_PASSWORD_LENGTH,
+            message = "Lunghezza password non valida")
     private String password;
     /**
      * Indica se un utente è attivo.
@@ -112,47 +119,42 @@ public class Utente {
             + "o coincidente alla data odierna")
     private LocalDate dataNascita = LocalDate.parse("1990-01-01");
     /**
-     * Data di creazione dell'utente.
-     */
-    @Column(name = "data_creazione")
-    private LocalDateTime dataCreazione;
-    /**
-     * Data dell'ultimo aggiornamento dell'utente.
-     */
-    @Column(name = "data_aggiornamento")
-    private LocalDateTime dataAggiornamento;
-    /**
      * Sesso dell'utente.
      */
-    @Column(length = INT1)
-    @Size(min = INT1, max = INT1, message = "Lunghezza sesso non valida")
+    @Column(length = SEX_LENGTH)
+    @Size(min = SEX_LENGTH, max = SEX_LENGTH,
+            message = "Lunghezza sesso non valida")
     private String sesso;
     /**
      * Numero di telefono dell'utente.
      */
-    @Column(length = INT15)
-    @Size(min = INT4, max = INT15, message = "Lunghezza telefono non valida")
+    @Column(length = MAX_PHONE_LENGTH)
+    @Size(min = MIN_PHONE_LENGTH, max = MAX_PHONE_LENGTH,
+            message = "Lunghezza telefono non valida")
     @Pattern(regexp = "^[+03][0-9]{3,14}",
             message = "Formato telefono non valido")
     private String telefono;
     /**
      * Via dell'utente.
      */
-    @Column(length = INT50)
-    @Size(min = INT1, max = INT50, message = "Lunghezza via non valida")
+    @Column(length = MAX_NAME_LENGTH)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH,
+            message = "Lunghezza via non valida")
     private String via;
     /**
      * Cap dell'utente.
      */
-    @Column(length = INT5)
-    @Size(min = INT5, max = INT5, message = "Lunghezza cap non valida")
+    @Column(length = CAP_LENGTH)
+    @Size(min = CAP_LENGTH, max = CAP_LENGTH,
+            message = "Lunghezza cap non valida")
     @Pattern(regexp = "[0-9]{5}", message = "Formato cap non valido")
     private String cap;
     /**
      * Città dell'utente.
      */
-    @Column(length = INT20)
-    @Size(min = INT1, max = INT20, message = "Lunghezza città non valida")
+    @Column(length = MAX_CITY_LENGTH)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_CITY_LENGTH,
+            message = "Lunghezza città non valida")
     private String citta;
     /**
      * Preparatore associato ad un utente.
@@ -184,4 +186,24 @@ public class Utente {
     @OneToMany(mappedBy = "cliente")
     @JsonManagedReference
     private List<Report> listaReport;
+
+    @Override
+    public final String toString() {
+        return "Utente{"
+                + "id=" + id
+                + ", nome='" + nome + '\''
+                + ", cognome='" + cognome + '\''
+                + ", email='" + email + '\''
+                + ", password='" + password + '\''
+                + ", attivo=" + attivo
+                + ", dataNascita=" + dataNascita
+                + ", dataCreazione=" + getDataCreazione()
+                + ", dataAggiornamento=" + getDataAggiornamento()
+                + ", sesso='" + sesso + '\''
+                + ", telefono='" + telefono + '\''
+                + ", via='" + via + '\''
+                + ", cap='" + cap + '\''
+                + ", citta='" + citta + '\''
+                + '}';
+    }
 }

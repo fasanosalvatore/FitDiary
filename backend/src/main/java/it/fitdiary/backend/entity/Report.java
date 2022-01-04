@@ -14,13 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Report {
+public class Report extends BaseEntityWithTimestamp {
     /**
      * id report.
      */
@@ -61,16 +60,6 @@ public class Report {
     @Column(name = "crf_quadricipite")
     @Min(value = 1, message = "Il crfQuadricipite non può essere uno")
     private Float crfQuadricipite;
-    /**
-     * data creazione.
-     */
-    @Column(name = "data_creazione")
-    private LocalDateTime dataCreazione;
-    /**
-     * data aggiornamento.
-     */
-    @Column(name = "data_aggiornamento")
-    private LocalDateTime dataAggiornamento;
     /**
      * cliente.
      */

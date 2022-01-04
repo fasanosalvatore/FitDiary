@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 /**
  * Ruolo dell'utente.
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Ruolo {
+public class Ruolo extends BaseEntityWithTimestamp {
     /**
      * lunghezza massima nome ruolo.
      */
@@ -29,7 +28,7 @@ public class Ruolo {
      * Id del ruolo.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * nome del ruolo.
@@ -38,17 +37,4 @@ public class Ruolo {
     @Column(length = MAX_ROLE_NAME_LENGTH)
     @NotBlank
     private String nome;
-    /**
-     * data creazione del ruolo.
-     */
-    @NotNull
-    @Column(name = "data_creazione")
-    private LocalDateTime dataCreazione;
-    /**
-     * data aggiornamento del ruolo.
-     */
-    @NotNull
-    @Column(name = "data_aggiornamento")
-    private LocalDateTime dataAggiornamento;
-
 }
