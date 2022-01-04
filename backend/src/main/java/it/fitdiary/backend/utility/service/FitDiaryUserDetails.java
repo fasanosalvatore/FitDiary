@@ -8,6 +8,7 @@ import java.util.Collection;
 
 public class FitDiaryUserDetails extends User implements UserDetails {
 
+    private Long id;
     /**
      * String of the name.
      */
@@ -38,6 +39,13 @@ public class FitDiaryUserDetails extends User implements UserDetails {
                                final String password,
                                final Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
+    }
+
+    /**
+     * @return the id of the user.
+     */
+    public Long getId() {
+        return id;
     }
 
     /**
@@ -115,5 +123,12 @@ public class FitDiaryUserDetails extends User implements UserDetails {
      */
     public void setTrainerId(final long trainerId) {
         this.trainer = trainerId;
+    }
+
+    /**
+     * @param id of the user
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 }
