@@ -2,10 +2,8 @@ package it.fitdiary.backend.gestioneabbonamento.controller;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
 import com.stripe.model.StripeObject;
 import com.stripe.model.Subscription;
-import com.stripe.param.CustomerCreateParams;
 import com.stripe.param.SubscriptionCreateParams;
 import it.fitdiary.backend.utility.ResponseHandler;
 import org.springframework.http.HttpStatus;
@@ -23,14 +21,17 @@ import java.util.Map;
 @RequestMapping(path = "api/v1/abbonamento")
 public class GestioneAbbonamentoController {
     /**
-     * Questo metodo permette ad un prepratore di acquistare un abbonamento su stripe
+     * Questo metodo permette ad un prepratore di acquistare un
+     * abbonamento su stripe.
      *
-     * @param customerId richista http del frontend contente customer id di stripe
-     * @return clientsecret codice con cui stripe identifica il cliente
-     * @throws StripeException
+     * @param customerId richista http del frontend contente customer
+     *                   id di stripe.
+     * @return clientsecret codice con cui stripe identifica il cliente.
+     * @throws StripeException exception gestita da stripe.
      */
     @PostMapping("/acquista")
-    public ResponseEntity<Object> acquistaAbbonamento(@RequestBody String customerId) throws StripeException {
+    public ResponseEntity<Object> acquistaAbbonamento(
+            @RequestBody final String customerId) throws StripeException {
         Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
         SubscriptionCreateParams subCreateParams = SubscriptionCreateParams
                 .builder()
@@ -41,15 +42,24 @@ public class GestioneAbbonamentoController {
                                 .setPrice("price_1KC0kYLzIIf1tAqOLpInZTKn")
                                 .build()
                 )
-                .setPaymentBehavior(SubscriptionCreateParams.PaymentBehavior.DEFAULT_INCOMPLETE)
-                .setCollectionMethod(true ? SubscriptionCreateParams.CollectionMethod.CHARGE_AUTOMATICALLY : SubscriptionCreateParams.CollectionMethod.SEND_INVOICE)
+                .setPaymentBehavior(
+                        SubscriptionCreateParams
+                                .PaymentBehavior.DEFAULT_INCOMPLETE)
+                .setCollectionMethod(true
+                        ? SubscriptionCreateParams
+                                .CollectionMethod.CHARGE_AUTOMATICALLY
+                        : SubscriptionCreateParams
+                        .CollectionMethod.SEND_INVOICE)
                 .addAllExpand(Arrays.asList("latest_invoice.payment_intent"))
                 .build();
         Subscription subscription = Subscription.create(subCreateParams);
         Map<String, Object> response = new HashMap<>();
         response.put("subscriptionId", subscription.getId());
-        response.put("clientSecret", subscription.getLatestInvoiceObject().getPaymentIntentObject().getClientSecret());
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "Utente", StripeObject.PRETTY_PRINT_GSON.toJson(response));
+        response.put("clientSecret",
+                subscription.getLatestInvoiceObject().getPaymentIntentObject()
+                        .getClientSecret());
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, "Utente",
+                StripeObject.PRETTY_PRINT_GSON.toJson(response));
     }
 }
 

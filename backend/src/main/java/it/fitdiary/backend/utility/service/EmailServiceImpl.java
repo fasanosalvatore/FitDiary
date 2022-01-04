@@ -11,24 +11,31 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Component
 public class EmailServiceImpl implements EmailService {
+    /**
+     * JavaMailSender.
+     */
+    private final JavaMailSender emailSender;
 
-
-    private JavaMailSender emailSender;
-
+    /**
+     * @param emailSend JavaMailSender
+     */
     @Autowired
-    public EmailServiceImpl(JavaMailSender emailSender) {
-        this.emailSender = emailSender;
+    public EmailServiceImpl(final JavaMailSender emailSend) {
+        this.emailSender = emailSend;
     }
 
     /**
-     * Questa funzione invia un email ad un indirzzo preso in input, con relativo oggetto e testo
-     * @param destinatario indirizzo di chi deve ricevere l' indirizzo e-mail
-     * @param oggetto oggetto da inserire nell' email
-     * @param testo testo che deve contenere l' email
+     * Questa funzione invia un email ad un indirzzo preso in input,
+     * con relativo oggetto e testo.
+     *
+     * @param destinatario indirizzo di chi deve ricevere l' indirizzo e-mail.
+     * @param oggetto      oggetto da inserire nell' email.
+     * @param testo        testo che deve contenere l' email.
      */
     @RequestMapping("/mail")
     @ResponseStatus(HttpStatus.CREATED)
-    public void sendSimpleMessage(String destinatario, String oggetto, String testo) {
+    public void sendSimpleMessage(final String destinatario,
+                                  final String oggetto, final String testo) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("fitdiary23@gmail.com");
         message.setTo(destinatario);
