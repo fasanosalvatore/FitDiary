@@ -80,8 +80,8 @@ public class GestioneUtenzaController {
     @PostMapping("preparatore")
     ResponseEntity<Object> registrazione(@RequestBody final Utente utente) {
         if (!utente.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)"
-                + "(?=.*[@$!%*?&])"
-               + "[A-Za-z\\d@$!%*?&]{8,}$")) {
+                + "(?=.*[@$!%*?^#()<>+&.])"
+                + "[A-Za-z\\d@$!%*?^#()<>+&.]{8,}$")) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     "password",
                     "password non valida");
@@ -212,7 +212,7 @@ public class GestioneUtenzaController {
      */
     @GetMapping("token/refresh")
     public void refreshToken(final HttpServletRequest
-                                         request,
+                                     request,
                              final HttpServletResponse
                                      response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -230,7 +230,7 @@ public class GestioneUtenzaController {
                         .withSubject(utente.getEmail())
                         .withExpiresAt(new Date(
                                 System.currentTimeMillis() + INT10 * INT60
-                                       * INT1000))
+                                        * INT1000))
                         .withIssuer(request.getRequestURI().toString())
                         .withClaim("roles", utente.getRuolo().getNome())
                         .sign(algorithm);
@@ -269,7 +269,7 @@ public class GestioneUtenzaController {
      */
     @GetMapping("token/expire")
     public void expireToken(final HttpServletRequest
-                                        request,
+                                    request,
                             final HttpServletResponse
                                     response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -339,7 +339,8 @@ public class GestioneUtenzaController {
                     "Errore nei parametri della richiesta");
         } catch (MailException e) {
             log.error(e.getMessage());
-            return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY, "Errore durante l'invio della mail");
+            return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY,
+                    "Errore durante l'invio della mail");
         }
         return ResponseHandler.generateResponse(HttpStatus.CREATED, "cliente",
                 newCliente);
@@ -372,7 +373,7 @@ public class GestioneUtenzaController {
      */
     @GetMapping("profilo")
     public ResponseEntity<Object> visualizzaProfilo(final HttpServletRequest
-                                                                request)
+                                                            request)
             throws IOException {
         Principal principal = request.getUserPrincipal();
         String email = principal.getName();
