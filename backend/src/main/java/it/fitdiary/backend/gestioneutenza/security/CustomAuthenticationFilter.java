@@ -107,7 +107,6 @@ public class CustomAuthenticationFilter
                         "email", user.getUsername(),
                         "name", user.getName(),
                         "surname", user.getSurname(),
-                        "phoneNumber", user.getPhoneNumber(),
                         "trainerId", user.getTrainer(),
                         "gender", user.getGender(),
                         "roles", user.getAuthorities()
