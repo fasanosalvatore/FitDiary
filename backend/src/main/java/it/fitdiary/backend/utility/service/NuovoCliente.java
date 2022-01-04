@@ -15,19 +15,32 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NuovoCliente {
-    @NotNull(message="Il nome non può essere nullo")
-    @Column(length = 50)
-    @Size(min=1, max=50, message="Lunghezza nome non valida")
-    @NotBlank(message="Il nome non può essere vuoto")
+    /**
+     * int 50.
+     */
+    public static final int INT50 = 50;
+    /**
+     * nome cliente.
+     */
+    @NotNull(message = "Il nome non può essere nullo")
+    @Column(length = INT50)
+    @Size(min = 1, max = INT50, message = "Lunghezza nome non valida")
+    @NotBlank(message = "Il nome non può essere vuoto")
     private String nome;
-    @NotNull(message="Il cognome non può essere nullo")
-    @Column(length = 50)
-    @Size(min=1, max=50, message="Lunghezza cognome non valida")
-    @NotBlank(message="Il cognome non può essere vuoto")
+    /**
+     * cognome cliente.
+     */
+    @NotNull(message = "Il cognome non può essere nullo")
+    @Column(length = INT50)
+    @Size(min = 1, max = INT50, message = "Lunghezza cognome non valida")
+    @NotBlank(message = "Il cognome non può essere vuoto")
     private String cognome;
-    @NotNull(message="L'email non può essere nulla")
-    @Column(length = 50, unique = true)
-    @Size(min=1, max=50, message="Lunghezza email non valida")
-    @Email(message="Formato email non valida")
+    /**
+     * email cliente.
+     */
+    @NotNull(message = "L'email non può essere nulla")
+    @Column(length = INT50, unique = true)
+    @Size(min = 1, max = INT50, message = "Lunghezza email non valida")
+    @Email(message = "Formato email non valida")
     private String email;
 }
