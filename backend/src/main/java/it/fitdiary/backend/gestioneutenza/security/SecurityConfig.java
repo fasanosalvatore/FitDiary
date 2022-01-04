@@ -27,44 +27,90 @@ import java.io.IOException;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    /**
+     * UserDetailsService utilizzato per l'autenticazione.
+     */
     private final UserDetailsService userDetailsService;
+    /**
+     * BCryptPasswordEncoder utilizzato per codificare le password.
+     */
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * @param auth AuthenticationManagerBuilder
+     */
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    protected void configure(final AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder);
     }
 
+    /**
+     * @param http HttpSecurity
+     * @throws Exception
+     */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
-        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/utenti/login");
+    protected void configure(final HttpSecurity http) throws Exception {
+        CustomAuthenticationFilter customAuthenticationFilter =
+                new CustomAuthenticationFilter(authenticationManagerBean());
+        customAuthenticationFilter.setFilterProcessesUrl(
+                "/api/v1/utenti/login");
         http.csrf().disable()
-        .cors().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/utenti" +
-                        "/preparatore" +
-                        "/**", "/api/v1/abbonamento/acquista/**", "/api/v1/utenti/login").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE")
-        .antMatchers(HttpMethod.PUT, "/api/v1/utenti/cliente/**").hasAuthority("CLIENTE")
-        .antMatchers("/api/v1/utenti/preparatore/**").hasAuthority("PREPARATORE")
-        .antMatchers("/api/v1/utenti/createcliente/**").hasAuthority("PREPARATORE")
-        .antMatchers("/api/v1/utenti/profilo/**").authenticated()
-        .antMatchers("/api/v1/utenti/login/**", "/api/v1/utenti/token/refresh/**", "/api/v1/utenti/token/expire/**", "/api/v1/utenti/preparatore/**", "/api/v1/abbonamento/acquista/**").permitAll()
-        .anyRequest().authenticated();
+                .cors().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/utenti"
+                                + "/preparatore"
+                                + "/**", "/api/v1/abbonamento/acquista/**",
+                        "/api/v1/utenti/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/utenti/cliente/**")
+                .hasAuthority("CLIENTE")
+                .antMatchers(HttpMethod.PUT, "/api/v1/utenti/cliente/**")
+                .hasAuthority("CLIENTE")
+                .antMatchers("/api/v1/utenti/preparatore/**")
+                .hasAuthority("PREPARATORE")
+                .antMatchers("/api/v1/utenti/createcliente/**")
+                .hasAuthority("PREPARATORE")
+                .antMatchers("/api/v1/utenti/profilo/**").authenticated()
+                .antMatchers("/api/v1/utenti/login/**",
+                        "/api/v1/utenti/token/refresh/**",
+                        "/api/v1/utenti/token/expire/**",
+                        "/api/v1/utenti/preparatore/**",
+                        "/api/v1/abbonamento/acquista/**").permitAll()
+                .anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter)
-        .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-        .exceptionHandling((e) -> e.accessDeniedHandler(new AccessDeniedHandler() {
-            @Override
-            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                response.setHeader("error", "Autorizzazione fallita");
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.getWriter().write("{\"message\": \"Non sei autorizzato per questa funzionalità\", \"status\": \"error\"}");
-            }
-        }));
+                .addFilterBefore(new CustomAuthorizationFilter(),
+                        UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(
+                        (e) -> e.accessDeniedHandler(new AccessDeniedHandler() {
+                            @Override
+                            public void handle(final HttpServletRequest
+                                                       request,
+                                               final HttpServletResponse
+                                                       response,
+                                               final AccessDeniedException
+                                                       accessDeniedException)
+                                    throws IOException, ServletException {
+                                response.setStatus(
+                                        HttpStatus.UNAUTHORIZED.value());
+                                response.setHeader("error",
+                                        "Autorizzazione fallita");
+                                response.setContentType(
+                                        MediaType.APPLICATION_JSON_VALUE);
+                                response.getWriter()
+                                        .write("{\"message\": "
+                                                + "\"Non sei autorizzato "
+                                                + "per questa funzionalità\", "
+                                                + "\"status\": \"error\"}");
+                            }
+                        }));
     }
 
+    /**
+     * @return AuthenticationManager
+     * @throws Exception
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

@@ -31,7 +31,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
 
     /**
-     * Questo metodo si occupa di controllare l'autorizzazione di un utente per effettuare le richieste HTTP
+     * Questo metodo si occupa di controllare l'autorizzazione
+     * di un utente per effettuare le richieste HTTP.
      *
      * @param request
      * @param response
@@ -41,25 +42,38 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
      */
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/api/v1/utenti/login") || request.getServletPath().equals("/api/v1/utenti/token/refresh")) {
+    protected void doFilterInternal(final HttpServletRequest request,
+                                    final HttpServletResponse response,
+                                    final FilterChain filterChain)
+            throws ServletException, IOException {
+        if (request.getServletPath().equals("/api/v1/utenti/login")
+                || request.getServletPath()
+                .equals("/api/v1/utenti/token/refresh")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            if (authorizationHeader != null
+                    && authorizationHeader.startsWith("Bearer ")) {
                 try {
-                    String token = authorizationHeader.substring("Bearer ".length());
-                    Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                    String token =
+                            authorizationHeader.substring("Bearer ".length());
+                    Algorithm algorithm =
+                            Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();
-                    String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
-                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                    String[] roles =
+                            decodedJWT.getClaim("roles").asArray(String.class);
+                    Collection<SimpleGrantedAuthority> authorities =
+                            new ArrayList<>();
                     stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
                     });
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(username,
+                                    null, authorities);
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -68,7 +82,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     Map<String, String> error = new HashMap<>();
                     error.put("error_message", e.getMessage());
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), error);
+                    new ObjectMapper().writeValue(response.getOutputStream(),
+                            error);
                 }
             } else {
                 filterChain.doFilter(request, response);
