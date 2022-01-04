@@ -22,29 +22,47 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDetailsService {
+public class GestioneUtenzaServiceImpl
+        implements GestioneUtenzaService, UserDetailsService {
 
+    /**
+     * rappresenta la repository dell'utente.
+     */
     private final UtenteRepository utenteRepository;
+    /**
+     * rappresenta la repository del ruolo.
+     */
     private final RuoloRepository ruoloRepository;
+    /**
+     * rappresenta la codifica della password.
+     */
     private final BCryptPasswordEncoder passwordEncoder;
+    /**
+     * rappresenta il generatore di password.
+     */
     private final PasswordGenerator passwordGenerator;
+    /**
+     * rappresenta l'email per inviare la password al cliente.
+     */
     private final EmailService emailService;
 
     /**
-     * questa funzione permette di registrare un nuovo preparatore
+     * questa funzione permette di registrare un nuovo preparatore.
+     *
      * @param utente nuovo preparatore
      * @return preparatore con l'id
      * @throws IllegalArgumentException in caso di email già presente nel db
-     * o utente non valido
+     *                                  o utente non valido.
      */
     @Override
-    public Utente registrazione(Utente utente) throws IllegalArgumentException {
+    public Utente registrazione(final Utente utente)
+            throws IllegalArgumentException {
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
         if (utenteRepository.existsByEmail(utente.getEmail())) {
-            throw new IllegalArgumentException("email già presente nel " +
-                    "database");
+            throw new IllegalArgumentException(
+                    "email già presente nel " + "database");
         }
         utente.setRuolo(ruoloRepository.findByNome("PREPARATORE"));
         utente.setAttivo(true);
@@ -53,17 +71,20 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
     }
 
     /**
-     * Questo metodo permette di inserire un cliente e di associarlo ad un preparatore
+     * Questo metodo permette di inserire un cliente
+     * e di associarlo ad un preparatore.
      *
-     * @param nome      nome del cliente
-     * @param cognome   cognome del cliente
-     * @param email     email del cliente
-     * @param emailPrep email del preparatore
-     * @return utente inserito nel sistema
+     * @param nome      nome del cliente.
+     * @param cognome   cognome del cliente.
+     * @param email     email del cliente.
+     * @param emailPrep email del preparatore.
+     * @return utente inserito nel sistema.
      * @throws IllegalArgumentException
      */
     @Override
-    public Utente inserisciCliente(String nome, String cognome, String email, String emailPrep) throws IllegalArgumentException {
+    public Utente inserisciCliente(final String nome, final String cognome,
+                                   final String email, final String emailPrep)
+            throws IllegalArgumentException {
         Utente preparatore = utenteRepository.findByEmail(emailPrep);
         if (preparatore == null) {
             throw new IllegalArgumentException("Preparatore non valido");
@@ -80,52 +101,65 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
         newUtente.setAttivo(true);
         newUtente.setPreparatore(preparatore);
         String password = passwordGenerator.generate();
-        emailService.sendSimpleMessage(newUtente.getEmail(), "Benvenuto in FitDiary!", "Ecco la tua password per accedere: \n"+password);
+        emailService.sendSimpleMessage(newUtente.getEmail(),
+                "Benvenuto in FitDiary!",
+                "Ecco la tua password per accedere: \n" + password);
         newUtente.setPassword(passwordEncoder.encode(password));
-        Utente newCliente= utenteRepository.save(newUtente);
+        Utente newCliente = utenteRepository.save(newUtente);
         return newCliente;
     }
 
     /**
-     * Questo metodo trova un utente dalla email per la verifica del login
+     * Questo metodo trova un utente dalla email per la verifica del login.
      *
-     * @param email email dell'utente da cercare
+     * @param email email dell'utente da cercare.
      * @return UserDetails
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String email)
+            throws UsernameNotFoundException {
         Utente utente = utenteRepository.findByEmail(email);
         if (utente == null) {
             log.error("Utente non trovato nel database");
-            throw new UsernameNotFoundException("Utente non trovato nel database");
+            throw new UsernameNotFoundException(
+                    "Utente non trovato nel database");
         } else {
             log.info("Utente trovato nel database: {}", email);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         log.info("Ruolo: {}", utente.getRuolo().getNome());
-        authorities.add(new SimpleGrantedAuthority(utente.getRuolo().getNome()));
+        authorities.add(
+                new SimpleGrantedAuthority(utente.getRuolo().getNome()));
 
-        return new org.springframework.security.core.userdetails.User(utente.getEmail(), utente.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(
+                utente.getEmail(), utente.getPassword(), authorities);
     }
 
     /**
-     * Questo metodo permette di inserire i dati nel sistema ad un cliente
+     * Questo metodo permette di inserire
+     * i dati nel sistema ad un cliente.
      *
-     * @param utente rappresenta l'insieme dei dati personali di un utente
+     * @param utente rappresenta l'insieme
+     *               dei dati personali di un utente.
      * @param email
-     * @return utente rappresenta l'utente con i nuovi dati inserito nel database
-     * @throws IllegalArgumentException lancia l'errore generato da un input errato
+     * @return utente rappresenta l'utente
+     * con i nuovi dati inserito nel database.
+     * @throws IllegalArgumentException
+     * lancia l'errore generato da un input errato.
      */
     @Override
-    public Utente inserimentoDatiPersonaliCliente(Utente utente,String email) throws IllegalArgumentException {
+    public Utente inserimentoDatiPersonaliCliente(final Utente utente,
+                                                  final String email)
+            throws IllegalArgumentException {
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
         Utente newUtente = utenteRepository.findByEmail(email);
         if (newUtente == null) {
-            throw new IllegalArgumentException("Utente non presente del Database");
+            throw new IllegalArgumentException(
+                    "Utente non presente del Database");
         }
         newUtente.setDataNascita(utente.getDataNascita());
         newUtente.setTelefono(utente.getTelefono());
@@ -136,21 +170,29 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
     }
 
     /**
-     * Questo metodo permette di inserire i dati da modificare nel sistema ad un cliente
+     * Questo metodo permette di inserire i dati
+     * da modificare nel sistema ad un cliente.
+     *
      * @param email
-     * @param utente rappresenta l'insieme dei dati personali di un utente
-     * @return utente rappresenta l'utente con i nuovi dati inserito nel database
-     * @throws IllegalArgumentException lancia l'errore generato da un input errato
+     * @param utente rappresenta l'insieme
+     * dei dati personali di un utente.
+     * @return utente rappresenta l'utente
+     * con i nuovi dati inserito nel database.
+     * @throws IllegalArgumentException
+     * lancia l'errore generato da un input errato.
      */
     @Override
-    public Utente modificaDatiPersonaliCliente(Utente utente,String email) throws IllegalArgumentException {
+    public Utente modificaDatiPersonaliCliente(final Utente utente,
+                                               final String email)
+            throws IllegalArgumentException {
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
         Utente newUtente = utenteRepository.findByEmail(email);
 
         if (newUtente == null) {
-            throw new IllegalArgumentException("Utente non presente del Database");
+            throw new IllegalArgumentException(
+                    "Utente non presente del Database");
         }
         newUtente.setNome(utente.getNome());
         newUtente.setCognome(utente.getCognome());
@@ -166,26 +208,36 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
     }
 
     /**
-     * Questo metodo permette di aggiornare i dati presenti nel database di un utente
+     * Questo metodo permette di aggiornare
+     * i dati presenti nel database di un utente.
      *
-     * @param preparatore rappresenta l' insieme di tutti i dati personali di un preparatore che devono essere aggiornati
-     * @return updatedPerparatore rappresenta l' insieme di dati personali di un perparatore aggiornati
-     * @throws IllegalArgumentException lancia l'errore generato da un input errato
+     * @param preparatore rappresenta l' insieme di
+     * tutti i dati personali di un preparatore
+     * che devono essere aggiornati.
+     * @return updatedPerparatore rappresenta l' insieme
+     * di dati personali di un perparatore aggiornati.
+     * @throws IllegalArgumentException
+     * lancia l'errore generato da un input errato.
      */
     @Override
-    public Utente modificaDatiPersonaliPreparatore(Utente preparatore, String email) throws IllegalArgumentException {
+    public Utente modificaDatiPersonaliPreparatore(final Utente preparatore,
+                                                   final String email)
+            throws IllegalArgumentException {
         Utente updatedPerparatore = utenteRepository.findByEmail(email);
         if (preparatore == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
         if (updatedPerparatore == null) {
-            throw new IllegalArgumentException("Utente non presente del Database");
+            throw new IllegalArgumentException(
+                    "Utente non presente del Database");
         }
         updatedPerparatore.setNome(preparatore.getNome());
         updatedPerparatore.setCognome(preparatore.getCognome());
-        updatedPerparatore.setDataAggiornamento(preparatore.getDataAggiornamento());
+        updatedPerparatore.setDataAggiornamento(
+                preparatore.getDataAggiornamento());
         updatedPerparatore.setEmail(preparatore.getEmail());
-        updatedPerparatore.setPassword(passwordEncoder.encode(preparatore.getPassword()));
+        updatedPerparatore.setPassword(
+                passwordEncoder.encode(preparatore.getPassword()));
         updatedPerparatore.setDataNascita(preparatore.getDataNascita());
         updatedPerparatore.setTelefono(preparatore.getTelefono());
         updatedPerparatore.setCitta(preparatore.getCitta());
@@ -195,18 +247,18 @@ public class GestioneUtenzaServiceImpl implements GestioneUtenzaService, UserDet
     }
 
     /**
-     * Questo metodo permette di cercare un utente dalla sua email
+     * Questo metodo permette di cercare un utente dalla sua email.
      *
-     * @param email email dell'utente da cercare
+     * @param email email dell'utente da cercare.
      * @return
      */
     @Override
-    public Utente getUtenteByEmail(String email) {
+    public Utente getUtenteByEmail(final String email) {
         if (email == null) {
             throw new IllegalArgumentException("Email non valida");
         }
         Utente u = utenteRepository.findByEmail(email);
-        if(u==null){
+        if (u == null) {
             throw new IllegalArgumentException("Utente non trovato");
         }
         return u;
