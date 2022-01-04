@@ -3,6 +3,8 @@ package it.fitdiary.backend.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +22,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Protocollo extends BaseEntityWithTimestamp {
+public class Protocollo {
     /**
      * id protocollo.
      */
@@ -59,5 +61,19 @@ public class Protocollo extends BaseEntityWithTimestamp {
     @ManyToOne
     @JoinColumn(name = "preparatore_id")
     private Utente preparatore;
+
+    /**
+     * La data creazione della tupla.
+     */
+    @Column(name = "data_creazione", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime dataCreazione;
+
+    /**
+     * La data aggiornamento della tupla.
+     */
+    @Column(name = "data_aggiornamento")
+    @UpdateTimestamp
+    private LocalDateTime dataAggiornamento;
 
 }

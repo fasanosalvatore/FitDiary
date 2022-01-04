@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,12 +16,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Report extends BaseEntityWithTimestamp {
+public class Report {
     /**
      * id report.
      */
@@ -67,4 +70,18 @@ public class Report extends BaseEntityWithTimestamp {
     @JsonBackReference
     @JoinColumn(name = "cliente_id")
     private Utente cliente;
+
+    /**
+     * La data creazione della tupla.
+     */
+    @Column(name = "data_creazione", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime dataCreazione;
+
+    /**
+     * La data aggiornamento della tupla.
+     */
+    @Column(name = "data_aggiornamento")
+    @UpdateTimestamp
+    private LocalDateTime dataAggiornamento;
 }

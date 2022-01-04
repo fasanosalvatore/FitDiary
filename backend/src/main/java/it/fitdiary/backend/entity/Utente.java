@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,13 +23,14 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Utente extends BaseEntityWithTimestamp {
+public class Utente {
     /**
      * Costante per valore intero di 50.
      */
@@ -186,6 +189,20 @@ public class Utente extends BaseEntityWithTimestamp {
     @OneToMany(mappedBy = "cliente")
     @JsonManagedReference
     private List<Report> listaReport;
+
+    /**
+     * La data creazione della tupla.
+     */
+    @Column(name = "data_creazione", updatable = false, columnDefinition = "")
+    @CreationTimestamp
+    private LocalDateTime dataCreazione;
+
+    /**
+     * La data aggiornamento della tupla.
+     */
+    @Column(name = "data_aggiornamento", columnDefinition = "")
+    @UpdateTimestamp
+    private LocalDateTime dataAggiornamento;
 
     @Override
     public final String toString() {
