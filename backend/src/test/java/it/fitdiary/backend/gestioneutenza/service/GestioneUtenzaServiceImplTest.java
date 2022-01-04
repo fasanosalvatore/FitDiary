@@ -45,6 +45,8 @@ public class GestioneUtenzaServiceImplTest {
     private Ruolo ruoloPreparatore;
     private Utente cliente;
     private Utente clienteAggiornato;
+    private Utente preparatore;
+    private Utente updatedPreparatore;
 
     public GestioneUtenzaServiceImplTest() {
     }
@@ -58,6 +60,13 @@ public class GestioneUtenzaServiceImplTest {
         clienteAggiornato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null,
                 ruoloCliente, null, null, null, null, null);
+        preparatore =
+                new Utente(1L, "Daniele", "De Marco", "diodani5@gmail.com", "Trappo#98", true, null, null, null, null,
+                        null, null, null, ruoloPreparatore, null, null, null, null, null);
+        updatedPreparatore = new Utente(1L, "Michele", "De Marco", "diodani5@gmail.com", "Trappo#98", true,
+                LocalDate.parse("2000-03-03"), null, "3459666587", "Francesco La Francesca", "84126", "Salerno", null,
+                ruoloPreparatore, null, null, null, null, null);
+
     }
 
     @Test
@@ -105,19 +114,13 @@ public class GestioneUtenzaServiceImplTest {
 
     }
 
-    //@Test
+    @Test
     public void modificaDatiPersonaliPreparatore_Success() {
-        Utente utente = new Utente(1L, "Michele", "De Marco", "dani5@gmail.com", "Trappo#98", true,
-                LocalDate.parse("2000-03-03"), null, "3459666587", "Francesco La Francesca", "84126", "Salerno", null,
-                ruoloPreparatore, null, null, null, null, null);
-        Utente updatedUtente =
-                new Utente(1L, "Daniele", "De Marco", "diodani5@gmail.com", "Trappo#98", true, null, null, null, null,
-                        null, null, null, ruoloPreparatore, null, null, null, null, null);
-        when(utenteRepository.save(updatedUtente)).thenReturn(updatedUtente);
-        when(utenteRepository.findByEmail(utente.getEmail())).thenReturn(updatedUtente);
-        when(passwordEncoder.encode(utente.getPassword())).thenReturn(utente.getPassword());
-        assertEquals(utente,
-                gestioneUtenzaService.modificaDatiPersonaliPreparatore(updatedUtente, updatedUtente.getEmail()));
+        when(utenteRepository.findByEmail(preparatore.getEmail())).thenReturn(updatedPreparatore);
+        when(utenteRepository.save(updatedPreparatore)).thenReturn(updatedPreparatore);
+        when(passwordEncoder.encode(updatedPreparatore.getPassword())).thenReturn(updatedPreparatore.getPassword());
+        assertEquals(updatedPreparatore,
+                gestioneUtenzaService.modificaDatiPersonaliPreparatore(updatedPreparatore, updatedPreparatore.getEmail()));
     }
 
     @Test

@@ -2,6 +2,8 @@ package it.fitdiary.backend.utility.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,20 +11,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@Component
+@Component("mailService")
+@EnableAutoConfiguration
 public class EmailServiceImpl implements EmailService {
     /**
      * JavaMailSender.
      */
+    @Qualifier("mailService")
     private final JavaMailSender emailSender;
 
-    /**
-     * @param emailSend JavaMailSender
-     */
-    @Autowired
-    public EmailServiceImpl(final JavaMailSender emailSend) {
-        this.emailSender = emailSend;
+    public EmailServiceImpl(
+            JavaMailSender emailSender) {
+        this.emailSender = emailSender;
     }
+
 
     /**
      * Questa funzione invia un email ad un indirzzo preso in input,
