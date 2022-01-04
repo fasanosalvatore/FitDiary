@@ -42,23 +42,5 @@ public class BackendApplication {
         };
     }
 
-    /**
-     * @param ruoloRepository
-     * @return CommandLineRunner
-     */
-    @Bean
-    CommandLineRunner run(final RuoloRepository ruoloRepository) {
-        return args -> {
-
-        };
-    }
-
-    /**
-     * @return JavaMailSender
-     */
-    @Bean
-    public JavaMailSender javaMailSender() {
-        return new JavaMailSenderImpl();
-    }
 
 }
