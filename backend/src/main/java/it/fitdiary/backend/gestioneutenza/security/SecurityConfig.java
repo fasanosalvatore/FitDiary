@@ -3,10 +3,8 @@ package it.fitdiary.backend.gestioneutenza.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,18 +13,27 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    /**
+     * Ruolo Admin.
+     */
+    public static final String ADMIN = "Preparatore";
+    /**
+     * Ruolo Preparatore.
+     */
+    public static final String PREPARATORE = "Preparatore";
+    /**
+     * Ruolo Cliente.
+     */
+    public static final String CLIENTE = "CLIENTE";
     /**
      * UserDetailsService utilizzato per l'autenticazione.
      */
@@ -60,18 +67,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/utenti"
+        http.authorizeRequests().antMatchers(POST, "/api/v1/utenti"
                                 + "/preparatore"
                                 + "/**", "/api/v1/abbonamento/acquista/**",
                         "/api/v1/utenti/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/v1/utenti/cliente/**")
-                .hasAuthority("CLIENTE")
-                .antMatchers(HttpMethod.PUT, "/api/v1/utenti/cliente/**")
-                .hasAuthority("CLIENTE")
+                .antMatchers(POST, "/api/v1/utenti/cliente/**")
+                .hasAuthority(CLIENTE)
+                .antMatchers(PUT, "/api/v1/utenti/cliente/**")
+                .hasAuthority(CLIENTE)
                 .antMatchers("/api/v1/utenti/preparatore/**")
-                .hasAuthority("PREPARATORE")
+                .hasAuthority(PREPARATORE)
                 .antMatchers("/api/v1/utenti/createcliente/**")
-                .hasAuthority("PREPARATORE")
+                .hasAuthority(PREPARATORE)
                 .antMatchers("/api/v1/utenti/profilo/**").authenticated()
                 .antMatchers("/api/v1/utenti/login/**",
                         "/api/v1/utenti/token/refresh/**",
@@ -82,29 +89,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilter(customAuthenticationFilter)
                 .addFilterBefore(new CustomAuthorizationFilter(),
                         UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(
-                        (e) -> e.accessDeniedHandler(new AccessDeniedHandler() {
-                            @Override
-                            public void handle(final HttpServletRequest
-                                                       request,
-                                               final HttpServletResponse
-                                                       response,
-                                               final AccessDeniedException
-                                                       accessDeniedException)
-                                    throws IOException, ServletException {
-                                response.setStatus(
-                                        HttpStatus.UNAUTHORIZED.value());
-                                response.setHeader("error",
-                                        "Autorizzazione fallita");
-                                response.setContentType(
-                                        MediaType.APPLICATION_JSON_VALUE);
-                                response.getWriter()
-                                        .write("{\"message\": "
-                                                + "\"Non sei autorizzato "
-                                                + "per questa funzionalità\", "
-                                                + "\"status\": \"error\"}");
-                            }
-                        }));
+                .exceptionHandling((e) -> e.accessDeniedHandler(
+                        (request, response, accessDeniedException) -> {
+                            response.setStatus(
+                                    HttpStatus.UNAUTHORIZED.value());
+                            response.setHeader("error",
+                                    "Autorizzazione fallita");
+                            response.setContentType(
+                                    MediaType.APPLICATION_JSON_VALUE);
+                            response.getWriter()
+                                    .write("{\"message\": "
+                                            + "\"Non sei autorizzato "
+                                            + "per questa funzionalità\", "
+                                            + "\"status\": \"error\"}");
+                        })
+                );
     }
 
     /**

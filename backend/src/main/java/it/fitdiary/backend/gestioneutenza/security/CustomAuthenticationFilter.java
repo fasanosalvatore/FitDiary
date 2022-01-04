@@ -3,6 +3,8 @@ package it.fitdiary.backend.gestioneutenza.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.fitdiary.backend.utility.ResponseHandler;
+import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,39 +13,27 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class CustomAuthenticationFilter
         extends UsernamePasswordAuthenticationFilter {
-
     /**
-     * Costante per valore intero di 10.
+     * Access Token expiring time in ms.
      */
-    public static final int INT10 = 10;
+    public static final int ACCESS_TOKEN_MS = 600000;
     /**
-     * Costante per valore intero di 60.
+     * Refresh Token expiring time in ms.
      */
-    public static final int INT60 = 60;
-    /**
-     * Costante per valore intero di 1000.
-     */
-    public static final int INT1000 = 1000;
-    /**
-     * Costante per valore intero di 30.
-     */
-    public static final int INT30 = 30;
+    public static final int REFRESH_TOKEN_MS = 1800000;
     /**
      * AuthenticationManager usato per l'autenticazione.
      */
@@ -73,12 +63,12 @@ public class CustomAuthenticationFilter
                                                 final HttpServletResponse
                                                         response)
             throws AuthenticationException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        var email = request.getParameter("email");
+        var password = request.getParameter("password");
 
         log.info("Email is: {}", email);
         log.info("Password is: {}", password);
-        UsernamePasswordAuthenticationToken authenticationToken =
+        var authenticationToken =
                 new UsernamePasswordAuthenticationToken(email, password);
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -91,41 +81,58 @@ public class CustomAuthenticationFilter
      * @param chain          catena di filtri
      * @param authentication autenticazione
      * @throws IOException
-     * @throws ServletException
      */
     @Override
     protected void successfulAuthentication(final HttpServletRequest request,
                                             final HttpServletResponse response,
                                             final FilterChain chain,
                                             final Authentication authentication)
-            throws IOException, ServletException {
-        User user = (User) authentication.getPrincipal();
-        Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-        String accessToken = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(
-                        new Date(System.currentTimeMillis()
-                                + INT10 * INT60 * INT1000))
-                .withIssuer(request.getRequestURI().toString())
-                .withClaim("roles", user.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()))
-                .sign(algorithm);
-        String refreshToken = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(
-                        new Date(System.currentTimeMillis()
-                                + INT30 * INT60 * INT1000))
-                .withIssuer(request.getRequestURI().toString())
-                .withClaim("roles", user.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()))
-                .sign(algorithm);
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", accessToken);
-        tokens.put("refresh_token", refreshToken);
+            throws IOException {
+        var user = (FitDiaryUserDetails) authentication.getPrincipal();
+        var alg = Algorithm.HMAC256("secret".getBytes());
+        long accessExpireAt = System.currentTimeMillis() + ACCESS_TOKEN_MS;
+        long refreshExpireAt = System.currentTimeMillis() + REFRESH_TOKEN_MS;
+        var tokens = Map.of(
+                "accessToken", Map.of(
+                        "token",
+                        createToken(user, request, alg, accessExpireAt),
+                        "expiresAt", accessExpireAt
+                ),
+                "refreshToken", Map.of(
+                        "token",
+                        createToken(user, request, alg, refreshExpireAt),
+                        "expiresAt", refreshExpireAt
+                ),
+                "userInfo", Map.of(
+                        "email", user.getUsername(),
+                        "name", user.getName(),
+                        "surname", user.getSurname(),
+                        "phoneNumber", user.getPhoneNumber(),
+                        "trainerId", user.getTrainer(),
+                        "gender", user.getGender(),
+                        "roles", user.getAuthorities()
+                                .stream()
+                                .map(p -> p.getAuthority())
+                                .toArray()
+                )
+        );
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(),
+                ResponseHandler.generateResponse(HttpStatus.OK, tokens));
+    }
+
+    private String createToken(final FitDiaryUserDetails user,
+                               final HttpServletRequest request,
+                               final Algorithm alg,
+                               final long expiresAt) {
+        return JWT.create()
+                .withSubject(user.getUsername())
+                .withExpiresAt(new Date(expiresAt))
+                .withIssuer(request.getRequestURI())
+                .withClaim("roles", user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
+                .sign(alg);
     }
 
     /**
@@ -135,16 +142,15 @@ public class CustomAuthenticationFilter
      * @param response risposta Http
      * @param failed   eccezione dell'autenticazione
      * @throws IOException
-     * @throws ServletException
      */
     @Override
     protected void unsuccessfulAuthentication(final HttpServletRequest
-                                                          request,
+                                                      request,
                                               final HttpServletResponse
                                                       response,
                                               final AuthenticationException
-                                                          failed)
-            throws IOException, ServletException {
+                                                      failed)
+            throws IOException {
         log.info("Autenticazione fallita");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setHeader("error", "Autenticazione fallita");

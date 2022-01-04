@@ -11,10 +11,12 @@ import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
 import it.fitdiary.backend.utility.service.NuovoCliente;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +42,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 
 @RestController
+@Slf4j
 @RequestMapping(path = "api/v1/utenti")
 public class GestioneUtenzaController {
 
@@ -331,8 +334,12 @@ public class GestioneUtenzaController {
             newCliente = service.inserisciCliente(nome, cognome, email,
                     emailPreparatore);
         } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
+                    "Errore nei parametri della richiesta");
+        } catch (MailException e) {
+            log.error(e.getMessage());
+            return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY, "Errore durante l'invio della mail");
         }
         return ResponseHandler.generateResponse(HttpStatus.CREATED, "cliente",
                 newCliente);

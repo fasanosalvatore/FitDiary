@@ -1,6 +1,7 @@
 package it.fitdiary.backend.gestioneutenza.service;
 
 import it.fitdiary.backend.entity.Utente;
+import org.springframework.mail.MailException;
 
 
 /**
@@ -49,5 +50,5 @@ public interface GestioneUtenzaService {
      * @return utente
      */
     Utente inserisciCliente(String nome, String cognome, String email,
-                            String emailPrep);
+                            String emailPrep) throws IllegalArgumentException, MailException;
 }

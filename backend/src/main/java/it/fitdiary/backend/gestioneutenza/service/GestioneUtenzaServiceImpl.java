@@ -3,12 +3,13 @@ package it.fitdiary.backend.gestioneutenza.service;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
-import it.fitdiary.backend.utility.service.EmailService;
 import it.fitdiary.backend.utility.PasswordGenerator;
+import it.fitdiary.backend.utility.service.EmailService;
+import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.MailException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,6 +58,7 @@ public class GestioneUtenzaServiceImpl
     @Override
     public Utente registrazione(final Utente utente)
             throws IllegalArgumentException {
+        System.out.println(utente);
         if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
@@ -84,7 +86,7 @@ public class GestioneUtenzaServiceImpl
     @Override
     public Utente inserisciCliente(final String nome, final String cognome,
                                    final String email, final String emailPrep)
-            throws IllegalArgumentException {
+            throws IllegalArgumentException, MailException {
         Utente preparatore = utenteRepository.findByEmail(emailPrep);
         if (preparatore == null) {
             throw new IllegalArgumentException("Preparatore non valido");
@@ -117,7 +119,7 @@ public class GestioneUtenzaServiceImpl
      * @throws UsernameNotFoundException
      */
     @Override
-    public UserDetails loadUserByUsername(final String email)
+    public FitDiaryUserDetails loadUserByUsername(final String email)
             throws UsernameNotFoundException {
         Utente utente = utenteRepository.findByEmail(email);
         if (utente == null) {
@@ -132,9 +134,18 @@ public class GestioneUtenzaServiceImpl
         log.info("Ruolo: {}", utente.getRuolo().getNome());
         authorities.add(
                 new SimpleGrantedAuthority(utente.getRuolo().getNome()));
-
-        return new org.springframework.security.core.userdetails.User(
-                utente.getEmail(), utente.getPassword(), authorities);
+        var fitDiaryUser = new FitDiaryUserDetails(
+                utente.getEmail(),
+                utente.getPassword(),
+                authorities);
+        fitDiaryUser.setName(utente.getNome());
+        fitDiaryUser.setSurname(utente.getCognome());
+        fitDiaryUser.setPhoneNumber(utente.getTelefono());
+        fitDiaryUser.setGender(utente.getSesso());
+        fitDiaryUser.setTrainerId(
+                utente.getPreparatore() != null
+                        ? utente.getPreparatore().getId() : -1);
+        return fitDiaryUser;
     }
 
     /**
@@ -264,3 +275,4 @@ public class GestioneUtenzaServiceImpl
         return u;
     }
 }
+
