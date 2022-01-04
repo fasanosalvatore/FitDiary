@@ -17,7 +17,9 @@ import config from "../../config.json";
 export default function Login() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const urlLogin=`${config.SERVER_URL}/utenti/login`;
-    const toast=useToast();
+    const toast = useToast()
+
+
     const navigate = useNavigate();
     function onSubmit(values) {
        const resp={
@@ -27,21 +29,23 @@ export default function Login() {
        }
        AuthService.login(values.email,values.password).then( () => {
            navigate("/customer/me");
-       },error =>{
-          /*toast({
-              title: 'Account not created.',
-              description: "We've not created your account "+ error.message,
-              status: 'failed',
-              duration: 9000,
-              isClosable: true,
-          })*/
-       } )
+       }).catch(handleFail)
 
     }
 
-    console.log(errors);
+    function handleFail(data) {
+        console.log(data.message)
+        toast({
+            title: 'Accesso fallito',
+            description: "Email e/o password errate",
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+        })
+    }
 
     return (
+
         <VStack w="full" h="full" p={[5, 10, 20]}>
             <VStack spacing={3} alignItems="flex-start" pb={5}>
                 <Heading size="2xl">Login</Heading>
@@ -61,18 +65,10 @@ export default function Login() {
                     <GridItem colSpan={2}>
                         <FormControl id={"password"} isInvalid={errors.password}>
                             <FormLabel>Password</FormLabel>
-                            <Tooltip
-                                label={"La password deve contenere: Una lettera maiuscola, minuscola, un numero e un carattere speciale"}
-                                aria-label='A tooltip'>
                                 <Input type="password" placeholder="Password" {...register("password", {
                                     required: "Il campo password è obbligatorio",
                                     maxLength: {value: 255, message: "Password troppo lunga"},
-                                    pattern: {
-                                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&\.])[A-Za-z\d@$!%*?^#()<>+&.]{8,}$/i,
-                                        message: "Formato password non valido"
-                                    }
                                 })} />
-                            </Tooltip>
                             <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>

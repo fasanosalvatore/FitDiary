@@ -12,7 +12,7 @@ import {
     Input, Radio,
     RadioGroup,
     SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, VStack
+    Stack, Text, Tooltip, useBreakpointValue, useToast, VStack
 } from "@chakra-ui/react";
 import {
     CardCvcElement,
@@ -30,6 +30,7 @@ export default function SignupForm() {
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();
     const elements = useElements();
+    const toast = useToast()
 
     if (!stripe || !elements) {
         return "";
@@ -48,15 +49,19 @@ export default function SignupForm() {
 
             handlePayment(resp.data.response.customerId).then(result =>{
                 console.log(result)
-            }).catch(e =>{
-                console.log(e)
-            })
+            }).catch(handleFail)
         });
     }
 
     //Gestione FAIL
     function handleFail(data) {
-        console.log("something went wrong " + data);
+        toast({
+            title: 'Registrazione Fallita',
+            description: data,
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+        })
     }
 
     //Chiamata API creazione utente
