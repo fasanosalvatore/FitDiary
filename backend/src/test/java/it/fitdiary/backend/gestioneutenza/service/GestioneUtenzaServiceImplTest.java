@@ -71,10 +71,10 @@ public class GestioneUtenzaServiceImplTest {
 
     @Test
     public void inserimentoDatiPersonaliCliente() {
-        when(utenteRepository.findByEmail(cliente.getEmail())).thenReturn((clienteAggiornato));
+        when(utenteRepository.getById(cliente.getId())).thenReturn((clienteAggiornato));
         when(utenteRepository.save(clienteAggiornato)).thenReturn(clienteAggiornato);
         assertEquals(clienteAggiornato,
-                gestioneUtenzaService.inserimentoDatiPersonaliCliente(clienteAggiornato, clienteAggiornato.getEmail()));
+                gestioneUtenzaService.inserimentoDatiPersonaliCliente(clienteAggiornato, clienteAggiornato.getId()));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class GestioneUtenzaServiceImplTest {
 
     @Test
     public void inserimentoDatiPersonaliClienteUtenteNonPresenteNelDataBase() {
-        when(utenteRepository.findByEmail(cliente.getEmail())).thenReturn(clienteAggiornato);
+        when(utenteRepository.getById(cliente.getId())).thenReturn(clienteAggiornato);
         assertThrows(IllegalArgumentException.class,
                 () -> this.gestioneUtenzaService.inserimentoDatiPersonaliCliente(null, null));
 
@@ -93,11 +93,11 @@ public class GestioneUtenzaServiceImplTest {
 
     @Test
     public void modificaDatiPersonaliCliente() {
-        when(utenteRepository.findByEmail(cliente.getEmail())).thenReturn((clienteAggiornato));
+        when(utenteRepository.getById(cliente.getId())).thenReturn((clienteAggiornato));
         when(utenteRepository.save(clienteAggiornato)).thenReturn(clienteAggiornato);
         when(passwordEncoder.encode(clienteAggiornato.getPassword())).thenReturn(clienteAggiornato.getPassword());
         assertEquals(clienteAggiornato,
-                gestioneUtenzaService.modificaDatiPersonaliCliente(clienteAggiornato, clienteAggiornato.getEmail()));
+                gestioneUtenzaService.modificaDatiPersonaliCliente(clienteAggiornato, clienteAggiornato.getId()));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class GestioneUtenzaServiceImplTest {
 
     @Test
     public void modificaDatiPersonaliCliente_UtenteNonPresenteNelDataBase_ThrowException() {
-        when(utenteRepository.findByEmail(cliente.getEmail())).thenReturn(clienteAggiornato);
+        when(utenteRepository.getById(cliente.getId())).thenReturn(clienteAggiornato);
         assertThrows(IllegalArgumentException.class,
                 () -> this.gestioneUtenzaService.modificaDatiPersonaliPreparatore(null, null));
 
