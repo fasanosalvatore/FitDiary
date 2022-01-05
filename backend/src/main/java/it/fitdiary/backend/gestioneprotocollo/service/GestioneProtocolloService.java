@@ -14,8 +14,9 @@ public interface GestioneProtocolloService {
      * @throws IOException
      * @throws IllegalArgumentException
      */
-    Protocollo creazioneProtocollo(Protocollo protocollo,
-                                          File schedaAlimentareFile,
-                                          File schedaAllenamentoFile)
-            throws IOException, IllegalArgumentException;
+    Protocollo creazioneProtocollo(
+            Protocollo protocollo,
+            File schedaAlimentareFile,
+            File schedaAllenamentoFile
+    ) throws IOException, IllegalArgumentException;
 }

@@ -20,16 +20,27 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.Principal;
 import java.time.LocalDate;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestController
 @Slf4j
 @RequestMapping(path = "api/v1/protocolli")
 public class GestioneProtocolloController {
+    /**
+     * Service di gestione protocollo.
+     */
     private final GestioneProtocolloService gestioneProtocolloService;
+    /**
+     * Service di gestione utenza.
+     */
     private final GestioneUtenzaService gestioneUtenzaService;
 
+    /**
+     * @param gestioneProtocolloServ
+     * @param gestioneUtenzaServ
+     */
     @Autowired
     public GestioneProtocolloController(
             final GestioneProtocolloService gestioneProtocolloServ,
@@ -39,71 +50,61 @@ public class GestioneProtocolloController {
     }
 
     @PostMapping
-    private ResponseEntity<Object> creazioneProtocollo(@RequestParam(
-            "dataScadenza") final String dataScadenza,
-            @RequestParam("emailCliente") final String email,
-            @RequestParam("schedaAlimentareMultipartFile")
-                final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam("schedaAllenamentoMultipartFile")
-                final MultipartFile schedaAllenamentoMultipartFile) {
+    private ResponseEntity<Object> creazioneProtocollo(
+            @RequestParam("dataScadenza") final String dataScadenza,
+            @RequestParam("idCliente") final Long id,
+            @RequestParam("schedaAlimentare")
+            final MultipartFile schedaAlimentareMultipartFile,
+            @RequestParam("schedaAllenamento")
+            final MultipartFile schedaAllenamentoMultipartFile) {
         if (schedaAllenamentoMultipartFile.isEmpty()
                 && schedaAlimentareMultipartFile.isEmpty()) {
-            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    "protocollo", "Almeno uno dei due file"
-                            + " deve essere presente");
+            return ResponseHandler.generateResponse(BAD_REQUEST, "protocollo",
+                    "Almeno uno dei due file deve essere presente");
         }
-        HttpServletRequest request =
-                ((ServletRequestAttributes)
-                        RequestContextHolder
-                                .getRequestAttributes()).getRequest();
-        Principal principal = request.getUserPrincipal();
-        String emailPreparatore = principal.getName();
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        var idPrep = Long.parseLong(request.getUserPrincipal().getName());
         Protocollo protocollo = new Protocollo();
         protocollo.setDataScadenza(LocalDate.parse(dataScadenza));
-        protocollo.setCliente(gestioneUtenzaService.getUtenteByEmail(email));
-        protocollo.setPreparatore(
-                gestioneUtenzaService.getUtenteByEmail(emailPreparatore));
-        File schedaAlimentareFile = null;
-
-        File schedaAllenamentoFile = null;
-
+        protocollo.setCliente(gestioneUtenzaService.getById(id));
+        protocollo.setPreparatore(gestioneUtenzaService.getById(idPrep));
+        File schedaAlimentareFile;
+        File schedaAllenamentoFile;
         try {
-            if (!schedaAlimentareMultipartFile.isEmpty()) {
-                schedaAlimentareFile = new File(
-                        schedaAlimentareMultipartFile.getOriginalFilename());
-                schedaAlimentareFile.createNewFile();
-                FileOutputStream fos = null;
-                fos = new FileOutputStream(schedaAlimentareFile);
-                fos.write(schedaAlimentareMultipartFile.getBytes());
-                fos.close();
-            }
-            if (!schedaAllenamentoMultipartFile.isEmpty()) {
-                schedaAllenamentoFile = new File(
-                        schedaAllenamentoMultipartFile.getOriginalFilename());
-                schedaAllenamentoFile.createNewFile();
-                FileOutputStream fos1 = null;
-                fos1 = new FileOutputStream(schedaAllenamentoFile);
-                fos1.write(schedaAllenamentoMultipartFile.getBytes());
-                fos1.close();
-            }
+            schedaAlimentareFile = getFile(schedaAlimentareMultipartFile);
+            schedaAllenamentoFile = getFile(schedaAllenamentoMultipartFile);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "protocollo", "errore nella lettura dei file");
+                    HttpStatus.INTERNAL_SERVER_ERROR, "protocollo",
+                    "errore nella lettura dei file");
         }
         try {
             Protocollo newProtocollo =
                     gestioneProtocolloService.creazioneProtocollo(protocollo,
                             schedaAlimentareFile, schedaAllenamentoFile);
+            return ResponseHandler.generateResponse(HttpStatus.CREATED,
+                    "protocollo", newProtocollo);
         } catch (IOException e) {
             return ResponseHandler.generateResponse(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "protocollo", "errore nella lettura dei file");
+                    HttpStatus.INTERNAL_SERVER_ERROR, "protocollo",
+                    "errore nella lettura dei file");
         } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    "protocollo", e.getMessage());
+            return ResponseHandler.generateResponse(BAD_REQUEST, "protocollo",
+                    e.getMessage());
         }
-        return ResponseHandler.generateResponse(HttpStatus.CREATED,
-                "protocollo", protocollo);
+    }
+
+    private File getFile(final MultipartFile multiPartFile)
+            throws IOException {
+        if (multiPartFile.isEmpty()) {
+            return null;
+        }
+        var file = new File(multiPartFile.getOriginalFilename());
+        file.createNewFile();
+        var fos = new FileOutputStream(file);
+        fos.write(multiPartFile.getBytes());
+        fos.close();
+        return file;
     }
 }

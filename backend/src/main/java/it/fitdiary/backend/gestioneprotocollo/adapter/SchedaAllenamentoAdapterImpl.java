@@ -13,17 +13,29 @@ import java.util.List;
 public class SchedaAllenamentoAdapterImpl implements SchedaAllenamentoAdapter {
 
     /**
+     * Indica il valore della posizione del campo Nome.
+     */
+    public static final int COLUMN_NOME = 0;
+    /**
+     * Indica il valore della posizione del campo Serie.
+     */
+    public static final int COLUMN_SERIE = 1;
+    /**
+     * Indica il valore della posizione del campo Ripetizioni.
+     */
+    public static final int COLUMN_RIPETIZIONI = 2;
+    /**
      * Indica il valore della posizione del campo Recupero.
      */
-    public static final int I3 = 3;
+    public static final int COLUMN_RECUPERO = 3;
     /**
      * Indica il valore della posizione del campo Numero allenamento.
      */
-    public static final int I4 = 4;
+    public static final int COLUMN_NUMALLENAMENTO = 4;
     /**
      * Indica il valore della posizione del campo Categoria.
      */
-    public static final int I5 = 5;
+    public static final int COLUMN_CATEGORIA = 5;
 
     /**
      * @param file file della scheda allenamento
@@ -42,12 +54,12 @@ public class SchedaAllenamentoAdapterImpl implements SchedaAllenamentoAdapter {
                 continue;
             }
             Esercizio esercizio = new Esercizio();
-            esercizio.setNome(record.get(0));
-            esercizio.setSerie(record.get(1));
-            esercizio.setRipetizioni(record.get(2));
-            esercizio.setRecupero(record.get(I3));
-            esercizio.setNumeroAllenamento(record.get(I4));
-            esercizio.setCategoria(record.get(I5));
+            esercizio.setNome(record.get(COLUMN_NOME));
+            esercizio.setSerie(record.get(COLUMN_SERIE));
+            esercizio.setRipetizioni(record.get(COLUMN_RIPETIZIONI));
+            esercizio.setRecupero(record.get(COLUMN_RECUPERO));
+            esercizio.setNumeroAllenamento(record.get(COLUMN_NUMALLENAMENTO));
+            esercizio.setCategoria(record.get(COLUMN_CATEGORIA));
             esercizi.add(esercizio);
         }
         return esercizi;

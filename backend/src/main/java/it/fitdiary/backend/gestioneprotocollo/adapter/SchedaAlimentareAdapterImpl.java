@@ -16,13 +16,25 @@ import java.util.List;
 public class SchedaAlimentareAdapterImpl implements SchedaAlimentareAdapter {
 
     /**
-     * Indica il valore della posizione del campo Kcal.
+     * Numero della colonna del file CSV corrispondente a nome.
      */
-    public static final int I3 = 3;
+    public static final int COLUMN_NOME = 0;
     /**
-     * Indica il valore della posizione del campo Grammi.
+     * Numero della colonna del file CSV corrispondente a pasto.
      */
-    public static final int I4 = 4;
+    public static final int COLUMN_PASTO = 1;
+    /**
+     * Numero della colonna del file CSV corrispondente a giorno.
+     */
+    public static final int COLUMN_GIORNO = 2;
+    /**
+     * Numero della colonna del file CSV corrispondente a kcal.
+     */
+    public static final int COLUMN_KCAL = 3;
+    /**
+     * Numero della colonna del file CSV corrispondente a grammi.
+     */
+    public static final int COLUMN_GRAMMI = 4;
 
     /**
      * @param file file della scheda alimentare
@@ -30,22 +42,24 @@ public class SchedaAlimentareAdapterImpl implements SchedaAlimentareAdapter {
      * @throws IOException
      */
     @Override
-    public List<Alimento> parse(final File file) throws IOException {
-        List<Alimento> alimenti = new ArrayList<Alimento>();
+    public List<Alimento> parse(final File file)
+            throws IOException, NumberFormatException {
+        var alimenti = new ArrayList<Alimento>();
         Iterable<CSVRecord> records =
                 CSVFormat.EXCEL.withDelimiter(';').parse(new FileReader(file));
         int riga = 1;
+
         for (CSVRecord record : records) {
             if (riga == 1) {
                 riga++;
                 continue;
             }
             Alimento alimento = new Alimento();
-            alimento.setNome(record.get(0));
-            alimento.setPasto(record.get(1));
-            alimento.setGiorno(record.get(2));
-            alimento.setKcal(Integer.valueOf(record.get(I3)));
-            alimento.setGrammi(Float.valueOf(record.get(I4)));
+            alimento.setNome(record.get(COLUMN_NOME));
+            alimento.setPasto(record.get(COLUMN_PASTO));
+            alimento.setGiorno(record.get(COLUMN_GIORNO));
+            alimento.setKcal(Integer.valueOf(record.get(COLUMN_KCAL)));
+            alimento.setGrammi(Float.valueOf(record.get(COLUMN_GRAMMI)));
             alimenti.add(alimento);
         }
         return alimenti;

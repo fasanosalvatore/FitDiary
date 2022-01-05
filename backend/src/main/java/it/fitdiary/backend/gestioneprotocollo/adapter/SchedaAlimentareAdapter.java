@@ -12,5 +12,5 @@ public interface SchedaAlimentareAdapter {
      * @return lista di alimenti
      * @throws IOException
      */
-    List<Alimento> parse(File file) throws IOException;
+    List<Alimento> parse(File file) throws IOException, NumberFormatException;
 }
