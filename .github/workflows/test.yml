@@ -12,14 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: 'Inizio i test'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
       - uses: actions/checkout@v2
 
       - name: Set up JDK 11
@@ -36,7 +28,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build with Maven
-        working-directory: ./cocktail-backend
+        working-directory: ./backend
         run: mvn --batch-mode --update-snapshots verify
 
       - name: Generate JaCoCo Badge
@@ -44,13 +36,13 @@ jobs:
         id: jacoco
         uses: fasanosalvatore/jacoco-badge-generator@eb546ec4cab35c3cf1b22f087bf099d4242e33fd
         with:
-          jacoco-csv-file: cocktail-backend/target/site/jacoco-merged-test-coverage-report/jacoco.csv
+          jacoco-csv-file: backend/target/site/jacoco-merged-test-coverage-report/jacoco.csv
           generate-branches-badge: true
           branches-text: coverage
 
       - name: Move CheckStyle badge
         if: always()
-        run: mv ./cocktail-backend/target/site/badges/checkstyle-result.svg ./.github/badges/
+        run: mv ./backend/target/site/badges/checkstyle-result.svg ./.github/badges/
 
       - name: Commit and push the badge (if it changed)
         if: always()
@@ -59,20 +51,3 @@ jobs:
           default_author: github_actions
           message: 'commit badge'
           add: '*.svg'
-
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: 'Test eseguiti con successo!'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - uses: 8398a7/action-slack@v3
-        if: failure()
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: 'Test errati o non sufficienti'
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
