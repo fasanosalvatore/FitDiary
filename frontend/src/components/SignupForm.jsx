@@ -1,7 +1,7 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import config from '../config.json'
-import {Link} from "react-router-dom";
+import {Link,useNavigate} from "react-router-dom";
 import {
     Box,
     Button,
@@ -31,6 +31,11 @@ export default function SignupForm() {
     const stripe = useStripe();
     const elements = useElements();
     const toast = useToast()
+    const navigate = useNavigate();
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
 
     if (!stripe || !elements) {
         return "";
@@ -46,15 +51,17 @@ export default function SignupForm() {
                 const error = (resp && resp.message) || response.statusText;
                 return Promise.reject(error);
             }
-
-            handlePayment(resp.data.response.customerId).then(result =>{
-                console.log(result)
+            console.log("handling Payment ");
+            handlePayment(resp.data.response.customerId).then( () => {
+                console.log("redirecting Payment ");
+                navigate("/login");
             }).catch(handleFail)
         });
     }
 
     //Gestione FAIL
     function handleFail(data) {
+        console.log(data)
         toast({
             title: 'Registrazione Fallita',
             description: data,
@@ -87,8 +94,6 @@ export default function SignupForm() {
 
     async function handlePayment(customerId) {
 
-        const cardNumber = elements.getElement(CardNumberElement);
-
         let newSubscriptionResp = await fetch(urlAcquisto, {
             method: 'POST',
             headers: {
@@ -99,25 +104,38 @@ export default function SignupForm() {
 
         newSubscriptionResp = await newSubscriptionResp.json();
 
-        if (!newSubscriptionResp.ok) {
-            const error = (newSubscriptionResp && newSubscriptionResp.message) || newSubscriptionResp.statusText;
-            return Promise.reject(error);
-        }
+        console.log(newSubscriptionResp.data.Utente.clientSecret)
 
-        console.log("CLIENT SECRED: "+newSubscriptionResp)
+        const client_Secret = newSubscriptionResp.data.Utente.clientSecret;
 
-        const {error, payementIntent} = await stripe.confirmPayment(
-            newSubscriptionResp.clientSecret,
+        await stripe.confirmCardPayment(
+            client_Secret,
             {
-                payement_method: {
-                    card:cardNumber,
+                payment_method: {
+                    card:elements.getElement(CardNumberElement),
                 },
-            }
-        ).then(e =>{
-            console.log("PAYMENT SUCCESS")
-            console.log(e)
-            return true
-        }).catch(handleFail)
+            }).then(function (result){
+                //console.log(JSON.stringify(result,undefined,2));
+                if(result.error){
+                    toast({
+                        title: 'Pagamento Fallito',
+                        description: "pagamento non riuscito",
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                    console.log(result.error)
+                }
+                if(result.paymentIntent){
+                    toast({
+                        title: 'Pagamento Completato',
+                        description: "pagamento riuscito",
+                        status: 'success',
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                }
+        })
     }
 
 
