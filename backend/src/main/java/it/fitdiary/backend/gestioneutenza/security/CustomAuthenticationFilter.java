@@ -108,7 +108,8 @@ public class CustomAuthenticationFilter
                         "name", user.getName(),
                         "surname", user.getSurname(),
                         "trainerId", user.getTrainer(),
-                        "gender", user.getGender(),
+                        "gender", user.getGender() != null
+                                ? user.getGender() : "N",
                         "roles", user.getAuthorities()
                                 .stream()
                                 .map(p -> p.getAuthority())
@@ -125,7 +126,8 @@ public class CustomAuthenticationFilter
                                final Algorithm alg,
                                final long expiresAt) {
         return JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getId().toString())
+                .withClaim("email", user.getEmail())
                 .withExpiresAt(new Date(expiresAt))
                 .withIssuer(request.getRequestURI())
                 .withClaim("roles", user.getAuthorities().stream()
