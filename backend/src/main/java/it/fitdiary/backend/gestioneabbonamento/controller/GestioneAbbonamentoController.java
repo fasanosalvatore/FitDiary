@@ -2,7 +2,6 @@ package it.fitdiary.backend.gestioneabbonamento.controller;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
-import com.stripe.model.StripeObject;
 import com.stripe.model.Subscription;
 import com.stripe.param.SubscriptionCreateParams;
 import it.fitdiary.backend.utility.ResponseHandler;
@@ -47,7 +46,7 @@ public class GestioneAbbonamentoController {
                                 .PaymentBehavior.DEFAULT_INCOMPLETE)
                 .setCollectionMethod(true
                         ? SubscriptionCreateParams
-                                .CollectionMethod.CHARGE_AUTOMATICALLY
+                        .CollectionMethod.CHARGE_AUTOMATICALLY
                         : SubscriptionCreateParams
                         .CollectionMethod.SEND_INVOICE)
                 .addAllExpand(Arrays.asList("latest_invoice.payment_intent"))
@@ -58,7 +57,9 @@ public class GestioneAbbonamentoController {
         response.put("clientSecret",
                 subscription.getLatestInvoiceObject().getPaymentIntentObject()
                         .getClientSecret());
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "Utente",response);
+        return ResponseHandler.generateResponse(
+                HttpStatus.CREATED, "Utente", response
+        );
     }
 }
 

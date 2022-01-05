@@ -21,7 +21,21 @@ public interface GestioneProtocolloService {
             File schedaAllenamentoFile
     ) throws IOException, IllegalArgumentException;
 
+    /**
+     * @param idProtocollo id del protocollo
+     * @return protocollo trovato
+     */
     Protocollo getByIdProtocollo(Long idProtocollo);
-    Utente getPreparatoreById(Long idProtocollo);
-    Utente getClienteById(Long idProtocollo);
+
+    /**
+     * @param idPreparatore id del preparatore
+     * @return preparatore
+     */
+    Utente getPreparatoreById(Long idPreparatore);
+
+    /**
+     * @param idCliente id del cliente
+     * @return cliente
+     */
+    Utente getClienteById(Long idCliente);
 }
