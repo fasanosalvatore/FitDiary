@@ -13,6 +13,8 @@ import {
     Button,
 } from "@chakra-ui/react";
 import { FaCheckCircle } from 'react-icons/fa';
+import { extendTheme } from '@chakra-ui/react'
+import { createBreakpoints } from '@chakra-ui/theme-tools'
 
 function PriceWrapper({ children }: { children: React }) {
     return (
@@ -20,13 +22,21 @@ function PriceWrapper({ children }: { children: React }) {
             mb={4}
             shadow="base"
             borderWidth="1px"
-            alignSelf={{ base: 'center', lg: 'flex-start' }}
+            alignSelf={{ base: 'center', xl: 'flex-start' }}
             borderColor={useColorModeValue('gray.200', 'gray.500')}
             borderRadius={'xl'}>
             {children}
         </Box>
     );
 }
+
+const breakpoints = createBreakpoints({
+    sm: '320px',
+    md: '768px',
+    lg: '960px',
+    xl: '1200px',
+    '2xl': '1536px',
+})
 
 export default function TierPrice() {
     return (
@@ -37,7 +47,7 @@ export default function TierPrice() {
                 </Heading>
             </VStack>
             <Stack
-                direction={{ base: 'column', md: 'row' }}
+                direction={{ base: 'column', sm: 'column',xl:'row' }}
                 textAlign="center"
                 justify="center"
                 spacing={{ base: 4, lg: 10 }}

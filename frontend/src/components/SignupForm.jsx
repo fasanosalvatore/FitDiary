@@ -270,7 +270,9 @@ export default function SignupForm() {
                             </GridItem>
                         </SimpleGrid>
                     </Box>
+                    <GridItem colSpan={2}>
                         <TierPrice/>
+                    </GridItem>
                     <GridItem colSpan={2}>
                         <Button w="full" mt={4} colorScheme='teal' type='submit'>
                             Registrati e Paga
