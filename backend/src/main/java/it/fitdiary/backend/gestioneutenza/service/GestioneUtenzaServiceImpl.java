@@ -151,6 +151,16 @@ public class GestioneUtenzaServiceImpl
     }
 
     /**
+     * @param idPrep rappresenta l' id del preparatore
+     * @param idCli  rappresenta l' id del cliente
+     * @return @return vero se il cliente fa parte della lista dei clienti di quel preparatore, falso altrimenti
+     */
+    @Override
+    public boolean existsByPreparatoreAndId(Long idPrep, Long idCli) {
+        return   utenteRepository.existsByPreparatoreAndId(utenteRepository.getById(idPrep),idCli);
+    }
+
+    /**
      * Questo metodo permette di inserire
      * i dati nel sistema ad un cliente.
      *

@@ -11,4 +11,10 @@ public interface ProtocolloRepository extends JpaRepository<Protocollo, Long> {
 
     List<Protocollo> findAllByCliente(Utente cliente);
 
+    /**
+     *
+     * @param id id del protocollo
+     * @return protocollo
+     */
+    Protocollo getById(Long id);
 }

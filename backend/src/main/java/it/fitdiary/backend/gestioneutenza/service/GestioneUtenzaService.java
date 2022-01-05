@@ -68,4 +68,12 @@ public interface GestioneUtenzaService extends UserDetailsService {
      */
      FitDiaryUserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException;
+
+    /**
+     *
+     * @param idPreparatore rappresenta l' id del preparatore
+     * @param idCliente  rappresenta l' id del cliente
+     * @return @return vero se il cliente fa parte della lista dei clienti di quel preparatore, falso altrimenti
+     */
+    boolean existsByPreparatoreAndId(Long idPreparatore, Long idCliente);
 }

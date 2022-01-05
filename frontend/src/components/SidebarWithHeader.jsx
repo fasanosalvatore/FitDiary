@@ -32,8 +32,6 @@ import {
     FiBell,
     FiChevronDown,
 } from 'react-icons/fi';
-import { IconType } from 'react-icons';
-import { ReactText } from 'react';
 import {BiExit} from "react-icons/bi";
 import authService from "../services/auth.service";
 
@@ -58,14 +56,18 @@ export const Logo = createIcon({
         </g>
     ),
 })
+
+
+
 const user=authService.getCurrentUser();
 
 const LinkItems = [
     { name: 'Home', icon: FiHome, to: "/" },
     { name: 'Registrati', icon: FiCompass, to: "/signup" },
     { name: 'Profilo', icon: FiSettings, to: "/customer/me" },
-    { name: 'test', icon: FiSettings, to: "/test" },
-    { name: user ? 'Logout' : 'Login',icon:user ? BiExit : FiTrendingUp,to: "/login"}
+    { name: 'test', icon: FiSettings, to: "/customer/protocol" },
+    { name: user ? 'Logout' : 'Login',icon:user ? BiExit : FiTrendingUp,to: "/logout" },
+
 ];
 
 export default function SidebarWithHeader({children}) {
@@ -221,6 +223,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                             </HStack>
 
                         </MenuButton>
+
                         <MenuList
                             bg={useColorModeValue('white', 'gray.900')}
                             borderColor={useColorModeValue('gray.200', 'gray.700')}>
