@@ -64,8 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl(
                 "/api/v1/utenti/login");
         http.csrf().disable()
-                .cors().disable()
-                .sessionManagement()
+                .cors();
+        http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers(POST, "/api/v1/utenti"
                                 + "/preparatore"
@@ -104,6 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                             + "\"status\": \"error\"}");
                         })
                 );
+        http.headers().addHeaderWriter(new HeaderWriteConfigure());
     }
 
     /**

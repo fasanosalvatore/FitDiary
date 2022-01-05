@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,7 +37,7 @@ public class Protocollo {
     @Column(name = "data_scadenza")
     @Future(message =
             "La data di scadenza deve essere successiva alla data odierna")
-    private LocalDateTime dataScadenza;
+    private LocalDate dataScadenza;
     /**
      * scheda alimentare.
      */
