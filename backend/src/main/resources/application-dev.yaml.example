@@ -14,14 +14,14 @@ spring:
           lob:
             non_contextual_creation: true
   datasource:
-    url: jdbc:mysql://localhost:3306/yourdbname
-    username: yourusername
-    password: yourpassword
+    url: jdbc:mysql://localhost:3306/fitdiary
+    username: root
+    password: secret
   mail:
     host: smtp.mailtrap.io
     port: 2525
-    username: yourusername
-    password: yourpassword
+    username: 0ca10b58484f3a
+    password: c4e490e41f544c
     properties:
       mail:
         smtp:
