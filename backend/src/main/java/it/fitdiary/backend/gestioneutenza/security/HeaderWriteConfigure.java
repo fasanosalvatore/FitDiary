@@ -25,6 +25,6 @@ public class HeaderWriteConfigure implements HeaderWriter {
         response.setHeader("Access-Control-Allow-Headers",
                 "Origin, X-Requested-With, Content-Type, Accept, Key, "
                         + "Authorization");
-        response.setStatus(HttpServletResponse.SC_OK);
+//        response.setStatus(HttpServletResponse.SC_OK);
     }
 }

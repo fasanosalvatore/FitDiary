@@ -7,6 +7,7 @@ import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
+import net.sf.saxon.trans.SymbolicName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -29,8 +31,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import static org.mockito.Mockito.*;
 
@@ -330,12 +335,17 @@ class GestioneUtenzaControllerTest {
                 "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null,null, null);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOlsiUHJlcGFyYXRvcmUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJlbWFpbCI6ImdpYXF1aUBnbWFpbC5jb20ifQ.KCrqMh7dZLKw0fC0hjVI2waqyKwlFQgueduzLBTDJdY");
-        when(gestioneUtenzaService.getById(2L)).thenReturn(utente);
+                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOlsiUHJlcGFyYXRvcmUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJleHAiOjkyMjMzNzIwMzY4NTQ3NzUsImVtYWlsIjoiZ2lhcXVpQGdtYWlsLmNvbSJ9.WY9dtCdMOipeFtD6Y8ptjSGK4u5ujFbxiOYWeR67bro");
+        FitDiaryUserDetails userDetails=new FitDiaryUserDetails(utente.getId().toString(), utente.getPassword(), new ArrayList<>());
+        userDetails.setId(utente.getId());
+        userDetails.setName(utente.getNome());
+        userDetails.setSurname(utente.getCognome());
+        userDetails.setGender(utente.getSesso());
+        when(gestioneUtenzaService.loadUserByUsername("giaqui@gmail.com")).thenReturn(userDetails);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -347,11 +357,16 @@ class GestioneUtenzaControllerTest {
                 null, null, ruoloPrep, null, null, null,null, null);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer ");
-        when(gestioneUtenzaService.getById(1L)).thenReturn(utente);
+        FitDiaryUserDetails userDetails=new FitDiaryUserDetails(utente.getId().toString(), utente.getPassword(), new ArrayList<>());
+        userDetails.setId(utente.getId());
+        userDetails.setName(utente.getNome());
+        userDetails.setSurname(utente.getCognome());
+        userDetails.setGender(utente.getSesso());
+        when(gestioneUtenzaService.loadUserByUsername("giaqui@gmail.com")).thenReturn(userDetails);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isForbidden());
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
@@ -363,11 +378,16 @@ class GestioneUtenzaControllerTest {
                 null, null, ruoloPrep, null, null, null,null, null);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "");
-        when(gestioneUtenzaService.getById(1L)).thenReturn(utente);
+        FitDiaryUserDetails userDetails=new FitDiaryUserDetails(utente.getId().toString(), utente.getPassword(), new ArrayList<>());
+        userDetails.setId(utente.getId());
+        userDetails.setName(utente.getNome());
+        userDetails.setSurname(utente.getCognome());
+        userDetails.setGender(utente.getSesso());
+        when(gestioneUtenzaService.loadUserByUsername("giaqui@gmail.com")).thenReturn(userDetails);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isForbidden());
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }
 
