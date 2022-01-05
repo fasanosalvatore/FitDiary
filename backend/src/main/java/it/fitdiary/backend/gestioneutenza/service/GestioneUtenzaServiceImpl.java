@@ -106,9 +106,7 @@ public class GestioneUtenzaServiceImpl
         newUtente.setAttivo(true);
         newUtente.setPreparatore(preparatore);
         String password = passwordGenerator.generate();
-        emailService.sendSimpleMessage(newUtente.getEmail(),
-                "Benvenuto in FitDiary!",
-                "Ecco la tua password per accedere: \n" + password);
+        emailService.sendSimpleMessage(newUtente, password);
         newUtente.setPassword(passwordEncoder.encode(password));
         Utente newCliente = utenteRepository.save(newUtente);
         return newCliente;

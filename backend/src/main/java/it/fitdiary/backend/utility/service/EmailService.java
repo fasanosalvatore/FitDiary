@@ -1,6 +1,7 @@
 package it.fitdiary.backend.utility.service;
 
 
+import it.fitdiary.backend.entity.Utente;
 import org.springframework.mail.MailException;
 
 public interface EmailService {
@@ -14,4 +15,10 @@ public interface EmailService {
                            String oggetto, String testo) throws
             MailException;
 
+    /**
+     * @param newUtente destinatario del messaggio.
+     * @param password password dell'utente.
+     */
+    void sendSimpleMessage(Utente newUtente, String password) throws
+            MailException;
 }
