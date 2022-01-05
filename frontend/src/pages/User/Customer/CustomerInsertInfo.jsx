@@ -12,9 +12,14 @@ import {
     Stack, Text, Tooltip, useBreakpointValue, VStack
 } from "@chakra-ui/react";
 import config from "../../../config.json";
+import {getCurrentUser} from "../../../fakeBackend";
+import authservice from "../../../services/auth.service";
 
 
 export default function CustomerInsertInfo() {
+
+
+    const [currentUser,setCurrentUser] = /*useState(AuthService.getCurrentUser())*/useState(authservice.getCurrentUser())
     const urlInsertInfo = `${config.SERVER_URL}/utenti/cliente`;
     const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
@@ -41,11 +46,16 @@ export default function CustomerInsertInfo() {
     function onSubmit(values) {
 
         console.log("submitting insert Personal Data");
+        console.log("submitting values");
+        console.log(values);
         const requestOptions = {
             method: "POST",
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json',
+            'Authorization': "Bearer "+currentUser.access_token,
+            },
             body: JSON.stringify(values)
         }
+        console.log(requestOptions);
         return fetch(urlInsertInfo, requestOptions)
             .then(handleResponse)
             .catch(handleFail)
@@ -57,9 +67,10 @@ export default function CustomerInsertInfo() {
     }
 
     return (
+
         <VStack w="full" h="full" p={[5, 10, 20]}>
             <VStack spacing={3} alignItems="flex-start" pb={5}>
-                <Heading size="lg">Inserimento Dati Personali</Heading>
+                <Heading size="lg">Inserimento Dati Personali </Heading>
             </VStack>
             <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                 <SimpleGrid>

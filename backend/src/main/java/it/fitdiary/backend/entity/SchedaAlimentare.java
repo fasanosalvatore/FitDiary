@@ -1,5 +1,6 @@
 package it.fitdiary.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,8 +43,8 @@ public class SchedaAlimentare {
     /**
      * protocollo al quale è associata la scheda alimentare.
      */
-    @NotNull(message = "Il protocollo non puo' essere nullo")
     @OneToOne
     @JoinColumn(name = "protocollo_id")
+    @JsonIgnore
     private Protocollo protocollo;
 }

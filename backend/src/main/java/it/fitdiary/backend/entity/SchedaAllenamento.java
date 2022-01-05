@@ -1,5 +1,6 @@
 package it.fitdiary.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,8 +50,8 @@ public class SchedaAllenamento {
     /**
      * procotollo a cui è associata la scheda allenamento.
      */
-    @NotNull
     @OneToOne
     @JoinColumn(name = "protocollo_id")
+    @JsonIgnore
     private Protocollo protocollo;
 }

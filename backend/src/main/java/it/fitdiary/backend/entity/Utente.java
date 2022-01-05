@@ -109,6 +109,7 @@ public class Utente {
     @Column(length = MAX_PASSWORD_LENGTH)
     @Size(min = MIN_PASSWORD_LENGTH, max = MAX_PASSWORD_LENGTH,
             message = "Lunghezza password non valida")
+    @JsonIgnore
     private String password;
     /**
      * Indica se un utente è attivo.
@@ -178,6 +179,7 @@ public class Utente {
      * Lista di protocolli associati ad un utente.
      */
     @OneToMany(mappedBy = "cliente")
+    @JsonIgnore
     private List<Protocollo> listaProtocolli;
     /**
      * Lista di clienti associati ad un utente.

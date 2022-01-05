@@ -10,7 +10,8 @@ public interface EmailService {
      * @param oggetto oggetto del messaggio.
      * @param testo testo del messaggio.
      */
-    void sendSimpleMessage(String destinatario, String oggetto, String testo) throws
+    void sendSimpleMessage(String destinatario,
+                           String oggetto, String testo) throws
             MailException;
 
 }

@@ -58,8 +58,7 @@ public class GestioneAbbonamentoController {
         response.put("clientSecret",
                 subscription.getLatestInvoiceObject().getPaymentIntentObject()
                         .getClientSecret());
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "Utente",
-                StripeObject.PRETTY_PRINT_GSON.toJson(response));
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, "Utente",response);
     }
 }
 
