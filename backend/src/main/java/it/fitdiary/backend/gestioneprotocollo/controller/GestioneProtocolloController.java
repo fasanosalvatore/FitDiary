@@ -194,13 +194,20 @@ public class GestioneProtocolloController {
      *                  cui si vuole visualizzare il protocollo
      * @return lista di protocolli del cliente vuota o piena
      */
-    @GetMapping
+    @GetMapping("cliente/{id}")
     public ResponseEntity<Object> visualizzaStoricoProtocolliCliente(
-            final Long idCliente) {
-        return ResponseHandler.generateResponse(HttpStatus.OK,
-                "protocollo",
-                gestioneProtocolloService.visualizzaStoricoProtocolliCliente(
-                        idCliente));
+            @PathVariable("id") final Long idCliente) {
+        try {
+            Utente utenteCliente = gestioneUtenzaService.getById(idCliente);
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    "protocollo",
+                    gestioneProtocolloService
+                            .visualizzaStoricoProtocolliCliente(
+                            utenteCliente));
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                    e.getMessage());
+        }
     }
 
 }

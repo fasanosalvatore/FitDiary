@@ -12,7 +12,6 @@ import {
     SimpleGrid,
     Stack, Text, Tooltip, useBreakpointValue, VStack
 } from "@chakra-ui/react";
-import {getCurrentUser, getUserFull} from "../../../fakeBackend";
 import config from "../../../config.json";
 import authservice from "../../../services/auth.service";
 import axios from "axios";
