@@ -202,4 +202,17 @@ public class GestioneProtocolloServiceImpl
         }
         return cliente;
     }
+    /**
+     * @param idCliente id del cliente di cui si vuole
+     *  visualizzare lo storico dei protocolli
+     * @return lista dei protocolli del cliente
+     */
+    @Override
+    public List<Protocollo> visualizzaStoricoProtocolliCliente(Long idCliente) {
+        return protocolloRepository.findAllByCliente(idCliente);
+
+    }
+
+
+
 }

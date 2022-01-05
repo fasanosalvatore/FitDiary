@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
+
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -160,7 +162,7 @@ public class GestioneProtocolloController {
         int i;
         for (i = 0; i < preparatore.getListaClienti().size(); i++) {
             if (preparatore.getListaClienti().get(i).getId()
-                   == cliente.getId()) {
+                    == cliente.getId()) {
                 break;
             }
         }
@@ -182,5 +184,18 @@ public class GestioneProtocolloController {
 
     }
 
+    /**
+     * @param idCliente id del cliente di
+     *                  cui si vuole visualizzare il protocollo
+     * @return lista di protocolli del cliente vuota o piena
+     */
+    @GetMapping
+    public ResponseEntity<Object> visualizzaStoricoProtocolliCliente(
+            final Long idCliente) {
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                "protocollo",
+                gestioneProtocolloService.visualizzaStoricoProtocolliCliente(
+                        idCliente));
+    }
 
 }
