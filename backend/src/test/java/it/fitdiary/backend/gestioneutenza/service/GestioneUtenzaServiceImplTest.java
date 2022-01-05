@@ -56,7 +56,7 @@ public class GestioneUtenzaServiceImplTest {
         ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
         ruoloPreparatore = new Ruolo(2L, "PREPARATORE", null, null);
         cliente = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true, null, null, null,
-                        null, null, null, null, ruoloCliente, null, null, null, null, null);
+                null, null, null, null, ruoloCliente, null, null, null, null, null);
         clienteAggiornato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null,
                 ruoloCliente, null, null, null, null, null);
@@ -74,7 +74,7 @@ public class GestioneUtenzaServiceImplTest {
         when(utenteRepository.getById(cliente.getId())).thenReturn((clienteAggiornato));
         when(utenteRepository.save(clienteAggiornato)).thenReturn(clienteAggiornato);
         assertEquals(clienteAggiornato,
-                gestioneUtenzaService.inserimentoDatiPersonaliCliente(clienteAggiornato, clienteAggiornato.getId()));
+                gestioneUtenzaService.inserimentoDatiPersonaliCliente(cliente.getId(), clienteAggiornato));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class GestioneUtenzaServiceImplTest {
         when(utenteRepository.save(clienteAggiornato)).thenReturn(clienteAggiornato);
         when(passwordEncoder.encode(clienteAggiornato.getPassword())).thenReturn(clienteAggiornato.getPassword());
         assertEquals(clienteAggiornato,
-                gestioneUtenzaService.modificaDatiPersonaliCliente(clienteAggiornato, clienteAggiornato.getId()));
+                gestioneUtenzaService.modificaDatiPersonaliCliente(cliente.getId(), clienteAggiornato));
     }
 
     @Test
@@ -116,11 +116,11 @@ public class GestioneUtenzaServiceImplTest {
 
     @Test
     public void modificaDatiPersonaliPreparatore_Success() {
-        when(utenteRepository.findByEmail(preparatore.getEmail())).thenReturn(updatedPreparatore);
+        when(utenteRepository.getById(preparatore.getId())).thenReturn(updatedPreparatore);
         when(utenteRepository.save(updatedPreparatore)).thenReturn(updatedPreparatore);
         when(passwordEncoder.encode(updatedPreparatore.getPassword())).thenReturn(updatedPreparatore.getPassword());
         assertEquals(updatedPreparatore,
-                gestioneUtenzaService.modificaDatiPersonaliPreparatore(updatedPreparatore, updatedPreparatore.getEmail()));
+                gestioneUtenzaService.modificaDatiPersonaliPreparatore(updatedPreparatore.getId(), updatedPreparatore));
     }
 
     @Test
@@ -157,7 +157,7 @@ public class GestioneUtenzaServiceImplTest {
         Utente newUtentePost =
                 new Utente(2L, nome, cognome, email, password, true, LocalDate.parse("1990-01-01"), null, null, null,
                         null, null, preparatore, ruoloCliente, null, null, null, null, null);
-        when(utenteRepository.findByEmail(emailPrep)).thenReturn(preparatore);
+        when(utenteRepository.getById(preparatore.getId())).thenReturn(preparatore);
         when(utenteRepository.findByEmail(email)).thenReturn(null);
         when(utenteRepository.save(newUtentePre)).thenReturn(newUtentePost);
         when(ruoloRepository.findByNome("CLIENTE")).thenReturn(ruoloCliente);
@@ -165,7 +165,7 @@ public class GestioneUtenzaServiceImplTest {
         doNothing().when(emailService).sendSimpleMessage(newUtentePre.getEmail(), "Benvenuto in FitDiary!",
                 "Ecco la tua password per accedere: \n" + password);
         when(passwordEncoder.encode(password)).thenReturn(password);
-        assertEquals(newUtentePost, gestioneUtenzaService.inserisciCliente(nome, cognome, email, emailPrep));
+        assertEquals(newUtentePost, gestioneUtenzaService.inserisciCliente(preparatore.getId(), nome, cognome, email));
     }
 
     @Test
@@ -193,7 +193,7 @@ public class GestioneUtenzaServiceImplTest {
         doNothing().when(emailService).sendSimpleMessage(newUtentePre.getEmail(), "Benvenuto in FitDiary!",
                 "Ecco la tua password per accedere: \n" + password);
         when(passwordEncoder.encode(password)).thenReturn(password);
-        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.inserisciCliente(nome, cognome, email, emailPrep));
+        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.inserisciCliente(preparatore.getId(), nome, cognome, email));
     }
 
     @Test
@@ -221,7 +221,7 @@ public class GestioneUtenzaServiceImplTest {
         doNothing().when(emailService).sendSimpleMessage(newUtentePre.getEmail(), "Benvenuto in FitDiary!",
                 "Ecco la tua password per accedere: \n" + password);
         when(passwordEncoder.encode(password)).thenReturn(password);
-        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.inserisciCliente(nome, cognome, email, emailPrep));
+        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.inserisciCliente(preparatore.getId(), nome, cognome, email));
     }
 
     @Test
@@ -231,8 +231,8 @@ public class GestioneUtenzaServiceImplTest {
                 new Utente(1L, "Davide", "La Gamba", email, "Davide123*", true, LocalDate.parse("2000-03-03"), null,
                         "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPreparatore, null, null, null,
                         null, null);
-        when(utenteRepository.findByEmail(email)).thenReturn(utente);
-        assertEquals(utente, gestioneUtenzaService.getUtenteByEmail(email));
+        when(utenteRepository.getById(1L)).thenReturn(utente);
+        assertEquals(utente, gestioneUtenzaService.getById(1L));
     }
 
     @Test
@@ -241,14 +241,13 @@ public class GestioneUtenzaServiceImplTest {
                 LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
                 ruoloPreparatore, null, null, null, null, null);
         when(utenteRepository.findByEmail(null)).thenReturn(utente);
-        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.getUtenteByEmail(null));
+        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.getById(null));
     }
 
     @Test
-    public void getUtenteByEmailThrowsIllegalUtente() {
-        String email = "davide@gmail.com";
-        when(utenteRepository.findByEmail(email)).thenReturn(null);
-        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.getUtenteByEmail(email));
+    public void getUtenteById_ThrowsIllegalUtente() {
+        when(utenteRepository.getById(2L)).thenReturn(null);
+        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.getById(2L));
     }
 
     @Test
