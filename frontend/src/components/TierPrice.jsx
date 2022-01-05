@@ -1,4 +1,4 @@
-import {React,ReactNode} from 'react';
+import React from 'react';
 import {
     Box,
     Stack,
@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { FaCheckCircle } from 'react-icons/fa';
 
-function PriceWrapper({ children }: { children: ReactNode }) {
+function PriceWrapper({ children }: { children: React }) {
     return (
         <Box
             mb={4}
