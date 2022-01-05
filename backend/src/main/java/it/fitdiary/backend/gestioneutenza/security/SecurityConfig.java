@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Ruolo Cliente.
      */
-    public static final String CLIENTE = "CLIENTE";
+    public static final String CLIENTE = "Cliente";
     /**
      * UserDetailsService utilizzato per l'autenticazione.
      */

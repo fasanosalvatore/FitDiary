@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +97,7 @@ public class GestioneUtenzaController {
         Map<String, Object> params = new HashMap<>();
         params.put("email", newUtente.getEmail());
         params.put("name", newUtente.getNome() + " " + newUtente.getCognome());
-        Customer customer = null;
+        Customer customer;
         try {
             customer = Customer.create(params);
         } catch (Exception e) {
@@ -116,22 +116,23 @@ public class GestioneUtenzaController {
      * Questo metodo prende i parametri inseriti
      * nel body della richiesta http e li passa al service.
      *
-     * @param utente rappresenta l'insieme dei dati personali di un utente
+     * @param clienteModificato rappresenta l'insieme dei dati personali
+     *                          di un utente
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database
      */
     @PostMapping("cliente")
     ResponseEntity<Object> inserimentoDatiPersonaliCliente(
-            @RequestBody final Utente utente) {
+            @RequestBody final Utente clienteModificato) {
         HttpServletRequest request =
                 ((ServletRequestAttributes)
                         RequestContextHolder
                                 .getRequestAttributes()).getRequest();
-        Principal principal = request.getUserPrincipal();
-        String emailCliente = principal.getName();
+        var idCliente = Long.parseLong(request.getUserPrincipal().getName());
         try {
-            Utente newUtente = service.inserimentoDatiPersonaliCliente(utente,
-                    emailCliente);
+            Utente newUtente =
+                    service.inserimentoDatiPersonaliCliente(idCliente,
+                            clienteModificato);
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "utente",
                     newUtente);
@@ -145,23 +146,24 @@ public class GestioneUtenzaController {
      * Questo metodo prende i parametri inseriti per
      * modificare nel body della richiesta http e li passa al service.
      *
-     * @param utente rappresenta l'insieme dei dati personali di un utente
+     * @param clienteModificato rappresenta l'insieme dei dati personali
+     *                          di un utente
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database
      */
     @PutMapping("cliente")
     ResponseEntity<Object> modificaDatiPersonaliCliente(
-            @RequestBody final Utente utente) {
+            @RequestBody final Utente clienteModificato) {
         HttpServletRequest request =
                 ((ServletRequestAttributes)
                         RequestContextHolder
                                 .getRequestAttributes())
                         .getRequest();
-        Principal principal = request.getUserPrincipal();
-        String emailCliente = principal.getName();
+        var idCliente = Long.parseLong(request.getUserPrincipal().getName());
         try {
             Utente newUtente =
-                    service.modificaDatiPersonaliCliente(utente, emailCliente);
+                    service.modificaDatiPersonaliCliente(idCliente,
+                            clienteModificato);
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "utente",
                     newUtente);
@@ -188,12 +190,13 @@ public class GestioneUtenzaController {
                 ((ServletRequestAttributes) RequestContextHolder
                         .getRequestAttributes())
                         .getRequest();
-        Principal principal = request.getUserPrincipal();
-        String emailPreparatore = principal.getName();
+        var idPreparatore =
+                Long.parseLong(request.getUserPrincipal().getName());
         try {
             Utente updatedPrepartore =
-                    service.modificaDatiPersonaliPreparatore(preparatore,
-                            emailPreparatore);
+                    service.modificaDatiPersonaliPreparatore(
+                            idPreparatore, preparatore
+                    );
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "preparatore",
                     updatedPrepartore);
@@ -224,15 +227,18 @@ public class GestioneUtenzaController {
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);
-                String email = decodedJWT.getSubject();
-                Utente utente = service.getUtenteByEmail(email);
+                Long id = Long.parseLong(decodedJWT.getSubject());
+                Utente utente = service.getById(id);
+                var roles = new ArrayList<>();
+                roles.add(utente.getRuolo().getNome());
                 String accessToken = JWT.create()
-                        .withSubject(utente.getEmail())
+                        .withSubject(utente.getId().toString())
                         .withExpiresAt(new Date(
                                 System.currentTimeMillis() + INT10 * INT60
                                         * INT1000))
-                        .withIssuer(request.getRequestURI().toString())
-                        .withClaim("roles", utente.getRuolo().getNome())
+                        .withClaim("email", utente.getEmail())
+                        .withIssuer(request.getRequestURI())
+                        .withClaim("roles", roles)
                         .sign(algorithm);
                 Map<String, String> tokens = new HashMap<>();
                 tokens.put("access_token", accessToken);
@@ -281,12 +287,13 @@ public class GestioneUtenzaController {
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);
-                String email = decodedJWT.getSubject();
-                Utente utente = service.getUtenteByEmail(email);
+                Long id = Long.parseLong(decodedJWT.getSubject());
+                Utente utente = service.getById(id);
                 String accessToken = JWT.create()
-                        .withSubject(utente.getEmail())
+                        .withSubject(utente.getId().toString())
                         .withExpiresAt(
                                 new Date(System.currentTimeMillis() + INT1000))
+                        .withClaim("email", utente.getEmail())
                         .withIssuer(request.getRequestURI().toString())
                         .withClaim("roles", utente.getRuolo().getNome())
                         .sign(algorithm);
@@ -319,20 +326,20 @@ public class GestioneUtenzaController {
     @PostMapping("createcliente")
     ResponseEntity<Object> iscrizioneCliente(
             @RequestBody final NuovoCliente cliente) {
-        HttpServletRequest request =
-                ((ServletRequestAttributes)
-                        RequestContextHolder
-                                .getRequestAttributes())
-                        .getRequest();
-        Principal principal = request.getUserPrincipal();
-        String emailPreparatore = principal.getName();
-        Utente newCliente = null;
+        var request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        var idPreparatore =
+                Long.parseLong(request.getUserPrincipal().getName());
         String email = cliente.getEmail();
         String nome = cliente.getNome();
         String cognome = cliente.getCognome();
         try {
-            newCliente = service.inserisciCliente(nome, cognome, email,
-                    emailPreparatore);
+            Utente newCliente =
+                    service.inserisciCliente(idPreparatore, nome, cognome,
+                            email);
+            return ResponseHandler.generateResponse(HttpStatus.CREATED,
+                    "cliente",
+                    newCliente);
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
@@ -342,8 +349,6 @@ public class GestioneUtenzaController {
             return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY,
                     "Errore durante l'invio della mail");
         }
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "cliente",
-                newCliente);
     }
 
     /**
@@ -375,10 +380,9 @@ public class GestioneUtenzaController {
     public ResponseEntity<Object> visualizzaProfilo(final HttpServletRequest
                                                             request)
             throws IOException {
-        Principal principal = request.getUserPrincipal();
-        String email = principal.getName();
+        var idUtente = Long.parseLong(request.getUserPrincipal().getName());
         try {
-            Utente utente = service.getUtenteByEmail(email);
+            Utente utente = service.getById(idUtente);
             return ResponseHandler.generateResponse(HttpStatus.OK, "utente",
                     utente
             );
