@@ -41,8 +41,8 @@ public interface GestioneProtocolloService {
     Utente getClienteById(Long idCliente);
 
     /**
-     * @param idCliente id del cliente di cui visualizzare lo storico protocollo
+     * @param cliente cliente di cui visualizzare lo storico protocollo
      * @return lista protocolli del cliente
      */
-    List<Protocollo> visualizzaStoricoProtocolliCliente(Long idCliente);
+    List<Protocollo> visualizzaStoricoProtocolliCliente(Utente cliente);
 }
