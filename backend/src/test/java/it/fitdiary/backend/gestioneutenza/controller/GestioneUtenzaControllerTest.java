@@ -6,6 +6,7 @@ import com.stripe.model.Customer;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
+import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -183,10 +184,10 @@ class GestioneUtenzaControllerTest {
                 , "Fabrizio123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
                 null, preparatore, ruoloPrep, null, null, null,null, null);
 
-        Principal principal = () -> "User";
-        when(gestioneUtenzaService.inserisciCliente(nome, cognome, email, principal.getName())).thenReturn(newCliente);
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.inserisciCliente(Long.parseLong(principal.getName()), cognome, email, principal.getName())).thenReturn(newCliente);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
+                MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(() -> "1").content(clienteJson).contentType(MediaType.APPLICATION_JSON);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
@@ -213,11 +214,10 @@ class GestioneUtenzaControllerTest {
         Utente newCliente = new Utente(2L, nome, cognome, email
                 , "Fabrizio123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
                 null, preparatore, ruoloPrep, null, null, null,null, null);
-
-        Principal principal = () -> "User";
-        when(gestioneUtenzaService.inserisciCliente(nome, cognome, email, principal.getName())).thenThrow(IllegalArgumentException.class);
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.inserisciCliente(preparatore.getId(), nome, cognome, email)).thenThrow(IllegalArgumentException.class);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
+                MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(() -> "1").content(clienteJson).contentType(MediaType.APPLICATION_JSON);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
@@ -234,8 +234,8 @@ class GestioneUtenzaControllerTest {
                 "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null,null, null);
 
-        Principal principal = () -> "User";
-        when(gestioneUtenzaService.getUtenteByEmail(principal.getName())).thenReturn(utente);
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.getById(Long.parseLong(principal.getName()))).thenReturn(utente);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/profilo").principal(principal);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
@@ -253,8 +253,8 @@ class GestioneUtenzaControllerTest {
                 "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null,null, null);
 
-        Principal principal = () -> "User";
-        when(gestioneUtenzaService.getUtenteByEmail(principal.getName())).thenThrow(IllegalArgumentException.class);
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.getById(Long.parseLong(principal.getName()))).thenThrow(IllegalArgumentException.class);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/profilo").principal(principal);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
@@ -273,13 +273,13 @@ class GestioneUtenzaControllerTest {
                 "    \"via\": \"Francesco rinaldo\",\n" +
                 "    \"cap\": \"94061\",\n" +
                 "    \"citta\": \"Agropoli\"\n" +
-               "}";
+                "}";
         Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 null, null, null, null, null, null, null, r, null, null, null, null, null);
         Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null, null, null);
-        Principal principal = () -> "User";
-        when(gestioneUtenzaService.inserimentoDatiPersonaliCliente(utenteNonModificato, principal.getName())).thenReturn(utenteModificato);
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.inserimentoDatiPersonaliCliente(utenteModificato.getId(), utenteModificato)).thenReturn(utenteModificato);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.post("/api/v1/utenti/cliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
@@ -310,8 +310,8 @@ class GestioneUtenzaControllerTest {
                 null, null, null, null, null, null, null, r, null, null, null, null, null);
         Utente utenteModificato = new Utente(1L, "Francesca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null, null, null);
-        Principal principal = () -> "User";
-        when(gestioneUtenzaService.modificaDatiPersonaliCliente(utenteNonModificato, principal.getName())).thenReturn(utenteModificato);
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.modificaDatiPersonaliCliente(utenteModificato.getId(), utenteModificato)).thenReturn(utenteModificato);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.put("/api/v1/utenti/cliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
@@ -324,14 +324,14 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void refreshTokenSuccess() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null,null);
-        Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
+        Ruolo ruoloPrep = new Ruolo(2L, "PREPARATORE", null,null);
+        Utente utente = new Utente(2L, "Davide", "La Gamba", "giaqui@gmail.com"
                 , "Davide123*", true, LocalDate.parse("2000-03" +
                 "-03"), "M", null, null, null,
                 null, null, ruoloPrep, null, null, null,null, null);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaWFxdWlAZ21haWwuY29tIiwicm9sZXMiOlsiUFJFUEFSQVRPUkUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4ifQ.SLEYSBP8EtDRvjPqxrEum7UmPwZ3qT1bSM4PJDwmWaM");
-        when(gestioneUtenzaService.getUtenteByEmail("giaqui@gmail.com")).thenReturn(utente);
+                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOlsiUHJlcGFyYXRvcmUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJlbWFpbCI6ImdpYXF1aUBnbWFpbC5jb20ifQ.KCrqMh7dZLKw0fC0hjVI2waqyKwlFQgueduzLBTDJdY");
+        when(gestioneUtenzaService.getById(2L)).thenReturn(utente);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
@@ -347,7 +347,7 @@ class GestioneUtenzaControllerTest {
                 null, null, ruoloPrep, null, null, null,null, null);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer ");
-        when(gestioneUtenzaService.getUtenteByEmail("giaqui@gmail.com")).thenReturn(utente);
+        when(gestioneUtenzaService.getById(1L)).thenReturn(utente);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
@@ -363,7 +363,7 @@ class GestioneUtenzaControllerTest {
                 null, null, ruoloPrep, null, null, null,null, null);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "");
-        when(gestioneUtenzaService.getUtenteByEmail("giaqui@gmail.com")).thenReturn(utente);
+        when(gestioneUtenzaService.getById(1L)).thenReturn(utente);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
