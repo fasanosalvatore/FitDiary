@@ -10,11 +10,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public class SchedaAlimentareAdapterImpl implements SchedaAlimentareAdapter {
 
+    /**
+     * Indica il valore della posizione del campo Kcal.
+     */
     public static final int I3 = 3;
+    /**
+     * Indica il valore della posizione del campo Grammi.
+     */
     public static final int I4 = 4;
 
+    /**
+     * @param file file della scheda alimentare
+     * @return
+     * @throws IOException
+     */
     @Override
     public List<Alimento> parse(final File file) throws IOException {
         List<Alimento> alimenti = new ArrayList<Alimento>();

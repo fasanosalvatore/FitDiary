@@ -12,10 +12,24 @@ import java.util.List;
 
 public class SchedaAllenamentoAdapterImpl implements SchedaAllenamentoAdapter {
 
+    /**
+     * Indica il valore della posizione del campo Recupero.
+     */
     public static final int I3 = 3;
+    /**
+     * Indica il valore della posizione del campo Numero allenamento.
+     */
     public static final int I4 = 4;
+    /**
+     * Indica il valore della posizione del campo Categoria.
+     */
     public static final int I5 = 5;
 
+    /**
+     * @param file file della scheda allenamento
+     * @return lista di esercizi
+     * @throws IOException
+     */
     @Override
     public List<Esercizio> parse(final File file) throws IOException {
         List<Esercizio> esercizi = new ArrayList<Esercizio>();

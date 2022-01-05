@@ -2,12 +2,9 @@ package it.fitdiary.backend.utility.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
-import org.springframework.mail.MailSendException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -16,21 +13,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.util.Date;
 
 @Component("mailService")
 @EnableAutoConfiguration
 public class EmailServiceImpl implements EmailService {
 
+    /**
+     * Mail sender per inviare le email.
+     */
     private JavaMailSender mailSender;
 
+    /**
+     * @param mailSend JavaMailSender
+     */
     @Autowired
-    public EmailServiceImpl(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
+    public EmailServiceImpl(final JavaMailSender mailSend) {
+        this.mailSender = mailSend;
     }
 
-    private void sendEmail(MimeMessagePreparator preparator) {
+    private void sendEmail(final MimeMessagePreparator preparator) {
         mailSender.send(preparator); // STEP 2
     }
 

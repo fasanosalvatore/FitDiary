@@ -7,5 +7,10 @@ import java.io.IOException;
 import java.util.List;
 
 public interface SchedaAlimentareAdapter {
+    /**
+     * @param file file della scheda alimentare
+     * @return lista di alimenti
+     * @throws IOException
+     */
     List<Alimento> parse(File file) throws IOException;
 }

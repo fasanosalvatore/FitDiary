@@ -9,12 +9,6 @@ import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapter;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapterImpl;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapter;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapterImpl;
-import it.fitdiary.backend.gestioneprotocollo.repository.AlimentoRepository;
-import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
-import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
-import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAlimentareRepository;
-import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +26,44 @@ import java.util.Set;
 @Transactional
 public class GestioneProtocolloServiceImpl
         implements GestioneProtocolloService {
+    /**
+     * Repository del protocollo.
+     */
     private final ProtocolloRepository protocolloRepository;
+    /**
+     * Repository dell'alimento.
+     */
     private final AlimentoRepository alimentoRepository;
+    /**
+     * Repository della Scheda alimentare.
+     */
     private final SchedaAlimentareRepository schedaAlimentareRepository;
+    /**
+     * Adapter della scheda alimentare.
+     */
     private final SchedaAlimentareAdapter schedaAlimentareAdapter =
             new SchedaAlimentareAdapterImpl();
+    /**
+     * Adapter della scheda allenamento.
+     */
     private final SchedaAllenamentoAdapter schedaAllenamentoAdapter =
             new SchedaAllenamentoAdapterImpl();
+    /**
+     * Repository della scheda allenamento.
+     */
     private final SchedaAllenamentoRepository schedaAllenamentoRepository;
+    /**
+     * Repository dell'esercizio.
+     */
     private final EsercizioRepository esercizioRepository;
 
+    /**
+     * @param protocolloRep repository del protocollo
+     * @param alimentoRep repository degli alimenti
+     * @param schedaAlimentareRep repository della scheda alimentare
+     * @param schedaAllenamentoRep repository della scheda allenamento
+     * @param esercizioRep repository degli esercizi
+     */
     @Autowired
     public GestioneProtocolloServiceImpl(
             final ProtocolloRepository protocolloRep,
@@ -56,6 +78,14 @@ public class GestioneProtocolloServiceImpl
         this.esercizioRepository = esercizioRep;
     }
 
+    /**
+     * @param protocollo            nuovo protocollo
+     * @param schedaAlimentareFile  file scheda alimentare del nuovo protocollo
+     * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
+     * @return
+     * @throws IOException
+     * @throws IllegalArgumentException
+     */
     @Override
     public Protocollo creazioneProtocollo(final Protocollo protocollo,
                                           final File schedaAlimentareFile,
