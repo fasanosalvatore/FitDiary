@@ -10,45 +10,51 @@ import org.springframework.mail.MailException;
 public interface GestioneUtenzaService {
 
     /**
-     * @param utente
+     * @param preparatore
      * @return utente
      */
-    Utente registrazione(Utente utente);
+    Utente registrazione(Utente preparatore);
 
     /**
-     * @param utente
-     * @param email
+     * @param idCliente
+     * @param clienteModificato
      * @return utente
      */
-    Utente inserimentoDatiPersonaliCliente(Utente utente, String email);
+    Utente inserimentoDatiPersonaliCliente(Long idCliente,
+                                           Utente clienteModificato);
 
     /**
-     * @param utente
-     * @param email
+     * @param idCliente id del cliente
+     * @param clienteModificato
      * @return utente
      */
-    Utente modificaDatiPersonaliCliente(Utente utente, String email);
+    Utente modificaDatiPersonaliCliente(Long idCliente,
+                                        Utente clienteModificato);
 
     /**
-     * @param utente
-     * @param email
+     * @param idPreparatore l'id del preparatore.
+     * @param preparatoreModificato il preparatore con i dati modificati.
      * @return utente
      */
-    Utente modificaDatiPersonaliPreparatore(Utente utente, String email);
+    Utente modificaDatiPersonaliPreparatore(Long idPreparatore,
+                                            Utente preparatoreModificato);
 
     /**
-     * @param email
+     * @param id
      * @return utente
      */
-    Utente getUtenteByEmail(String email);
+    Utente getById(Long id);
 
     /**
+     * @param idPreparatore
      * @param nome
      * @param cognome
      * @param email
-     * @param emailPrep
      * @return utente
      */
-    Utente inserisciCliente(String nome, String cognome, String email,
-                            String emailPrep) throws IllegalArgumentException, MailException;
+    Utente inserisciCliente(Long idPreparatore,
+                            String nome,
+                            String cognome,
+                            String email)
+            throws IllegalArgumentException, MailException;
 }
