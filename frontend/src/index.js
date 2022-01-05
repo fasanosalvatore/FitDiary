@@ -15,6 +15,7 @@ import Index from "./pages/Home/Index";
 import CustomerInsertInfo from "./pages/User/Customer/CustomerInsertInfo";
 import CustomerEditInfo from "./pages/User/Customer/CustomerEditInfo";
 import authService from "./services/auth.service";
+import CustomerviewProtocol from "./pages/User/Customer/CustomerviewProtocol";
 
 let rootElement = document.getElementById("root");
 
@@ -31,6 +32,7 @@ ReactDOM.render(
                     <Route path="/customer" element={<CustomerIndex/>}>
                         <Route path="me" element={<CustomerProfile/>}/>
                         <Route path="create" element={<CustomerCreate/>}/>
+                        <Route path="protocol" element={<CustomerviewProtocol/>}/>
                     </Route>
                     <Route path="/trainer" element={<TrainerIndex/>}>
                         <Route path="edit" element={<TrainerEdit/>}/>

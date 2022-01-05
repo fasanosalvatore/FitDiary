@@ -117,20 +117,24 @@ public class GestioneProtocolloController {
      * Questa funzione permette di visualizzare
      * un proprio protocollo da parte di un cliente.
      *
-     * @param request indica la risposta http inviata dal front-end
+     * @param id indica l' identificativo del protocollo
      * @return protocollo selezionato
      * @throws IOException
      */
+    @GetMapping("{id}")
     public ResponseEntity<Object> visualizzaProtocolloFromCliente(
-            final HttpServletRequest
-                    request)
+            @PathVariable Long id )
             throws IOException {
-        Principal principal = request.getUserPrincipal();
-        var idProtocollo =
-                Long.parseLong(request.getUserPrincipal().getName());
+        var request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        var principal=Long.parseLong(request.getUserPrincipal().getName());
+        Protocollo protocollo =
+                gestioneProtocolloService.getByIdProtocollo(id);
+        if(protocollo.getPreparatore().getId() != principal){
+            return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
+                    "Il preparatore non ha creato quel protocollo");
+        }
         try {
-            Protocollo protocollo =
-                    gestioneProtocolloService.getByIdProtocollo(idProtocollo);
             return ResponseHandler.generateResponse(HttpStatus.OK,
                     "protocollo",
                     protocollo
@@ -146,34 +150,32 @@ public class GestioneProtocolloController {
      * Questa funzione permette di visualizzare un protocollo
      * assegnato ad un suo cliente da parte di un preparatore.
      *
-     * @param request indica la risposta http inviata dal front-end
+     * @param id indica l' identificativo del protocollo
      * @return protocollo selezionato
      * @throws IOException
      */
+    @GetMapping("{id}")
     public ResponseEntity<Object> visualizzaProtocolloFromPreparatore(
-            final HttpServletRequest
-                    request)
+            @PathVariable Long id)
             throws IOException {
-        Principal principal = request.getUserPrincipal();
-        var idProtocollo =
-                Long.parseLong(request.getUserPrincipal().getName());
-        Utente preparatore =
-                gestioneProtocolloService.getPreparatoreById(idProtocollo);
-        Utente cliente = gestioneProtocolloService.getClienteById(idProtocollo);
-        int i;
-        for (i = 0; i < preparatore.getListaClienti().size(); i++) {
-            if (preparatore.getListaClienti().get(i).getId()
-                    == cliente.getId()) {
-                break;
-            }
+        var request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        var principal=Long.parseLong(request.getUserPrincipal().getName());
+        Protocollo protocollo =
+                gestioneProtocolloService.getByIdProtocollo(id);
+        if(protocollo.getPreparatore().getId() != principal){
+            return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
+                    "Il preparatore non ha creato quel protocollo");
         }
-        if (i >= preparatore.getListaClienti().size()) {
+        Utente preparatore =
+                gestioneProtocolloService.getPreparatoreById(protocollo.getPreparatore().getId());
+        Utente cliente =
+                gestioneProtocolloService.getClienteById(principal);
+        if(!gestioneUtenzaService.existsByPreparatoreAndId(preparatore.getId(),cliente.getId())){
             return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
                     "Il cliente selezionato non appartiene al preparatore");
         }
         try {
-            Protocollo protocollo =
-                    gestioneProtocolloService.getByIdProtocollo(idProtocollo);
             return ResponseHandler.generateResponse(HttpStatus.OK,
                     "protocollo",
                     protocollo
@@ -184,6 +186,8 @@ public class GestioneProtocolloController {
         }
 
     }
+
+
 
     /**
      * @param idCliente id del cliente di

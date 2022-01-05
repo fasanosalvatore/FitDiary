@@ -1,90 +1,96 @@
 package it.fitdiary.backend.utility.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
-import com.icegreen.greenmail.util.GreenMail;
-import com.icegreen.greenmail.util.ServerSetup;
-import it.fitdiary.BackendApplicationTest;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExternalResource;
-import org.junit.runner.RunWith;
+import it.fitdiary.backend.entity.Ruolo;
+import it.fitdiary.backend.entity.Utente;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.MailAuthenticationException;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-
-@SpringBootTest
-@ActiveProfiles("test")
-@RunWith(SpringRunner.class)
-@ContextConfiguration(classes = BackendApplicationTest.class)
-public class EmailServiceImplTest {
-
+@ContextConfiguration(classes = {EmailServiceImpl.class})
+@ExtendWith(SpringExtension.class)
+class EmailServiceImplTest {
     @Autowired
-    private EmailServiceImpl emailService;
+    private EmailServiceImpl emailServiceImpl;
 
-    @Rule
-    public SmtpServerRule smtpServerRule = new SmtpServerRule(2525);
+    @MockBean
+    private JavaMailSender javaMailSender;
 
+    private Utente cliente;
+    private Utente preparatore;
 
-    @Bean
-    public JavaMailSender javaMailSender() {
-        return new JavaMailSenderImpl();
+    @BeforeEach
+    void setUp() {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null,null);
+        Ruolo ruoloCli = new Ruolo(1L, "CLIENTE", null,null);
+        preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
+                null, null, ruoloPrep, null, null, null,null, null);
+        cliente=new Utente(1L, "Daniele", "De Marco", "fabrizio" +
+                "@gmail.com", "Daniele123*", true, LocalDate.parse("2000-03-03"), "M", null, null, null,
+                null, preparatore, ruoloCli, null, null, null,null, null);
     }
-
 
     @Test
-    public void shouldSendSingleMail() throws MessagingException, IOException {
-        String to="info@memorynotfound.com";
-        String subject="Spring Mail Integration Testing with JUnit and GreenMail Example";
-        String content="We show how to write Integration Tests using Spring and GreenMail.";
-
-        emailService.sendSimpleMessage(to,subject,content);
-
-        MimeMessage[] receivedMessages = smtpServerRule.getMessages();
-        assertEquals(1, receivedMessages.length);
-
-        MimeMessage current = receivedMessages[0];
-
-        assertEquals(subject, current.getSubject());
-        assertEquals(to, current.getAllRecipients()[0].toString());
-        assertTrue(String.valueOf(current.getContent()).contains(content));
-
-    }
-}
-
-class SmtpServerRule extends ExternalResource {
-
-    private GreenMail smtpServer;
-    private int port;
-
-    public SmtpServerRule(int port) {
-        this.port = port;
+    void testSendSimpleMessage_Success() throws MailException {
+        doNothing().when(this.javaMailSender)
+                .send((org.springframework.mail.javamail.MimeMessagePreparator) any());
+        this.emailServiceImpl.sendSimpleMessage("fabrizio@gmail.com",
+                "benvenuta in FitDiary", "la tua password è: Pippo123!");
+        verify(this.javaMailSender).send(
+                (org.springframework.mail.javamail.MimeMessagePreparator) any());
     }
 
-    @Override
-    protected void before() throws Throwable {
-        super.before();
-        smtpServer = new GreenMail(new ServerSetup(port, null, "smtp"));
-        smtpServer.start();
+    @Test
+    void testSendSimpleMessage_MailAuthenticationException() throws MailException {
+        doThrow(new MailAuthenticationException(
+                "demarcodaniele98@gmail.com")).when(this.javaMailSender)
+                .send((org.springframework.mail.javamail.MimeMessagePreparator) any());
+        assertThrows(MailAuthenticationException.class,
+                () -> this.emailServiceImpl.sendSimpleMessage("fabrizio@gmail.com",
+                        "benvenuta in FitDiary",
+                        "la tua password è: Pippo123!"));
+        verify(this.javaMailSender).send(
+                (org.springframework.mail.javamail.MimeMessagePreparator) any());
     }
 
-    public MimeMessage[] getMessages() {
-        return smtpServer.getReceivedMessages();
+    @Test
+    void testSendSimpleMessage_SuccessWithUser() throws MailException {
+        doNothing().when(this.javaMailSender)
+                .send((org.springframework.mail.javamail.MimeMessagePreparator) any());
+
+        this.emailServiceImpl.sendSimpleMessage(cliente, "Pippo123!");
+        verify(this.javaMailSender).send(
+                (org.springframework.mail.javamail.MimeMessagePreparator) any());
     }
 
-    @Override
-    protected void after() {
-        super.after();
-        smtpServer.stop();
+    @Test
+    void testSendSimpleMessage_MailAuthenticationExceptionWithUser() throws MailException {
+        doThrow(new MailAuthenticationException("mail.html")).when(
+                        this.javaMailSender)
+                .send((org.springframework.mail.javamail.MimeMessagePreparator) any());
+
+        assertThrows(MailAuthenticationException.class,
+                () -> this.emailServiceImpl.sendSimpleMessage(cliente,
+                        "Pippo123!"));
+        verify(this.javaMailSender).send(
+                (org.springframework.mail.javamail.MimeMessagePreparator) any());
     }
 }
