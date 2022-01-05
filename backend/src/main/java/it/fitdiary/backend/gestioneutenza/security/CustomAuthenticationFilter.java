@@ -1,6 +1,5 @@
 package it.fitdiary.backend.gestioneutenza.security;
 
-import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.fitdiary.backend.utility.ResponseHandler;
@@ -12,16 +11,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import static it.fitdiary.backend.utility.service.FitDiaryUserDetails.createTokensMap;
 
 @Slf4j
 public class CustomAuthenticationFilter
@@ -90,51 +87,16 @@ public class CustomAuthenticationFilter
             throws IOException {
         var user = (FitDiaryUserDetails) authentication.getPrincipal();
         var alg = Algorithm.HMAC256("secret".getBytes());
-        long accessExpireAt = System.currentTimeMillis() + ACCESS_TOKEN_MS;
-        long refreshExpireAt = System.currentTimeMillis() + REFRESH_TOKEN_MS;
-        var tokens = Map.of(
-                "accessToken", Map.of(
-                        "token",
-                        createToken(user, request, alg, accessExpireAt),
-                        "expiresAt", accessExpireAt
-                ),
-                "refreshToken", Map.of(
-                        "token",
-                        createToken(user, request, alg, refreshExpireAt),
-                        "expiresAt", refreshExpireAt
-                ),
-                "userInfo", Map.of(
-                        "email", user.getUsername(),
-                        "name", user.getName(),
-                        "surname", user.getSurname(),
-                        "trainerId", user.getTrainer(),
-                        "gender", user.getGender() != null
-                                ? user.getGender() : "N",
-                        "roles", user.getAuthorities()
-                                .stream()
-                                .map(p -> p.getAuthority())
-                                .toArray()
-                )
-        );
+        var tokens = createTokensMap(request, alg, user,
+                ACCESS_TOKEN_MS, REFRESH_TOKEN_MS, null);
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(),
-                ResponseHandler.generateResponse(HttpStatus.OK, tokens));
+                ResponseHandler.generateResponse(HttpStatus.OK, tokens)
+                        .getBody());
+
     }
 
-    private String createToken(final FitDiaryUserDetails user,
-                               final HttpServletRequest request,
-                               final Algorithm alg,
-                               final long expiresAt) {
-        return JWT.create()
-                .withSubject(user.getId().toString())
-                .withClaim("email", user.getEmail())
-                .withExpiresAt(new Date(expiresAt))
-                .withIssuer(request.getRequestURI())
-                .withClaim("roles", user.getAuthorities().stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList()))
-                .sign(alg);
-    }
 
     /**
      * Questo metodo gestisce un'autenticazione fallita.
@@ -152,12 +114,10 @@ public class CustomAuthenticationFilter
                                               final AuthenticationException
                                                       failed)
             throws IOException {
-        log.info("Autenticazione fallita");
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.setHeader("error", "Autenticazione fallita");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter()
-                .write("{\"message\": \"Autenticazione fallita\", "
-                        + "\"status\": \"error\"}");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        new ObjectMapper().writeValue(response.getOutputStream(),
+                ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                        (Object) "Autenticazione fallita").getBody());
     }
 }

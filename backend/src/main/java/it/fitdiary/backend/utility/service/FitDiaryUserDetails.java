@@ -1,10 +1,18 @@
 package it.fitdiary.backend.utility.service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FitDiaryUserDetails extends User implements UserDetails {
 
@@ -134,5 +142,74 @@ public class FitDiaryUserDetails extends User implements UserDetails {
      */
     public void setId(final Long newId) {
         this.id = newId;
+    }
+
+    /**
+     * @param user Dettagli dell'utente
+     * @param request HttpServletRequest
+     * @param alg Algoritmo di codifica
+     * @param expiresAt Scadenza del token
+     * @return JWT token
+     */
+    public static String createToken(final FitDiaryUserDetails user,
+                                     final HttpServletRequest request,
+                                     final Algorithm alg,
+                                     final long expiresAt) {
+        return JWT.create()
+                .withSubject(user.getId().toString())
+                .withClaim("email", user.getEmail())
+                .withExpiresAt(new Date(expiresAt))
+                .withIssuer(request.getRequestURI())
+                .withClaim("roles", user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
+                .sign(alg);
+    }
+
+
+    /**
+     * @param request HttpServletRequest
+     * @param alg Algoritmo di codifica
+     * @param user Dettagli dell'utente
+     * @param accessTokenMs Durata del token di accesso
+     * @param refreshTokenMs Durata del token di refresh
+     * @param currentRefreshToken Refresh token attuale
+     * @return mappa di informazioni sull'utente per i token
+     * @throws IOException
+     */
+    public static Map<String, Map<String, ? extends Serializable>>
+    createTokensMap(final HttpServletRequest request,
+                    final Algorithm alg, final FitDiaryUserDetails user,
+                    final long accessTokenMs, final long refreshTokenMs,
+                    final String currentRefreshToken)
+            throws IOException {
+        long accessExpireAt = System.currentTimeMillis() + accessTokenMs;
+        long refreshExpireAt = System.currentTimeMillis() + refreshTokenMs;
+        Map<String, Map<String, ? extends Serializable>> tokens = Map.of(
+                "accessToken", Map.of(
+                        "token",
+                        createToken(user, request, alg, accessExpireAt),
+                        "expiresAt", accessExpireAt
+                ),
+                "refreshToken", Map.of(
+                        "token", currentRefreshToken == null
+                                ? createToken(user, request, alg,
+                                refreshExpireAt) : currentRefreshToken,
+                        "expiresAt", refreshExpireAt
+                ),
+                "userInfo", Map.of(
+                        "email", user.getUsername(),
+                        "name", user.getName(),
+                        "surname", user.getSurname(),
+                        "trainerId", user.getTrainer(),
+                        "gender", user.getGender() != null
+                                ? user.getGender() : "N",
+                        "roles", user.getAuthorities()
+                                .stream()
+                                .map(p -> p.getAuthority())
+                                .toArray()
+                )
+        );
+        return tokens;
     }
 }

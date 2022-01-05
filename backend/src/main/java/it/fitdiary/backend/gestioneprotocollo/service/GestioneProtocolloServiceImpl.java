@@ -5,6 +5,7 @@ import it.fitdiary.backend.entity.Esercizio;
 import it.fitdiary.backend.entity.Protocollo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
+import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapter;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapterImpl;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapter;
@@ -63,11 +64,11 @@ public class GestioneProtocolloServiceImpl
     private final EsercizioRepository esercizioRepository;
 
     /**
-     * @param protocolloRep repository del protocollo
-     * @param alimentoRep repository degli alimenti
-     * @param schedaAlimentareRep repository della scheda alimentare
+     * @param protocolloRep        repository del protocollo
+     * @param alimentoRep          repository degli alimenti
+     * @param schedaAlimentareRep  repository della scheda alimentare
      * @param schedaAllenamentoRep repository della scheda allenamento
-     * @param esercizioRep repository degli esercizi
+     * @param esercizioRep         repository degli esercizi
      */
     @Autowired
     public GestioneProtocolloServiceImpl(
@@ -152,5 +153,53 @@ public class GestioneProtocolloServiceImpl
         }
         protocollo.setPreparatore(protocollo.getCliente().getPreparatore());
         return newProtocollo;
+    }
+
+    /**
+     * @param idProtocollo id del protocollo
+     * @return protocollo
+     */
+    public Protocollo getByIdProtocollo(final Long idProtocollo) {
+        if (idProtocollo == null) {
+            throw new IllegalArgumentException("Id non valido");
+        }
+        Protocollo protocollo = protocolloRepository.getById(idProtocollo);
+        if (protocollo == null) {
+            throw new IllegalArgumentException("Utente non trovato");
+        }
+        return protocollo;
+    }
+
+    /**
+     * @param idPreparatore id del preparatore
+     * @return preparatore
+     */
+    @Override
+    public Utente getPreparatoreById(final Long idPreparatore) {
+        if (idPreparatore == null) {
+            throw new IllegalArgumentException("Id non valido");
+        }
+        Utente preparatore =
+                protocolloRepository.getById(idPreparatore).getPreparatore();
+        if (preparatore == null) {
+            throw new IllegalArgumentException("Utente non trovato");
+        }
+        return preparatore;
+    }
+
+    /**
+     * @param idCliente id del cliente
+     * @return cliente
+     */
+    public Utente getClienteById(final Long idCliente) {
+        if (idCliente == null) {
+            throw new IllegalArgumentException("Id non valido");
+        }
+        Utente cliente =
+                protocolloRepository.getById(idCliente).getCliente();
+        if (cliente == null) {
+            throw new IllegalArgumentException("Utente non trovato");
+        }
+        return cliente;
     }
 }

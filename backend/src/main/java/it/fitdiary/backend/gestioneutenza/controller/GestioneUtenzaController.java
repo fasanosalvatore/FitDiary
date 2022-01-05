@@ -10,6 +10,7 @@ import com.stripe.model.Customer;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
+import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
 import it.fitdiary.backend.utility.service.NuovoCliente;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,13 +33,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static it.fitdiary.backend.utility.service.FitDiaryUserDetails.createTokensMap;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 
 @RestController
@@ -59,6 +57,14 @@ public class GestioneUtenzaController {
      * Costante per valore intero di 1000.
      */
     public static final int INT1000 = 1000;
+    /**
+     * Access Token expiring time in ms.
+     */
+    public static final int ACCESS_TOKEN_MS = 600000;
+    /**
+     * Refresh Token expiring time in ms.
+     */
+    public static final int REFRESH_TOKEN_MS = 1800000;
     /**
      * GestioneUtenzaService che si occupa della logica di business.
      */
@@ -225,46 +231,39 @@ public class GestioneUtenzaController {
             try {
                 String refreshToken =
                         authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-                JWTVerifier verifier = JWT.require(algorithm).build();
+                Algorithm alg = Algorithm.HMAC256("secret".getBytes());
+                JWTVerifier verifier = JWT.require(alg).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);
-                Long id = Long.parseLong(decodedJWT.getSubject());
-                Utente utente = service.getById(id);
-                var roles = new ArrayList<>();
-                roles.add(utente.getRuolo().getNome());
-                String accessToken = JWT.create()
-                        .withSubject(utente.getId().toString())
-                        .withExpiresAt(new Date(
-                                System.currentTimeMillis() + INT10 * INT60
-                                        * INT1000))
-                        .withClaim("email", utente.getEmail())
-                        .withIssuer(request.getRequestURI())
-                        .withClaim("roles", roles)
-                        .sign(algorithm);
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", accessToken);
-                tokens.put("refresh_token", refreshToken);
+                FitDiaryUserDetails user = service.loadUserByUsername(
+                        decodedJWT.getClaim("email").asString());
+                var tokens = createTokensMap(
+                        request, alg, user, ACCESS_TOKEN_MS,
+                        System.currentTimeMillis()
+                                - decodedJWT.getExpiresAt().getTime(),
+                        refreshToken);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(),
-                        tokens);
+                        ResponseHandler.generateResponse(HttpStatus.OK, tokens)
+                                .getBody());
             } catch (Exception e) {
-                response.setHeader("error", e.getMessage());
-                response.setStatus(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
-                error.put("error_message", e.getMessage());
+                e.printStackTrace();
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 new ObjectMapper().writeValue(response.getOutputStream(),
-                        error);
+                        ResponseHandler.generateResponse(
+                                        HttpStatus.BAD_REQUEST,
+                                        (Object) "Refresh del token fallito")
+                                .getBody());
             }
         } else {
-            response.setHeader("error", "Refresh token mancante");
-            response.setStatus(FORBIDDEN.value());
-            Map<String, String> error = new HashMap<>();
-            error.put("error_message", "Refresh token mancante");
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), error);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            new ObjectMapper().writeValue(response.getOutputStream(),
+                    ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                            (Object) "Refresh token mancante").getBody());
         }
     }
+
 
     /**
      * Questo metodo permette di effettuare
@@ -285,36 +284,32 @@ public class GestioneUtenzaController {
             try {
                 String refreshToken =
                         authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
-                JWTVerifier verifier = JWT.require(algorithm).build();
+                Algorithm alg = Algorithm.HMAC256("secret".getBytes());
+                JWTVerifier verifier = JWT.require(alg).build();
                 DecodedJWT decodedJWT = verifier.verify(refreshToken);
-                Long id = Long.parseLong(decodedJWT.getSubject());
-                Utente utente = service.getById(id);
-                String accessToken = JWT.create()
-                        .withSubject(utente.getId().toString())
-                        .withExpiresAt(
-                                new Date(System.currentTimeMillis() + INT1000))
-                        .withClaim("email", utente.getEmail())
-                        .withIssuer(request.getRequestURI().toString())
-                        .withClaim("roles", utente.getRuolo().getNome())
-                        .sign(algorithm);
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", accessToken);
-                tokens.put("refresh_token", refreshToken);
+                FitDiaryUserDetails user = service.loadUserByUsername(
+                        decodedJWT.getClaim("email").asString());
+                var tokens = createTokensMap(request, alg, user, INT1000,
+                        INT1000, null);
+
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(),
-                        tokens);
+                        ResponseHandler.generateResponse(HttpStatus.OK, tokens)
+                                .getBody());
             } catch (Exception e) {
-                response.setHeader("error", e.getMessage());
-                response.setStatus(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
-                error.put("error_message", e.getMessage());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 new ObjectMapper().writeValue(response.getOutputStream(),
-                        error);
+                        ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                                        (Object) "Refresh del token fallito")
+                                .getBody());
             }
         } else {
-            throw new RuntimeException("Refresh token is missing");
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            new ObjectMapper().writeValue(response.getOutputStream(),
+                    ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                            (Object) "Refresh token mancante").getBody());
         }
     }
 

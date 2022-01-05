@@ -1,6 +1,7 @@
 package it.fitdiary.backend.gestioneprotocollo.controller;
 
 import it.fitdiary.backend.entity.Protocollo;
+import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDate;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -107,4 +109,78 @@ public class GestioneProtocolloController {
         fos.close();
         return file;
     }
+
+    /**
+     * Questa funzione permette di visualizzare
+     * un proprio protocollo da parte di un cliente.
+     *
+     * @param request indica la risposta http inviata dal front-end
+     * @return protocollo selezionato
+     * @throws IOException
+     */
+    public ResponseEntity<Object> visualizzaProtocolloFromCliente(
+            final HttpServletRequest
+                    request)
+            throws IOException {
+        Principal principal = request.getUserPrincipal();
+        var idProtocollo =
+                Long.parseLong(request.getUserPrincipal().getName());
+        try {
+            Protocollo protocollo =
+                    gestioneProtocolloService.getByIdProtocollo(idProtocollo);
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    "protocollo",
+                    protocollo
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                    e.getMessage());
+        }
+
+    }
+
+    /**
+     * Questa funzione permette di visualizzare un protocollo
+     * assegnato ad un suo cliente da parte di un preparatore.
+     *
+     * @param request indica la risposta http inviata dal front-end
+     * @return protocollo selezionato
+     * @throws IOException
+     */
+    public ResponseEntity<Object> visualizzaProtocolloFromPreparatore(
+            final HttpServletRequest
+                    request)
+            throws IOException {
+        Principal principal = request.getUserPrincipal();
+        var idProtocollo =
+                Long.parseLong(request.getUserPrincipal().getName());
+        Utente preparatore =
+                gestioneProtocolloService.getPreparatoreById(idProtocollo);
+        Utente cliente = gestioneProtocolloService.getClienteById(idProtocollo);
+        int i;
+        for (i = 0; i < preparatore.getListaClienti().size(); i++) {
+            if (preparatore.getListaClienti().get(i).getId()
+                   == cliente.getId()) {
+                break;
+            }
+        }
+        if (i >= preparatore.getListaClienti().size()) {
+            return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
+                    "Il cliente selezionato non appartiene al preparatore");
+        }
+        try {
+            Protocollo protocollo =
+                    gestioneProtocolloService.getByIdProtocollo(idProtocollo);
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    "protocollo",
+                    protocollo
+            );
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                    e.getMessage());
+        }
+
+    }
+
+
 }

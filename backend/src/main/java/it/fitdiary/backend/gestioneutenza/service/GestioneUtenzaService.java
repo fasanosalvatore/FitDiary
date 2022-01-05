@@ -1,13 +1,16 @@
 package it.fitdiary.backend.gestioneutenza.service;
 
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
 import org.springframework.mail.MailException;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
 /**
  *
  */
-public interface GestioneUtenzaService {
+public interface GestioneUtenzaService extends UserDetailsService {
 
     /**
      * @param preparatore
@@ -57,4 +60,12 @@ public interface GestioneUtenzaService {
                             String cognome,
                             String email)
             throws IllegalArgumentException, MailException;
+
+    /**
+     * @param email email dell'utente
+     * @return dettagli dell' utente
+     * @throws UsernameNotFoundException
+     */
+     FitDiaryUserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException;
 }
