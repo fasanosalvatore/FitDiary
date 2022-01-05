@@ -1,5 +1,6 @@
 package it.fitdiary.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -93,5 +94,6 @@ public class Esercizio {
     @NotNull(message = "Scheda allenamento non può essere vuoto")
     @ManyToOne
     @JoinColumn(name = "scheda_allenamento_id")
+    @JsonIgnore
     private SchedaAllenamento schedaAllenamento;
 }
