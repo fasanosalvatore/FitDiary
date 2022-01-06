@@ -12,7 +12,7 @@ import {
 import authService from "../../../services/auth.service";
 
 export default function CustomerProfile() {
-    const utente = authService.getCurrentUser().utente;
+    const utente = authService.getCurrentUser().userInfo;
     console.log(utente);
     return (
         <Flex wrap={"wrap"}>
@@ -21,13 +21,13 @@ export default function CustomerProfile() {
                 <Flex>
                     <VStack w={"full"}>
                         <Avatar size={"xl"}></Avatar>
-                        <Heading fontSize={"3xl"} color={utente.sesso == "M" ? "blue.700" : "pink.700"} >{utente.nome} {utente.cognome}</Heading>
+                        <Heading fontSize={"3xl"} color={utente.gender == "M" ? "blue.700" : "pink.700"} >{utente.name} {utente.surname}</Heading>
                         <Text color={"gray.400"}>{utente.email}</Text>
                         <HStack><Button bg={"blue.200"}>Modifica</Button><Button bg={"green.200"}>Progressi</Button></HStack>
                     </VStack>
                 </Flex>
             </Box>
-            {utente.preparatore ?
+            {utente.roles[0] === "preparatore" ?
                 <Box bg={"blackAlpha.50"} rounded={20} padding={10} minW={"450"} marginLeft={[0, 0, 0, 5]}
                      marginTop={[5, 5, 5, 0]}>
                     <Flex>
