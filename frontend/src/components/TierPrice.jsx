@@ -13,10 +13,9 @@ import {
     Button,
 } from "@chakra-ui/react";
 import { FaCheckCircle } from 'react-icons/fa';
-import { extendTheme } from '@chakra-ui/react'
 import { createBreakpoints } from '@chakra-ui/theme-tools'
 
-function PriceWrapper({ children }: { children: React }) {
+function PriceWrapper(children) {
     return (
         <Box
             mb={4}
@@ -30,7 +29,7 @@ function PriceWrapper({ children }: { children: React }) {
     );
 }
 
-const breakpoints = createBreakpoints({
+createBreakpoints({
     sm: '320px',
     md: '768px',
     lg: '960px',

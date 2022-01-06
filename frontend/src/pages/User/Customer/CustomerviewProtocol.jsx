@@ -3,23 +3,19 @@ import {
     Box,
     Heading,
     Text,
-    Avatar,
-    Flex, VStack, HStack, Button, FormLabel, Grid, GridItem, SimpleGrid, Table,
+    Flex, VStack, HStack, Button, Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
-    TableCaption, Icon, Image,
+    TableCaption, Icon,
 } from '@chakra-ui/react';
 import {
     RiArrowGoBackLine,
 } from 'react-icons/ri';
-import authService from "../../../services/auth.service";
 import {getProtocollo} from "../../../fakeBackend";
 import moment from "moment";
-import {FaAngleDoubleLeft, FaAngleDoubleRight} from "react-icons/fa";
 import {BsGraphUp,BsGraphDown} from "react-icons/bs";
 
 export default/**
@@ -92,9 +88,6 @@ export default/**
                                         <VStack alignItems={"center"}>
                                             <Heading size="xs"> Vuoi visualizzare le tue schede?</Heading>
                                         </VStack>
-
-
-
                                     </Box>
                                 </HStack>
                             </Flex>

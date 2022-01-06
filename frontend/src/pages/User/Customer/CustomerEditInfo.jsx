@@ -7,10 +7,9 @@ import {
     FormErrorMessage,
     FormLabel,
     GridItem, Heading,
-    Input, Radio,
-    RadioGroup,
+    Input,
     SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, VStack
+    Tooltip, useBreakpointValue, VStack
 } from "@chakra-ui/react";
 import config from "../../../config.json";
 import axios from "axios";

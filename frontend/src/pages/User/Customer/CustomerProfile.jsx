@@ -21,7 +21,7 @@ export default function CustomerProfile() {
                 <Flex>
                     <VStack w={"full"}>
                         <Avatar size={"xl"}></Avatar>
-                        <Heading fontSize={"3xl"} color={utente.gender == "M" ? "blue.700" : "pink.700"} >{utente.name} {utente.surname}</Heading>
+                        <Heading fontSize={"3xl"} color={utente.gender === "M" ? "blue.700" : "pink.700"} >{utente.name} {utente.surname}</Heading>
                         <Text color={"gray.400"}>{utente.email}</Text>
                         <HStack><Button bg={"blue.200"}>Modifica</Button><Button bg={"green.200"}>Progressi</Button></HStack>
                     </VStack>

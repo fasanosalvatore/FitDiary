@@ -12,13 +12,12 @@ import {
     Input, Radio,
     RadioGroup,
     SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, useColorModeValue, useToast, VStack
+    Stack, Text, Tooltip, useBreakpointValue, useToast
 } from "@chakra-ui/react";
 import {
     CardCvcElement,
     CardExpiryElement,
     CardNumberElement,
-    Elements,
     useElements,
     useStripe
 } from "@stripe/react-stripe-js";
@@ -27,7 +26,7 @@ import TierPrice from "./TierPrice";
 export default function SignupForm() {
     const urlCreate = `${config.SERVER_URL}/utenti/preparatore`;
     const urlAcquisto = `${config.SERVER_URL}/abbonamento/acquista`;
-    const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
+    const {register, handleSubmit, getValues, formState: {errors}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();
     const elements = useElements();
@@ -42,10 +41,6 @@ export default function SignupForm() {
         },
     })
     const navigate = useNavigate();
-
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 
 
     if (!stripe || !elements) {
@@ -221,7 +216,7 @@ export default function SignupForm() {
                                 required: "Il campo password è obbligatorio",
                                 maxLength: {value: 255, message: "Password troppo lunga"},
                                 pattern: {
-                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&\.])[A-Za-z\d@$!%*?^#()<>+&.]{8,}$/i,
+                                    value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&.])[A-Za-z\d@$!%*?^#()<>+&.]{8,}$/i,
                                     message: "Formato password non valido"
                                 }
                             })} />

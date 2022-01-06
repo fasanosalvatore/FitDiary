@@ -6,22 +6,20 @@ import {
     FormErrorMessage,
     FormLabel,
     GridItem, Heading,
-    Input, Radio,
-    RadioGroup,
+    Input,
     SimpleGrid,
     Stack, Text, Tooltip, useBreakpointValue, VStack
 } from "@chakra-ui/react";
 import config from "../../../config.json";
-import {getCurrentUser} from "../../../fakeBackend";
 import authservice from "../../../services/auth.service";
 
 
 export default function CustomerInsertInfo() {
 
 
-    const [currentUser,setCurrentUser] = /*useState(AuthService.getCurrentUser())*/useState(authservice.getCurrentUser())
+    const [currentUser,setCurrentUser] = useState(authservice.getCurrentUser())
     const urlInsertInfo = `${config.SERVER_URL}/utenti/cliente`;
-    const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
+    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
 
     //helper function
