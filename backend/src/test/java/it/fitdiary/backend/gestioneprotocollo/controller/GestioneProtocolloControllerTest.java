@@ -115,6 +115,38 @@ class GestioneProtocolloControllerTest {
     }
 
     @Test
+    void visualizzaStoricoProtocolliSuccess() throws Exception {
+        Principal principal = () -> "1";
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(cliente);
+        when(gestioneProtocolloServiceImpl.visualizzaStoricoProtocolliCliente(
+                cliente)).thenReturn(new ArrayList<Protocollo>());
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/protocolli/cliente").principal(principal);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(
+                        this.gestioneProtocolloController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    void visualizzaStoricoProtocolliBadRequest() throws Exception {
+        Principal principal = () -> "1";
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenThrow(IllegalArgumentException.class);
+        when(gestioneProtocolloServiceImpl.visualizzaStoricoProtocolliCliente(
+                cliente)).thenReturn(new ArrayList<Protocollo>());
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/protocolli/cliente").principal(principal);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(
+                        this.gestioneProtocolloController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
     public void visualizzaProtocolloFromClienteTest_Success() throws Exception {
 
         Ruolo ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
