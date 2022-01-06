@@ -1,7 +1,9 @@
 package it.fitdiary.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -23,6 +25,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class Protocollo {
     /**
      * id protocollo.
@@ -54,6 +58,7 @@ public class Protocollo {
     @NotNull(message = "Il cliente non può essere nullo")
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @EqualsAndHashCode.Exclude
     private Utente cliente;
     /**
      * preparatore.
@@ -61,6 +66,7 @@ public class Protocollo {
     @NotNull(message = "Il preparatore non può essere nullo")
     @ManyToOne
     @JoinColumn(name = "preparatore_id")
+    @EqualsAndHashCode.Exclude
     private Utente preparatore;
 
     /**
