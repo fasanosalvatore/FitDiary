@@ -102,6 +102,31 @@ public class GestioneProtocolloServiceImpl
         }
         Protocollo newProtocollo = protocolloRepository.save(protocollo);
         if (schedaAlimentareFile != null) {
+            inserisciSchedaAlimentare(newProtocollo, schedaAlimentareFile);
+        }
+        if (schedaAllenamentoFile != null) {
+            inserisciSchedaAllenamento(newProtocollo, schedaAllenamentoFile);
+        }
+        protocollo.setPreparatore(protocollo.getCliente().getPreparatore());
+        return newProtocollo;
+    }
+
+    /**
+     * @param protocollo protocollo per cui inserire la scheda alimentare
+     * @param schedaAlimentareFile file della scheda alimentare
+     * @return protocollo modificato
+     * @throws IOException
+     */
+    public Protocollo inserisciSchedaAlimentare(final Protocollo protocollo,
+                                                final File schedaAlimentareFile)
+            throws IOException {
+        if (schedaAlimentareFile != null) {
+            if (protocollo.getSchedaAlimentare() != null) {
+                alimentoRepository.deleteAllBySchedaAlimentareId(
+                        protocollo.getSchedaAlimentare().getId());
+                schedaAlimentareRepository.deleteAllByProtocolloId(
+                        protocollo.getId());
+            }
             if (FilenameUtils.getExtension(schedaAlimentareFile.getName())
                     .equals("csv")) {
                 List<Alimento> alimenti =
@@ -112,7 +137,7 @@ public class GestioneProtocolloServiceImpl
                 }
                 SchedaAlimentare schedaAlimentare = new SchedaAlimentare();
                 schedaAlimentare.setKcalAssunte(kcal);
-                schedaAlimentare.setProtocollo(newProtocollo);
+                schedaAlimentare.setProtocollo(protocollo);
                 SchedaAlimentare newSchedaAlimentare =
                         schedaAlimentareRepository.save(schedaAlimentare);
                 for (Alimento alimento : alimenti) {
@@ -125,7 +150,27 @@ public class GestioneProtocolloServiceImpl
                 throw new IllegalArgumentException("Formato file non valido");
             }
         }
+        return protocollo;
+    }
+
+    /**
+     * @param protocollo protocollo per cui inserire la scheda alimentare
+     * @param schedaAllenamentoFile file della scheda allenamento
+     * @return protocollo modificato
+     * @throws IOException
+     */
+    public Protocollo inserisciSchedaAllenamento(final Protocollo protocollo,
+                                                 final File
+                                                         schedaAllenamentoFile)
+            throws IOException {
         if (schedaAllenamentoFile != null) {
+
+            if (protocollo.getSchedaAllenamento() != null) {
+                esercizioRepository.deleteAllBySchedaAllenamentoId(
+                        protocollo.getSchedaAllenamento().getId());
+                schedaAllenamentoRepository.deleteAllByProtocolloId(
+                        protocollo.getId());
+            }
             if (FilenameUtils.getExtension(schedaAllenamentoFile.getName())
                     .equals("csv")) {
                 List<Esercizio> esercizi =
@@ -138,7 +183,7 @@ public class GestioneProtocolloServiceImpl
                 SchedaAllenamento schedaAllenamento = new SchedaAllenamento();
                 schedaAllenamento.setFrequenza(
                         String.valueOf(numeroAllenamenti.size()));
-                schedaAllenamento.setProtocollo(newProtocollo);
+                schedaAllenamento.setProtocollo(protocollo);
                 SchedaAllenamento newSchedaAllenamento =
                         schedaAllenamentoRepository.save(schedaAllenamento);
                 for (Esercizio esercizio : esercizi) {
@@ -151,8 +196,7 @@ public class GestioneProtocolloServiceImpl
                 throw new IllegalArgumentException("Formato file non valido");
             }
         }
-        protocollo.setPreparatore(protocollo.getCliente().getPreparatore());
-        return newProtocollo;
+        return protocollo;
     }
 
     /**
@@ -214,6 +258,5 @@ public class GestioneProtocolloServiceImpl
         return protocolloRepository.findAllByCliente(cliente);
 
     }
-
 
 }

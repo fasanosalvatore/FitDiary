@@ -20,9 +20,10 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
 
     /**
      *
-     * @param idPreparatore preparatore
+     * @param preparatore preparatore
      * @param idCliente id del cliente
-     * @return vero se il cliente fa parte della lista dei clienti di quel preparatore, falso altrimenti
+     * @return vero se il cliente fa parte della lista
+     * dei clienti di quel preparatore, falso altrimenti
      */
-    boolean existsByPreparatoreAndId(Utente idPreparatore, Long idCliente);
+    boolean existsByPreparatoreAndId(Utente preparatore, Long idCliente);
 }
