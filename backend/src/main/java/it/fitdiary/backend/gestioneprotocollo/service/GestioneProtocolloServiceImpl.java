@@ -207,9 +207,9 @@ public class GestioneProtocolloServiceImpl
         if (idProtocollo == null) {
             throw new IllegalArgumentException("Id non valido");
         }
-        Protocollo protocollo = protocolloRepository.getById(idProtocollo);
+        Protocollo protocollo = protocolloRepository.findById(idProtocollo).orElse(null);
         if (protocollo == null) {
-            throw new IllegalArgumentException("Utente non trovato");
+            throw new IllegalArgumentException("Protocollo non trovato");
         }
         return protocollo;
     }
