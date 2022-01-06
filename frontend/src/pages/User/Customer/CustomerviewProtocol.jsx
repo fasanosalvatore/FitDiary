@@ -21,7 +21,6 @@ import {getProtocollo} from "../../../fakeBackend";
 import moment from "moment";
 import {FaAngleDoubleLeft, FaAngleDoubleRight} from "react-icons/fa";
 import {BsGraphUp,BsGraphDown} from "react-icons/bs";
-import iconaFile from "../../../images/file-regular.svg";
 
 export default/**
 *
