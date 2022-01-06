@@ -206,20 +206,14 @@ public class GestioneProtocolloController {
         Protocollo protocollo =
                 gestioneProtocolloService.getByIdProtocollo(id);
         if (protocollo.getPreparatore().getId() != principal) {
-            return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
+            return ResponseHandler.generateResponse(BAD_REQUEST,
                     "Il preparatore non ha creato quel protocollo");
         }
-        try {
-            return ResponseHandler.generateResponse(HttpStatus.OK,
-                    "protocollo",
-                    protocollo
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
-        }
-
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                "protocollo",
+                protocollo);
     }
+
 
     /**
      * Questa funzione permette di visualizzare un protocollo
@@ -242,26 +236,17 @@ public class GestioneProtocolloController {
             return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
                     "Il preparatore non ha creato quel protocollo");
         }
-        Utente preparatore =
-                gestioneProtocolloService.getPreparatoreById(
-                        protocollo.getPreparatore().getId());
-        Utente cliente =
-                gestioneProtocolloService.getClienteById(principal);
+        Utente preparatore = protocollo.getPreparatore();
+        Utente cliente = protocollo.getCliente();
         if (!gestioneUtenzaService.existsByPreparatoreAndId(preparatore,
                 cliente.getId())) {
-            return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
+            return ResponseHandler.generateResponse(BAD_REQUEST,
                     "Il cliente selezionato non appartiene al preparatore");
         }
-        try {
-            return ResponseHandler.generateResponse(HttpStatus.OK,
-                    "protocollo",
-                    protocollo
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
-        }
-
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                "protocollo",
+                protocollo
+        );
     }
 
 
