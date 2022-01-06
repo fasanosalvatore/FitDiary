@@ -78,9 +78,9 @@ public class GestioneUtenzaServiceImpl
      * e di associarlo ad un preparatore.
      *
      * @param idPreparatore l'id del preparatore che sta inserendo il cliente
-     * @param nome      nome del cliente.
-     * @param cognome   cognome del cliente.
-     * @param emailCliente     email del cliente.
+     * @param nome          nome del cliente.
+     * @param cognome       cognome del cliente.
+     * @param emailCliente  email del cliente.
      * @return utente inserito nel sistema.
      * @throws IllegalArgumentException
      */
@@ -150,22 +150,13 @@ public class GestioneUtenzaServiceImpl
         return fitDiaryUser;
     }
 
-    /**
-     * @param idPrep rappresenta l' id del preparatore
-     * @param idCli  rappresenta l' id del cliente
-     * @return @return vero se il cliente fa parte della lista dei clienti di quel preparatore, falso altrimenti
-     */
-    @Override
-    public boolean existsByPreparatoreAndId(Long idPrep, Long idCli) {
-        return   utenteRepository.existsByPreparatoreAndId(utenteRepository.getById(idPrep),idCli);
-    }
 
     /**
      * Questo metodo permette di inserire
      * i dati nel sistema ad un cliente.
      *
-     * @param idCliente rappresenta l'insieme
-     *               dei dati personali di un utente.
+     * @param idCliente         rappresenta l'insieme
+     *                          dei dati personali di un utente.
      * @param clienteModificato
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database.
@@ -197,9 +188,9 @@ public class GestioneUtenzaServiceImpl
      * Questo metodo permette al cliente di inserire i dati
      * da modificare nel sistema.
      *
-     * @param idCliente rappresenta l'id del cliente
+     * @param idCliente         rappresenta l'id del cliente
      * @param clienteModificato rappresenta l'insieme
-     * dei dati personali di un utente.
+     *                          dei dati personali di un utente.
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database.
      * @throws IllegalArgumentException
@@ -238,8 +229,8 @@ public class GestioneUtenzaServiceImpl
      * i dati presenti nel database di un utente.
      *
      * @param preparatoreModificato rappresenta l' insieme di
-     * tutti i dati personali di un preparatore
-     * che devono essere aggiornati.
+     *                              tutti i dati personali di un preparatore
+     *                              che devono essere aggiornati.
      * @return updatedPerparatore rappresenta l' insieme
      * di dati personali di un perparatore aggiornati.
      * @throws IllegalArgumentException
@@ -289,6 +280,24 @@ public class GestioneUtenzaServiceImpl
             throw new IllegalArgumentException("Utente non trovato");
         }
         return utente;
+    }
+
+    /**
+     * @param preparatore rappresenta il preparatore
+     * @param idCliente   rappresenta l' id del cliente
+     * @return true se il cliente è associato al preparatore
+     */
+    @Override
+    public Boolean existsByPreparatoreAndId(final Utente preparatore,
+                                            final Long idCliente) {
+        if (idCliente == null) {
+            throw new IllegalArgumentException("Id cliente non valido");
+        }
+        if (preparatore == null) {
+            throw new IllegalArgumentException("Preparatore non valido");
+        }
+        return utenteRepository.existsByPreparatoreAndId(preparatore,
+                idCliente);
     }
 }
 

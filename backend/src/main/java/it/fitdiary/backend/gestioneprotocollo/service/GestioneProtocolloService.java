@@ -45,4 +45,24 @@ public interface GestioneProtocolloService {
      * @return lista protocolli del cliente
      */
     List<Protocollo> visualizzaStoricoProtocolliCliente(Utente cliente);
+
+    /**
+     * @param protocollo protocollo
+     * @param schedaAllenamentoFile file della scheda allenamento
+     * @return nuovo protocollo
+     * @throws IOException
+     */
+    Protocollo inserisciSchedaAllenamento(Protocollo protocollo,
+                                          File schedaAllenamentoFile)
+            throws IOException;
+
+    /**
+     * @param protocollo protocollo
+     * @param schedaAlimentareFile file della scheda alimentare
+     * @return nuovo protocollo
+     * @throws IOException
+     */
+    Protocollo inserisciSchedaAlimentare(Protocollo protocollo,
+                                         File schedaAlimentareFile)
+            throws IOException;
 }

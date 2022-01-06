@@ -19,6 +19,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -279,5 +281,70 @@ public class GestioneUtenzaServiceImplTest {
     @Test
     public void registrazioneUtenteNull() {
         assertThrows(IllegalArgumentException.class, () -> this.gestioneUtenzaService.registrazione(null));
+    }
+
+    @Test
+    public void existsByPreparatoreAndIdSuccessTrue() {
+        ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
+        ruoloPreparatore = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente cliente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
+                ruoloCliente, null, null, null, null, null);
+        List<Utente> clienti= new ArrayList<Utente>();
+        clienti.add(cliente);
+        Utente preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" + "@gmail.com", "Daniele123*", true,
+                LocalDate.parse("2000-03-03"), null, "33985458", "Salvo D'Acquisto", "84047", "Capaccio", null,
+                ruoloPreparatore, null, clienti, null, null, null);
+        cliente.setPreparatore(preparatore);
+        when(this.utenteRepository.existsByPreparatoreAndId(preparatore, cliente.getId())).thenReturn(true);
+        assertEquals(true, gestioneUtenzaService.existsByPreparatoreAndId(preparatore, cliente.getId()));
+    }
+
+    @Test
+    public void existsByPreparatoreAndIdSuccessFalse() {
+        ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
+        ruoloPreparatore = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente cliente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
+                ruoloCliente, null, null, null, null, null);
+        List<Utente> clienti= new ArrayList<Utente>();
+        clienti.add(cliente);
+        Utente preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" + "@gmail.com", "Daniele123*", true,
+                LocalDate.parse("2000-03-03"), null, "33985458", "Salvo D'Acquisto", "84047", "Capaccio", null,
+                ruoloPreparatore, null, clienti, null, null, null);
+        when(this.utenteRepository.existsByPreparatoreAndId(preparatore, cliente.getId())).thenReturn(false);
+        assertEquals(false, gestioneUtenzaService.existsByPreparatoreAndId(preparatore, cliente.getId()));
+    }
+
+    @Test
+    public void existsByPreparatoreAndIdThrowsIllegalArgumentInvalidCliente() {
+        ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
+        ruoloPreparatore = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente cliente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
+                ruoloCliente, null, null, null, null, null);
+        List<Utente> clienti= new ArrayList<Utente>();
+        clienti.add(cliente);
+        Utente preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" + "@gmail.com", "Daniele123*", true,
+                LocalDate.parse("2000-03-03"), null, "33985458", "Salvo D'Acquisto", "84047", "Capaccio", null,
+                ruoloPreparatore, null, clienti, null, null, null);
+        cliente.setPreparatore(preparatore);
+        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.existsByPreparatoreAndId(null, cliente.getId()));
+    }
+
+    @Test
+    public void existsByPreparatoreAndIdThrowsIllegalArgumentInvalidPreparatore() {
+        ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
+        ruoloPreparatore = new Ruolo(1L, "PREPARATORE", null, null);
+        Utente cliente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
+                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
+                ruoloCliente, null, null, null, null, null);
+        List<Utente> clienti= new ArrayList<Utente>();
+        clienti.add(cliente);
+        Utente preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" + "@gmail.com", "Daniele123*", true,
+                LocalDate.parse("2000-03-03"), null, "33985458", "Salvo D'Acquisto", "84047", "Capaccio", null,
+                ruoloPreparatore, null, clienti, null, null, null);
+        cliente.setPreparatore(preparatore);
+        assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.existsByPreparatoreAndId(preparatore, null));
     }
 }

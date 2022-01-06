@@ -31,7 +31,16 @@ export default function SignupForm() {
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();
     const elements = useElements();
-    const toast = useToast()
+    const toast = useToast({
+        duration: 9000,
+        isClosable: true,
+        variant:"solid",
+        position:"top",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+    })
     const navigate = useNavigate();
 
     function sleep(ms) {
@@ -68,8 +77,6 @@ export default function SignupForm() {
             title: 'Registrazione Fallita',
             description: data,
             status: 'error',
-            duration: 9000,
-            isClosable: true,
         })
     }
 
@@ -123,8 +130,6 @@ export default function SignupForm() {
                     title: 'Pagamento Fallito',
                     description: "pagamento non riuscito",
                     status: 'error',
-                    duration: 9000,
-                    isClosable: true,
                 })
                 console.log(result.error)
             }
@@ -133,8 +138,6 @@ export default function SignupForm() {
                     title: 'Pagamento Completato',
                     description: "pagamento riuscito",
                     status: 'success',
-                    duration: 9000,
-                    isClosable: true,
                 })
             }
         })
@@ -270,7 +273,9 @@ export default function SignupForm() {
                             </GridItem>
                         </SimpleGrid>
                     </Box>
+                    <GridItem colSpan={2}>
                         <TierPrice/>
+                    </GridItem>
                     <GridItem colSpan={2}>
                         <Button w="full" mt={4} colorScheme='teal' type='submit'>
                             Registrati e Paga
