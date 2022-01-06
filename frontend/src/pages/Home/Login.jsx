@@ -17,7 +17,16 @@ import config from "../../config.json";
 export default function Login() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const urlLogin=`${config.SERVER_URL}/utenti/login`;
-    const toast = useToast()
+    const toast = useToast({
+        duration: 9000,
+        isClosable: true,
+        position:"top",
+        variant:"solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+    })
 
 
     const navigate = useNavigate();
@@ -39,8 +48,6 @@ export default function Login() {
             title: 'Accesso fallito',
             description: "Email e/o password errate",
             status: 'error',
-            duration: 9000,
-            isClosable: true,
         })
     }
 
