@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -110,7 +111,7 @@ public class GestioneProtocolloController {
         }
     }
 
-    @PostMapping("modifica")
+    @PutMapping
     private ResponseEntity<Object> modificaProtocollo(
             @RequestParam("idProtocollo") final Long idProtocollo,
             @RequestParam("schedaAlimentare")
@@ -158,10 +159,12 @@ public class GestioneProtocolloController {
             if (schedaAlimentareFile != null) {
                 gestioneProtocolloService.inserisciSchedaAlimentare(protocollo,
                         schedaAlimentareFile);
+                schedaAlimentareFile.delete();
             }
             if (schedaAllenamentoFile != null) {
                 gestioneProtocolloService.inserisciSchedaAllenamento(protocollo,
                         schedaAllenamentoFile);
+                schedaAllenamentoFile.delete();
             }
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "protocollo", protocollo);
@@ -258,6 +261,19 @@ public class GestioneProtocolloController {
     @GetMapping("cliente/{id}")
     public ResponseEntity<Object> visualizzaStoricoProtocolliCliente(
             @PathVariable("id") final Long idCliente) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+
+        Long idPreparatore = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente preparatore = gestioneUtenzaService.getById(idPreparatore);
+        if (!gestioneUtenzaService.existsByPreparatoreAndId(
+                preparatore, idCliente)) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    "protocollo",
+                    "Il preparatore non può creare "
+                            + "un protocollo per questo cliente");
+        }
         try {
             Utente utenteCliente = gestioneUtenzaService.getById(idCliente);
             return ResponseHandler.generateResponse(HttpStatus.OK,

@@ -215,39 +215,6 @@ public class GestioneProtocolloServiceImpl
     }
 
     /**
-     * @param idPreparatore id del preparatore
-     * @return preparatore
-     */
-    @Override
-    public Utente getPreparatoreById(final Long idPreparatore) {
-        if (idPreparatore == null) {
-            throw new IllegalArgumentException("Id non valido");
-        }
-        Utente preparatore =
-                protocolloRepository.getById(idPreparatore).getPreparatore();
-        if (preparatore == null) {
-            throw new IllegalArgumentException("Utente non trovato");
-        }
-        return preparatore;
-    }
-
-    /**
-     * @param idCliente id del cliente
-     * @return cliente
-     */
-    public Utente getClienteById(final Long idCliente) {
-        if (idCliente == null) {
-            throw new IllegalArgumentException("Id non valido");
-        }
-        Utente cliente =
-                protocolloRepository.getById(idCliente).getCliente();
-        if (cliente == null) {
-            throw new IllegalArgumentException("Utente non trovato");
-        }
-        return cliente;
-    }
-
-    /**
      * @param cliente cliente di cui s vuole visualizzare il protocollo
      *                visualizzare lo storico dei protocolli
      * @return lista dei protocolli del cliente

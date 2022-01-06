@@ -45,10 +45,19 @@ public class SchedaAllenamentoAdapterImpl implements SchedaAllenamentoAdapter {
     @Override
     public List<Esercizio> parse(final File file) throws IOException {
         List<Esercizio> esercizi = new ArrayList<Esercizio>();
+        CSVFormat csvFormat =
+                CSVFormat.Builder.create().setHeader(
+                                "Nome", "Serie", "Ripetizioni", "Recupero",
+                                "Numero Allenamento", "Categoria")
+                        .setDelimiter(';').build();
         Iterable<CSVRecord> records =
-                CSVFormat.EXCEL.withDelimiter(';').parse(new FileReader(file));
+                csvFormat.parse(new FileReader(file));
         int riga = 1;
         for (CSVRecord record : records) {
+            if (!record.isConsistent()) {
+                throw new IllegalArgumentException("errore nella compilazione "
+                        + "della scheda allenamento");
+            }
             if (riga == 1) {
                 riga++;
                 continue;

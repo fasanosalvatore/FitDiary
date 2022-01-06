@@ -45,11 +45,18 @@ public class SchedaAlimentareAdapterImpl implements SchedaAlimentareAdapter {
     public List<Alimento> parse(final File file)
             throws IOException, NumberFormatException {
         var alimenti = new ArrayList<Alimento>();
+        CSVFormat csvFormat =
+                CSVFormat.Builder.create().setHeader(
+                            "Nome", "Pasto", "Giorno", "Kcal", "Grammi")
+                        .setDelimiter(';').build();
         Iterable<CSVRecord> records =
-                CSVFormat.EXCEL.withDelimiter(';').parse(new FileReader(file));
+                csvFormat.parse(new FileReader(file));
         int riga = 1;
-
         for (CSVRecord record : records) {
+            if (!record.isConsistent()) {
+                throw new IllegalArgumentException("errore nella compilazione"
+                        + "nella scheda alimentare");
+            }
             if (riga == 1) {
                 riga++;
                 continue;
