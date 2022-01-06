@@ -32,8 +32,6 @@ import {
     FiBell,
     FiChevronDown,
 } from 'react-icons/fi';
-import { IconType } from 'react-icons';
-import { ReactText } from 'react';
 import {BiExit} from "react-icons/bi";
 import authService from "../services/auth.service";
 
@@ -58,6 +56,9 @@ export const Logo = createIcon({
         </g>
     ),
 })
+
+
+
 const user=authService.getCurrentUser();
 console.log(user);
 

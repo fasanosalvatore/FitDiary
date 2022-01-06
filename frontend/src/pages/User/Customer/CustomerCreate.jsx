@@ -8,42 +8,54 @@ import {
     Heading,
     Input, VStack
 } from "@chakra-ui/react";
+import authService from "../../../services/auth.service";
+import config from "../../../config.json";
 
 export default function CustomerCreate() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
+    const utenteCus = authService.getCurrentUser();
+    const urlCreate = `${config.SERVER_URL}/utenti/createcliente`;
 
-    const mySubmit = async (e) => {
-        e.preventDefault();
-        await handleSubmit(onSubmit)(e);
+    function handleResponse(response) {
+        console.log("handling");
+        return response.text().then(text => {
+            const resp = JSON.parse(text);
+            if (!response.ok) {
+                const error = (resp && resp.message) || response.statusText;
+                return Promise.reject(error);
+            }
+        });
     }
 
+    //Gestione FAIL
+    function handleFail(data) {
+        console.log("something went wrong " + data);
+    }
+
+    //Chiamata API creazione utente
     function onSubmit(values) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const request = JSON.stringify(values, null, 2);
-                console.log(request)
-                fetch("http://localhost:8080/api/v1/utenti/createcliente", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: request
-                })
-                    .then(response => response.json())
-                    .then(data => console.log(data))
-                resolve()
-            }, 1500)
-        })
+
+        console.log("submitting");
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer "+utenteCus.access_token,
+            },
+            body: JSON.stringify(values),
+        }
+        return fetch(urlCreate, requestOptions)
+            .then(handleResponse)
+            .catch(handleFail)
     }
 
-    console.log(errors);
 
     return (
         <VStack w="full" h="full" p={[5, 10, 20]}>
             <VStack spacing={3} alignItems="flex-start" pb={5}>
                 <Heading size="2xl">Iscrizione Cliente</Heading>
             </VStack>
-            <form style={{width: "100%"}} onSubmit={mySubmit}>
+            <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                 <FormControl id={"nome"} isInvalid={errors.nome}>
                     <FormLabel htmlFor="nome">Nome</FormLabel>
                     <Input type="text" placeholder="Mario" {...register("nome", {

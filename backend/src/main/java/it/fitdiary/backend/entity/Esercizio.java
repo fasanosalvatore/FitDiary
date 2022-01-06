@@ -1,8 +1,10 @@
 package it.fitdiary.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -20,6 +22,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Esercizio {
     /**
      * int 50.
@@ -95,5 +98,6 @@ public class Esercizio {
     @ManyToOne
     @JoinColumn(name = "scheda_allenamento_id")
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private SchedaAllenamento schedaAllenamento;
 }

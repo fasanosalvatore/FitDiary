@@ -5,11 +5,12 @@ import it.fitdiary.backend.entity.Utente;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public interface GestioneProtocolloService {
     /**
-     * @param protocollo nuovo protocollo
-     * @param schedaAlimentareFile file scheda alimentare del nuovo protocollo
+     * @param protocollo            nuovo protocollo
+     * @param schedaAlimentareFile  file scheda alimentare del nuovo protocollo
      * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
      * @return Protocollo creato
      * @throws IOException
@@ -38,4 +39,30 @@ public interface GestioneProtocolloService {
      * @return cliente
      */
     Utente getClienteById(Long idCliente);
+
+    /**
+     * @param cliente cliente di cui visualizzare lo storico protocollo
+     * @return lista protocolli del cliente
+     */
+    List<Protocollo> visualizzaStoricoProtocolliCliente(Utente cliente);
+
+    /**
+     * @param protocollo protocollo
+     * @param schedaAllenamentoFile file della scheda allenamento
+     * @return nuovo protocollo
+     * @throws IOException
+     */
+    Protocollo inserisciSchedaAllenamento(Protocollo protocollo,
+                                          File schedaAllenamentoFile)
+            throws IOException;
+
+    /**
+     * @param protocollo protocollo
+     * @param schedaAlimentareFile file della scheda alimentare
+     * @return nuovo protocollo
+     * @throws IOException
+     */
+    Protocollo inserisciSchedaAlimentare(Protocollo protocollo,
+                                         File schedaAlimentareFile)
+            throws IOException;
 }

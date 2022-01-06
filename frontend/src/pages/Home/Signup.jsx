@@ -17,7 +17,6 @@ export default function Signup() {
                 <VStack spacing={3} alignItems="flex-start" pb={5}>
                     <Heading size="2xl">Registrazione</Heading>
                 </VStack>
-                {/*<PaySubscriptionForm/>*/}
                 <Elements stripe={stripePromise}>
                     <SignupForm/>
                 </Elements>

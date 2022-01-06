@@ -1,7 +1,7 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import config from '../config.json'
-import {Link,useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {
     Box,
     Button,
@@ -12,7 +12,7 @@ import {
     Input, Radio,
     RadioGroup,
     SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, useToast, VStack
+    Stack, Text, Tooltip, useBreakpointValue, useColorModeValue, useToast, VStack
 } from "@chakra-ui/react";
 import {
     CardCvcElement,
@@ -22,6 +22,7 @@ import {
     useElements,
     useStripe
 } from "@stripe/react-stripe-js";
+import TierPrice from "./TierPrice";
 
 export default function SignupForm() {
     const urlCreate = `${config.SERVER_URL}/utenti/preparatore`;
@@ -30,8 +31,18 @@ export default function SignupForm() {
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();
     const elements = useElements();
-    const toast = useToast()
+    const toast = useToast({
+        duration: 9000,
+        isClosable: true,
+        variant:"solid",
+        position:"top",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+    })
     const navigate = useNavigate();
+
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -52,7 +63,7 @@ export default function SignupForm() {
                 return Promise.reject(error);
             }
             console.log("handling Payment ");
-            handlePayment(resp.data.response.customerId).then( () => {
+            handlePayment(resp.data.response.customerId).then(() => {
                 console.log("redirecting Payment ");
                 navigate("/login");
             }).catch(handleFail)
@@ -66,8 +77,6 @@ export default function SignupForm() {
             title: 'Registrazione Fallita',
             description: data,
             status: 'error',
-            duration: 9000,
-            isClosable: true,
         })
     }
 
@@ -112,61 +121,62 @@ export default function SignupForm() {
             client_Secret,
             {
                 payment_method: {
-                    card:elements.getElement(CardNumberElement),
+                    card: elements.getElement(CardNumberElement),
                 },
-            }).then(function (result){
-                //console.log(JSON.stringify(result,undefined,2));
-                if(result.error){
-                    toast({
-                        title: 'Pagamento Fallito',
-                        description: "pagamento non riuscito",
-                        status: 'error',
-                        duration: 9000,
-                        isClosable: true,
-                    })
-                    console.log(result.error)
-                }
-                if(result.paymentIntent){
-                    toast({
-                        title: 'Pagamento Completato',
-                        description: "pagamento riuscito",
-                        status: 'success',
-                        duration: 9000,
-                        isClosable: true,
-                    })
-                }
+            }).then(function (result) {
+            //console.log(JSON.stringify(result,undefined,2));
+            if (result.error) {
+                toast({
+                    title: 'Pagamento Fallito',
+                    description: "pagamento non riuscito",
+                    status: 'error',
+                })
+                console.log(result.error)
+            }
+            if (result.paymentIntent) {
+                toast({
+                    title: 'Pagamento Completato',
+                    description: "pagamento riuscito",
+                    status: 'success',
+                })
+            }
         })
     }
-
 
 
     return (
         <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
             <SimpleGrid columns={2} columnGap={5} rowGap={5} w="full">
                 <GridItem colSpan={colSpan} w="100%">
-                    <FormControl id={"nome"} isInvalid={errors.nome}>
+                    <FormControl id={"nome"} isInvalid={errors.nome} isRequired>
                         <FormLabel htmlFor="nome">Nome</FormLabel>
                         <Input type="text" placeholder="Mario" {...register("nome", {
                             required: "Il nome è obbligatorio",
                             maxLength: {value: 50, message: "Il nome è troppo lungo"},
-                            pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato nome non valido"}
+                            pattern: {
+                                value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
+                                message: "Formato nome non valido"
+                            }
                         })} />
                         <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={colSpan}>
-                    <FormControl id={"cognome"} isInvalid={errors.cognome}>
+                    <FormControl id={"cognome"} isInvalid={errors.cognome} isRequired>
                         <FormLabel>Cognome</FormLabel>
                         <Input type="text" placeholder="Rossi" {...register("cognome", {
                             required: "Il cognome è obbligatorio",
                             maxLength: {value: 50, message: "Il cognome è troppo lungo"},
-                            pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato cognome non valido"}
+                            pattern: {
+                                value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
+                                message: "Formato cognome non valido"
+                            }
                         })} />
                         <FormErrorMessage>{errors.cognome && errors.cognome.message}</FormErrorMessage>
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={colSpan}>
-                    <FormControl id={"dataNascita"} isInvalid={errors.dataNascita}>
+                    <FormControl id={"dataNascita"} isInvalid={errors.dataNascita} isRequired>
                         <FormLabel>Data di Nascita</FormLabel>
                         <Input type="date" placeholder="2001-01-05" {...register("dataNascita", {
                             required: "La data di nascita è obbligatoria",
@@ -178,7 +188,7 @@ export default function SignupForm() {
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={colSpan}>
-                    <FormControl id={"sesso"} isInvalid={errors.sesso}>
+                    <FormControl id={"sesso"} isInvalid={errors.sesso} isRequired>
                         <FormLabel>Sesso</FormLabel>
                         <RadioGroup>
                             <Stack direction="row">
@@ -192,7 +202,7 @@ export default function SignupForm() {
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={2}>
-                    <FormControl id={"email"} isInvalid={errors.email}>
+                    <FormControl id={"email"} isInvalid={errors.email} isRequired>
                         <FormLabel>Email</FormLabel>
                         <Input type="text" placeholder="Email" {...register("email", {
                             required: "Il campo email è obbligatorio",
@@ -202,7 +212,7 @@ export default function SignupForm() {
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={colSpan}>
-                    <FormControl id={"password"} isInvalid={errors.password}>
+                    <FormControl id={"password"} isInvalid={errors.password} isRequired>
                         <FormLabel>Password</FormLabel>
                         <Tooltip
                             label={"La password deve contenere: Una lettera maiuscola, minuscola, un numero e un carattere speciale"}
@@ -220,7 +230,7 @@ export default function SignupForm() {
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={colSpan}>
-                    <FormControl id={"confermaPassword"} isInvalid={errors.confermaPassword}>
+                    <FormControl id={"confermaPassword"} isInvalid={errors.confermaPassword} isRequired>
                         <FormLabel>Conferma Password</FormLabel>
                         <Input type="password" placeholder="Conferma Password" {...register("confermaPassword", {
                             required: "Il campo conferma password è obbligatorio",
@@ -236,28 +246,43 @@ export default function SignupForm() {
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={2} w="100%">
-                    <FormLabel htmlFor="numeroCarta">Numero Carta</FormLabel>
-                    <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
-                        <CardNumberElement options={{showIcon: true}}/>
+                    <Box border="1px" borderRadius="10px" padding="2%" borderColor={"lightgray"} >
+                        <SimpleGrid columns={2} columnGap={5} rowGap={5} w="full">
+                            <GridItem colSpan={2} w="100%">
+                                <Heading as="h4" fontSize="xl">
+                                    Dati pagamento
+                                </Heading>
+                            </GridItem>
+                            <GridItem colSpan={2} w="100%">
+                                <FormLabel htmlFor="numeroCarta">Numero Carta</FormLabel>
+                                <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
+                                    <CardNumberElement options={{showIcon: true}}/>
+                                </Box>
+                            </GridItem>
+                            <GridItem colSpan={colSpan} w="100%">
+                                <FormLabel htmlFor="dataScadenza">Data Scadenza</FormLabel>
+                                <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
+                                    <CardExpiryElement/>
+                                </Box>
+                            </GridItem>
+                            <GridItem colSpan={colSpan} w="100%">
+                                <FormLabel htmlFor="CVV">CVV</FormLabel>
+                                <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
+                                    <CardCvcElement/>
+                                </Box>
+                            </GridItem>
+                        </SimpleGrid>
                     </Box>
-                </GridItem>
-                <GridItem colSpan={colSpan} w="100%">
-                    <FormLabel htmlFor="dataScadenza">Data Scadenza</FormLabel>
-                    <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
-                        <CardExpiryElement/>
-                    </Box>
-                </GridItem>
-                <GridItem colSpan={colSpan} w="100%">
-                    <FormLabel htmlFor="CVV">CVV</FormLabel>
-                    <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5} >
-                        <CardCvcElement/>
-                    </Box>
-                </GridItem>
-                <GridItem colSpan={2}>
-                    <Button w="full" mt={4} colorScheme='teal' type='submit'>
-                        Registrati e Paga
-                    </Button>
-                    <Text align={"center"} fontSize={"large"}>Hai gia un account? <Link to="/login">Login</Link></Text>
+                    <GridItem colSpan={2}>
+                        <TierPrice/>
+                    </GridItem>
+                    <GridItem colSpan={2}>
+                        <Button w="full" mt={4} colorScheme='teal' type='submit'>
+                            Registrati e Paga
+                        </Button>
+                        <Text align={"center"} fontSize={"large"}>Hai gia un account? <Link
+                            to="/login">Login</Link></Text>
+                    </GridItem>
                 </GridItem>
             </SimpleGrid>
         </form>

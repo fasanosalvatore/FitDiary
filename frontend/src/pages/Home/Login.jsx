@@ -2,7 +2,6 @@ import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Link, useNavigate} from "react-router-dom";
 import AuthService from "../../services/auth.service.js";
-import axios from "axios";
 import {
     Button,
     FormControl,
@@ -43,8 +42,6 @@ export default function Login() {
             title: 'Errore',
             description: error.response.data.data,
             status: 'error',
-            duration: 9000,
-            isClosable: true,
         })
     }
 

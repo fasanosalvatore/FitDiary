@@ -30,6 +30,15 @@ class AuthService {
     }
 
     logout() {
+        console.log(this.getCurrentUser());
+        const respToken = axios({
+            url: urlProfile,
+            method: "POST",
+            headers: {
+                'Authorization': "Bearer " + this.getCurrentUser().access_token,
+            }
+        })
+
         localStorage.removeItem("user");
     }
 

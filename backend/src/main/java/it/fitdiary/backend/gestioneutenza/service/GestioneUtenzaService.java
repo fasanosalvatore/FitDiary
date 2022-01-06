@@ -27,7 +27,7 @@ public interface GestioneUtenzaService extends UserDetailsService {
                                            Utente clienteModificato);
 
     /**
-     * @param idCliente id del cliente
+     * @param idCliente         id del cliente
      * @param clienteModificato
      * @return utente
      */
@@ -35,7 +35,7 @@ public interface GestioneUtenzaService extends UserDetailsService {
                                         Utente clienteModificato);
 
     /**
-     * @param idPreparatore l'id del preparatore.
+     * @param idPreparatore         l'id del preparatore.
      * @param preparatoreModificato il preparatore con i dati modificati.
      * @return utente
      */
@@ -66,6 +66,15 @@ public interface GestioneUtenzaService extends UserDetailsService {
      * @return dettagli dell' utente
      * @throws UsernameNotFoundException
      */
-     FitDiaryUserDetails loadUserByUsername(String email)
+    FitDiaryUserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException;
+
+    /**
+     * @param preparatore rappresenta il preparatore
+     * @param idCliente   rappresenta l' id del cliente
+     * @return @return vero se il cliente fa parte della
+     * lista dei clienti di quel preparatore, falso altrimenti
+     */
+    Boolean existsByPreparatoreAndId(Utente preparatore,
+                                     Long idCliente);
 }
