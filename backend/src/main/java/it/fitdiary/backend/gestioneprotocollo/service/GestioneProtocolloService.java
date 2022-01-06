@@ -29,18 +29,6 @@ public interface GestioneProtocolloService {
     Protocollo getByIdProtocollo(Long idProtocollo);
 
     /**
-     * @param idPreparatore id del preparatore
-     * @return preparatore
-     */
-    Utente getPreparatoreById(Long idPreparatore);
-
-    /**
-     * @param idCliente id del cliente
-     * @return cliente
-     */
-    Utente getClienteById(Long idCliente);
-
-    /**
      * @param cliente cliente di cui visualizzare lo storico protocollo
      * @return lista protocolli del cliente
      */

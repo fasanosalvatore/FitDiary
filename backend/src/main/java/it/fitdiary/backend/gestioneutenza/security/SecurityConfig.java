@@ -1,56 +1,50 @@
 package it.fitdiary.backend.gestioneutenza.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    /**
-     * Ruolo Admin.
-     */
+    /** Ruolo Admin. */
     public static final String ADMIN = "Preparatore";
-    /**
-     * Ruolo Preparatore.
-     */
+    /** Ruolo Preparatore. */
     public static final String PREPARATORE = "Preparatore";
-    /**
-     * Ruolo Cliente.
-     */
+    /** Ruolo Cliente. */
     public static final String CLIENTE = "Cliente";
-    /**
-     * UserDetailsService utilizzato per l'autenticazione.
-     */
+    /** UserDetailsService utilizzato per l'autenticazione. */
     private final UserDetailsService userDetailsService;
-    /**
-     * BCryptPasswordEncoder utilizzato per codificare le password.
-     */
+    /** BCryptPasswordEncoder utilizzato per codificare le password. */
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    /**
-     * @param auth AuthenticationManagerBuilder
-     */
+    /** @param auth AuthenticationManagerBuilder */
     @Override
     protected void configure(final AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder);
+            .passwordEncoder(bCryptPasswordEncoder);
     }
 
     /**
@@ -59,61 +53,88 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter customAuthenticationFilter =
+        /* Routes:
+            POST    /utenti/acquista      //guest acquista abbonamento
+            POST    /abbonamento/create   //guest registra preparatore
+            GET     /utenti/token/refresh //utente refresha il token
+            GET     /utenti/token/refresh //utente espira il token
+            GET     /utenti/profilo       //utente visualizza il profilo
+            POST    /utenti/cliente       //cliente inserisce dati cliente
+            PUT     /utenti/cliente       //cliente modifica dati cliente
+            PUT     /utenti/preparatore   //preparatore modifica dati
+            POST    /utenti/createcliente //preparatore crea cliente
+            POST    /abbonamento/acquista //preparatore acquista abbonamento
+         */
+        //Disabilita CSRF Token per i form
+        http.csrf().disable();
+        //Abilita Cross origin requests
+        http.cors().configurationSource(this::corsConfigurer);
+        //Abilita avvio senza sessione (JWT Only)
+        http.sessionManagement().sessionCreationPolicy(STATELESS);
+        //Creazione dei filtri per le richieste
+        var loginFilter =
                 new CustomAuthenticationFilter(authenticationManagerBean());
-        customAuthenticationFilter.setFilterProcessesUrl(
-                "/api/v1/utenti/login");
-        http.csrf().disable()
-                .cors();
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(POST, "/api/v1/utenti"
-                                + "/preparatore"
-                                + "/**", "/api/v1/abbonamento/acquista/**",
-                        "/api/v1/utenti/login").permitAll()
-                .antMatchers(POST, "/api/v1/utenti/cliente/**")
-                .hasAuthority(CLIENTE)
-                .antMatchers(PUT, "/api/v1/utenti/cliente/**")
-                .hasAuthority(CLIENTE)
-                .antMatchers("/api/v1/utenti/preparatore/**")
-                .hasAuthority(PREPARATORE)
-                .antMatchers("/api/v1/utenti/createcliente/**")
-                .hasAuthority(PREPARATORE)
-                .antMatchers("/api/v1/utenti/profilo/**").authenticated()
-                .antMatchers("/api/v1/utenti/login/**",
-                        "/api/v1/utenti/token/refresh/**",
-                        "/api/v1/utenti/token/expire/**",
-                        "/api/v1/utenti/preparatore/**",
-                        "/api/v1/abbonamento/acquista/**").permitAll()
-                .anyRequest().authenticated();
-        http.addFilter(customAuthenticationFilter)
+        loginFilter.setFilterProcessesUrl("/api/v1/utenti/login");
+        //Applicazione dei filtri alle richieste
+        http
+                //filtro Login
+                .addFilter(loginFilter)
+                //filtro JWT
                 .addFilterBefore(new CustomAuthorizationFilter(),
                         UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((e) -> e.accessDeniedHandler(
-                        (request, response, accessDeniedException) -> {
-                            response.setStatus(
-                                    HttpStatus.UNAUTHORIZED.value());
-                            response.setHeader("error",
-                                    "Autorizzazione fallita");
-                            response.setContentType(
-                                    MediaType.APPLICATION_JSON_VALUE);
-                            response.getWriter()
-                                    .write("{\"message\": "
-                                            + "\"Non sei autorizzato "
-                                            + "per questa funzionalità\", "
-                                            + "\"status\": \"error\"}");
-                        })
-                );
-        http.headers().addHeaderWriter(new HeaderWriteConfigure());
+                //handling accesso negato/JWT Token
+                .exceptionHandling(e ->
+                        e.accessDeniedHandler(this::handleAccessDenied));
+
+        //Sicurezza Routes
+        http
+            //Routes pubbliche
+            .authorizeRequests()
+            .antMatchers(POST,
+                    "/api/v1/utenti/login",
+                    "/api/v1/utenti/preparatore",
+                    "/api/v1/abbonamento/acquista"
+            ).permitAll()
+
+            //Routes per qualsiasi Utente Autenticato
+            .and().authorizeRequests()
+            .antMatchers(GET,
+                    "/api/v1/utenti/token/refresh",
+                    "/api/v1/utenti/token/expires",
+                    "/api/v1/utenti/profilo"
+            ).authenticated()
+
+            //Routes Cliente con Ruolo
+            .and().authorizeRequests()
+            .antMatchers(POST, "/api/v1/utenti/cliente").hasAuthority(CLIENTE)
+            .antMatchers(PUT, "/api/v1/utenti/cliente").hasAuthority(CLIENTE)
+
+            //Routes Preparatore con Ruolo
+            .and().authorizeRequests()
+            .antMatchers(PUT, "/api/v1/utenti/preparatore")
+            .hasAuthority(PREPARATORE)
+            .antMatchers(POST, "/api/v1/utenti/createcliente")
+            .hasAuthority(PREPARATORE)
+            .anyRequest().authenticated();
     }
 
-    /**
-     * @return AuthenticationManager
-     * @throws Exception
-     */
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    private CorsConfiguration corsConfigurer(final HttpServletRequest request) {
+        var corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedHeaders(List.of("*"));
+        corsConfig.setAllowedOrigins(List.of("*"));
+        corsConfig.setAllowedMethods(List.of("*"));
+        return corsConfig;
+    }
+
+    private void handleAccessDenied(final HttpServletRequest request,
+                                    final HttpServletResponse response,
+                                    final AccessDeniedException exception)
+            throws IOException {
+        //TODO usare Responsehandler JSend Convention
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setHeader("error", "Autorizzazione fallita");
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write("{\"message\": " + "\"Non sei autorizzato "
+                + "per questa funzionalità\", " + "\"status\": \"error\"}");
     }
 }

@@ -1,40 +1,32 @@
 import axios from "axios";
-import config from "../config.json";
+import {useToast} from "@chakra-ui/react";
 
-
-const urlLogin = `${config.SERVER_URL}/utenti/login`;
-const urlProfile = `${config.SERVER_URL}/utenti/profilo`;
-
+const urlLogin = process.env.REACT_APP_SERVER_URL + '/utenti/login';
+const urlProfile = `${process.env.REACT_APP_SERVER_URL}/utenti/profilo`;
+/*
+* example:
+* {"accessToken":{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiQ2xpZW50ZSJdLCJpc3MiOiIvYXBpL3YxL3V0ZW50aS9sb2dpbiIsImV4cCI6MTY0MTQzMjg0OSwiZW1haWwiOiJjbGllbnRlQGZpdGRpYXJ5Lml0In0.At98wr7R9vKYPq6WWkOwnbn34ztGKkxJgPpT-F107To","expiresAt":1641432849842},"refreshToken":{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3Iiwicm9sZXMiOlsiQ2xpZW50ZSJdLCJpc3MiOiIvYXBpL3YxL3V0ZW50aS9sb2dpbiIsImV4cCI6MTY0MTQzNDA0OSwiZW1haWwiOiJjbGllbnRlQGZpdGRpYXJ5Lml0In0.iiH3qi378-LSmu9nzwxveSiG_NfwAs29V7uqY4KKAXA","expiresAt":1641434049842},"userInfo":{"trainerId":5,"surname":"Melmosa","email":"cliente@fitdiary.it","name":"Tiziana","gender":"F","roles":["Cliente"]}}
+* */
 class AuthService {
+
     async login(username, password) {
         const formData = new FormData();
         formData.append("email", username);
         formData.append("password", password);
-        const respAuth = await axios({
-            url: urlLogin,
-            method: "POST",
-            headers: {
-                "Content-Type": "multipart/form-data"
-            },
-            data: formData
+
+        return axios.post(urlLogin,formData,{
+            headers: { "Content-Type": "multipart/form-data" },
+        }).then(value => {
+            console.log(value);
+            localStorage.setItem('user', JSON.stringify(value.data.data));
         })
-        console.log(respAuth.data.access_token)
-        const respUser = await axios({
-            url: urlProfile,
-            method: "GET",
-            headers: {
-                'Authorization': "Bearer "+respAuth.data.access_token,
-            }
-        })
-        console.log(respUser)
-        const completeUser ={
-            utente: respUser.data.data.utente,
-            access_token: respAuth.data.access_token,
-            refresh_token: respAuth.data.refresh_token,
-        }
-        console.log(completeUser)
-        localStorage.setItem('user', JSON.stringify(completeUser));
-        return respAuth.data;
+    }
+
+    async getProfile() {
+        console.log(this.getCurrentUser());
+        return axios.get(urlProfile,{
+            headers: {"Authorization": "Bearer " + this.getCurrentUser().accessToken.token}
+        });
     }
 
     logout() {

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -110,7 +111,7 @@ public class GestioneProtocolloController {
         }
     }
 
-    @PostMapping("modifica")
+    @PutMapping
     private ResponseEntity<Object> modificaProtocollo(
             @RequestParam("idProtocollo") final Long idProtocollo,
             @RequestParam("schedaAlimentare")
@@ -123,9 +124,11 @@ public class GestioneProtocolloController {
         Long idPreparatore = Long.parseLong(
                 request.getUserPrincipal().getName());
         Utente preparatore = gestioneUtenzaService.getById(idPreparatore);
-        Protocollo protocollo =
-                gestioneProtocolloService.getByIdProtocollo(idProtocollo);
-        if (protocollo == null) {
+        Protocollo protocollo = null;
+        try {
+            protocollo =
+                    gestioneProtocolloService.getByIdProtocollo(idProtocollo);
+        } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     "protocollo",
                     "Il protocollo da modificare non esiste");
@@ -140,7 +143,8 @@ public class GestioneProtocolloController {
         }
         if (schedaAllenamentoMultipartFile.isEmpty()
                 && schedaAlimentareMultipartFile.isEmpty()) {
-            return ResponseHandler.generateResponse(BAD_REQUEST, "protocollo",
+            return ResponseHandler.generateResponse(BAD_REQUEST,
+                    "protocollo",
                     "Almeno uno dei due file deve essere presente");
         }
 
@@ -156,12 +160,16 @@ public class GestioneProtocolloController {
         }
         try {
             if (schedaAlimentareFile != null) {
-                gestioneProtocolloService.inserisciSchedaAlimentare(protocollo,
+                gestioneProtocolloService.inserisciSchedaAlimentare(
+                        protocollo,
                         schedaAlimentareFile);
+                schedaAlimentareFile.delete();
             }
             if (schedaAllenamentoFile != null) {
-                gestioneProtocolloService.inserisciSchedaAllenamento(protocollo,
+                gestioneProtocolloService.inserisciSchedaAllenamento(
+                        protocollo,
                         schedaAllenamentoFile);
+                schedaAllenamentoFile.delete();
             }
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "protocollo", protocollo);
@@ -170,7 +178,8 @@ public class GestioneProtocolloController {
                     HttpStatus.INTERNAL_SERVER_ERROR, "protocollo",
                     "Errore nella lettura dei file");
         } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(BAD_REQUEST, "protocollo",
+            return ResponseHandler.generateResponse(BAD_REQUEST,
+                    "protocollo",
                     e.getMessage());
         }
     }
@@ -202,24 +211,19 @@ public class GestioneProtocolloController {
             throws IOException {
         var request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
-        var principal = Long.parseLong(request.getUserPrincipal().getName());
+        var principal =
+                Long.parseLong(request.getUserPrincipal().getName());
         Protocollo protocollo =
                 gestioneProtocolloService.getByIdProtocollo(id);
         if (protocollo.getPreparatore().getId() != principal) {
-            return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
+            return ResponseHandler.generateResponse(BAD_REQUEST,
                     "Il preparatore non ha creato quel protocollo");
         }
-        try {
-            return ResponseHandler.generateResponse(HttpStatus.OK,
-                    "protocollo",
-                    protocollo
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
-        }
-
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                "protocollo",
+                protocollo);
     }
+
 
     /**
      * Questa funzione permette di visualizzare un protocollo
@@ -235,33 +239,26 @@ public class GestioneProtocolloController {
             throws IOException {
         var request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
-        var principal = Long.parseLong(request.getUserPrincipal().getName());
+        var principal =
+                Long.parseLong(request.getUserPrincipal().getName());
         Protocollo protocollo =
                 gestioneProtocolloService.getByIdProtocollo(id);
         if (protocollo.getPreparatore().getId() != principal) {
-            return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
+            return ResponseHandler.generateResponse(
+                    HttpStatus.NOT_ACCEPTABLE,
                     "Il preparatore non ha creato quel protocollo");
         }
-        Utente preparatore =
-                gestioneProtocolloService.getPreparatoreById(
-                        protocollo.getPreparatore().getId());
-        Utente cliente =
-                gestioneProtocolloService.getClienteById(principal);
+        Utente preparatore = protocollo.getPreparatore();
+        Utente cliente = protocollo.getCliente();
         if (!gestioneUtenzaService.existsByPreparatoreAndId(preparatore,
                 cliente.getId())) {
-            return ResponseHandler.generateResponse(HttpStatus.NOT_ACCEPTABLE,
+            return ResponseHandler.generateResponse(BAD_REQUEST,
                     "Il cliente selezionato non appartiene al preparatore");
         }
-        try {
-            return ResponseHandler.generateResponse(HttpStatus.OK,
-                    "protocollo",
-                    protocollo
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
-        }
-
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                "protocollo",
+                protocollo
+        );
     }
 
 
@@ -273,6 +270,19 @@ public class GestioneProtocolloController {
     @GetMapping("cliente/{id}")
     public ResponseEntity<Object> visualizzaStoricoProtocolliCliente(
             @PathVariable("id") final Long idCliente) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+
+        Long idPreparatore = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente preparatore = gestioneUtenzaService.getById(idPreparatore);
+        if (!gestioneUtenzaService.existsByPreparatoreAndId(
+                preparatore, idCliente)) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    "protocollo",
+                    "Il preparatore non può creare "
+                            + "un protocollo per questo cliente");
+        }
         try {
             Utente utenteCliente = gestioneUtenzaService.getById(idCliente);
             return ResponseHandler.generateResponse(HttpStatus.OK,
@@ -280,6 +290,33 @@ public class GestioneProtocolloController {
                     gestioneProtocolloService
                             .visualizzaStoricoProtocolliCliente(
                                     utenteCliente));
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                    e.getMessage());
+        }
+    }
+
+
+    /**
+     * @param request HttpServletRequest
+     * @return storico dei protocolli del cliente autenticato
+     */
+    @GetMapping("cliente")
+    public ResponseEntity<Object> visualizzaStoricoProtocolli(
+            HttpServletRequest request) {
+
+        Long idCliente = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente cliente = null;
+
+        try {
+            cliente = gestioneUtenzaService.getById(idCliente);
+
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    "protocollo",
+                    gestioneProtocolloService
+                            .visualizzaStoricoProtocolliCliente(
+                                    cliente));
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     e.getMessage());

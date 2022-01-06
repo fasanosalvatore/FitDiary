@@ -13,18 +13,16 @@ import {
     Stack, Text, Tooltip, useBreakpointValue, VStack
 } from "@chakra-ui/react";
 import config from "../../../config.json";
-import authservice from "../../../services/auth.service";
 import axios from "axios";
+import AuthService from "../../../services/auth.service";
 
 
 export default function CustomerEditInfo() {
     const urlEditInfo = `${config.SERVER_URL}/utenti/cliente`;
     const {register, handleSubmit, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
-    const [currentUser,setCurrentUser] = /*useState(AuthService.getCurrentUser())*/useState(authservice.getCurrentUser())
+    const [currentUser, setCurrentUser] = /*useState(AuthService.getCurrentUser())*/useState(null)
 
-    const resp = currentUser;
-    console.log(resp)
 
     function handleResponse(response) {
         console.log("handling");
@@ -43,10 +41,14 @@ export default function CustomerEditInfo() {
     }
 
     useEffect(() => {
-        const fields = ['nome','cognome','email','dataNascita', 'telefono', 'via', 'cap', 'citta'];
-        fields.forEach(field => setValue(field, currentUser.utente[field]));
-    })
-
+        AuthService.getProfile().then(resp => {
+            setCurrentUser(resp.data.data)
+        });
+        if (currentUser !== null && currentUser !== {}) {
+            const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
+            fields.forEach(field => setValue(field, currentUser.utente[field]));
+        }
+    }, [])
 
 
     //Chiamata API inserimento dati personali utente
@@ -56,11 +58,13 @@ export default function CustomerEditInfo() {
         console.log(values);
         console.log(currentUser.access_token)
         return axios({
-                url:urlEditInfo,
-                method: "PUT",
-                headers: {'Content-Type': 'application/json',
-                'Authorization': "Bearer "+currentUser.access_token},
-                body: JSON.stringify(values)
+            url: urlEditInfo,
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + currentUser.access_token
+            },
+            body: JSON.stringify(values)
         }).then(handleResponse)
             .catch(handleFail)
     }
@@ -68,6 +72,7 @@ export default function CustomerEditInfo() {
     function isValidDate(value) {
         return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
     }
+
     //nome,cognome,email,password,dataNascita
     return (
         <VStack w="full" h="full" p={[5, 10, 20]}>
@@ -82,7 +87,10 @@ export default function CustomerEditInfo() {
                             <Input type="text" placeholder="Mario" {...register("nome", {
                                 required: "Il nome è obbligatorio",
                                 maxLength: {value: 50, message: "Il nome è troppo lungo"},
-                                pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato nome non valido"}
+                                pattern: {
+                                    value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
+                                    message: "Formato nome non valido"
+                                }
                             })} />
                             <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
                         </FormControl>
@@ -93,7 +101,10 @@ export default function CustomerEditInfo() {
                             <Input type="text" placeholder="Rossi" {...register("cognome", {
                                 required: "Il cognome è obbligatorio",
                                 maxLength: {value: 50, message: "Il cognome è troppo lungo"},
-                                pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato cognome non valido"}
+                                pattern: {
+                                    value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
+                                    message: "Formato cognome non valido"
+                                }
                             })} />
                             <FormErrorMessage>{errors.cognome && errors.cognome.message}</FormErrorMessage>
                         </FormControl>
@@ -185,7 +196,11 @@ export default function CustomerEditInfo() {
                                 maxLength: {
                                     value: 20,
                                     message: "Il nome della città è troppo lungo"
-                                }, pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato citta non valido"}
+                                },
+                                pattern: {
+                                    value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
+                                    message: "Formato citta non valido"
+                                }
                             })} />
                             <FormErrorMessage>{errors.citta && errors.citta.message}</FormErrorMessage>
                         </FormControl>
@@ -198,7 +213,11 @@ export default function CustomerEditInfo() {
                                 maxLength: {
                                     value: 50,
                                     message: "Il nome della via è troppo lungo"
-                                }, pattern: {value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i, message: "Formato nome non valido"}
+                                },
+                                pattern: {
+                                    value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
+                                    message: "Formato nome non valido"
+                                }
                             })} />
                             <FormErrorMessage>{errors.via && errors.via.message}</FormErrorMessage>
                         </FormControl>

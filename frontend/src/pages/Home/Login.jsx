@@ -1,6 +1,6 @@
 import React from 'react';
 import {useForm} from 'react-hook-form';
-import {Link, useHistory, useNavigate, withRouter} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import AuthService from "../../services/auth.service.js";
 import {
     Button,
@@ -9,50 +9,43 @@ import {
     FormLabel,
     GridItem, Heading,
     Input,
-    SimpleGrid, Text, Tooltip, VStack,useToast
+    SimpleGrid, Text, VStack, useToast
 } from "@chakra-ui/react";
 
-import config from "../../config.json";
-
 export default function Login() {
-    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
-    const urlLogin=`${config.SERVER_URL}/utenti/login`;
-    const toast = useToast({
-        duration: 9000,
-        isClosable: true,
-        position:"top",
-        variant:"solid",
-        containerStyle: {
-            width: '100%',
-            maxWidth: '100%',
-        },
-    })
-
-
+    const {register, handleSubmit, formState: {errors, isSubmitting, isSubmitted}} = useForm();
+    const [ isSuccessfullySubmitted, setIsSuccessfullySubmitted ] = React.useState( false );
+    const toast = useToast()
     const navigate = useNavigate();
-    function onSubmit(values) {
-       const resp={
-           method: "POST",
-           headers: {'Content-Type': 'application/json'},
-           body: JSON.stringify(values)
-       }
-       AuthService.login(values.email,values.password).then( () => {
-           navigate("/customer/me");
-       }).catch(handleFail)
 
+    function onSubmit(values) {
+        console.log("submitting");
+        AuthService.login(values.email, values.password).then((value) => {
+            console.log(value);
+            setIsSuccessfullySubmitted(true);
+            toast({
+                title: 'Accesso eseguito!',
+                description: "Verrai riderizionato a breve!",
+                status: 'success',
+                duration: 2000
+            })
+            setTimeout((resolve) => {
+                navigate("/customer/me");
+                resolve();
+            },2000)
+        }).catch(handleFail)
     }
 
-    function handleFail(data) {
-        console.log(data.message)
+    function handleFail(error) {
+        console.log(error.response);
         toast({
-            title: 'Accesso fallito',
-            description: "Email e/o password errate",
+            title: 'Errore',
+            description: error.response.data.data,
             status: 'error',
         })
     }
 
     return (
-
         <VStack w="full" h="full" p={[5, 10, 20]}>
             <VStack spacing={3} alignItems="flex-start" pb={5}>
                 <Heading size="2xl">Login</Heading>
@@ -72,15 +65,15 @@ export default function Login() {
                     <GridItem colSpan={2}>
                         <FormControl id={"password"} isInvalid={errors.password}>
                             <FormLabel>Password</FormLabel>
-                                <Input type="password" placeholder="Password" {...register("password", {
-                                    required: "Il campo password è obbligatorio",
-                                    maxLength: {value: 255, message: "Password troppo lunga"},
-                                })} />
+                            <Input type="password" placeholder="Password" {...register("password", {
+                                required: "Il campo password è obbligatorio",
+                                maxLength: {value: 255, message: "Password troppo lunga"},
+                            })} />
                             <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
                     <GridItem colSpan={2}>
-                        <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
+                        <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting || isSuccessfullySubmitted} type='submit'>
                             Login
                         </Button>
                         <Text align={"center"} fontSize={"large"}>Non hai ancora un account su FitDiary? <Link
