@@ -15,7 +15,7 @@ import {
 import { FaCheckCircle } from 'react-icons/fa';
 import { createBreakpoints } from '@chakra-ui/theme-tools'
 
-function PriceWrapper(children) {
+function PriceWrapper({children}) {
     return (
         <Box
             mb={4}
