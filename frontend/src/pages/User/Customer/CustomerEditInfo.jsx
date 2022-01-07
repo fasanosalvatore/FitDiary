@@ -33,23 +33,6 @@ export default function CustomerEditInfo() {
         },
     })
 
-
-    function handleResponse(response) {
-        console.log("handling");
-        return response.text().then(text => {
-            const resp = JSON.parse(text);
-            if (!response.ok) {
-                const error = (resp && resp.message) || response.statusText;
-                return Promise.reject(error);
-            }
-        });
-    }
-
-    //Gestione FAIL
-    function handleFail(data) {
-        console.log("something went wrong " + data);
-    }
-
     useEffect(() => {
         privateFetch(urlGetInfo).then(resp =>{
             const currentUser = resp;
@@ -59,7 +42,6 @@ export default function CustomerEditInfo() {
                 fields.forEach(field => setValue(field, currentUser.data.data.utente[field]));
             }
         })
-
     }, [])
 
 

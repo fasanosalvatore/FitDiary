@@ -10,10 +10,17 @@ import {
     VStack
 } from "@chakra-ui/react";
 import authService from "../../../services/auth.service";
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 export default function CustomerProfile() {
+    const navigate = useNavigate();
     const utente = authService.getCurrentUser().userInfo;
-    console.log(utente);
+
+    useEffect(() => {
+        if(authService.getCurrentUser() == null)
+            navigate("/");
+    })
     return (
         <Flex wrap={"wrap"}>
             <Heading w={"full"} mb={5}>Profilo Utente</Heading>
