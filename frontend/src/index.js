@@ -12,7 +12,6 @@ import TrainerEdit from "./pages/User/Trainer/TrainerEdit";
 import TrainerIndex from "./pages/User/Trainer/TrainerIndex";
 import CustomerIndex from "./pages/User/Customer/CustomerIndex";
 import Index from "./pages/Home/Index";
-import CustomerInsertInfo from "./pages/User/Customer/CustomerInsertInfo";
 import CustomerEditInfo from "./pages/User/Customer/CustomerEditInfo";
 import Logout from "./pages/Home/Logout";
 import CustomerviewProtocol from "./pages/User/Customer/CustomerviewProtocol";

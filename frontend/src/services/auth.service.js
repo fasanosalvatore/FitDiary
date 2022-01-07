@@ -1,5 +1,4 @@
 import axios from "axios";
-import {useToast} from "@chakra-ui/react";
 
 const urlLogin = process.env.REACT_APP_SERVER_URL + '/utenti/login';
 const urlProfile = `${process.env.REACT_APP_SERVER_URL}/utenti/profilo`;

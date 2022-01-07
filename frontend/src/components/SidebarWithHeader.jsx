@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import {
     IconButton,
     Avatar,
@@ -14,8 +14,6 @@ import {
     DrawerContent,
     Text,
     useDisclosure,
-    BoxProps,
-    FlexProps,
     Menu,
     MenuButton,
     MenuDivider,
@@ -111,10 +109,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
             pos="fixed"
             h="full"
             {...rest}>
-            <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-                <Text fontSize="7xl" fontFamily="monospace" fontWeight="bold" color={"blue.500"}>
-                    <Logo/>
-                </Text>
+            <Flex h="20" alignItems="center"  mx="8" justifyContent="center">
+                <Link>
+                    <Text fontSize="8xl" fontFamily="monospace" fontWeight="bold" color={"blue.500"} >
+                        <Logo href={"/"}/>
+                    </Text>
+                </Link>
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
@@ -130,8 +130,11 @@ const SidebarContent = ({ onClose, ...rest }) => {
 
 const NavItem = ({ icon, to, children, ...rest }) => {
     return (
-        <Link href={to} style={{ textDecoration: 'none' }}>
+        <Link href={to} style={{ textDecoration: 'none' }} textAlign={"center"}>
             <Flex
+                textAlign={"left"}
+                color="blue.500"
+                fontWeight="bolder"
                 align="center"
                 p="4"
                 mx="4"
@@ -139,14 +142,15 @@ const NavItem = ({ icon, to, children, ...rest }) => {
                 role="group"
                 cursor="pointer"
                 _hover={{
-                    bg: 'cyan.400',
+                    bg: 'blue.500',
                     color: 'white',
                 }}
                 {...rest}>
                 {icon && (
                     <Icon
+                        fontWeight="bolder"
                         mr="4"
-                        fontSize="16"
+                        fontSize="20"
                         _groupHover={{
                             color: 'white',
                         }}
@@ -187,6 +191,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
             <HStack spacing={{ base: '0', md: '6' }}>
                 <IconButton
+                    color={"blue.500"}
                     size="lg"
                     variant="ghost"
                     aria-label="open menu"

@@ -1,15 +1,16 @@
 import {Outlet} from "react-router";
-import {Link as RouteLink} from "react-router-dom";
-import {Link} from "@chakra-ui/react";
 import SidebarWithHeader from "./components/SidebarWithHeader";
+import Footer from "./components/Footer";
 
 
 const App = () => {
     return (
         <>
+
             <SidebarWithHeader>
-                <Outlet/>
+                    <Outlet/>
             </SidebarWithHeader>
+            <Footer/>
         </>
     )
 }
