@@ -33,9 +33,9 @@ public class GestioneAbbonamentoController {
      */
     @PostMapping("/acquista")
     public ResponseEntity<Object> acquistaAbbonamento(
-            @RequestBody final JsonNode customerId) throws StripeException {
+            @RequestBody final JsonNode customerId) {
         Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
-        if(customerId == null || customerId.get("customerId") == null){
+        if (customerId == null || customerId.get("customerId") == null) {
             return ResponseHandler.generateResponse(
                     HttpStatus.BAD_REQUEST, "Errore generale nella richiesta"
             );
@@ -53,7 +53,7 @@ public class GestioneAbbonamentoController {
                         SubscriptionCreateParams
                                 .PaymentBehavior.DEFAULT_INCOMPLETE)
                 .setCollectionMethod(SubscriptionCreateParams
-                .CollectionMethod.CHARGE_AUTOMATICALLY)
+                        .CollectionMethod.CHARGE_AUTOMATICALLY)
                 .addAllExpand(List.of("latest_invoice.payment_intent"))
                 .build();
         try {
@@ -61,8 +61,9 @@ public class GestioneAbbonamentoController {
             Map<String, Object> response = new HashMap<>();
             response.put("subscriptionId", subscription.getId());
             response.put("clientSecret",
-                    subscription.getLatestInvoiceObject().getPaymentIntentObject()
-                                .getClientSecret());
+                    subscription.getLatestInvoiceObject()
+                            .getPaymentIntentObject()
+                            .getClientSecret());
             return ResponseHandler.generateResponse(
                     HttpStatus.CREATED, "Utente", response
             );

@@ -1,6 +1,7 @@
 package it.fitdiary.backend.utility;
 
 import lombok.Data;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ import java.util.Random;
 @Component
 @Data
 @RequiredArgsConstructor
+@Generated
 public class PasswordGenerator {
     /**
      * Lettere maiuscole.
