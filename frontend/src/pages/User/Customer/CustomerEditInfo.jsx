@@ -22,7 +22,6 @@ export default function CustomerEditInfo() {
     const {register, handleSubmit,getValues, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const [currentUser, setCurrentUser] = useState(null)
-    const accessToken = AuthService.getAccesstToken();
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -68,7 +67,7 @@ export default function CustomerEditInfo() {
     const onSubmit = async values => {
         console.log("submitting values");
         console.log(values);
-        console.log(accessToken)
+        //console.log(accessToken)
         try{
             await privateFetch.put(urlEditInfo, values)
         }catch (error) {

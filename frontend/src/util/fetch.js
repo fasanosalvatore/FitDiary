@@ -9,7 +9,7 @@ const publicFetch = axios.create({
 const privateFetch = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
     headers:{
-        'Authorization': "Bearer " + AuthService.getAccesstToken()
+        'Authorization': "Bearer " + AuthService.getAccessToken() ?? ""
     }
 })
 
