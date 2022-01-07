@@ -303,7 +303,7 @@ public class GestioneProtocolloController {
      */
     @GetMapping("cliente")
     public ResponseEntity<Object> visualizzaStoricoProtocolli(
-            HttpServletRequest request) {
+            final HttpServletRequest request) {
 
         Long idCliente = Long.parseLong(
                 request.getUserPrincipal().getName());

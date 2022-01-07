@@ -389,9 +389,14 @@ public class GestioneUtenzaController {
         }
     }
 
+    /**
+     * metodo per catturare l'errore HttpMessageNotReadableException.
+     * @param ex errore
+     * @return messaggio di errore
+     */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> handleMissingRequestBody(
-            HttpMessageNotReadableException ex) {
+            final HttpMessageNotReadableException ex) {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                 "Errore durante la lettura del body");
     }
