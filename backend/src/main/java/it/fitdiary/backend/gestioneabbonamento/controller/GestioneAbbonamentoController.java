@@ -1,5 +1,6 @@
 package it.fitdiary.backend.gestioneabbonamento.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Subscription;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,11 +31,11 @@ public class GestioneAbbonamentoController {
      */
     @PostMapping("/acquista")
     public ResponseEntity<Object> acquistaAbbonamento(
-            @RequestBody final String customerId) throws StripeException {
+            @RequestBody final JsonNode customerId) throws StripeException {
         Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
         SubscriptionCreateParams subCreateParams = SubscriptionCreateParams
                 .builder()
-                .setCustomer(customerId)
+                .setCustomer(customerId.get("customerId").asText())
                 .addItem(
                         SubscriptionCreateParams
                                 .Item.builder()
@@ -44,12 +45,9 @@ public class GestioneAbbonamentoController {
                 .setPaymentBehavior(
                         SubscriptionCreateParams
                                 .PaymentBehavior.DEFAULT_INCOMPLETE)
-                .setCollectionMethod(true
-                        ? SubscriptionCreateParams
-                        .CollectionMethod.CHARGE_AUTOMATICALLY
-                        : SubscriptionCreateParams
-                        .CollectionMethod.SEND_INVOICE)
-                .addAllExpand(Arrays.asList("latest_invoice.payment_intent"))
+                .setCollectionMethod(SubscriptionCreateParams
+                .CollectionMethod.CHARGE_AUTOMATICALLY)
+                .addAllExpand(List.of("latest_invoice.payment_intent"))
                 .build();
         Subscription subscription = Subscription.create(subCreateParams);
         Map<String, Object> response = new HashMap<>();

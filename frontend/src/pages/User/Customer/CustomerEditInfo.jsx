@@ -7,21 +7,32 @@ import {
     FormErrorMessage,
     FormLabel,
     GridItem, Heading,
-    Input, Radio,
-    RadioGroup,
+    Input,
     SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, VStack
+    Tooltip, useBreakpointValue, useToast, VStack
 } from "@chakra-ui/react";
 import config from "../../../config.json";
-import axios from "axios";
 import AuthService from "../../../services/auth.service";
+import {privateFetch} from "../../../util/fetch";
 
 
 export default function CustomerEditInfo() {
-    const urlEditInfo = `${config.SERVER_URL}/utenti/cliente`;
-    const {register, handleSubmit, setValue, formState: {errors, isSubmitting}} = useForm();
+    const urlEditInfo = `utenti/cliente`;
+    const urlGetInfo = `utenti/profilo`;
+    const {register, handleSubmit,getValues, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
-    const [currentUser, setCurrentUser] = /*useState(AuthService.getCurrentUser())*/useState(null)
+    const [currentUser, setCurrentUser] = useState(null)
+    const accessToken = AuthService.getAccesstToken();
+    const toast = useToast({
+        duration: 9000,
+        isClosable: true,
+        variant:"solid",
+        position:"top",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+    })
 
 
     function handleResponse(response) {
@@ -41,32 +52,33 @@ export default function CustomerEditInfo() {
     }
 
     useEffect(() => {
-        AuthService.getProfile().then(resp => {
-            setCurrentUser(resp.data.data)
-        });
-        if (currentUser !== null && currentUser !== {}) {
-            const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
-            fields.forEach(field => setValue(field, currentUser.utente[field]));
-        }
+        privateFetch(urlGetInfo).then(resp =>{
+            const currentUser = resp;
+            console.log(currentUser)
+            if (currentUser !== null && currentUser !== {}) {
+                const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
+                fields.forEach(field => setValue(field, currentUser.data.data.utente[field]));
+            }
+        })
+
     }, [])
 
 
     //Chiamata API inserimento dati personali utente
-    function onSubmit(values) {
-
+    const onSubmit = async values => {
         console.log("submitting values");
         console.log(values);
-        console.log(currentUser.access_token)
-        return axios({
-            url: urlEditInfo,
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer " + currentUser.access_token
-            },
-            body: JSON.stringify(values)
-        }).then(handleResponse)
-            .catch(handleFail)
+        console.log(accessToken)
+        try{
+            await privateFetch.put(urlEditInfo, values)
+        }catch (error) {
+        console.log(error.response)
+        toast({
+            title: 'Errore',
+            description: error.response.data.message,
+            status: 'error',
+        })
+    }
     }
 
     function isValidDate(value) {
@@ -85,7 +97,6 @@ export default function CustomerEditInfo() {
                         <FormControl id={"nome"} isInvalid={errors.nome}>
                             <FormLabel htmlFor="nome">Nome</FormLabel>
                             <Input type="text" placeholder="Mario" {...register("nome", {
-                                required: "Il nome è obbligatorio",
                                 maxLength: {value: 50, message: "Il nome è troppo lungo"},
                                 pattern: {
                                     value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
@@ -99,7 +110,6 @@ export default function CustomerEditInfo() {
                         <FormControl id={"cognome"} isInvalid={errors.cognome}>
                             <FormLabel>Cognome</FormLabel>
                             <Input type="text" placeholder="Rossi" {...register("cognome", {
-                                required: "Il cognome è obbligatorio",
                                 maxLength: {value: 50, message: "Il cognome è troppo lungo"},
                                 pattern: {
                                     value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
@@ -114,7 +124,6 @@ export default function CustomerEditInfo() {
                         <FormControl id={"dataNascita"} isInvalid={errors.dataNascita}>
                             <FormLabel>Data di Nascita</FormLabel>
                             <Input type="date" placeholder="2001-01-05" {...register("dataNascita", {
-                                required: "La data di nascita è obbligatoria",
                                 validate: value => {
                                     return isValidDate(value)
                                 }
@@ -132,7 +141,7 @@ export default function CustomerEditInfo() {
                             <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
-                    <GridItem colSpan={2}>
+                    <GridItem colSpan={colSpan}>
                         <FormControl id={"password"} isInvalid={errors.password}>
                             <FormLabel>Password</FormLabel>
                             <Tooltip
@@ -147,6 +156,22 @@ export default function CustomerEditInfo() {
                                 })} />
                             </Tooltip>
                             <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+                        </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={colSpan}>
+                        <FormControl id={"confermaPassword"} isInvalid={errors.confermaPassword} isRequired>
+                            <FormLabel>Conferma Password</FormLabel>
+                            <Input type="password" placeholder="Conferma Password" {...register("confermaPassword", {
+                                required: "Il campo conferma password è obbligatorio",
+                                validate: value => {
+                                    if (value === getValues("password")) {
+                                        return true
+                                    } else {
+                                        return "Le password non coincidono"
+                                    }
+                                }
+                            })} />
+                            <FormErrorMessage>{errors.confermaPassword && errors.confermaPassword.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
                     {/*

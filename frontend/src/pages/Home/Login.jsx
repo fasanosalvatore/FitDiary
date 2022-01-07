@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 export default function Login() {
-    const {register, handleSubmit, formState: {errors, isSubmitting, isSubmitted}} = useForm();
+    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const [ isSuccessfullySubmitted, setIsSuccessfullySubmitted ] = React.useState( false );
     const toast = useToast()
     const navigate = useNavigate();

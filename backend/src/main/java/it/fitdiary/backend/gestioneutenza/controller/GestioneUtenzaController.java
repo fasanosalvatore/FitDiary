@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -386,7 +387,17 @@ public class GestioneUtenzaController {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     e.getMessage());
         }
+    }
 
-
+    /**
+     * metodo per catturare l'errore HttpMessageNotReadableException.
+     * @param ex errore
+     * @return messaggio di errore
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> handleMissingRequestBody(
+            final HttpMessageNotReadableException ex) {
+        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                "Errore durante la lettura del body");
     }
 }

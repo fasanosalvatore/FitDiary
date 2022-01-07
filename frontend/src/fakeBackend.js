@@ -401,7 +401,7 @@ let userFull = {
     "status": "success"
 };
 
-const lista_protocolli={
+const listaProtocolli = {
     "data": {
     "protocollo": [
         {
