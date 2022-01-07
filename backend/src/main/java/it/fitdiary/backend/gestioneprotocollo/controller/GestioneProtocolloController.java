@@ -1,5 +1,6 @@
 package it.fitdiary.backend.gestioneprotocollo.controller;
 
+import com.google.common.annotations.VisibleForTesting;
 import it.fitdiary.backend.entity.Protocollo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloService;
@@ -184,7 +185,7 @@ public class GestioneProtocolloController {
         }
     }
 
-    private File getFile(final MultipartFile multiPartFile)
+    public File getFile(final MultipartFile multiPartFile)
             throws IOException {
         if (multiPartFile.isEmpty()) {
             return null;
