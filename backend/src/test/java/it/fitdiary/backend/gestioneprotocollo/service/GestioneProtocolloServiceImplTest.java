@@ -1,11 +1,15 @@
 package it.fitdiary.backend.gestioneprotocollo.service;
 
 import it.fitdiary.BackendApplicationTest;
+import it.fitdiary.backend.entity.Alimento;
+import it.fitdiary.backend.entity.Esercizio;
 import it.fitdiary.backend.entity.Protocollo;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapterImpl;
+import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapterImpl;
 import it.fitdiary.backend.gestioneprotocollo.repository.AlimentoRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
@@ -49,6 +53,15 @@ class GestioneProtocolloServiceImplTest {
     private Utente preparatore;
     private Utente updatedPreparatore;
     private Protocollo protocollo;
+    private Alimento alimento;
+    private Esercizio esercizio;
+    private SchedaAllenamento schedaAllenamento;
+    private SchedaAlimentare schedaAlimentare;
+    private File fileSchedaAllenamento;
+    private File fileSchedaAllenamentoError;
+    private File fileSchedaAlimentare;
+    private File fileSchedaAlimentareError;
+    private File fileNotCsv;
     @Mock
     private AlimentoRepository alimentoRepository;
     @Mock
@@ -57,6 +70,7 @@ class GestioneProtocolloServiceImplTest {
     private SchedaAllenamentoRepository schedaAllenamentoRepository;
     @Mock
     private SchedaAlimentareRepository schedaAlimentareRepository;
+
 
     @BeforeEach
     public void setUp() {
@@ -85,7 +99,27 @@ class GestioneProtocolloServiceImplTest {
         protocollo = new Protocollo(1L, LocalDate.parse("2022-01-05"),
                 new SchedaAlimentare(), new SchedaAllenamento(), cliente,
                 preparatore, null, null);
-
+        alimento = new Alimento(null,"Pasta","pranzo","1",200,100f,
+                null);
+        esercizio = new Esercizio(null, "pushup", "3", "10", "1", "1", "petto",
+                null);
+        schedaAlimentare = new SchedaAlimentare(1L, 2000, null, protocollo);
+        schedaAllenamento = new SchedaAllenamento(1L, "3", null, protocollo);
+        fileSchedaAllenamento = new File(
+                getClass().getClassLoader().getResource("schedaAllenamento.csv")
+                        .getFile());
+        fileSchedaAllenamentoError = new File(
+                getClass().getClassLoader().getResource("schedaAllenamentoError.csv")
+                        .getFile());
+        fileSchedaAlimentare = new File(
+                getClass().getClassLoader().getResource("schedaAlimentare.csv")
+                        .getFile());
+        fileSchedaAlimentareError = new File(
+                getClass().getClassLoader().getResource("schedaAlimentareError.csv")
+                        .getFile());
+        fileNotCsv = new File(
+                getClass().getClassLoader().getResource("notCsvFile.txt")
+                        .getFile());
     }
 
     @Test
@@ -108,28 +142,69 @@ class GestioneProtocolloServiceImplTest {
     }
 
     @Test
-    @Disabled
     void creazioneProtocolloOnSuccess() throws IOException {
-        File schedaAlimentare = new File(
-                getClass().getClassLoader().getResource("schedaAlimentare.csv")
-                        .getFile());
-        File schedaAllenamento = new File(
-                getClass().getClassLoader().getResource("schedaAllenamento.csv")
-                        .getFile());
+       Protocollo protocolloPre = new Protocollo(null, LocalDate.parse("2022-01-05"),
+                null, null, cliente,
+                preparatore, null, null);
+        when(protocolloRepository.save(protocolloPre)).thenReturn(protocollo);
+
+        protocollo.setSchedaAlimentare(schedaAlimentare);
         when(mock(
                 GestioneProtocolloServiceImpl.class).inserisciSchedaAlimentare(
                 protocollo,
-                schedaAlimentare)).thenReturn(protocollo);
+                fileSchedaAlimentare)).thenReturn(protocollo);
+
         when(mock(
                 GestioneProtocolloServiceImpl.class).inserisciSchedaAllenamento(
                 protocollo,
-                schedaAllenamento)).thenReturn(protocollo);
+                fileSchedaAllenamento)).thenReturn(protocollo);
+
+        protocollo.setSchedaAllenamento(schedaAllenamento);
         assertEquals(protocollo,
-                this.gestioneProtocolloServiceImpl.creazioneProtocollo(
-                        protocollo,
-                        schedaAlimentare, schedaAllenamento));
+                gestioneProtocolloServiceImpl.creazioneProtocollo(
+                        protocolloPre,
+                        fileSchedaAlimentare, fileSchedaAllenamento));
     }
 
+    @Test
+    void creazioneProtocolloSuccesstWithoutSchedaAllenamento() throws IOException {
+        Protocollo protocolloPre = new Protocollo(null, LocalDate.parse("2022-01-05"),
+                null, null, cliente,
+                preparatore, null, null);
+        when(protocolloRepository.save(protocolloPre)).thenReturn(protocollo);
+
+        protocollo.setSchedaAlimentare(null);
+        when(mock(
+                GestioneProtocolloServiceImpl.class).inserisciSchedaAllenamento(
+                protocollo,
+                fileSchedaAllenamento)).thenReturn(protocollo);
+
+        protocollo.setSchedaAllenamento(schedaAllenamento);
+        assertEquals(protocollo,
+                gestioneProtocolloServiceImpl.creazioneProtocollo(
+                        protocolloPre,
+                        fileSchedaAlimentare, null));
+    }
+
+    @Test
+    void creazioneProtocolloSuccesstWithoutSchedaAlimentare() throws IOException {
+        Protocollo protocolloPre = new Protocollo(null, LocalDate.parse("2022-01-05"),
+                null, null, cliente,
+                preparatore, null, null);
+        when(protocolloRepository.save(protocolloPre)).thenReturn(protocollo);
+
+        protocollo.setSchedaAllenamento(null);
+        when(mock(
+                GestioneProtocolloServiceImpl.class).inserisciSchedaAlimentare(
+                protocollo,
+                fileSchedaAlimentare)).thenReturn(protocollo);
+
+        protocollo.setSchedaAlimentare(schedaAlimentare);
+        assertEquals(protocollo,
+                gestioneProtocolloServiceImpl.creazioneProtocollo(
+                        protocolloPre,
+                        null, fileSchedaAllenamento));
+    }
 
     @Test
     void getByIdProtocolloSuccess() {
@@ -150,6 +225,70 @@ class GestioneProtocolloServiceImplTest {
         when(protocolloRepository.existsById(1L)).thenReturn(false);
         assertThrows(IllegalArgumentException.class,
                 () -> gestioneProtocolloServiceImpl.getByIdProtocollo(1L));
+    }
+
+    @Test
+    void inserisciSchedaAlimentareSuccess() throws IOException {
+        protocollo.setSchedaAlimentare(schedaAlimentare);
+        List<Alimento> alimenti = new ArrayList<Alimento>();
+        alimenti.add(alimento);
+        when(mock(SchedaAlimentareAdapterImpl.class).parse(fileSchedaAlimentare)).thenReturn(alimenti);
+        SchedaAlimentare schedaAlimentarePre= new SchedaAlimentare(null, 200, null, protocollo);
+        when(schedaAlimentareRepository.save(schedaAlimentarePre)).thenReturn(schedaAlimentare);
+        schedaAlimentare.setKcalAssunte(200);
+        schedaAlimentare.setListaAlimenti(alimenti);
+        protocollo.setSchedaAlimentare(schedaAlimentare);
+        assertEquals(protocollo, gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileSchedaAlimentare));
+    }
+
+    @Test
+    void inserisciSchedaAlimentareErrorWithoutSchedaAndThrowsIllegalArgument() throws IOException {
+        List<Alimento> alimenti = new ArrayList<Alimento>();
+        alimenti.add(alimento);
+        when(mock(SchedaAlimentareAdapterImpl.class).parse(fileSchedaAlimentare)).thenReturn(alimenti);
+        SchedaAlimentare schedaAlimentarePre= new SchedaAlimentare(null, 200, null, protocollo);
+        when(schedaAlimentareRepository.save(schedaAlimentarePre)).thenReturn(schedaAlimentare);
+        schedaAlimentare.setKcalAssunte(200);
+        schedaAlimentare.setListaAlimenti(alimenti);
+        protocollo.setSchedaAlimentare(schedaAlimentare);
+        assertThrows(IllegalArgumentException.class,() -> gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileNotCsv));
+    }
+
+    @Test
+    void inserisciSchedaAlimentareSuccessWithSchedaNull() throws IOException {
+        assertEquals(protocollo, gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, null));
+    }
+
+    @Test
+    void inserisciSchedaAllenamentoSuccess() throws IOException {
+        protocollo.setSchedaAllenamento(schedaAllenamento);
+        List<Esercizio> esercizi = new ArrayList<Esercizio>();
+        esercizi.add(esercizio);
+        when(mock(SchedaAllenamentoAdapterImpl.class).parse(fileSchedaAllenamento)).thenReturn(esercizi);
+        SchedaAllenamento schedaAllenamentoPre= new SchedaAllenamento(null, "1", null, protocollo);
+        when(schedaAllenamentoRepository.save(schedaAllenamentoPre)).thenReturn(schedaAllenamento);
+        schedaAllenamento.setFrequenza("1");
+        schedaAllenamento.setListaEsercizi(esercizi);
+        protocollo.setSchedaAllenamento(schedaAllenamento);
+        assertEquals(protocollo, gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocollo, fileSchedaAllenamento));
+    }
+
+    @Test
+    void inserisciSchedaAllenamentoErrorWithoutSchedaAndThrowsIllegalArgument() throws IOException {
+        List<Esercizio> esercizi = new ArrayList<Esercizio>();
+        esercizi.add(esercizio);
+        when(mock(SchedaAllenamentoAdapterImpl.class).parse(fileSchedaAllenamento)).thenReturn(esercizi);
+        SchedaAllenamento schedaAllenamentoPre= new SchedaAllenamento(null, "1", null, protocollo);
+        when(schedaAllenamentoRepository.save(schedaAllenamentoPre)).thenReturn(schedaAllenamento);
+        schedaAllenamento.setFrequenza("1");
+        schedaAllenamento.setListaEsercizi(esercizi);
+        protocollo.setSchedaAllenamento(schedaAllenamento);
+        assertThrows(IllegalArgumentException.class,() -> gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocollo, fileNotCsv));
+    }
+
+    @Test
+    void inserisciSchedaAllenamentoSuccessWithSchedaNull() throws IOException {
+        assertEquals(protocollo, gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocollo, null));
     }
 
 }
