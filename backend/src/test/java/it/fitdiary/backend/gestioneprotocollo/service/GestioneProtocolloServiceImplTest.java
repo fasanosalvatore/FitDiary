@@ -7,17 +7,12 @@ import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
-import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
-import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
-import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
-import it.fitdiary.backend.utility.service.EmailServiceImpl;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,7 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 @SpringBootTest
 @RunWith(SpringRunner.class)

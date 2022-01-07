@@ -1,9 +1,10 @@
 package it.fitdiary;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.testng.annotations.Test;
+import org.springframework.test.context.ContextConfiguration;
 
-@SpringBootTest
+@SpringBootTest(classes = {BackendApplicationTest.class})
 public class BackendApplicationTest {
     @Test
     void contextLoads() {
