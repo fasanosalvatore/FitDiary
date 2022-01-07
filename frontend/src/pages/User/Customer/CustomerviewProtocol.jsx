@@ -9,7 +9,7 @@ import {
     Tr,
     Th,
     Td,
-    TableCaption, Icon,
+    TableCaption, Icon,Image,
 } from '@chakra-ui/react';
 import {
     RiArrowGoBackLine,
@@ -18,7 +18,6 @@ import {getProtocollo} from "../../../fakeBackend";
 import moment from "moment";
 import {BsGraphUp,BsGraphDown} from "react-icons/bs";
 import {useParams} from "react-router";
-
 export default/**
 *
 */
@@ -28,6 +27,7 @@ export default/**
     const {id}=useParams();
     console.log(id);
     moment.locale("it-IT");
+    const SchedaAllenamento="dumbbell.png";
     return (
 
         <Flex wrap={"wrap"}>
@@ -91,14 +91,33 @@ export default/**
                                         <VStack alignItems={"center"}>
                                             <Heading size="xs"> Vuoi visualizzare le tue schede?</Heading>
                                         </VStack>
+                                        <VStack marginTop={5}>
+                                            <Image
+                                                boxSize='70px'
+                                                objectFit='cover'
+                                                src='https://cdn-icons-png.flaticon.com/512/1719/1719695.png'>
+                                            </Image>
+                                            <Button>Vedi Allenamento</Button>
+                                        </VStack>
+                                        <VStack marginTop={5}>
+                                            <Image
+                                                boxSize='50px'
+                                                objectFit='cover'
+                                                src='https://cdn-icons.flaticon.com/png/512/562/premium/562678.png?token=exp=1641581408~hmac=db43c7fac2d0e6178461bb7b44618bd2'>
+                                            </Image>
+                                            <Button>Vedi Alimentazione</Button>
+                                        </VStack>
                                     </Box>
                                 </HStack>
                             </Flex>
                         </HStack>
+                        <HStack>
+                            <Heading size="s">Hai completato il protocollo?</Heading>
+                            <Button>Inserisci report</Button>
+                        </HStack>
                     </VStack>
                 </Flex>
             </Box>
-
         </Flex>
 
 
