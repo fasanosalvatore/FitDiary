@@ -16,7 +16,7 @@ import CustomerEditInfo from "./pages/User/Customer/CustomerEditInfo";
 import Logout from "./pages/Home/Logout";
 import CustomerviewProtocol from "./pages/User/Customer/CustomerviewProtocol";
 import ProtocolsList from "./pages/User/Customer/ProtocolsList";
-
+import TProtocolsList from "./pages/User/Trainer/TProtocolsList";
 let rootElement = document.getElementById("root");
 
 ReactDOM.render(
@@ -38,6 +38,7 @@ ReactDOM.render(
                     <Route path="/trainer" element={<TrainerIndex/>}>
                         <Route path="edit" element={<TrainerEdit/>}/>
                         <Route path="addCustomer" element={<CustomerCreate/>}/>
+                        <Route path="protocols" element={<TProtocolsList/>}/>
                     </Route>
                     <Route path="/test" element={<CustomerEditInfo/>}/>
                 </Route>
