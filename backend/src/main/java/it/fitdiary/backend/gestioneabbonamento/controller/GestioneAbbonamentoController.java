@@ -6,6 +6,7 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Subscription;
 import com.stripe.param.SubscriptionCreateParams;
 import it.fitdiary.backend.utility.ResponseHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @RequestMapping(path = "api/v1/abbonamento")
 public class GestioneAbbonamentoController {
     /**
@@ -33,6 +35,11 @@ public class GestioneAbbonamentoController {
     public ResponseEntity<Object> acquistaAbbonamento(
             @RequestBody final JsonNode customerId) throws StripeException {
         Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
+        if(customerId == null || customerId.get("customerId") == null){
+            return ResponseHandler.generateResponse(
+                    HttpStatus.BAD_REQUEST, "Errore generale nella richiesta"
+            );
+        }
         SubscriptionCreateParams subCreateParams = SubscriptionCreateParams
                 .builder()
                 .setCustomer(customerId.get("customerId").asText())
@@ -49,15 +56,22 @@ public class GestioneAbbonamentoController {
                 .CollectionMethod.CHARGE_AUTOMATICALLY)
                 .addAllExpand(List.of("latest_invoice.payment_intent"))
                 .build();
-        Subscription subscription = Subscription.create(subCreateParams);
-        Map<String, Object> response = new HashMap<>();
-        response.put("subscriptionId", subscription.getId());
-        response.put("clientSecret",
-                subscription.getLatestInvoiceObject().getPaymentIntentObject()
-                        .getClientSecret());
-        return ResponseHandler.generateResponse(
-                HttpStatus.CREATED, "Utente", response
-        );
+        try {
+            Subscription subscription = Subscription.create(subCreateParams);
+            Map<String, Object> response = new HashMap<>();
+            response.put("subscriptionId", subscription.getId());
+            response.put("clientSecret",
+                    subscription.getLatestInvoiceObject().getPaymentIntentObject()
+                                .getClientSecret());
+            return ResponseHandler.generateResponse(
+                    HttpStatus.CREATED, "Utente", response
+            );
+        } catch (StripeException e) {
+            log.error(customerId + " stripe error " + e.getMessage());
+            return ResponseHandler.generateResponse(
+                    HttpStatus.BAD_REQUEST, "Errore generale nella richiesta"
+            );
+        }
     }
 }
 
