@@ -1,12 +1,10 @@
 package it.fitdiary;
 
-import it.fitdiary.backend.gestioneprotocollo.controller.GestioneProtocolloController;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.testng.annotations.Test;
+import org.springframework.test.context.ContextConfiguration;
 
-@SpringBootTest
+@SpringBootTest(classes = {BackendApplicationTest.class})
 public class BackendApplicationTest {
     @Test
     void contextLoads() {
