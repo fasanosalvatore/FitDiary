@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
-import config from '../config.json'
 import {Link, useNavigate} from "react-router-dom";
 import {
     Box,
@@ -8,18 +7,20 @@ import {
     FormControl,
     FormErrorMessage,
     FormLabel,
-    GridItem, Heading,
-    Input, Radio,
+    GridItem,
+    Heading,
+    Input,
+    Radio,
     RadioGroup,
     SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, useToast
+    Stack,
+    Text,
+    Tooltip,
+    useBreakpointValue,
+    useToast
 } from "@chakra-ui/react";
 import {
-    CardCvcElement,
-    CardExpiryElement,
-    CardNumberElement,
-    useElements,
-    useStripe
+    CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe
 } from "@stripe/react-stripe-js";
 import TierPrice from "./TierPrice";
 import {publicFetch} from "../util/fetch";
@@ -30,22 +31,22 @@ export default function SignupForm() {
     const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
     const [signupIsLoading, setSignupIsLoading] = useState(false);
     const [signupIsEnabled, setSignupIsEnable] = useState(false);
-    const [cardComplete, setCardComplete] = useState(
-        {cardNumber: false, cardExpiry:false, cardCvc: false}
-    )
+    const [cardComplete, setCardComplete] = useState({cardNumber: false, cardExpiry: false, cardCvc: false})
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();
     const elements = useElements();
     const toast = useToast({
-        duration: 9000,
-        isClosable: true,
-        variant:"solid",
-        position:"top",
-        containerStyle: {
-            width: '100%',
-            maxWidth: '100%',
+        duration: 9000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+            width: '100%', maxWidth: '100%',
         },
     })
+
+    function toastParam(title, description, status) {
+        return {
+            title: title, description: description, status: status
+        };
+    }
+
     const navigate = useNavigate();
 
     function handleCardElementOnChange(e) {
@@ -53,136 +54,50 @@ export default function SignupForm() {
     }
 
     useEffect(() => {
-        if(cardComplete.cardNumber && cardComplete.cardExpiry && cardComplete.cardCvc) {
-            setSignupIsEnable(true);
-        }
+        setSignupIsEnable(cardComplete.cardNumber && cardComplete.cardExpiry && cardComplete.cardCvc);
     }, [cardComplete])
 
-    //Chiamata API creazione utente
+
+//Chiamata API creazione utente
     const onSubmit = async values => {
         if (!stripe || !elements) {
             return "";
         }
-
-        console.log("submitting");
         setSignupIsLoading(true);
         try {
-            const { data } = await publicFetch.post(urlSignup, values)
-            console.log(data);
-            const { newSubscriptionResp } = await publicFetch.post(urlBuy, data.data.response.customerId);
-            console.log(newSubscriptionResp.json());
-            const clientSecret = newSubscriptionResp.data.Utente.clientSecret;
-            const { stripePayment } = await stripe.confirmCardPayment(clientSecret,
-                {
-                    payment_method: {
-                        card: elements.getElement(CardNumberElement),
-                    },
-                });
-            console.log(stripePayment);
-            console.log(stripePayment.json());
-            if(stripePayment.error) {
-                toast({
-                    title: 'Pagamento Fallito',
-                    description: "pagamento non riuscito",
-                    status: 'error',
-                })
-            } else if(stripePayment.paymentIntent) {
-                toast({
-                    title: 'Pagamento Completato',
-                    description: "pagamento riuscito",
-                    status: 'success',
-                })
+            const {data: data2} = await publicFetch.post(urlSignup, values)
+            const {data: {response: {utente, ...customerId}}} = data2;
+            const {data: {data: {Utente: {clientSecret}}}} = await publicFetch.post(urlBuy, customerId);
+            const stripePayment = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: elements.getElement(CardNumberElement),
+                },
+            });
+            if (stripePayment.error) {
+                toast(toastParam('Pagamento Fallito', 'Pagamento non riuscito', 'error'))
+            } else if (stripePayment.paymentIntent) {
+                toast(toastParam('Pagamento Completato', "Verrai ridirezionato al login", 'success'))
+                setTimeout(() => {
+                    navigate("/login");
+                }, 1500);
+            } else {
+                toast(toastParam('Pagamento Sospeso', 'Contattare gli amministratori', 'warning'))
             }
         } catch (error) {
             setSignupIsLoading(false);
-            console.log(error.response)
+            console.log(error);
             toast({
-                title: 'Errore',
-                description: error.response.data.message,
-                status: 'error',
+                title: 'Errore', description: error.response.data.message, status: 'error',
             })
         }
     }
 
-
-
-    //helper function
-    //Gestione risposta API crezione utente
-    function handleResponse(response) {
-        console.log("handling");
-        return response.text().then(text => {
-            const resp = JSON.parse(text);
-            if (!response.ok) {
-                const error = (resp && resp.message) || response.statusText;
-                return Promise.reject(error);
-            }
-            console.log("handling Payment ");
-            handlePayment(resp.data.response.customerId).then(() => {
-                console.log("redirecting Payment ");
-                navigate("/login");
-            }).catch(handleFail)
-        });
-    }
-
-    //Gestione FAIL
-    function handleFail(data) {
-        console.log(data)
-        toast({
-            title: 'Registrazione Fallita',
-            description: data,
-            status: 'error',
-        })
-    }
-
-
-
     //Verifica se una data inserita è precedenta alla odierna
     function isValidDate(value) {
-        console.log(elements.getElement(CardNumberElement))
-
         return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
     }
 
-    //Gestione pagamento
-    async function handlePayment(customerId) {
-        let newSubscriptionResp = await fetch("", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: customerId
-        });
-        newSubscriptionResp = await newSubscriptionResp.json();
-        console.log(newSubscriptionResp.data.Utente.clientSecret)
-        const client_Secret = newSubscriptionResp.data.Utente.clientSecret;
-        await stripe.confirmCardPayment(
-            client_Secret,
-            {
-                payment_method: {
-                    card: elements.getElement(CardNumberElement),
-                },
-            }).then(function (result) {
-            if (result.error) {
-                toast({
-                    title: 'Pagamento Fallito',
-                    description: "pagamento non riuscito",
-                    status: 'error',
-                })
-                console.log(result.error)
-            }
-            if (result.paymentIntent) {
-                toast({
-                    title: 'Pagamento Completato',
-                    description: "pagamento riuscito",
-                    status: 'success',
-                })
-            }
-        })
-    }
-
-
-    return (
-        <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
+    return (<form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
             <SimpleGrid columns={2} columnGap={5} rowGap={5} w="full">
                 <GridItem colSpan={colSpan} w="100%">
                     <FormControl id={"nome"} isInvalid={errors.nome} isRequired>
@@ -216,8 +131,7 @@ export default function SignupForm() {
                     <FormControl id={"dataNascita"} isInvalid={errors.dataNascita} isRequired>
                         <FormLabel>Data di Nascita</FormLabel>
                         <Input type="date" placeholder="2001-01-05" {...register("dataNascita", {
-                            required: "La data di nascita è obbligatoria",
-                            validate: value => {
+                            required: "La data di nascita è obbligatoria", validate: value => {
                                 return isValidDate(value)
                             }
                         })} />
@@ -270,8 +184,7 @@ export default function SignupForm() {
                     <FormControl id={"confermaPassword"} isInvalid={errors.confermaPassword} isRequired>
                         <FormLabel>Conferma Password</FormLabel>
                         <Input type="password" placeholder="Conferma Password" {...register("confermaPassword", {
-                            required: "Il campo conferma password è obbligatorio",
-                            validate: value => {
+                            required: "Il campo conferma password è obbligatorio", validate: value => {
                                 if (value === getValues("password")) {
                                     return true
                                 } else {
@@ -283,7 +196,7 @@ export default function SignupForm() {
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={2} w="100%">
-                    <Box border="1px" borderRadius="10px" padding="2%" borderColor={"lightgray"} >
+                    <Box border="1px" borderRadius="10px" padding="2%" borderColor={"lightgray"}>
                         <SimpleGrid columns={2} columnGap={5} rowGap={5} w="full">
                             <GridItem colSpan={2} w="100%">
                                 <Heading as="h4" fontSize="xl">
@@ -324,6 +237,5 @@ export default function SignupForm() {
                     </GridItem>
                 </GridItem>
             </SimpleGrid>
-        </form>
-    );
+        </form>);
 }
