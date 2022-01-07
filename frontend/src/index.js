@@ -39,7 +39,7 @@ ReactDOM.render(
                         <Route path="edit" element={<TrainerEdit/>}/>
                         <Route path="addCustomer" element={<CustomerCreate/>}/>
                     </Route>
-                    <Route path="/test" element={<CustomerEditInfo/>}/>
+                    <Route path="/customer/account" element={<CustomerEditInfo/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
