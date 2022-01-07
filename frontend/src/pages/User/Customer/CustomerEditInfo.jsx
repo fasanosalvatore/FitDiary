@@ -7,26 +7,31 @@ import {
     FormErrorMessage,
     FormLabel,
     GridItem, Heading,
-    Input,
+    Input, InputGroup, InputLeftElement, InputRightElement,
     SimpleGrid,
     Tooltip, useBreakpointValue, useToast, VStack
 } from "@chakra-ui/react";
 import config from "../../../config.json";
 import AuthService from "../../../services/auth.service";
 import {privateFetch} from "../../../util/fetch";
+import {AtSignIcon, PhoneIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 
 
 export default function CustomerEditInfo() {
     const urlEditInfo = `utenti/cliente`;
     const urlGetInfo = `utenti/profilo`;
-    const {register, handleSubmit,getValues, setValue, formState: {errors, isSubmitting}} = useForm();
+    const {register, handleSubmit, getValues, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const [currentUser, setCurrentUser] = useState(null)
+    const [showP, setShowP] = React.useState(false)
+    const handleClickP = () => setShowP(!showP)
+    const [showCP, setShowCP] = React.useState(false)
+    const handleClickCP = () => setShowCP(!showCP)
     const toast = useToast({
         duration: 9000,
         isClosable: true,
-        variant:"solid",
-        position:"top",
+        variant: "solid",
+        position: "top",
         containerStyle: {
             width: '100%',
             maxWidth: '100%',
@@ -51,7 +56,7 @@ export default function CustomerEditInfo() {
     }
 
     useEffect(() => {
-        privateFetch(urlGetInfo).then(resp =>{
+        privateFetch(urlGetInfo).then(resp => {
             const currentUser = resp;
             console.log(currentUser)
             if (currentUser !== null && currentUser !== {}) {
@@ -68,16 +73,16 @@ export default function CustomerEditInfo() {
         console.log("submitting values");
         console.log(values);
         //console.log(accessToken)
-        try{
+        try {
             await privateFetch.put(urlEditInfo, values)
-        }catch (error) {
-        console.log(error.response)
-        toast({
-            title: 'Errore',
-            description: error.response.data.message,
-            status: 'error',
-        })
-    }
+        } catch (error) {
+            console.log(error.response)
+            toast({
+                title: 'Errore',
+                description: error.response.data.message,
+                status: 'error',
+            })
+        }
     }
 
     function isValidDate(value) {
@@ -131,12 +136,19 @@ export default function CustomerEditInfo() {
                         </FormControl>
                     </GridItem>
                     <GridItem colSpan={2}>
+
                         <FormControl id={"email"} isInvalid={errors.email}>
                             <FormLabel>Email</FormLabel>
-                            <Input type="text" placeholder="Email" {...register("email", {
-                                required: "Il campo email è obbligatorio",
-                                pattern: {value: /^\S+@\S+$/i, message: "Formato email non valido"}
-                            })} />
+                            <InputGroup>
+                                <InputLeftElement
+                                    pointerEvents='none'
+                                    children={<AtSignIcon color='gray.300'/>}
+                                />
+                                <Input type="text" placeholder="Email" {...register("email", {
+                                    required: "Il campo email è obbligatorio",
+                                    pattern: {value: /^\S+@\S+$/i, message: "Formato email non valido"}
+                                })} />
+                            </InputGroup>
                             <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
@@ -146,13 +158,22 @@ export default function CustomerEditInfo() {
                             <Tooltip
                                 label={"La password deve contenere: Una lettera maiuscola, minuscola, un numero e un carattere speciale"}
                                 aria-label='A tooltip'>
-                                <Input type="password" placeholder="Password" {...register("password", {
-                                    maxLength: {value: 255, message: "Password troppo lunga"},
-                                    pattern: {
-                                        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&.])[A-Za-z\d@$!%*?^#()<>+&.]{8,}$/i,
-                                        message: "Formato password non valido"
-                                    }
-                                })} />
+                                <InputGroup>
+                                    <Input type={showP ? 'text' : 'password'}
+                                           placeholder="Password" {...register("password", {
+                                        maxLength: {value: 255, message: "Password troppo lunga"},
+                                        pattern: {
+                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&.])[A-Za-z\d@$!%*?^#()<>+&.]{8,}$/i,
+                                            message: "Formato password non valido"
+                                        }
+                                    })} />
+                                    <InputRightElement width='2.5rem'>
+                                        <Button bg={"transparent"} h='1.75rem' size='sm' onClick={handleClickP}>
+                                            {showP ? <ViewOffIcon color='gray.900'/> :
+                                                <ViewIcon color='gray.900'/>}
+                                        </Button>
+                                    </InputRightElement>
+                                </InputGroup>
                             </Tooltip>
                             <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
                         </FormControl>
@@ -160,16 +181,24 @@ export default function CustomerEditInfo() {
                     <GridItem colSpan={colSpan}>
                         <FormControl id={"confermaPassword"} isInvalid={errors.confermaPassword} isRequired>
                             <FormLabel>Conferma Password</FormLabel>
-                            <Input type="password" placeholder="Conferma Password" {...register("confermaPassword", {
-                                required: "Il campo conferma password è obbligatorio",
-                                validate: value => {
-                                    if (value === getValues("password")) {
-                                        return true
-                                    } else {
-                                        return "Le password non coincidono"
+                            <InputGroup>
+                                <Input type={showCP ? 'text' : 'password'}
+                                       placeholder="Conferma Password" {...register("confermaPassword", {
+                                    validate: value => {
+                                        if (value === getValues("password")) {
+                                            return true
+                                        } else {
+                                            return "Le password non coincidono"
+                                        }
                                     }
-                                }
-                            })} />
+                                })} />
+                                <InputRightElement width='2.5rem'>
+                                    <Button bg={"transparent"} h='1.75rem' size='sm' onClick={handleClickCP}>
+                                        {showCP ? <ViewOffIcon color='gray.900'/> :
+                                            <ViewIcon color='gray.900'/>}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                             <FormErrorMessage>{errors.confermaPassword && errors.confermaPassword.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
@@ -195,20 +224,26 @@ export default function CustomerEditInfo() {
                     <GridItem colSpan={2} w="100%">
                         <FormControl id={"telefono"} isInvalid={errors.telefono}>
                             <FormLabel>Numero di telefono</FormLabel>
-                            <Input type="text" placeholder="3332957615"{...register("telefono", {
-                                minLenght: {
-                                    value: 4,
-                                    message: "Formato del numero di telefono non valido"
-                                },
-                                maxLenght: {
-                                    value: 15,
-                                    message: "Formato del numero di telefono non valido"
-                                },
-                                pattern: {
-                                    value: /^[+03][0-9]{3,14}$/i,
-                                    message: "Formato numero di telefono non valido"
-                                }
-                            })}/>
+                            <InputGroup>
+                                <InputLeftElement
+                                    pointerEvents='none'
+                                    children={<PhoneIcon color='gray.300'/>}
+                                />
+                                <Input type="text" placeholder="3332957615"{...register("telefono", {
+                                    minLenght: {
+                                        value: 4,
+                                        message: "Formato del numero di telefono non valido"
+                                    },
+                                    maxLenght: {
+                                        value: 15,
+                                        message: "Formato del numero di telefono non valido"
+                                    },
+                                    pattern: {
+                                        value: /^[+03][0-9]{3,14}$/i,
+                                        message: "Formato numero di telefono non valido"
+                                    }
+                                })}/>
+                            </InputGroup>
                             <FormErrorMessage>{errors.telefono && errors.telefono.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
