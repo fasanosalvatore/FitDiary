@@ -24,7 +24,6 @@ import {
     FiHome,
     FiTrendingUp,
     FiCompass,
-    FiStar,
     FiSettings,
     FiMenu,
     FiBell,
@@ -109,7 +108,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
             pos="fixed"
             h="full"
             {...rest}>
-            <Flex h="20" alignItems="center"  mx="8" justifyContent="center">
+            <Flex h="20" alignItems="center"  mx="8" justifyContent={{base:"space-evenly",md:"center"}}>
                 <Link>
                     <Text fontSize="8xl" fontFamily="monospace" fontWeight="bold" color={"blue.500"} >
                         <Logo href={"/"}/>
