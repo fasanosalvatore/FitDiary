@@ -17,8 +17,9 @@ import {privateFetch} from "../../../util/fetch";
 
 
 export default function CustomerEditInfo() {
-    const urlEditInfo = `${config.SERVER_URL}/utenti/cliente`;
-    const {register, handleSubmit, setValue, formState: {errors, isSubmitting}} = useForm();
+    const urlEditInfo = `utenti/cliente`;
+    const urlGetInfo = `utenti/profilo`;
+    const {register, handleSubmit,getValues, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const [currentUser, setCurrentUser] = useState(null)
     const accessToken = AuthService.getAccesstToken();
@@ -51,13 +52,15 @@ export default function CustomerEditInfo() {
     }
 
     useEffect(() => {
-        AuthService.getProfile().then(resp => {
-            setCurrentUser(resp.data.data)
-        });
-        if (currentUser !== null && currentUser !== {}) {
-            const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
-            fields.forEach(field => setValue(field, currentUser.utente[field]));
-        }
+        privateFetch(urlGetInfo).then(resp =>{
+            const currentUser = resp;
+            console.log(currentUser)
+            if (currentUser !== null && currentUser !== {}) {
+                const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
+                fields.forEach(field => setValue(field, currentUser.data.data.utente[field]));
+            }
+        })
+
     }, [])
 
 
@@ -138,7 +141,7 @@ export default function CustomerEditInfo() {
                             <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
-                    <GridItem colSpan={2}>
+                    <GridItem colSpan={colSpan}>
                         <FormControl id={"password"} isInvalid={errors.password}>
                             <FormLabel>Password</FormLabel>
                             <Tooltip
@@ -153,6 +156,22 @@ export default function CustomerEditInfo() {
                                 })} />
                             </Tooltip>
                             <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+                        </FormControl>
+                    </GridItem>
+                    <GridItem colSpan={colSpan}>
+                        <FormControl id={"confermaPassword"} isInvalid={errors.confermaPassword} isRequired>
+                            <FormLabel>Conferma Password</FormLabel>
+                            <Input type="password" placeholder="Conferma Password" {...register("confermaPassword", {
+                                required: "Il campo conferma password è obbligatorio",
+                                validate: value => {
+                                    if (value === getValues("password")) {
+                                        return true
+                                    } else {
+                                        return "Le password non coincidono"
+                                    }
+                                }
+                            })} />
+                            <FormErrorMessage>{errors.confermaPassword && errors.confermaPassword.message}</FormErrorMessage>
                         </FormControl>
                     </GridItem>
                     {/*
