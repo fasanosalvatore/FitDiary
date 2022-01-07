@@ -156,13 +156,8 @@ public class GestioneUtenzaServiceImplTest {
         String nome = "Rebecca";
         String cognome = "Melenchi";
         String email = "rebmel@gmail.com";
-        String emailPrep = "davide@gmail.com";
         String password = "Melenchi123*";
-        Utente preparatore =
-                new Utente(1L, "Davide", "La Gamba", emailPrep, "Davide123*", true, LocalDate.parse("2000-03-03"), null,
-                        "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPreparatore, null, null, null,
-                        null, null);
-        Utente newUtentePre =
+       Utente newUtentePre =
                 new Utente(null, nome, cognome, email, password, true, LocalDate.parse("1990-01-01"), null, null, null,
                         null, null, preparatore, ruoloCliente, null, null, null, null, null);
         Utente newUtentePost =
@@ -184,20 +179,14 @@ public class GestioneUtenzaServiceImplTest {
         String nome = "Rebecca";
         String cognome = "Melenchi";
         String email = "rebmel@gmail.com";
-        String emailPrep = "davide@gmail.com";
         String password = "Melenchi123*";
-        Utente preparatore =
-                new Utente(1L, "Davide", "La Gamba", emailPrep, "Davide123*", true, LocalDate.parse("2000-03-03"), null,
-                        "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPreparatore, null, null, null,
-                        null, null);
-        Utente newUtentePre =
+       Utente newUtentePre =
                 new Utente(null, nome, cognome, email, password, true, LocalDate.parse("1990-01-01"), null, null, null,
                         null, null, preparatore, ruoloCliente, null, null, null, null, null);
         Utente newUtentePost =
                 new Utente(2L, nome, cognome, email, password, true, LocalDate.parse("1990-01-01"), null, null, null,
                         null, null, preparatore, ruoloCliente, null, null, null, null, null);
-        when(utenteRepository.findByEmail(emailPrep)).thenReturn(null);
-        when(utenteRepository.findByEmail(email)).thenReturn(null);
+        when(utenteRepository.getById(preparatore.getId())).thenReturn(null);
         when(utenteRepository.save(newUtentePre)).thenReturn(newUtentePost);
         when(ruoloRepository.findByNome("CLIENTE")).thenReturn(ruoloCliente);
         when(pwGen.generate()).thenReturn("Melenchi123*");
@@ -212,19 +201,14 @@ public class GestioneUtenzaServiceImplTest {
         String nome = "Rebecca";
         String cognome = "Melenchi";
         String email = "rebmel@gmail.com";
-        String emailPrep = "davide@gmail.com";
         String password = "Melenchi123*";
-        Utente preparatore =
-                new Utente(1L, "Davide", "La Gamba", emailPrep, "Davide123*", true, LocalDate.parse("2000-03-03"), null,
-                        "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPreparatore, null, null, null,
-                        null, null);
         Utente newUtentePre =
                 new Utente(null, nome, cognome, email, password, true, LocalDate.parse("1990-01-01"), null, null, null,
                         null, null, preparatore, ruoloCliente, null, null, null, null, null);
         Utente newUtentePost =
                 new Utente(2L, nome, cognome, email, password, true, LocalDate.parse("1990-01-01"), null, null, null,
                         null, null, preparatore, ruoloCliente, null, null, null, null, null);
-        when(utenteRepository.findByEmail(emailPrep)).thenReturn(preparatore);
+        when(utenteRepository.getById(preparatore.getId())).thenReturn(preparatore);
         when(utenteRepository.findByEmail(email)).thenReturn(newUtentePost);
         when(utenteRepository.save(newUtentePre)).thenReturn(newUtentePost);
         when(ruoloRepository.findByNome("CLIENTE")).thenReturn(ruoloCliente);
@@ -236,27 +220,19 @@ public class GestioneUtenzaServiceImplTest {
     }
 
     @Test
-    public void getUtenteByEmail() {
-        String email = "davide@gmail.com";
-        Utente utente =
-                new Utente(1L, "Davide", "La Gamba", email, "Davide123*", true, LocalDate.parse("2000-03-03"), null,
-                        "3313098075", "Michele Santoro", "81022", "Caserta", null, ruoloPreparatore, null, null, null,
-                        null, null);
-        when(utenteRepository.getById(1L)).thenReturn(utente);
-        assertEquals(utente, gestioneUtenzaService.getById(1L));
+    public void getById() {
+        when(utenteRepository.getById(1L)).thenReturn(cliente);
+        assertEquals(cliente, gestioneUtenzaService.getById(1L));
     }
 
     @Test
-    public void getUtenteByEmailNull_ThrowsIllegalEmail() {
-        Utente utente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
-                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
-                ruoloPreparatore, null, null, null, null, null);
-        when(utenteRepository.findByEmail(null)).thenReturn(utente);
+    public void getByIdNull_ThrowsIllegalId() {
+       when(utenteRepository.getById(null)).thenReturn(cliente);
         assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.getById(null));
     }
 
     @Test
-    public void getUtenteById_ThrowsIllegalUtente() {
+    public void getById_ThrowsIllegalUtente() {
         when(utenteRepository.getById(2L)).thenReturn(null);
         assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.getById(2L));
     }
@@ -294,16 +270,9 @@ public class GestioneUtenzaServiceImplTest {
 
     @Test
     public void existsByPreparatoreAndIdSuccessTrue() {
-        ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
-        ruoloPreparatore = new Ruolo(1L, "PREPARATORE", null, null);
-        Utente cliente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
-                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
-                ruoloCliente, null, null, null, null, null);
         List<Utente> clienti= new ArrayList<Utente>();
         clienti.add(cliente);
-        Utente preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" + "@gmail.com", "Daniele123*", true,
-                LocalDate.parse("2000-03-03"), null, "33985458", "Salvo D'Acquisto", "84047", "Capaccio", null,
-                ruoloPreparatore, null, clienti, null, null, null);
+        preparatore.setListaClienti(clienti);
         cliente.setPreparatore(preparatore);
         when(this.utenteRepository.existsByPreparatoreAndId(preparatore, cliente.getId())).thenReturn(true);
         assertEquals(true, gestioneUtenzaService.existsByPreparatoreAndId(preparatore, cliente.getId()));
@@ -311,48 +280,28 @@ public class GestioneUtenzaServiceImplTest {
 
     @Test
     public void existsByPreparatoreAndIdSuccessFalse() {
-        ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
-        ruoloPreparatore = new Ruolo(1L, "PREPARATORE", null, null);
-        Utente cliente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
-                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
-                ruoloCliente, null, null, null, null, null);
         List<Utente> clienti= new ArrayList<Utente>();
         clienti.add(cliente);
-        Utente preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" + "@gmail.com", "Daniele123*", true,
-                LocalDate.parse("2000-03-03"), null, "33985458", "Salvo D'Acquisto", "84047", "Capaccio", null,
-                ruoloPreparatore, null, clienti, null, null, null);
+        preparatore.setListaClienti(clienti);
+        cliente.setPreparatore(preparatore);
         when(this.utenteRepository.existsByPreparatoreAndId(preparatore, cliente.getId())).thenReturn(false);
         assertEquals(false, gestioneUtenzaService.existsByPreparatoreAndId(preparatore, cliente.getId()));
     }
 
     @Test
     public void existsByPreparatoreAndIdThrowsIllegalArgumentInvalidCliente() {
-        ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
-        ruoloPreparatore = new Ruolo(1L, "PREPARATORE", null, null);
-        Utente cliente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
-                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
-                ruoloCliente, null, null, null, null, null);
         List<Utente> clienti= new ArrayList<Utente>();
         clienti.add(cliente);
-        Utente preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" + "@gmail.com", "Daniele123*", true,
-                LocalDate.parse("2000-03-03"), null, "33985458", "Salvo D'Acquisto", "84047", "Capaccio", null,
-                ruoloPreparatore, null, clienti, null, null, null);
+        preparatore.setListaClienti(clienti);
         cliente.setPreparatore(preparatore);
         assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.existsByPreparatoreAndId(null, cliente.getId()));
     }
 
     @Test
     public void existsByPreparatoreAndIdThrowsIllegalArgumentInvalidPreparatore() {
-        ruoloCliente = new Ruolo(2L, "CLIENTE", null, null);
-        ruoloPreparatore = new Ruolo(1L, "PREPARATORE", null, null);
-        Utente cliente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com", "Davide123*", true,
-                LocalDate.parse("2000-03-03"), null, "3313098075", "Michele Santoro", "81022", "Caserta", null,
-                ruoloCliente, null, null, null, null, null);
         List<Utente> clienti= new ArrayList<Utente>();
         clienti.add(cliente);
-        Utente preparatore = new Utente(1L, "Daniele", "De Marco", "fabrizio" + "@gmail.com", "Daniele123*", true,
-                LocalDate.parse("2000-03-03"), null, "33985458", "Salvo D'Acquisto", "84047", "Capaccio", null,
-                ruoloPreparatore, null, clienti, null, null, null);
+        preparatore.setListaClienti(clienti);
         cliente.setPreparatore(preparatore);
         assertThrows(IllegalArgumentException.class, () -> gestioneUtenzaService.existsByPreparatoreAndId(preparatore, null));
     }

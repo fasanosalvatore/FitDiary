@@ -2,9 +2,10 @@ package it.fitdiary.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,11 +23,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
 public class Protocollo {
     /**
      * id protocollo.
@@ -46,11 +47,13 @@ public class Protocollo {
      * scheda alimentare.
      */
     @OneToOne(mappedBy = "protocollo")
+    @EqualsAndHashCode.Exclude
     private SchedaAlimentare schedaAlimentare;
     /**
      * scheda allenamento.
      */
     @OneToOne(mappedBy = "protocollo")
+    @EqualsAndHashCode.Exclude
     private SchedaAllenamento schedaAllenamento;
     /**
      * cliente.

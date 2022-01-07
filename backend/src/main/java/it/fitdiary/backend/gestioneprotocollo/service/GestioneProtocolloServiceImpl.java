@@ -207,44 +207,12 @@ public class GestioneProtocolloServiceImpl
         if (idProtocollo == null) {
             throw new IllegalArgumentException("Id non valido");
         }
-        Protocollo protocollo = protocolloRepository.getById(idProtocollo);
+        Protocollo protocollo = protocolloRepository.
+                findById(idProtocollo).orElse(null);
         if (protocollo == null) {
-            throw new IllegalArgumentException("Utente non trovato");
+            throw new IllegalArgumentException("Protocollo non trovato");
         }
         return protocollo;
-    }
-
-    /**
-     * @param idPreparatore id del preparatore
-     * @return preparatore
-     */
-    @Override
-    public Utente getPreparatoreById(final Long idPreparatore) {
-        if (idPreparatore == null) {
-            throw new IllegalArgumentException("Id non valido");
-        }
-        Utente preparatore =
-                protocolloRepository.getById(idPreparatore).getPreparatore();
-        if (preparatore == null) {
-            throw new IllegalArgumentException("Utente non trovato");
-        }
-        return preparatore;
-    }
-
-    /**
-     * @param idCliente id del cliente
-     * @return cliente
-     */
-    public Utente getClienteById(final Long idCliente) {
-        if (idCliente == null) {
-            throw new IllegalArgumentException("Id non valido");
-        }
-        Utente cliente =
-                protocolloRepository.getById(idCliente).getCliente();
-        if (cliente == null) {
-            throw new IllegalArgumentException("Utente non trovato");
-        }
-        return cliente;
     }
 
     /**
