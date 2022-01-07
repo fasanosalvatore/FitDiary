@@ -145,7 +145,7 @@ class GestioneUtenzaControllerTest {
                 "    \"dataNascita\": \"2000-03-03\",\n" +
                 "    \"sesso\": \"M\",\n" +
                 "    \"email\": \"fabrizio@gmail.com\",\n" +
-                "    \"password\": \"Daniele123*\",\n" +
+                "    \"password\": \"Daniele12\",\n" +
                 "    \"confermaPassword\": \"Daniele123*\"\n" +
                 "}";
         Utente utente = new Utente(null, "Daniele", "De Marco", "fabrizio" +
@@ -162,7 +162,7 @@ class GestioneUtenzaControllerTest {
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
@@ -345,7 +345,7 @@ class GestioneUtenzaControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    /*@Test
+    @Test
     void refreshTokenFailure() throws Exception {
         Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null,null);
         Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
@@ -364,7 +364,7 @@ class GestioneUtenzaControllerTest {
                 .build()
                 .perform(requestBuilder);
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }*/
+    }
 
     @Test
     void refreshTokenNoToken() throws Exception {

@@ -10,6 +10,7 @@ import it.fitdiary.backend.gestioneutenza.controller.GestioneUtenzaController;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @ContextConfiguration(classes = {GestioneProtocolloController.class})
 @ExtendWith(SpringExtension.class)
@@ -53,10 +55,11 @@ class GestioneProtocolloControllerTest {
     private Utente preparatore;
     private Utente updatedPreparatore;
     private Utente cliente1;
+    private Utente cliente2;
     private Utente preparatore1;
     private Protocollo protocollo;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
         ruoloPreparatore = new Ruolo(2L, "PREPARATORE", null, null);
@@ -96,21 +99,28 @@ class GestioneProtocolloControllerTest {
                         , "Davide123*", true, LocalDate.parse("2000-03" +
                         "-03"), "M", null, null, null,
                         null, null, ruoloPreparatore, null, null, null, null, null);
-
+        cliente2 = new Utente(1L, "Rebecca", "Di Matteo",
+                "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, "3894685921",
+                "Francesco rinaldo", "94061", "Agropoli", preparatore,
+                ruoloCliente, null, null, null, null, null);
     }
 
     @Test
     void visualizzaStoricoProtocolliCliente() throws Exception {
-
+        Principal principal = () -> "1";
         when(gestioneProtocolloServiceImpl.visualizzaStoricoProtocolliCliente(
-                cliente)).thenReturn(new ArrayList<Protocollo>());
+                cliente2)).thenReturn(new ArrayList<Protocollo>());
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
+        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore,
+                cliente2.getId())).thenReturn(true);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/protocolli/cliente/1");
+                MockMvcRequestBuilders.get("/api/v1/protocolli/cliente/1").principal(principal);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(
                         this.gestioneProtocolloController)
                 .build()
                 .perform(requestBuilder);
-        actualPerformResult.andExpect(
+        actualPerformResult.andDo(print()).andExpect(
                 MockMvcResultMatchers.status().is2xxSuccessful());
     }
 

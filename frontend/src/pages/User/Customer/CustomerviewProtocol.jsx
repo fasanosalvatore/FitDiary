@@ -17,6 +17,7 @@ import {
 import {getProtocollo} from "../../../fakeBackend";
 import moment from "moment";
 import {BsGraphUp,BsGraphDown} from "react-icons/bs";
+import {useParams} from "react-router";
 
 export default/**
 *
@@ -24,6 +25,8 @@ export default/**
  function CustomerviewProtocol() {
     /**const utente = authService.getCurrentUser().utente;**/
     const protocollo=getProtocollo().data;
+    const {id}=useParams();
+    console.log(id);
     moment.locale("it-IT");
     return (
 
