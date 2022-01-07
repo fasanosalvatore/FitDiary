@@ -40,7 +40,7 @@ ReactDOM.render(
                         <Route path="addCustomer" element={<CustomerCreate/>}/>
                         <Route path="protocols" element={<TProtocolsList/>}/>
                     </Route>
-                    <Route path="/test" element={<CustomerEditInfo/>}/>
+                    <Route path="/customer/account" element={<CustomerEditInfo/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
