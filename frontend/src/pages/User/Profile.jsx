@@ -9,11 +9,11 @@ import {
     Text,
     VStack
 } from "@chakra-ui/react";
-import authService from "../../../services/auth.service";
+import authService from "../../services/auth.service";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 
-export default function CustomerProfile() {
+export default function Profile() {
     const navigate = useNavigate();
     const utente = authService.getCurrentUser().userInfo;
 
