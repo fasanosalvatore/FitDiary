@@ -7,7 +7,7 @@ import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
 import it.fitdiary.backend.utility.PasswordGenerator;
 import it.fitdiary.backend.utility.service.EmailServiceImpl;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,7 +57,7 @@ public class GestioneUtenzaServiceImplTest {
     public GestioneUtenzaServiceImplTest() {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
         ruoloPreparatore = new Ruolo(2L, "PREPARATORE", null, null);
@@ -76,7 +76,6 @@ public class GestioneUtenzaServiceImplTest {
     }
 
     @Test
-    @Disabled
     public void inserimentoDatiPersonaliCliente() {
         when(utenteRepository.getById(cliente.getId())).thenReturn((clienteAggiornato));
         when(utenteRepository.save(clienteAggiornato)).thenReturn(clienteAggiornato);
@@ -91,7 +90,6 @@ public class GestioneUtenzaServiceImplTest {
     }
 
     @Test
-    @Disabled
     public void inserimentoDatiPersonaliClienteUtenteNonPresenteNelDataBase() {
         when(utenteRepository.getById(cliente.getId())).thenReturn(clienteAggiornato);
         assertThrows(IllegalArgumentException.class,
@@ -100,7 +98,6 @@ public class GestioneUtenzaServiceImplTest {
     }
 
     @Test
-    @Disabled
     public void modificaDatiPersonaliCliente() {
         when(utenteRepository.getById(cliente.getId())).thenReturn((clienteAggiornato));
         when(utenteRepository.save(clienteAggiornato)).thenReturn(clienteAggiornato);
@@ -116,7 +113,6 @@ public class GestioneUtenzaServiceImplTest {
     }
 
     @Test
-    @Disabled
     public void modificaDatiPersonaliCliente_UtenteNonPresenteNelDataBase_ThrowException() {
         when(utenteRepository.getById(cliente.getId())).thenReturn(clienteAggiornato);
         assertThrows(IllegalArgumentException.class,
@@ -125,7 +121,6 @@ public class GestioneUtenzaServiceImplTest {
     }
 
     @Test
-    @Disabled
     public void modificaDatiPersonaliPreparatore_Success() {
         when(utenteRepository.getById(preparatore.getId())).thenReturn(updatedPreparatore);
         when(utenteRepository.save(updatedPreparatore)).thenReturn(updatedPreparatore);
