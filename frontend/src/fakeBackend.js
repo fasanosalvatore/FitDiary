@@ -1530,6 +1530,6 @@ export function getProtocollo(){
 }
 
 export function getProtocolList(){
-    return lista_protocolli;
+    return listaProtocolli;
 
 }
