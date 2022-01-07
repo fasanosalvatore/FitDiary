@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import config from '../config.json'
 import {Link, useNavigate} from "react-router-dom";
@@ -23,11 +23,17 @@ import {
     useStripe
 } from "@stripe/react-stripe-js";
 import TierPrice from "./TierPrice";
+import {publicFetch} from "../util/fetch";
 
 export default function SignupForm() {
-    const urlCreate = `${config.SERVER_URL}/utenti/preparatore`;
-    const urlAcquisto = `${config.SERVER_URL}/abbonamento/acquista`;
+    const urlSignup = 'utenti/preparatore';
+    const urlBuy = 'abbonamento/acquista';
     const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
+    const [signupIsLoading, setSignupIsLoading] = useState(false);
+    const [signupIsEnabled, setSignupIsEnable] = useState(false);
+    const [cardComplete, setCardComplete] = useState(
+        {cardNumber: false, cardExpiry:false, cardCvc: false}
+    )
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();
     const elements = useElements();
@@ -43,14 +49,63 @@ export default function SignupForm() {
     })
     const navigate = useNavigate();
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+    function handleCardElementOnChange(e) {
+        setCardComplete({...cardComplete, [e.elementType]: e.complete})
+    }
+
+    useEffect(() => {
+        if(cardComplete.cardNumber && cardComplete.cardExpiry && cardComplete.cardCvc) {
+            setSignupIsEnable(true);
+        }
+    }, [cardComplete])
+
+    //Chiamata API creazione utente
+    const onSubmit = async values => {
+        if (!stripe || !elements) {
+            return "";
+        }
+
+        console.log("submitting");
+        setSignupIsLoading(true);
+        try {
+            const { data } = await publicFetch.post(urlSignup, values)
+            console.log(data);
+            const { newSubscriptionResp } = await publicFetch.post(urlBuy, data.data.response.customerId);
+            console.log(newSubscriptionResp.json());
+            const clientSecret = newSubscriptionResp.data.Utente.clientSecret;
+            const { stripePayment } = await stripe.confirmCardPayment(clientSecret,
+                {
+                    payment_method: {
+                        card: elements.getElement(CardNumberElement),
+                    },
+                });
+            console.log(stripePayment);
+            console.log(stripePayment.json());
+            if(stripePayment.error) {
+                toast({
+                    title: 'Pagamento Fallito',
+                    description: "pagamento non riuscito",
+                    status: 'error',
+                })
+            } else if(stripePayment.paymentIntent) {
+                toast({
+                    title: 'Pagamento Completato',
+                    description: "pagamento riuscito",
+                    status: 'success',
+                })
+            }
+        } catch (error) {
+            setSignupIsLoading(false);
+            console.log(error.response)
+            toast({
+                title: 'Errore',
+                description: error.response.data.message,
+                status: 'error',
+            })
+        }
     }
 
 
-    if (!stripe || !elements) {
-        return "";
-    }
 
     //helper function
     //Gestione risposta API crezione utente
@@ -80,43 +135,27 @@ export default function SignupForm() {
         })
     }
 
-    //Chiamata API creazione utente
-    function onSubmit(values) {
 
-        console.log("submitting");
-        const requestOptions = {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(values)
-        }
-        return fetch(urlCreate, requestOptions)
-            .then(handleResponse)
-            .catch(handleFail)
-    }
 
     //Verifica se una data inserita è precedenta alla odierna
     function isValidDate(value) {
+        console.log(elements.getElement(CardNumberElement))
+
         return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
     }
 
     //Gestione pagamento
-
     async function handlePayment(customerId) {
-
-        let newSubscriptionResp = await fetch(urlAcquisto, {
+        let newSubscriptionResp = await fetch("", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: customerId
         });
-
         newSubscriptionResp = await newSubscriptionResp.json();
-
         console.log(newSubscriptionResp.data.Utente.clientSecret)
-
         const client_Secret = newSubscriptionResp.data.Utente.clientSecret;
-
         await stripe.confirmCardPayment(
             client_Secret,
             {
@@ -124,7 +163,6 @@ export default function SignupForm() {
                     card: elements.getElement(CardNumberElement),
                 },
             }).then(function (result) {
-            //console.log(JSON.stringify(result,undefined,2));
             if (result.error) {
                 toast({
                     title: 'Pagamento Fallito',
@@ -256,19 +294,19 @@ export default function SignupForm() {
                             <GridItem colSpan={2} w="100%">
                                 <FormLabel htmlFor="numeroCarta">Numero Carta</FormLabel>
                                 <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
-                                    <CardNumberElement options={{showIcon: true}}/>
+                                    <CardNumberElement options={{showIcon: true}} onChange={handleCardElementOnChange}/>
                                 </Box>
                             </GridItem>
                             <GridItem colSpan={colSpan} w="100%">
                                 <FormLabel htmlFor="dataScadenza">Data Scadenza</FormLabel>
                                 <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
-                                    <CardExpiryElement/>
+                                    <CardExpiryElement onChange={handleCardElementOnChange}/>
                                 </Box>
                             </GridItem>
                             <GridItem colSpan={colSpan} w="100%">
                                 <FormLabel htmlFor="CVV">CVV</FormLabel>
                                 <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
-                                    <CardCvcElement/>
+                                    <CardCvcElement onChange={handleCardElementOnChange}/>
                                 </Box>
                             </GridItem>
                         </SimpleGrid>
@@ -277,7 +315,9 @@ export default function SignupForm() {
                         <TierPrice/>
                     </GridItem>
                     <GridItem colSpan={2}>
-                        <Button w="full" mt={4} colorScheme='teal' type='submit'>
+                        <Button w="full" mt={4} colorScheme='teal' type='submit'
+                                isLoading={signupIsLoading}
+                                isDisabled={!signupIsEnabled}>
                             Registrati e Paga
                         </Button>
                         <Text align={"center"} fontSize={"large"}>Hai gia un account? <Link
