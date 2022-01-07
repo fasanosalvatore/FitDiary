@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -45,12 +46,9 @@ public class GestioneAbbonamentoController {
                 .setPaymentBehavior(
                         SubscriptionCreateParams
                                 .PaymentBehavior.DEFAULT_INCOMPLETE)
-                .setCollectionMethod(true
-                        ? SubscriptionCreateParams
-                        .CollectionMethod.CHARGE_AUTOMATICALLY
-                        : SubscriptionCreateParams
-                        .CollectionMethod.SEND_INVOICE)
-                .addAllExpand(Arrays.asList("latest_invoice.payment_intent"))
+                .setCollectionMethod(SubscriptionCreateParams
+                .CollectionMethod.CHARGE_AUTOMATICALLY)
+                .addAllExpand(List.of("latest_invoice.payment_intent"))
                 .build();
         Subscription subscription = Subscription.create(subCreateParams);
         Map<String, Object> response = new HashMap<>();
