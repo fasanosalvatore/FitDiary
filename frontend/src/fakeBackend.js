@@ -401,11 +401,11 @@ let userFull = {
     "status": "success"
 };
 
-const lista_protoclli=
+const lista_protocolli={
     "data": {
     "protocollo": [
         {
-            "id": 1,
+            "id": 2,
             "dataScadenza": "2027-02-02",
             "schedaAlimentare": {
                 "id": 1,
@@ -1527,4 +1527,9 @@ export function getProtocollo(){
 
 
     return protocollo;
+}
+
+export function getProtocolList(){
+    return lista_protocolli;
+
 }
