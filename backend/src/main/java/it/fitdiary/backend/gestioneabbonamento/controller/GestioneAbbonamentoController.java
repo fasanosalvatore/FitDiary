@@ -1,5 +1,6 @@
 package it.fitdiary.backend.gestioneabbonamento.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Subscription;
@@ -30,11 +31,11 @@ public class GestioneAbbonamentoController {
      */
     @PostMapping("/acquista")
     public ResponseEntity<Object> acquistaAbbonamento(
-            @RequestBody final String customerId) throws StripeException {
+            @RequestBody final JsonNode customerId) throws StripeException {
         Stripe.apiKey = "sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz";
         SubscriptionCreateParams subCreateParams = SubscriptionCreateParams
                 .builder()
-                .setCustomer(customerId)
+                .setCustomer(customerId.get("customerId").asText())
                 .addItem(
                         SubscriptionCreateParams
                                 .Item.builder()
