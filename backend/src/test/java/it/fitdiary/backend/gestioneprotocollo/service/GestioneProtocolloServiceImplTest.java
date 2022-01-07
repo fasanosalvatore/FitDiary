@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -64,4 +65,23 @@ protocollo=new Protocollo(1L,LocalDate.parse("2022-01-05"),new SchedaAlimentare(
         when(protocolloRepository.findAllByCliente(cliente)).thenReturn(protocolloList);
         assertEquals(protocolloList,gestioneProtocolloServiceImpl.visualizzaStoricoProtocolliCliente(cliente));
     }
+
+    @Test
+    void getByIdProtocolloSuccess() {
+       when(protocolloRepository.existsById(1L)).thenReturn(true);
+       when(protocolloRepository.getById(1L)).thenReturn(protocollo);
+        assertEquals(protocollo, gestioneProtocolloServiceImpl.getByIdProtocollo(1L));
+    }
+
+    @Test
+    void getByIdProtocolloIdNonValido() {
+        assertThrows(IllegalArgumentException.class, () -> gestioneProtocolloServiceImpl.getByIdProtocollo(null));
+    }
+
+    @Test
+    void getByIdProtocolloProtocolloNonEsistente() {
+        when(protocolloRepository.existsById(1L)).thenReturn(false);
+        assertThrows(IllegalArgumentException.class, () -> gestioneProtocolloServiceImpl.getByIdProtocollo(1L));
+    }
+
 }
