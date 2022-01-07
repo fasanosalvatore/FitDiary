@@ -112,7 +112,8 @@ public class GestioneProtocolloServiceImpl
     }
 
     /**
-     * @param protocollo protocollo per cui inserire la scheda alimentare
+     * @param protocollo           protocollo per cui inserire
+     *                             la scheda alimentare
      * @param schedaAlimentareFile file della scheda alimentare
      * @return protocollo modificato
      * @throws IOException
@@ -154,7 +155,8 @@ public class GestioneProtocolloServiceImpl
     }
 
     /**
-     * @param protocollo protocollo per cui inserire la scheda alimentare
+     * @param protocollo            protocollo per cui
+     *                              inserire la scheda alimentare
      * @param schedaAllenamentoFile file della scheda allenamento
      * @return protocollo modificato
      * @throws IOException
@@ -207,11 +209,14 @@ public class GestioneProtocolloServiceImpl
         if (idProtocollo == null) {
             throw new IllegalArgumentException("Id non valido");
         }
-        Protocollo protocollo = protocolloRepository.
-                findById(idProtocollo).orElse(null);
-        if (protocollo == null) {
-            throw new IllegalArgumentException("Protocollo non trovato");
+        Protocollo protocollo = null;
+        if (protocolloRepository.existsById(idProtocollo)) {
+            protocollo = protocolloRepository.
+                    getById(idProtocollo);
+        } else {
+            throw new IllegalArgumentException("Il protocollo non esiste");
         }
+
         return protocollo;
     }
 
