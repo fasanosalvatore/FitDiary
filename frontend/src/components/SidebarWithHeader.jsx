@@ -26,7 +26,7 @@ import {
     FiSettings,
     FiMenu,
     FiBell,
-    FiChevronDown, FiUser, FiBook, FiUsers, FiPlus, FiUserPlus
+    FiChevronDown, FiUser, FiBook, FiUsers, FiUserPlus
 } from 'react-icons/fi';
 import Logo from "./Logo";
 import {Link as ReactLink} from "react-router-dom";

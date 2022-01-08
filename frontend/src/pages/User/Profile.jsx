@@ -12,10 +12,11 @@ import {
 } from "@chakra-ui/react";
 import {useContext, useEffect, useState} from "react";
 import {FetchContext} from "../../context/FetchContext";
+import moment from "moment";
 
+const urlGetInfo = `utenti/profilo`;
 export default function Profile() {
-    const urlGetInfo = `utenti/profilo`;
-    const [utente, setUtente] = useState({nome:"pippo"});
+    const [utente, setUtente] = useState({nome: "pippo"});
     const [isLoading, setLoading] = useState(true);
     const fetchContext = useContext(FetchContext);
 
@@ -24,8 +25,6 @@ export default function Profile() {
             try {
                 const {data} = await fetchContext.authAxios.get(urlGetInfo)
                 setUtente(data.data.utente);
-                console.log(utente);
-                console.log(data.data.utente)
                 setLoading(false);
             } catch (error) {
                 console.log("error", error);
@@ -37,7 +36,7 @@ export default function Profile() {
     return (
         <>
             {!isLoading && (
-                <Flex wrap={"wrap"}>
+                <Flex wrap={"wrap"} p={5}>
                     <Heading w={"full"} mb={5}>Profilo Utente</Heading>
                     <Box bg={"blackAlpha.50"} rounded={20} padding={10} minW={{base: '100%', xl: '49%'}}>
                         <Flex>
@@ -47,7 +46,7 @@ export default function Profile() {
                                          color={utente.sesso === "M" ? "blue.700" : "pink.700"}>{utente.nome} {utente.cognome}</Heading>
                                 <Text color={"gray.400"}>{utente.email}</Text>
                                 <HStack>
-                                    <Link href={"/customer/account"}><Button bg={"blue.200"}>Modifica</Button></Link>
+                                    <Link href={"/account"}><Button bg={"blue.200"}>Modifica</Button></Link>
                                     <Link href={"/reports"}><Button bg={"green.200"}>Progressi</Button></Link>
                                 </HStack>
                             </VStack>
@@ -62,7 +61,8 @@ export default function Profile() {
                                     <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
                                         fontWeight={"bold"} color={"gray.600"}>Data di Nascita </Text></GridItem>
                                     <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
-                                        ml={"2"} color={"gray.400"}>{utente.dataNascita}</Text></GridItem>
+                                        ml={"2"}
+                                        color={"gray.400"}>{moment(utente.dataNascita).format("DD/MM/yyyy")}</Text></GridItem>
                                     <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
                                         fontWeight={"bold"} color={"gray.600"}>Telefono </Text></GridItem>
                                     <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
@@ -72,11 +72,17 @@ export default function Profile() {
                                     <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
                                         ml={"2"} color={"gray.400"}>{utente.via} <br/>{utente.cap} {utente.citta}
                                     </Text></GridItem>
-                                    <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
-                                        fontWeight={"bold"} color={"gray.600"}>Preparatore </Text></GridItem>
-                                    <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
-                                        ml={"2"}
-                                        color={"gray.400"}>{utente.preparatore?.nome} {utente.preparatore?.cognome}</Text></GridItem>
+                                    {utente.preparatore && (
+                                        <>
+                                            <GridItem minH={"5"} p={"3"} borderBottom={"1px"}
+                                                      borderColor={"gray.400"}><Text
+                                                fontWeight={"bold"} color={"gray.600"}>Preparatore </Text></GridItem>
+
+                                            <GridItem minH={"5"} p={"3"} borderBottom={"1px"}
+                                                      borderColor={"gray.400"}><Text
+                                                ml={"2"}
+                                                color={"gray.400"}>{utente.preparatore?.nome} {utente.preparatore?.cognome}</Text></GridItem>
+                                        </>)}
                                     <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
                                         fontWeight={"bold"} color={"gray.600"}>Sesso</Text></GridItem>
                                     <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text

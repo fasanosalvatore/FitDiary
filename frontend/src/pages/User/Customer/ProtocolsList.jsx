@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Icon, {
+import {
     Table,
     Thead,
     Tbody,
@@ -18,8 +18,8 @@ function ProtocolsList() {
     const listProtocolli = getProtocolList().data;
     moment.locale("it-IT");
     const cliente = listProtocolli.protocollo[0].cliente;
-    const [search,setSearch] =useState("");
-    const onChange=(e)=>{
+    const [search, setSearch] = useState("");
+    const onChange = (e) => {
         setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
     }
     return (
@@ -50,17 +50,14 @@ function ProtocolsList() {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {listProtocolli.protocollo.map((protocol, i) => {
-                        if(protocol.id === parseInt(search)|| search ===""){
-                        return (
-                            <Tr>
-                                <Td>{protocol.id}</Td>
-                                <Td>{moment(protocol.dataCreazione).format("DD/MM/yyyy")}</Td>
-                                <Td>{moment(protocol.dataScadenza).format("DD/MM/yyyy")}</Td>
-                                <Td><Link to={"/customer/protocol/"+protocol.id}> <InfoIcon/></Link></Td>
-                            </Tr>
-                        );}
-                    })}
+                    {listProtocolli.protocollo.map((protocol) => (protocol.id === parseInt(search) || search === "") && (
+                        <Tr>
+                            <Td>{protocol.id}</Td>
+                            <Td>{moment(protocol.dataCreazione).format("DD/MM/yyyy")}</Td>
+                            <Td>{moment(protocol.dataScadenza).format("DD/MM/yyyy")}</Td>
+                            <Td><Link to={"/customer/protocol/" + protocol.id}> <InfoIcon/></Link></Td>
+                        </Tr>
+                    ))}
                 </Tbody>
             </Table>
         </VStack>

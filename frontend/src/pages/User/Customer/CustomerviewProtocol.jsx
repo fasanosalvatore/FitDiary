@@ -16,9 +16,7 @@ export default function CustomerviewProtocol() {
     const {id} = useParams();
     console.log(id);
     moment.locale("it-IT");
-    const SchedaAllenamento = "dumbbell.png";
     return (
-
         <Flex wrap={"wrap"}>
             <Button leftIcon={<RiArrowGoBackLine/>}>Torna alla lista</Button>
             <Heading w={"full"} mb={5} textAlign={"center"}>Protocollo n.{protocollo.protocollo.id}</Heading>
