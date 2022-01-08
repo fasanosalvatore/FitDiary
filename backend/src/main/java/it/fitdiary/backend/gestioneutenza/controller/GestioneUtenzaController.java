@@ -36,6 +36,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static it.fitdiary.backend.utility.service.FitDiaryUserDetails.createTokensMap;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -94,7 +95,7 @@ public class GestioneUtenzaController {
                     "password",
                     "password non valida");
         }
-        Utente newUtente = null;
+        Utente newUtente;
         try {
             newUtente = service.registrazione(utente);
         } catch (IllegalArgumentException e) {
@@ -120,94 +121,32 @@ public class GestioneUtenzaController {
                 response);
     }
 
+
     /**
-     * Questo metodo prende i parametri inseriti
+     * Questo metodo prende i parametri per modoficare un utente inseriti
      * nel body della richiesta http e li passa al service.
      *
-     * @param clienteModificato rappresenta l'insieme dei dati personali
+     * @param utente rappresenta l'insieme dei dati personali
      *                          di un utente
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database
      */
-    @PostMapping("cliente")
-    ResponseEntity<Object> inserimentoDatiPersonaliCliente(
-            @RequestBody final Utente clienteModificato) {
+    @PutMapping
+    ResponseEntity<Object> modificaDatiPersonali(
+            @RequestBody final Utente utente) {
         HttpServletRequest request =
                 ((ServletRequestAttributes)
-                        RequestContextHolder
-                                .getRequestAttributes()).getRequest();
-        var idCliente = Long.parseLong(request.getUserPrincipal().getName());
-        try {
-            Utente newUtente =
-                    service.inserimentoDatiPersonaliCliente(idCliente,
-                            clienteModificato);
-            return ResponseHandler.generateResponse(HttpStatus.CREATED,
-                    "utente",
-                    newUtente);
-        } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
-        }
-    }
-
-    /**
-     * Questo metodo prende i parametri inseriti per
-     * modificare nel body della richiesta http e li passa al service.
-     *
-     * @param clienteModificato rappresenta l'insieme dei dati personali
-     *                          di un utente
-     * @return utente rappresenta l'utente
-     * con i nuovi dati inserito nel database
-     */
-    @PutMapping("cliente")
-    ResponseEntity<Object> modificaDatiPersonaliCliente(
-            @RequestBody final Utente clienteModificato) {
-        HttpServletRequest request =
-                ((ServletRequestAttributes)
-                        RequestContextHolder
-                                .getRequestAttributes())
+                        Objects.requireNonNull(RequestContextHolder
+                                .getRequestAttributes()))
                         .getRequest();
         var idCliente = Long.parseLong(request.getUserPrincipal().getName());
         try {
             Utente newUtente =
-                    service.modificaDatiPersonaliCliente(idCliente,
-                            clienteModificato);
+                    service.modificaDatiPersonali(idCliente,
+                            utente);
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "utente",
                     newUtente);
-        } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
-        }
-    }
-
-    /**
-     * Questo metodo prende in input un preparatore di tipo Utente
-     * contiene i dati da modificare dal body
-     * della richiesta http e li passa al service.
-     *
-     * @param preparatore rappersenta l' insieme
-     *                    dei dati persoanli da aggoirnare di un preparatore
-     * @return upadtedPreparatore rappresenta l' utente
-     * con i nuovi dati inseriti nel database
-     */
-    @PutMapping("preparatore")
-    ResponseEntity<Object> modificaDatiPersonaliPreparatore(
-            @Valid @RequestBody final Utente preparatore) {
-        HttpServletRequest request =
-                ((ServletRequestAttributes) RequestContextHolder
-                        .getRequestAttributes())
-                        .getRequest();
-        var idPreparatore =
-                Long.parseLong(request.getUserPrincipal().getName());
-        try {
-            Utente updatedPrepartore =
-                    service.modificaDatiPersonaliPreparatore(
-                            idPreparatore, preparatore
-                    );
-            return ResponseHandler.generateResponse(HttpStatus.CREATED,
-                    "preparatore",
-                    updatedPrepartore);
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     e.getMessage());
@@ -219,7 +158,7 @@ public class GestioneUtenzaController {
      *
      * @param request  richiesta Http
      * @param response risposta Http
-     * @throws IOException
+     * @throws IOException eccezione
      */
     @GetMapping("token/refresh")
     public void refreshToken(final HttpServletRequest
@@ -272,7 +211,7 @@ public class GestioneUtenzaController {
      *
      * @param request  richiesta Http
      * @param response risposta Http
-     * @throws IOException
+     * @throws IOException eccezione
      */
     @GetMapping("token/expire")
     public void expireToken(final HttpServletRequest
@@ -320,11 +259,12 @@ public class GestioneUtenzaController {
      * @param cliente Nuovo cliente con nome, cognome ed email
      * @return cliente creato
      */
-    @PostMapping("createcliente")
+    @PostMapping
     ResponseEntity<Object> iscrizioneCliente(
             @RequestBody final NuovoCliente cliente) {
         var request = ((ServletRequestAttributes)
-                RequestContextHolder.getRequestAttributes()).getRequest();
+                Objects.requireNonNull(
+                        RequestContextHolder.getRequestAttributes())).getRequest();
         var idPreparatore =
                 Long.parseLong(request.getUserPrincipal().getName());
         String email = cliente.getEmail();
@@ -371,12 +311,10 @@ public class GestioneUtenzaController {
      *
      * @param request richiesta Http
      * @return Utente autenticato
-     * @throws IOException
      */
     @GetMapping("profilo")
     public ResponseEntity<Object> visualizzaProfilo(final HttpServletRequest
-                                                            request)
-            throws IOException {
+                                                            request) {
         var idUtente = Long.parseLong(request.getUserPrincipal().getName());
         try {
             Utente utente = service.getById(idUtente);
