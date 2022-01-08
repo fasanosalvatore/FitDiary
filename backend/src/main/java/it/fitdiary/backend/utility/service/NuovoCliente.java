@@ -3,6 +3,7 @@ package it.fitdiary.backend.utility.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Generated
 public class NuovoCliente {
     /**
      * int 50.

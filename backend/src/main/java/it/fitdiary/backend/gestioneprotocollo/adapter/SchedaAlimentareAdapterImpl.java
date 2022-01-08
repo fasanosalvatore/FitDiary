@@ -49,7 +49,7 @@ public class SchedaAlimentareAdapterImpl implements SchedaAlimentareAdapter {
                 CSVFormat.Builder.create().setHeader(
                             "Nome", "Pasto", "Giorno", "Kcal", "Grammi")
                         .setDelimiter(';').build();
-        Iterable<CSVRecord> records =
+        var records =
                 csvFormat.parse(new FileReader(file));
         int riga = 1;
         for (CSVRecord record : records) {

@@ -261,6 +261,14 @@
 						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>it/fitdiary/backend/gestioneutenza/security/*</exclude>
+						<exclude>it/fitdiary/backend/entity/*</exclude>
+						<exclude>*Test</exclude>
+						<exclude>*IT</exclude>
+					</excludes>
+				</configuration>
 			</plugin> <!-- org.jacoco -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,13 +1,14 @@
 import {Text, useToast} from "@chakra-ui/react";
-import {useEffect} from "react";
+import {useContext, useEffect} from "react";
 import AuthService from "../../services/auth.service";
 import {useNavigate} from "react-router-dom";
+import {AuthContext} from "../../context/AuthContext";
 
 export default function Logout() {
+    const authContext = useContext(AuthContext);
     const toast = useToast();
     const navigate = useNavigate();
     useEffect(() => {
-        AuthService.logout();
         toast({
             title: 'Logout eseguito!',
             description: "Verrai riderizionato a breve!",
@@ -15,7 +16,7 @@ export default function Logout() {
             duration: 2000
         })
         setTimeout(() => {
-          navigate("/login");
+            authContext.logout();
         },2000)
     })
 

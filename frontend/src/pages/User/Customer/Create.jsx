@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
 import {
     Button,
@@ -6,54 +6,39 @@ import {
     FormErrorMessage,
     FormLabel,
     Heading,
-    Input, VStack
+    Input, toast, useToast, VStack
 } from "@chakra-ui/react";
-import authService from "../../../services/auth.service";
-import config from "../../../config.json";
+import {FetchContext} from "../../../context/FetchContext";
 
 export default function CustomerCreate() {
+    const fetchContext = useContext(FetchContext);
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
-    const utenteCus = authService.getCurrentUser();
-    const urlCreate = `${config.SERVER_URL}/utenti/createcliente`;
-
-    function handleResponse(response) {
-        console.log("handling");
-        return response.text().then(text => {
-            const resp = JSON.parse(text);
-            if (!response.ok) {
-                const error = (resp && resp.message) || response.statusText;
-                return Promise.reject(error);
-            }
-        });
+    const urlCreateCustomer = "utenti/createcliente";
+    const toast = useToast({
+        duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+            width: '100%', maxWidth: '100%',
+        },
+    })
+    function toastParam(title, description, status) {
+        return {
+            title: title, description: description, status: status
+        };
     }
-
-    //Gestione FAIL
-    function handleFail(data) {
-        console.log("something went wrong " + data);
-    }
-
-    //Chiamata API creazione utente
-    function onSubmit(values) {
-
-        console.log("submitting");
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': "Bearer "+utenteCus.access_token,
-            },
-            body: JSON.stringify(values),
+    const onSubmit = async (values) => {
+        try {
+            const {data} = await fetchContext.authAxios.post(urlCreateCustomer, values);
+            console.log(data);
+            toast(toastParam("Cliente creato con successo", "","success"));
+        } catch (error) {
+            console.log(error);
         }
-        return fetch(urlCreate, requestOptions)
-            .then(handleResponse)
-            .catch(handleFail)
-    }
 
+    }
 
     return (
         <VStack w="full" h="full" p={[5, 10, 20]}>
             <VStack spacing={3} alignItems="flex-start" pb={5}>
-                <Heading size="2xl">Iscrizione Cliente</Heading>
+                <Heading size="2xl">Invita Cliente</Heading>
             </VStack>
             <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                 <FormControl id={"nome"} isInvalid={errors.nome}>
@@ -83,7 +68,7 @@ export default function CustomerCreate() {
                     <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                 </FormControl>
                 <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
-                    Completa Iscrizione
+                    Invia Credenziali
                 </Button>
             </form>
         </VStack>

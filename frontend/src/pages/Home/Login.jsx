@@ -8,11 +8,12 @@ import {
     FormErrorMessage,
     FormLabel,
     GridItem, Heading,
-    Input,
+    Input, InputGroup, InputRightElement,
     SimpleGrid, Text, VStack, useToast, Box
 } from "@chakra-ui/react";
 import {AuthContext} from "../../context/AuthContext";
 import {publicFetch} from "../../util/fetch";
+import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 
 export default function Login() {
     const authContext = useContext(AuthContext);
@@ -20,6 +21,8 @@ export default function Login() {
     const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = React.useState(false);
     const toast = useToast()
     const navigate = useNavigate();
+    const [showP, setShowP] = React.useState(false)
+    const handleClickP = () => setShowP(!showP)
 
     const onSubmit = async values => {
         console.log("submitting");
@@ -36,9 +39,8 @@ export default function Login() {
                 status: 'success',
                 duration: 2000
             })
-            setTimeout((resolve) => {
+            setTimeout(() => {
                 navigate("/dashboard");
-                resolve();
             }, 2000)
         } catch (error) {
             console.log(error.response);
@@ -74,20 +76,29 @@ export default function Login() {
                             <GridItem colSpan={2}>
                                 <FormControl id={"password"} isInvalid={errors.password}>
                                     <FormLabel>Password</FormLabel>
-                                    <Input type="password" placeholder="Password" {...register("password", {
-                                        required: "Il campo password è obbligatorio",
-                                        maxLength: {value: 255, message: "Password troppo lunga"},
-                                    })} />
+                                    <InputGroup>
+                                        <Input type={showP ? 'text' : 'password'}
+                                            placeholder="Password" {...register("password", {
+                                            required: "Il campo password è obbligatorio",
+                                            maxLength: {value: 255, message: "Password troppo lunga"},
+                                        })} />
+                                        <InputRightElement width='2.5rem'>
+                                            <Button bg={"transparent"} h='1.75rem' size='sm' onClick={handleClickP}>
+                                                {showP ? <ViewOffIcon color='gray.900'/> :
+                                                    <ViewIcon color='gray.900'/>}
+                                            </Button>
+                                        </InputRightElement>
+                                    </InputGroup>
                                     <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
                                 </FormControl>
                             </GridItem>
                             <GridItem colSpan={2}>
-                                <Button w="full" mt={4} colorScheme='teal'
-                                        isLoading={isSubmitting || isSuccessfullySubmitted} type='submit'>
+                                <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting || isSuccessfullySubmitted}
+                                        type='submit'>
                                     Login
                                 </Button>
                                 <Text align={"center"} fontSize={"large"}>Non hai ancora un account su FitDiary?
-                                    <Link to={"/signup"}> Registrati</Link></Text>
+                                        <Link to={"/signup"}> Registrati</Link></Text>
                             </GridItem>
                         </SimpleGrid>
                     </form>
