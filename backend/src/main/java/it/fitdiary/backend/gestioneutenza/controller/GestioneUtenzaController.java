@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -338,5 +339,14 @@ public class GestioneUtenzaController {
             final HttpMessageNotReadableException ex) {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                 "Errore durante la lettura del body");
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> listaClientiPreparatore(final HttpServletRequest
+                                                            request){
+        var idUtente = Long.parseLong(request.getUserPrincipal().getName());
+        List<Utente> listaClienti=service.getById(idUtente).getListaClienti();
+        return ResponseHandler.generateResponse(HttpStatus.OK,"listaClienti",listaClienti);
+
     }
 }
