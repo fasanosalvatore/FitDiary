@@ -1,5 +1,5 @@
 import {useForm} from 'react-hook-form';
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Button,
     FormControl,
@@ -8,58 +8,66 @@ import {
     GridItem, Heading,
     Input,
     SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, VStack
+    Stack, Text, Tooltip, useBreakpointValue, useToast, VStack
 } from "@chakra-ui/react";
 import config from "../../../config.json";
 import authservice from "../../../services/auth.service";
+import {FetchContext} from "../../../context/FetchContext";
 
 
 export default function CustomerInsertInfo() {
-
-
-    const [currentUser,setCurrentUser] = useState(authservice.getCurrentUser())
-    const urlInsertInfo = `${config.SERVER_URL}/utenti/cliente`;
-    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
+    const urlEditInfo = `utenti/cliente`;
+    const urlGetInfo = `utenti/profilo`;
+    const {register, handleSubmit, getValues, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
+    const [showP, setShowP] = React.useState(false)
+    const [showCP, setShowCP] = React.useState(false)
+    const toast = useToast({
+        duration: 9000,
+        isClosable: true,
+        variant: "solid",
+        position: "top",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+    })
 
-    //helper function
-    //Gestione risposta API
-    function handleResponse(response) {
-        console.log("handling");
-        return response.text().then(text => {
-            const resp = JSON.parse(text);
-            if (!response.ok) {
-                const error = (resp && resp.message) || response.statusText;
-                return Promise.reject(error);
+    const [isLoading, setLoading] = useState(true);
+    const fetchContext = useContext(FetchContext);
+
+    useEffect(() => {
+        const getInfoUtente = async () => {
+            try {
+                const {data} = await fetchContext.authAxios.get(urlGetInfo)
+                const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
+                fields.forEach(field => setValue(field, data.data.utente[field]));
+                setLoading(false);
+            } catch (error) {
+                console.log("error", error);
             }
-        });
-    }
+        };
+        getInfoUtente();
+    }, [])
 
-    //Gestione FAIL
-    function handleFail(data) {
-        console.log("something went wrong " + data);
-    }
 
     //Chiamata API inserimento dati personali utente
-    function onSubmit(values) {
-
-        console.log("submitting insert Personal Data");
+    const onSubmit = async values => {
         console.log("submitting values");
         console.log(values);
-        const requestOptions = {
-            method: "POST",
-            headers: {'Content-Type': 'application/json',
-            'Authorization': "Bearer "+currentUser.access_token,
-            },
-            body: JSON.stringify(values)
+        try {
+            const {data} = await fetchContext.authAxios.post(urlEditInfo,values)
+            console.log(data);
+        } catch (error) {
+            console.log(error.response)
+            toast({
+                title: 'Errore',
+                description: error.response.data.message,
+                status: 'error',
+            })
         }
-        console.log(requestOptions);
-        return fetch(urlInsertInfo, requestOptions)
-            .then(handleResponse)
-            .catch(handleFail)
     }
 
-    //Verifica se una data inserita è precedenta alla odierna
     function isValidDate(value) {
         return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
     }
@@ -72,25 +80,6 @@ export default function CustomerInsertInfo() {
             </VStack>
             <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                 <SimpleGrid>
-                    {/*
-                    <GridItem colSpan={colSpan} w="100%">
-                        <FormControl id={"altezza"} isInvalid={errors.altezza}>
-                            <FormLabel htmlFor="altezza">Altezza</FormLabel>
-                            <Tooltip
-                                label={"Altezza in centimeri"}
-                                aria-label='A tooltip'>
-                                <Input type="number" placeholder={"178"} min="50" max="300" {...register("altezza", {
-                                    maxLength: {
-                                        value: 3,
-                                        message: "valore altezza troppo grande"
-                                    }, pattern: {value: /^[0-9]{1,3}$/i, message: "Formato altezza non valido"},
-                                    required: "L'altezza è obbligatoria"
-                                })} />
-                            </Tooltip>
-                            <FormErrorMessage>{errors.altezza && errors.altezza.message}</FormErrorMessage>
-                        </FormControl>
-                    </GridItem>*/}
-
                     <GridItem colSpan={colSpan} w="100%">
                         <FormControl id={"dataNascita"} isInvalid={errors.dataNascita}>
                             <FormLabel>Data di Nascita</FormLabel>

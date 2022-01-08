@@ -6,11 +6,4 @@ const publicFetch = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL
 })
 
-const privateFetch = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL,
-    headers:{
-        'Authorization': "Bearer " + AuthService.getAccessToken() ?? ""
-    }
-})
-
-export { publicFetch,privateFetch };
+export { publicFetch };

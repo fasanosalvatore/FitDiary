@@ -11,14 +11,11 @@ import {
     SimpleGrid,
     Tooltip, useBreakpointValue, useToast, VStack
 } from "@chakra-ui/react";
-import config from "../../../config.json";
-import AuthService from "../../../services/auth.service";
-import {privateFetch} from "../../../util/fetch";
 import {AtSignIcon, PhoneIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
-import {FetchContext} from "../../../context/FetchContext";
+import {FetchContext} from "../../context/FetchContext";
 
 
-export default function CustomerEditInfo() {
+export default function Edit() {
     const urlEditInfo = `utenti/cliente`;
     const urlGetInfo = `utenti/profilo`;
     const {register, handleSubmit, getValues, setValue, formState: {errors, isSubmitting}} = useForm();

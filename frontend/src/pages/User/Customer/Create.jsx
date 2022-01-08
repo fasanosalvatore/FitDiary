@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import {FetchContext} from "../../../context/FetchContext";
 
-export default function CustomerCreate() {
+export default function Create() {
     const fetchContext = useContext(FetchContext);
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const urlCreateCustomer = "utenti/createcliente";
@@ -32,7 +32,6 @@ export default function CustomerCreate() {
         } catch (error) {
             console.log(error);
         }
-
     }
 
     return (

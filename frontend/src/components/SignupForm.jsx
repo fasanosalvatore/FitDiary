@@ -36,15 +36,15 @@ export default function SignupForm() {
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const stripe = useStripe();
     const elements = useElements();
+    const [showP, setShowP] = React.useState(false)
+    const handleClickP = () => setShowP(!showP)
+    const [showCP, setShowCP] = React.useState(false)
+    const handleClickCP = () => setShowCP(!showCP)
     const toast = useToast({
         duration: 9000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })
-    const [showP, setShowP] = React.useState(false)
-    const handleClickP = () => setShowP(!showP)
-    const [showCP, setShowCP] = React.useState(false)
-    const handleClickCP = () => setShowCP(!showCP)
 
     function toastParam(title, description, status) {
         return {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
     IconButton,
     Avatar,
@@ -23,28 +23,97 @@ import {
 import {
     FiHome,
     FiTrendingUp,
-    FiCompass,
     FiSettings,
     FiMenu,
     FiBell,
-    FiChevronDown,
+    FiChevronDown, FiUser, FiBook, FiUsers, FiPlus, FiUserPlus
 } from 'react-icons/fi';
-import {BiExit} from "react-icons/bi";
-import authService from "../services/auth.service";
 import Logo from "./Logo";
+import {Link as ReactLink} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
-const user=authService.getCurrentUser();
-
-const LinkItems = [
-    { name: 'Home', icon: FiHome, to: "/" },
-    { name: 'Registrati', icon: FiCompass, to: "/signup" },
-    { name: 'Profilo', icon: FiSettings, to: "/customer/me" },
-    { name: 'test', icon: FiSettings, to: "/test" },
-    { name: user ? 'Logout' : 'Login',icon:user ? BiExit : FiTrendingUp,to: user? "/logout" : "/login"}
+const navItems = [
+    {
+        name: 'Home',
+        icon: FiHome,
+        to: "/",
+        allowedRoles: ['admin', 'cliente', 'preparatore']
+    },
+    {
+        name: 'Profilo',
+        icon: FiUser,
+        to: "/profile",
+        allowedRoles: ['admin', 'cliente', 'preparatore']
+    },
+    {
+        name: 'Aggiungi Cliente',
+        icon: FiUserPlus,
+        to: "/trainer/addCustomer",
+        allowedRoles: ['admin', 'preparatore']
+    },
+    {
+        name: 'Protocolli',
+        icon: FiBook,
+        to: "/protocols",
+        allowedRoles: ['admin', 'cliente', 'preparatore']
+    },
+    {
+        name: 'Progressi',
+        icon: FiTrendingUp,
+        to: "/reports",
+        allowedRoles: ['admin', 'cliente']
+    },
+    {
+        name: 'Clienti',
+        icon: FiUsers,
+        to: "/customers",
+        allowedRoles: ['admin', 'preparatore']
+    },
+    {
+        name: 'Impostazioni',
+        icon: FiSettings,
+        to: "/account",
+        allowedRoles: ['admin', 'cliente', 'preparatore']
+    },
+    {
+        name: 'Utenti',
+        icon: FiUsers,
+        to: "/users",
+        allowedRoles: ['admin']
+    }
 ];
+
+
+const NavItem = ({navItem, ...rest}) => {
+    return (
+        <Link as={ReactLink} to={navItem.to} style={{ textDecoration: 'none' }} textAlign={"center"}>
+            <Flex
+                textAlign={"left"}
+                color="gray.700"
+                fontWeight="bolder"
+                align="center"
+                p="4"
+                mx="4"
+                borderRadius="lg"
+                role="group"
+                cursor="pointer"
+                _hover={{
+                    bg: 'blue.500',
+                    color: 'white',
+                }}
+                {...rest}>
+                {navItem.icon && (
+                    <Icon color="blue.500" fontWeight="bolder" mr="4" fontSize="20" _groupHover={{ color: 'white',}} as={navItem.icon} />
+                )}
+                {navItem.name}
+            </Flex>
+        </Link>
+    );
+};
 
 export default function SidebarWithHeader({children}) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
         <Box minH="100vh" bg={useColorModeValue('white', 'gray.900')}>
             <SidebarContent
@@ -65,15 +134,20 @@ export default function SidebarWithHeader({children}) {
             </Drawer>
             {/* mobilenav */}
             <MobileNav onOpen={onOpen} />
-            <Box ml={{ base: 0, md: 60 }} p="4">
+            <Box ml={{ base: 0, md: 60 }}>
                 {children}
             </Box>
         </Box>
     );
 }
 
+const NavItemContainer = ({children}) => (
+    <div>{children}</div>
+);
 
 const SidebarContent = ({ onClose, ...rest }) => {
+    const authContext = useContext(AuthContext);
+    const { authState } = authContext;
     return (
         <Box
             transition="3s ease"
@@ -92,54 +166,20 @@ const SidebarContent = ({ onClose, ...rest }) => {
                 </Link>
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
             </Flex>
-            {LinkItems.map((link) => (
-
-                <NavItem key={link.name} icon={link.icon} to={link.to}>
-                    {link.name}
-
-                </NavItem>
+            {navItems.map((item) => (
+                <NavItemContainer key={item.name}>
+                    {item.allowedRoles.includes(authState.userInfo.roles[0].toLowerCase()) && (
+                        <NavItem key={item} navItem={item}/>
+                    )}
+                </NavItemContainer>
             ))}
         </Box>
     );
 };
 
-const NavItem = ({ icon, to, children, ...rest }) => {
-    return (
-        <Link href={to} style={{ textDecoration: 'none' }} textAlign={"center"}>
-            <Flex
-                textAlign={"left"}
-                color="gray.700"
-                fontWeight="bolder"
-                align="center"
-                p="4"
-                mx="4"
-                borderRadius="lg"
-                role="group"
-                cursor="pointer"
-                _hover={{
-                    bg: 'blue.500',
-                    color: 'white',
-                }}
-                {...rest}>
-                {icon && (
-                    <Icon
-                        color="blue.500"
-                        fontWeight="bolder"
-                        mr="4"
-                        fontSize="20"
-                        _groupHover={{
-                            color: 'white',
-                        }}
-                        as={icon}
-                    />
-                )}
-                {children}
-            </Flex>
-        </Link>
-    );
-};
-
 const MobileNav = ({ onOpen, ...rest }) => {
+    const authContext = useContext(AuthContext);
+    const { authState } = authContext;
     return (
         <Flex
             ml={{ base: 0, md: 60 }}
@@ -156,7 +196,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 aria-label="open menu"
                 icon={<FiMenu />}
             />
-
             <Text
                 display={{ base: 'flex', md: 'none' }}
                 fontSize="2xl"
@@ -164,7 +203,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
                 fontWeight="bold">
                 Logo
             </Text>
-
             <HStack spacing={{ base: '0', md: '6' }}>
                 <IconButton
                     color={"blue.500"}
@@ -174,7 +212,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
                     icon={<FiBell />}
                 />
                 <Flex alignItems={'center'}>
-                    {!user ? <Text>Login</Text> :
                     <Menu>
                         <MenuButton
                             py={2}
@@ -187,9 +224,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
                                     alignItems="flex-start"
                                     spacing="1px"
                                     ml="2">
-                                    <Text fontSize="sm">{user.userInfo.name} {user.userInfo.surname}</Text>
+                                    <Text fontSize="sm">{authState.userInfo.name} {authState.userInfo.surname}</Text>
                                     <Text fontSize="xs" color="gray.600">
-                                        {user.userInfo.roles[0]}
+                                        {authState.userInfo.roles[0] || "" }
                                     </Text>
                                 </VStack>
                                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -202,9 +239,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
                             <MenuItem>Settings</MenuItem>
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider />
-                            <MenuItem>Sign out </MenuItem>
+                            <MenuItem><Link href={"/logout"}>Logout</Link></MenuItem>
                         </MenuList>
-                    </Menu> }
+                    </Menu>
                 </Flex>
             </HStack>
         </Flex>
