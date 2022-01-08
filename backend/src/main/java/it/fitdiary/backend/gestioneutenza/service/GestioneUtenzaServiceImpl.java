@@ -153,12 +153,13 @@ public class GestioneUtenzaServiceImpl
      * Questo metodo permette all'utente di inserire i dati
      * da modificare nel sistema.
      *
-     * @param id rappresenta l'id del utente
-     * @param utente    rappresenta l'insieme
-     *                  dei dati personali di un utente.
+     * @param id     rappresenta l'id del utente
+     * @param utente rappresenta l'insieme
+     *               dei dati personali di un utente.
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database.
-     * @throws IllegalArgumentException lancia l'errore generato da un input errato.
+     * @throws IllegalArgumentException lancia l'errore generato
+     * da un input errato.
      */
     @Override
     public Utente modificaDatiPersonali(

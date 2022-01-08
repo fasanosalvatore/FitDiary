@@ -6,17 +6,22 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponseHandler {
+public final class ResponseHandler {
+    /**
+     * costruttore privato.
+     */
+    private ResponseHandler() {
+    }
 
     /**
      * @param status      HttpStatus
-     * @param responseObj
+     * @param responseObj risposta formattata
      * @return ResponseEntity
      */
     public static ResponseEntity<Object> generateResponse(
             final HttpStatus status,
             final Object responseObj) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         String statusMessage = "";
         if (status.is1xxInformational()
                 || status.is2xxSuccessful()
@@ -28,25 +33,25 @@ public class ResponseHandler {
             statusMessage = "fail";
         }
         map.put("status", statusMessage);
-        return new ResponseEntity<Object>(map, status);
+        return new ResponseEntity<>(map, status);
     }
 
     /**
      * @param status      HttpStatus
      * @param objectName  String
-     * @param responseObj
+     * @param responseObj risposta formatata
      * @return ResponseEntity
      */
     public static ResponseEntity<Object> generateResponse(
             final HttpStatus status,
             final String objectName,
             final Object responseObj) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         String statusMessage = "";
         if (status.is1xxInformational()
                 || status.is2xxSuccessful()
                 || status.is3xxRedirection()) {
-            Map<String, Object> objectMap = new HashMap<String, Object>();
+            Map<String, Object> objectMap = new HashMap<>();
             objectMap.put(objectName, responseObj);
             map.put("data", objectMap);
             statusMessage = "success";
@@ -55,20 +60,20 @@ public class ResponseHandler {
             statusMessage = "fail";
         }
         map.put("status", statusMessage);
-        return new ResponseEntity<Object>(map, status);
+        return new ResponseEntity<>(map, status);
     }
 
     /**
-     * @param status
-     * @param message
+     * @param status status
+     * @param message message
      * @return ResponseEntity
      */
     public static ResponseEntity<Object> generateResponse(
             final HttpStatus status,
             final String message) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("message", message);
         map.put("status", "error");
-        return new ResponseEntity<Object>(map, status);
+        return new ResponseEntity<>(map, status);
     }
 }

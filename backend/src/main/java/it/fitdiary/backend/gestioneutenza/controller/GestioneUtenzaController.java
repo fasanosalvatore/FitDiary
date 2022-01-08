@@ -32,7 +32,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,7 +126,7 @@ public class GestioneUtenzaController {
      * nel body della richiesta http e li passa al service.
      *
      * @param utente rappresenta l'insieme dei dati personali
-     *                          di un utente
+     *               di un utente
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database
      */
@@ -264,7 +263,8 @@ public class GestioneUtenzaController {
             @RequestBody final NuovoCliente cliente) {
         var request = ((ServletRequestAttributes)
                 Objects.requireNonNull(
-                        RequestContextHolder.getRequestAttributes())).getRequest();
+                        RequestContextHolder.getRequestAttributes()))
+                .getRequest();
         var idPreparatore =
                 Long.parseLong(request.getUserPrincipal().getName());
         String email = cliente.getEmail();
@@ -329,6 +329,7 @@ public class GestioneUtenzaController {
 
     /**
      * metodo per catturare l'errore HttpMessageNotReadableException.
+     *
      * @param ex errore
      * @return messaggio di errore
      */
