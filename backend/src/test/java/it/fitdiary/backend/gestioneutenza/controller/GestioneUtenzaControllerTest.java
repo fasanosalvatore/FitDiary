@@ -189,7 +189,7 @@ class GestioneUtenzaControllerTest {
         Principal principal = () -> "1";
         when(gestioneUtenzaService.inserisciCliente(Long.parseLong(principal.getName()), cognome, email, principal.getName())).thenReturn(newCliente);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(() -> "1").content(clienteJson).contentType(MediaType.APPLICATION_JSON);
+                MockMvcRequestBuilders.post("/api/v1/utenti").principal(() -> "1").content(clienteJson).contentType(MediaType.APPLICATION_JSON);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
@@ -219,7 +219,7 @@ class GestioneUtenzaControllerTest {
         Principal principal = () -> "1";
         when(gestioneUtenzaService.inserisciCliente(preparatore.getId(), nome, cognome, email)).thenThrow(IllegalArgumentException.class);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/api/v1/utenti/createcliente").principal(() -> "1").content(clienteJson).contentType(MediaType.APPLICATION_JSON);
+                MockMvcRequestBuilders.post("/api/v1/utenti").principal(() -> "1").content(clienteJson).contentType(MediaType.APPLICATION_JSON);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
@@ -265,37 +265,10 @@ class GestioneUtenzaControllerTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-    @Test
-    void inserimentoDatiPersonaliCliente()
-            throws Exception {
-        Ruolo r = new Ruolo(2L, "CLIENTE", null,null);
-        String clienteJson = "{\n" +
-                "    \"dataNascita\": \"2000-10-30\",\n" +
-                "    \"telefono\": \"389485921\",\n" +
-                "    \"via\": \"Francesco rinaldo\",\n" +
-                "    \"cap\": \"94061\",\n" +
-                "    \"citta\": \"Agropoli\"\n" +
-                "}";
-        Utente utenteNonModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
-                null, null, null, null, null, null, null, r, null, null, null, null, null);
-        Utente utenteModificato = new Utente(1L, "Rebecca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
-                LocalDate.parse("2000-10-30"), null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null, null, null);
-        Principal principal = () -> "1";
-        when(gestioneUtenzaService.inserimentoDatiPersonaliCliente(utenteModificato.getId(), utenteModificato)).thenReturn(utenteModificato);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.post("/api/v1/utenti/cliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().
-
-                is2xxSuccessful());
-    }
-
 
 
     @Test
-    void modificaDatiPersonaliCliente() throws Exception {
+    void modificaDatiPersonali() throws Exception {
         Ruolo r = new Ruolo(2L, "CLIENTE", null,null);
         String clienteJson = "{\n" +
                 "    \"nome\": \"Francesca\",\n" +
@@ -313,9 +286,10 @@ class GestioneUtenzaControllerTest {
         Utente utenteModificato = new Utente(1L, "Francesca", "Di Matteo", "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, "3894685921", "Francesco rinaldo", "94061", "Agropoli", null, r, null, null, null, null, null);
         Principal principal = () -> "1";
-        when(gestioneUtenzaService.modificaDatiPersonaliCliente(utenteModificato.getId(), utenteModificato)).thenReturn(utenteModificato);
+        when(gestioneUtenzaService.modificaDatiPersonali
+         (utenteModificato.getId(), utenteModificato)).thenReturn(utenteModificato);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.put("/api/v1/utenti/cliente").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
+                MockMvcRequestBuilders.put("/api/v1/utenti").principal(principal).content(clienteJson).contentType(MediaType.APPLICATION_JSON);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
                 .build()
                 .perform(requestBuilder);
