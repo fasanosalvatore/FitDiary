@@ -162,7 +162,8 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore,
                 cliente2.getId())).thenReturn(true);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/protocolli/cliente/1").principal(principal);
+                MockMvcRequestBuilders.get("/api/v1/protocolli").param("clienteId",
+                        String.valueOf(cliente2.getId())).principal(principal);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(
                         this.gestioneProtocolloController)
                 .build()
@@ -178,7 +179,7 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.visualizzaStoricoProtocolliCliente(
                 cliente)).thenReturn(new ArrayList<Protocollo>());
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/protocolli/cliente").principal(principal);
+                MockMvcRequestBuilders.get("/api/v1/protocolli").principal(principal);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(
                         this.gestioneProtocolloController)
                 .build()
@@ -187,19 +188,19 @@ class GestioneProtocolloControllerTest {
                 MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
-    @Test
+   @Test
     void visualizzaStoricoProtocolliBadRequest() throws Exception {
         Principal principal = () -> "1";
         when(gestioneUtenzaServiceImpl.getById(1L)).thenThrow(IllegalArgumentException.class);
         when(gestioneProtocolloServiceImpl.visualizzaStoricoProtocolliCliente(
                 cliente)).thenReturn(new ArrayList<Protocollo>());
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/protocolli/cliente").principal(principal);
+                MockMvcRequestBuilders.get("/api/v1/protocolli").principal(principal);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(
                         this.gestioneProtocolloController)
                 .build()
                 .perform(requestBuilder);
-        actualPerformResult.andExpect(
+        actualPerformResult.andDo(print()).andExpect(
                 MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -228,7 +229,7 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(
                 protocollo.getId())).thenReturn(protocollo);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/protocolli/clienti/1/last")
+                MockMvcRequestBuilders.get("/api/v1/protocolli/1")
                         .principal(principal);
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
@@ -240,44 +241,7 @@ class GestioneProtocolloControllerTest {
     }
 
     @Test
-    public void visualizzaProtocolloFromClienteTest_BadRequest()
-            throws Exception {
-
-        Ruolo ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
-
-        Utente cliente = new Utente(1L, "Rebecca", "Di Matteo",
-                "beccadimatteoo@gmail.com", "Becca123*", true,
-                LocalDate.parse("2000-10-30"), null, "3894685921",
-                "Francesco rinaldo", "94061", "Agropoli", null,
-                ruoloCliente, null, null, null, null, null);
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
-
-        Utente preparatore =
-                new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
-                        , "Davide123*", true, LocalDate.parse("2000-03" +
-                        "-03"), "M", null, null, null,
-                        null, null, ruoloPrep, null, null, null, null, null);
-
-        Protocollo protocollo =
-                new Protocollo(1L, LocalDate.now(), null, null, cliente,
-                        preparatore, LocalDateTime.now(), null);
-        Principal principal = () -> "5";
-        when(gestioneProtocolloServiceImpl.getByIdProtocollo(
-                protocollo.getId())).thenReturn(protocollo);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/protocolli/clienti/1/last")
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().isBadRequest());
-
-    }
-
-    @Test
-    public void visualizzaProtocolloFromPreparatoreTest_Success()
+    public void visualizzaProtocolloTest_Success()
             throws Exception {
 
         Ruolo ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
@@ -304,7 +268,7 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore,cliente.getId())).thenReturn(true);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get(
-                                "/api/v1/protocolli/preparatore/1/last")
+                                "/api/v1/protocolli/1")
                         .principal(principal);
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
@@ -316,8 +280,7 @@ class GestioneProtocolloControllerTest {
     }
 
     @Test
-    public void visualizzaProtocolloFromPreparatoreTest_NotAcceptable()
-            throws Exception {
+    public void visualizzaProtocolloTest_BadRequest() throws Exception {
 
         Ruolo ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
 
@@ -343,46 +306,7 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore,cliente.getId())).thenReturn(true);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.get(
-                                "/api/v1/protocolli/preparatore/1/last")
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().isNotAcceptable());
-
-    }
-
-    @Test
-    public void visualizzaProtocolloFromPreparatoreTest_BadRequest()
-            throws Exception {
-
-        Ruolo ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
-
-        Utente cliente = new Utente(1L, "Rebecca", "Di Matteo",
-                "beccadimatteoo@gmail.com", "Becca123*", true,
-                LocalDate.parse("2000-10-30"), null, "3894685921",
-                "Francesco rinaldo", "94061", "Agropoli", null,
-                ruoloCliente, null, null, null, null, null);
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
-
-        Utente preparatore =
-                new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
-                        , "Davide123*", true, LocalDate.parse("2000-03" +
-                        "-03"), "M", null, null, null,
-                        null, null, ruoloPrep, null, null, null, null, null);
-
-        Protocollo protocollo =
-                new Protocollo(1L, LocalDate.now(), null, null, cliente,
-                        preparatore, LocalDateTime.now(), null);
-        Principal principal = () -> "1";
-        when(gestioneProtocolloServiceImpl.getByIdProtocollo(
-                protocollo.getId())).thenReturn(protocollo);
-        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore,cliente.getId())).thenReturn(false);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get(
-                                "/api/v1/protocolli/preparatore/1/last")
+                                "/api/v1/protocolli/1")
                         .principal(principal);
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
