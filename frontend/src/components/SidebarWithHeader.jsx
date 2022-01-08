@@ -86,7 +86,7 @@ const navItems = [
 
 const NavItem = ({navItem, ...rest}) => {
     return (
-        <Link as={ReactLink} to={navItem.to} style={{ textDecoration: 'none' }} textAlign={"center"}>
+        <Link as={ReactLink} to={navItem.to} style={{textDecoration: 'none'}} textAlign={"center"}>
             <Flex
                 textAlign={"left"}
                 color="gray.700"
@@ -103,7 +103,8 @@ const NavItem = ({navItem, ...rest}) => {
                 }}
                 {...rest}>
                 {navItem.icon && (
-                    <Icon color="blue.500" fontWeight="bolder" mr="4" fontSize="20" _groupHover={{ color: 'white',}} as={navItem.icon} />
+                    <Icon color="blue.500" fontWeight="bolder" mr="4" fontSize="20" _groupHover={{color: 'white',}}
+                          as={navItem.icon}/>
                 )}
                 {navItem.name}
             </Flex>
@@ -112,13 +113,13 @@ const NavItem = ({navItem, ...rest}) => {
 };
 
 export default function SidebarWithHeader({children}) {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
     return (
         <Box minH="100vh" bg={useColorModeValue('white', 'gray.900')}>
             <SidebarContent
                 onClose={() => onClose}
-                display={{ base: 'none', md: 'block' }}
+                display={{base: 'none', md: 'block'}}
             />
             <Drawer
                 autoFocus={false}
@@ -129,12 +130,12 @@ export default function SidebarWithHeader({children}) {
                 onOverlayClick={onClose}
                 size="full">
                 <DrawerContent>
-                    <SidebarContent onClose={onClose} />
+                    <SidebarContent onClose={onClose}/>
                 </DrawerContent>
             </Drawer>
             {/* mobilenav */}
-            <MobileNav onOpen={onOpen} />
-            <Box ml={{ base: 0, md: 60 }}>
+            <MobileNav onOpen={onOpen}/>
+            <Box ml={{base: 0, md: 60}}>
                 {children}
             </Box>
         </Box>
@@ -145,26 +146,26 @@ const NavItemContainer = ({children}) => (
     <div>{children}</div>
 );
 
-const SidebarContent = ({ onClose, ...rest }) => {
+const SidebarContent = ({onClose, ...rest}) => {
     const authContext = useContext(AuthContext);
-    const { authState } = authContext;
+    const {authState} = authContext;
     return (
         <Box
             transition="3s ease"
             bg={useColorModeValue('white', 'gray.900')}
             borderRight="1px"
             borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-            w={{ base: 'full', md: 60 }}
+            w={{base: 'full', md: 60}}
             pos="fixed"
             h="full"
             {...rest}>
-            <Flex h="20" alignItems="center"  mx="8" justifyContent={{base:"space-evenly",md:"center"}}>
+            <Flex h="20" alignItems="center" mx="8" justifyContent={{base: "space-evenly", md: "center"}}>
                 <Link href={"/"}>
-                    <Text fontSize="8xl" fontFamily="monospace" fontWeight="bold" color={"blue.500"} >
+                    <Text fontSize="8xl" fontFamily="monospace" fontWeight="bold" color={"blue.500"}>
                         <Logo/>
                     </Text>
                 </Link>
-                <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+                <CloseButton display={{base: 'flex', md: 'none'}} onClick={onClose}/>
             </Flex>
             {navItems.map((item) => (
                 <NavItemContainer key={item.name}>
@@ -177,60 +178,60 @@ const SidebarContent = ({ onClose, ...rest }) => {
     );
 };
 
-const MobileNav = ({ onOpen, ...rest }) => {
+const MobileNav = ({onOpen, ...rest}) => {
     const authContext = useContext(AuthContext);
-    const { authState } = authContext;
+    const {authState} = authContext;
     return (
         <Flex
-            ml={{ base: 0, md: 60 }}
-            px={{ base: 4, md: 4 }}
+            ml={{base: 0, md: 60}}
+            px={{base: 4, md: 4}}
             height="20"
             alignItems="center"
             borderBottomWidth="1px"
-            justifyContent={{ base: 'space-between', md: 'flex-end' }}
+            justifyContent={{base: 'space-between', md: 'flex-end'}}
             {...rest}>
             <IconButton
-                display={{ base: 'flex', md: 'none' }}
+                display={{base: 'flex', md: 'none'}}
                 onClick={onOpen}
                 variant="outline"
                 aria-label="open menu"
-                icon={<FiMenu />}
+                icon={<FiMenu/>}
             />
             <Text
-                display={{ base: 'flex', md: 'none' }}
+                display={{base: 'flex', md: 'none'}}
                 fontSize="2xl"
                 fontFamily="monospace"
                 fontWeight="bold">
                 Logo
             </Text>
-            <HStack spacing={{ base: '0', md: '6' }}>
+            <HStack spacing={{base: '0', md: '6'}}>
                 <IconButton
                     color={"blue.500"}
                     size="lg"
                     variant="ghost"
                     aria-label="open menu"
-                    icon={<FiBell />}
+                    icon={<FiBell/>}
                 />
                 <Flex alignItems={'center'}>
                     <Menu>
                         <MenuButton
                             py={2}
                             transition="all 0.3s"
-                            _focus={{ boxShadow: 'none' }}>
+                            _focus={{boxShadow: 'none'}}>
                             <HStack>
-                                <Avatar size={'sm'} />
-                                 <VStack
+                                <Avatar size={'sm'}/>
+                                <VStack
                                     display={{base: 'none', md: 'flex'}}
                                     alignItems="flex-start"
                                     spacing="1px"
                                     ml="2">
                                     <Text fontSize="sm">{authState.userInfo.name} {authState.userInfo.surname}</Text>
                                     <Text fontSize="xs" color="gray.600">
-                                        {authState.userInfo.roles[0] || "" }
+                                        {authState.userInfo.roles[0] || ""}
                                     </Text>
                                 </VStack>
-                                <Box display={{ base: 'none', md: 'flex' }}>
-                                    <FiChevronDown />
+                                <Box display={{base: 'none', md: 'flex'}}>
+                                    <FiChevronDown/>
                                 </Box>
                             </HStack>
                         </MenuButton>
@@ -238,7 +239,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                             <MenuItem>Profile</MenuItem>
                             <MenuItem>Settings</MenuItem>
                             <MenuItem>Billing</MenuItem>
-                            <MenuDivider />
+                            <MenuDivider/>
                             <MenuItem><Link href={"/logout"}>Logout</Link></MenuItem>
                         </MenuList>
                     </Menu>

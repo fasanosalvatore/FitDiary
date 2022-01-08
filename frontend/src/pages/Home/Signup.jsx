@@ -5,7 +5,7 @@ import SignupForm from "../../components/SignupForm";
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
 import Logo from "../../components/Logo";
-import {Link as ReactLink } from "react-router-dom";
+import {Link as ReactLink} from "react-router-dom";
 
 export default function Signup() {
 

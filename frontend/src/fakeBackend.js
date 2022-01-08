@@ -75,7 +75,7 @@ const trainer = {
     }, "status": "success"
 };
 
-const protocollo={
+const protocollo = {
     "data": {
         "protocollo": {
             "id": 1,
@@ -403,221 +403,254 @@ let userFull = {
 
 const listaProtocolli = {
     "data": {
-    "protocollo": [
-        {
-            "id": 2,
-            "dataScadenza": "2027-02-02",
-            "schedaAlimentare": {
-                "id": 1,
-                "kcalAssunte": 2200,
-                "listaAlimenti": [
-                    {
-                        "id": 1,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
+        "protocollo": [
+            {
+                "id": 2,
+                "dataScadenza": "2027-02-02",
+                "schedaAlimentare": {
+                    "id": 1,
+                    "kcalAssunte": 2200,
+                    "listaAlimenti": [
+                        {
+                            "id": 1,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 2,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 3,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 4,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 5,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 6,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 7,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 8,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 9,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 10,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 11,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        }
+                    ]
+                },
+                "schedaAllenamento": {
+                    "id": 1,
+                    "frequenza": "3",
+                    "listaEsercizi": [
+                        {
+                            "id": 1,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 2,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 3,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 4,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 5,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 6,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 7,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 8,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 9,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 10,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 11,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        }
+                    ]
+                },
+                "cliente": {
+                    "id": 4,
+                    "nome": "Costantina",
+                    "cognome": "Trascendentina",
+                    "email": "inapina@libero.it",
+                    "attivo": true,
+                    "dataNascita": "2001-08-13",
+                    "sesso": "F",
+                    "telefono": "3356895789",
+                    "via": "Corso Vittorio Emanuele, 25/B",
+                    "cap": "84100",
+                    "citta": "Salerno",
+                    "preparatore": {
                         "id": 2,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
+                        "nome": "Daniele",
+                        "cognome": "Giaquinto",
+                        "email": "giaqui@gmail.com",
+                        "attivo": true,
+                        "dataNascita": "1989-02-25",
+                        "sesso": "M",
+                        "telefono": "3406683793",
+                        "via": "Via Antinori, 2",
+                        "cap": "84085",
+                        "citta": "Mercato San Severino",
+                        "preparatore": null,
+                        "ruolo": {
+                            "id": 2,
+                            "nome": "Preparatore",
+                            "dataCreazione": "2000-01-01T00:00:01",
+                            "dataAggiornamento": "2000-01-01T00:00:01"
+                        },
+                        "listaReport": [],
+                        "dataCreazione": "2000-01-01T00:00:01",
+                        "dataAggiornamento": "2000-01-01T00:00:01"
                     },
-                    {
+                    "ruolo": {
                         "id": 3,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
+                        "nome": "Cliente",
+                        "dataCreazione": "2000-01-01T00:00:01",
+                        "dataAggiornamento": "2000-01-01T00:00:01"
                     },
-                    {
-                        "id": 4,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 5,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 6,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 7,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 8,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 9,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 10,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 11,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    }
-                ]
-            },
-            "schedaAllenamento": {
-                "id": 1,
-                "frequenza": "3",
-                "listaEsercizi": [
-                    {
-                        "id": 1,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 2,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 3,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 4,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 5,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 6,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 7,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 8,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 9,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 10,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 11,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    }
-                ]
-            },
-            "cliente": {
-                "id": 4,
-                "nome": "Costantina",
-                "cognome": "Trascendentina",
-                "email": "inapina@libero.it",
-                "attivo": true,
-                "dataNascita": "2001-08-13",
-                "sesso": "F",
-                "telefono": "3356895789",
-                "via": "Corso Vittorio Emanuele, 25/B",
-                "cap": "84100",
-                "citta": "Salerno",
+                    "listaReport": [],
+                    "dataCreazione": "2000-01-01T00:00:01",
+                    "dataAggiornamento": "2000-01-01T00:00:01"
+                },
                 "preparatore": {
                     "id": 2,
                     "nome": "Daniele",
@@ -641,256 +674,256 @@ const listaProtocolli = {
                     "dataCreazione": "2000-01-01T00:00:01",
                     "dataAggiornamento": "2000-01-01T00:00:01"
                 },
-                "ruolo": {
-                    "id": 3,
-                    "nome": "Cliente",
+                "dataCreazione": "2022-01-07T00:39:35",
+                "dataAggiornamento": "2022-01-07T00:39:35"
+            },
+            {
+                "id": 1,
+                "dataScadenza": "2027-02-02",
+                "schedaAlimentare": {
+                    "id": 1,
+                    "kcalAssunte": 2200,
+                    "listaAlimenti": [
+                        {
+                            "id": 1,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 2,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 3,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 4,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 5,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 6,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 7,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 8,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 9,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 10,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 11,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        }
+                    ]
+                },
+                "schedaAllenamento": {
+                    "id": 1,
+                    "frequenza": "3",
+                    "listaEsercizi": [
+                        {
+                            "id": 1,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 2,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 3,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 4,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 5,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 6,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 7,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 8,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 9,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 10,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 11,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        }
+                    ]
+                },
+                "cliente": {
+                    "id": 4,
+                    "nome": "Costantina",
+                    "cognome": "Trascendentina",
+                    "email": "inapina@libero.it",
+                    "attivo": true,
+                    "dataNascita": "2001-08-13",
+                    "sesso": "F",
+                    "telefono": "3356895789",
+                    "via": "Corso Vittorio Emanuele, 25/B",
+                    "cap": "84100",
+                    "citta": "Salerno",
+                    "preparatore": {
+                        "id": 2,
+                        "nome": "Daniele",
+                        "cognome": "Giaquinto",
+                        "email": "giaqui@gmail.com",
+                        "attivo": true,
+                        "dataNascita": "1989-02-25",
+                        "sesso": "M",
+                        "telefono": "3406683793",
+                        "via": "Via Antinori, 2",
+                        "cap": "84085",
+                        "citta": "Mercato San Severino",
+                        "preparatore": null,
+                        "ruolo": {
+                            "id": 2,
+                            "nome": "Preparatore",
+                            "dataCreazione": "2000-01-01T00:00:01",
+                            "dataAggiornamento": "2000-01-01T00:00:01"
+                        },
+                        "listaReport": [],
+                        "dataCreazione": "2000-01-01T00:00:01",
+                        "dataAggiornamento": "2000-01-01T00:00:01"
+                    },
+                    "ruolo": {
+                        "id": 3,
+                        "nome": "Cliente",
+                        "dataCreazione": "2000-01-01T00:00:01",
+                        "dataAggiornamento": "2000-01-01T00:00:01"
+                    },
+                    "listaReport": [],
                     "dataCreazione": "2000-01-01T00:00:01",
                     "dataAggiornamento": "2000-01-01T00:00:01"
                 },
-                "listaReport": [],
-                "dataCreazione": "2000-01-01T00:00:01",
-                "dataAggiornamento": "2000-01-01T00:00:01"
-            },
-            "preparatore": {
-                "id": 2,
-                "nome": "Daniele",
-                "cognome": "Giaquinto",
-                "email": "giaqui@gmail.com",
-                "attivo": true,
-                "dataNascita": "1989-02-25",
-                "sesso": "M",
-                "telefono": "3406683793",
-                "via": "Via Antinori, 2",
-                "cap": "84085",
-                "citta": "Mercato San Severino",
-                "preparatore": null,
-                "ruolo": {
-                    "id": 2,
-                    "nome": "Preparatore",
-                    "dataCreazione": "2000-01-01T00:00:01",
-                    "dataAggiornamento": "2000-01-01T00:00:01"
-                },
-                "listaReport": [],
-                "dataCreazione": "2000-01-01T00:00:01",
-                "dataAggiornamento": "2000-01-01T00:00:01"
-            },
-            "dataCreazione": "2022-01-07T00:39:35",
-            "dataAggiornamento": "2022-01-07T00:39:35"
-        },
-        {
-            "id": 1,
-            "dataScadenza": "2027-02-02",
-            "schedaAlimentare": {
-                "id": 1,
-                "kcalAssunte": 2200,
-                "listaAlimenti": [
-                    {
-                        "id": 1,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 2,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 3,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 4,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 5,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 6,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 7,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 8,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 9,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 10,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 11,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    }
-                ]
-            },
-            "schedaAllenamento": {
-                "id": 1,
-                "frequenza": "3",
-                "listaEsercizi": [
-                    {
-                        "id": 1,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 2,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 3,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 4,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 5,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 6,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 7,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 8,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 9,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 10,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 11,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    }
-                ]
-            },
-            "cliente": {
-                "id": 4,
-                "nome": "Costantina",
-                "cognome": "Trascendentina",
-                "email": "inapina@libero.it",
-                "attivo": true,
-                "dataNascita": "2001-08-13",
-                "sesso": "F",
-                "telefono": "3356895789",
-                "via": "Corso Vittorio Emanuele, 25/B",
-                "cap": "84100",
-                "citta": "Salerno",
                 "preparatore": {
                     "id": 2,
                     "nome": "Daniele",
@@ -914,256 +947,256 @@ const listaProtocolli = {
                     "dataCreazione": "2000-01-01T00:00:01",
                     "dataAggiornamento": "2000-01-01T00:00:01"
                 },
-                "ruolo": {
-                    "id": 3,
-                    "nome": "Cliente",
+                "dataCreazione": "2022-01-07T00:39:35",
+                "dataAggiornamento": "2022-01-07T00:39:35"
+            },
+            {
+                "id": 1,
+                "dataScadenza": "2027-02-02",
+                "schedaAlimentare": {
+                    "id": 1,
+                    "kcalAssunte": 2200,
+                    "listaAlimenti": [
+                        {
+                            "id": 1,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 2,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 3,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 4,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 5,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 6,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 7,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 8,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 9,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 10,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 11,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        }
+                    ]
+                },
+                "schedaAllenamento": {
+                    "id": 1,
+                    "frequenza": "3",
+                    "listaEsercizi": [
+                        {
+                            "id": 1,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 2,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 3,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 4,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 5,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 6,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 7,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 8,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 9,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 10,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 11,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        }
+                    ]
+                },
+                "cliente": {
+                    "id": 4,
+                    "nome": "Costantina",
+                    "cognome": "Trascendentina",
+                    "email": "inapina@libero.it",
+                    "attivo": true,
+                    "dataNascita": "2001-08-13",
+                    "sesso": "F",
+                    "telefono": "3356895789",
+                    "via": "Corso Vittorio Emanuele, 25/B",
+                    "cap": "84100",
+                    "citta": "Salerno",
+                    "preparatore": {
+                        "id": 2,
+                        "nome": "Daniele",
+                        "cognome": "Giaquinto",
+                        "email": "giaqui@gmail.com",
+                        "attivo": true,
+                        "dataNascita": "1989-02-25",
+                        "sesso": "M",
+                        "telefono": "3406683793",
+                        "via": "Via Antinori, 2",
+                        "cap": "84085",
+                        "citta": "Mercato San Severino",
+                        "preparatore": null,
+                        "ruolo": {
+                            "id": 2,
+                            "nome": "Preparatore",
+                            "dataCreazione": "2000-01-01T00:00:01",
+                            "dataAggiornamento": "2000-01-01T00:00:01"
+                        },
+                        "listaReport": [],
+                        "dataCreazione": "2000-01-01T00:00:01",
+                        "dataAggiornamento": "2000-01-01T00:00:01"
+                    },
+                    "ruolo": {
+                        "id": 3,
+                        "nome": "Cliente",
+                        "dataCreazione": "2000-01-01T00:00:01",
+                        "dataAggiornamento": "2000-01-01T00:00:01"
+                    },
+                    "listaReport": [],
                     "dataCreazione": "2000-01-01T00:00:01",
                     "dataAggiornamento": "2000-01-01T00:00:01"
                 },
-                "listaReport": [],
-                "dataCreazione": "2000-01-01T00:00:01",
-                "dataAggiornamento": "2000-01-01T00:00:01"
-            },
-            "preparatore": {
-                "id": 2,
-                "nome": "Daniele",
-                "cognome": "Giaquinto",
-                "email": "giaqui@gmail.com",
-                "attivo": true,
-                "dataNascita": "1989-02-25",
-                "sesso": "M",
-                "telefono": "3406683793",
-                "via": "Via Antinori, 2",
-                "cap": "84085",
-                "citta": "Mercato San Severino",
-                "preparatore": null,
-                "ruolo": {
-                    "id": 2,
-                    "nome": "Preparatore",
-                    "dataCreazione": "2000-01-01T00:00:01",
-                    "dataAggiornamento": "2000-01-01T00:00:01"
-                },
-                "listaReport": [],
-                "dataCreazione": "2000-01-01T00:00:01",
-                "dataAggiornamento": "2000-01-01T00:00:01"
-            },
-            "dataCreazione": "2022-01-07T00:39:35",
-            "dataAggiornamento": "2022-01-07T00:39:35"
-        },
-        {
-            "id": 1,
-            "dataScadenza": "2027-02-02",
-            "schedaAlimentare": {
-                "id": 1,
-                "kcalAssunte": 2200,
-                "listaAlimenti": [
-                    {
-                        "id": 1,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 2,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 3,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 4,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 5,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 6,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 7,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 8,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 9,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 10,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 11,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    }
-                ]
-            },
-            "schedaAllenamento": {
-                "id": 1,
-                "frequenza": "3",
-                "listaEsercizi": [
-                    {
-                        "id": 1,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 2,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 3,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 4,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 5,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 6,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 7,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 8,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 9,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 10,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 11,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    }
-                ]
-            },
-            "cliente": {
-                "id": 4,
-                "nome": "Costantina",
-                "cognome": "Trascendentina",
-                "email": "inapina@libero.it",
-                "attivo": true,
-                "dataNascita": "2001-08-13",
-                "sesso": "F",
-                "telefono": "3356895789",
-                "via": "Corso Vittorio Emanuele, 25/B",
-                "cap": "84100",
-                "citta": "Salerno",
                 "preparatore": {
                     "id": 2,
                     "nome": "Daniele",
@@ -1187,256 +1220,256 @@ const listaProtocolli = {
                     "dataCreazione": "2000-01-01T00:00:01",
                     "dataAggiornamento": "2000-01-01T00:00:01"
                 },
-                "ruolo": {
-                    "id": 3,
-                    "nome": "Cliente",
+                "dataCreazione": "2022-01-07T00:39:35",
+                "dataAggiornamento": "2022-01-07T00:39:35"
+            },
+            {
+                "id": 1,
+                "dataScadenza": "2027-02-02",
+                "schedaAlimentare": {
+                    "id": 1,
+                    "kcalAssunte": 2200,
+                    "listaAlimenti": [
+                        {
+                            "id": 1,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 2,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 3,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 4,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 5,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 6,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 7,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 8,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 9,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 10,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        },
+                        {
+                            "id": 11,
+                            "nome": "Pasta",
+                            "pasto": "pranzo",
+                            "giorno": "1",
+                            "kcal": 200,
+                            "grammi": 100.0
+                        }
+                    ]
+                },
+                "schedaAllenamento": {
+                    "id": 1,
+                    "frequenza": "3",
+                    "listaEsercizi": [
+                        {
+                            "id": 1,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 2,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 3,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 4,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "1",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 5,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 6,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 7,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 8,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "2",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 9,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 10,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        },
+                        {
+                            "id": 11,
+                            "nome": "pushup",
+                            "serie": "3",
+                            "ripetizioni": "10",
+                            "recupero": "1",
+                            "numeroAllenamento": "3",
+                            "categoria": "petto"
+                        }
+                    ]
+                },
+                "cliente": {
+                    "id": 4,
+                    "nome": "Costantina",
+                    "cognome": "Trascendentina",
+                    "email": "inapina@libero.it",
+                    "attivo": true,
+                    "dataNascita": "2001-08-13",
+                    "sesso": "F",
+                    "telefono": "3356895789",
+                    "via": "Corso Vittorio Emanuele, 25/B",
+                    "cap": "84100",
+                    "citta": "Salerno",
+                    "preparatore": {
+                        "id": 2,
+                        "nome": "Daniele",
+                        "cognome": "Giaquinto",
+                        "email": "giaqui@gmail.com",
+                        "attivo": true,
+                        "dataNascita": "1989-02-25",
+                        "sesso": "M",
+                        "telefono": "3406683793",
+                        "via": "Via Antinori, 2",
+                        "cap": "84085",
+                        "citta": "Mercato San Severino",
+                        "preparatore": null,
+                        "ruolo": {
+                            "id": 2,
+                            "nome": "Preparatore",
+                            "dataCreazione": "2000-01-01T00:00:01",
+                            "dataAggiornamento": "2000-01-01T00:00:01"
+                        },
+                        "listaReport": [],
+                        "dataCreazione": "2000-01-01T00:00:01",
+                        "dataAggiornamento": "2000-01-01T00:00:01"
+                    },
+                    "ruolo": {
+                        "id": 3,
+                        "nome": "Cliente",
+                        "dataCreazione": "2000-01-01T00:00:01",
+                        "dataAggiornamento": "2000-01-01T00:00:01"
+                    },
+                    "listaReport": [],
                     "dataCreazione": "2000-01-01T00:00:01",
                     "dataAggiornamento": "2000-01-01T00:00:01"
                 },
-                "listaReport": [],
-                "dataCreazione": "2000-01-01T00:00:01",
-                "dataAggiornamento": "2000-01-01T00:00:01"
-            },
-            "preparatore": {
-                "id": 2,
-                "nome": "Daniele",
-                "cognome": "Giaquinto",
-                "email": "giaqui@gmail.com",
-                "attivo": true,
-                "dataNascita": "1989-02-25",
-                "sesso": "M",
-                "telefono": "3406683793",
-                "via": "Via Antinori, 2",
-                "cap": "84085",
-                "citta": "Mercato San Severino",
-                "preparatore": null,
-                "ruolo": {
-                    "id": 2,
-                    "nome": "Preparatore",
-                    "dataCreazione": "2000-01-01T00:00:01",
-                    "dataAggiornamento": "2000-01-01T00:00:01"
-                },
-                "listaReport": [],
-                "dataCreazione": "2000-01-01T00:00:01",
-                "dataAggiornamento": "2000-01-01T00:00:01"
-            },
-            "dataCreazione": "2022-01-07T00:39:35",
-            "dataAggiornamento": "2022-01-07T00:39:35"
-        },
-        {
-            "id": 1,
-            "dataScadenza": "2027-02-02",
-            "schedaAlimentare": {
-                "id": 1,
-                "kcalAssunte": 2200,
-                "listaAlimenti": [
-                    {
-                        "id": 1,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 2,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 3,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 4,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 5,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 6,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 7,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 8,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 9,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 10,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    },
-                    {
-                        "id": 11,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
-                        "kcal": 200,
-                        "grammi": 100.0
-                    }
-                ]
-            },
-            "schedaAllenamento": {
-                "id": 1,
-                "frequenza": "3",
-                "listaEsercizi": [
-                    {
-                        "id": 1,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 2,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 3,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 4,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "1",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 5,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 6,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 7,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 8,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "2",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 9,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 10,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    },
-                    {
-                        "id": 11,
-                        "nome": "pushup",
-                        "serie": "3",
-                        "ripetizioni": "10",
-                        "recupero": "1",
-                        "numeroAllenamento": "3",
-                        "categoria": "petto"
-                    }
-                ]
-            },
-            "cliente": {
-                "id": 4,
-                "nome": "Costantina",
-                "cognome": "Trascendentina",
-                "email": "inapina@libero.it",
-                "attivo": true,
-                "dataNascita": "2001-08-13",
-                "sesso": "F",
-                "telefono": "3356895789",
-                "via": "Corso Vittorio Emanuele, 25/B",
-                "cap": "84100",
-                "citta": "Salerno",
                 "preparatore": {
                     "id": 2,
                     "nome": "Daniele",
@@ -1460,47 +1493,13 @@ const listaProtocolli = {
                     "dataCreazione": "2000-01-01T00:00:01",
                     "dataAggiornamento": "2000-01-01T00:00:01"
                 },
-                "ruolo": {
-                    "id": 3,
-                    "nome": "Cliente",
-                    "dataCreazione": "2000-01-01T00:00:01",
-                    "dataAggiornamento": "2000-01-01T00:00:01"
-                },
-                "listaReport": [],
-                "dataCreazione": "2000-01-01T00:00:01",
-                "dataAggiornamento": "2000-01-01T00:00:01"
-            },
-            "preparatore": {
-                "id": 2,
-                "nome": "Daniele",
-                "cognome": "Giaquinto",
-                "email": "giaqui@gmail.com",
-                "attivo": true,
-                "dataNascita": "1989-02-25",
-                "sesso": "M",
-                "telefono": "3406683793",
-                "via": "Via Antinori, 2",
-                "cap": "84085",
-                "citta": "Mercato San Severino",
-                "preparatore": null,
-                "ruolo": {
-                    "id": 2,
-                    "nome": "Preparatore",
-                    "dataCreazione": "2000-01-01T00:00:01",
-                    "dataAggiornamento": "2000-01-01T00:00:01"
-                },
-                "listaReport": [],
-                "dataCreazione": "2000-01-01T00:00:01",
-                "dataAggiornamento": "2000-01-01T00:00:01"
-            },
-            "dataCreazione": "2022-01-07T00:39:35",
-            "dataAggiornamento": "2022-01-07T00:39:35"
-        }
-    ]
-},
+                "dataCreazione": "2022-01-07T00:39:35",
+                "dataAggiornamento": "2022-01-07T00:39:35"
+            }
+        ]
+    },
     "status": "success"
 }
-
 
 
 let currentUser = {
@@ -1511,6 +1510,7 @@ let currentUser = {
 export function getUser() {
     return user;
 }
+
 export function getUserFull() {
     return userFull;
 }
@@ -1519,17 +1519,17 @@ export function getTrainer() {
     return trainer;
 }
 
-export function getCurrentFakeUser(){
+export function getCurrentFakeUser() {
     return currentUser;
 }
 
-export function getProtocollo(){
+export function getProtocollo() {
 
 
     return protocollo;
 }
 
-export function getProtocolList(){
+export function getProtocolList() {
     return listaProtocolli;
 
 }

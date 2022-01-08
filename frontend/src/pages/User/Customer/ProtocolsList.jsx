@@ -6,16 +6,13 @@ import Icon, {
     Tr,
     Th,
     Td,
-    TableCaption, VStack, Heading, Button, HStack,
+    TableCaption, VStack, Heading, HStack,
 } from '@chakra-ui/react';
 
 import {getProtocolList} from "../../../fakeBackend";
 import moment from "moment";
-import authService from "../../../services/auth.service";
-import {RiArrowGoBackLine} from "react-icons/ri";
 import {Link} from "react-router-dom";
 import {InfoIcon, SearchIcon} from '@chakra-ui/icons'
-import authservice from "../../../services/auth.service";
 
 function ProtocolsList() {
     const listProtocolli = getProtocolList().data;

@@ -1,7 +1,6 @@
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 
-import Footer from "./components/Footer";
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Home/Login";
 import Logout from "./pages/Home/Logout";
@@ -12,7 +11,6 @@ import Create from "./pages/User/Customer/Create";
 import CustomerviewProtocol from "./pages/User/Customer/CustomerviewProtocol";
 import ProtocolsList from "./pages/User/Customer/ProtocolsList";
 import TrainerIndex from "./pages/User/Trainer/TrainerIndex";
-import TrainerEdit from "./pages/User/Trainer/TrainerEdit";
 import Edit from "./pages/User/Edit";
 import {Box, ChakraProvider, Container, extendTheme} from "@chakra-ui/react";
 import {AuthProvider} from "./context/AuthContext";
@@ -38,7 +36,7 @@ const AppRoutes = () => {
             </Route>
 
             <Route path="/trainer" element={<AppShell><TrainerIndex/></AppShell>}>
-                <Route path="edit" element={<TrainerEdit/>}/>
+                <Route path="edit" element={<AppShell><Edit/></AppShell>}/>
                 <Route path="addCustomer" element={<Create/>}/>
             </Route>
         </Routes>
@@ -52,7 +50,7 @@ const App = () => {
                 <AuthProvider>
                     <FetchProvider>
                         <Box bg={"gray.100"}>
-                        <AppRoutes/>
+                            <AppRoutes/>
                         </Box>
                     </FetchProvider>
                 </AuthProvider>

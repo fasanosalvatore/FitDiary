@@ -6,7 +6,7 @@ import {
     FormErrorMessage,
     FormLabel,
     Heading,
-    Input, toast, useToast, VStack
+    Input, useToast, VStack
 } from "@chakra-ui/react";
 import {FetchContext} from "../../../context/FetchContext";
 
@@ -19,16 +19,18 @@ export default function Create() {
             width: '100%', maxWidth: '100%',
         },
     })
+
     function toastParam(title, description, status) {
         return {
             title: title, description: description, status: status
         };
     }
+
     const onSubmit = async (values) => {
         try {
             const {data} = await fetchContext.authAxios.post(urlCreateCustomer, values);
             console.log(data);
-            toast(toastParam("Cliente creato con successo", "","success"));
+            toast(toastParam("Cliente creato con successo", "", "success"));
         } catch (error) {
             console.log(error);
         }

@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
 import {Link, useNavigate} from "react-router-dom";
-import AuthService from "../../services/auth.service.js";
 import {
     Button,
     FormControl,

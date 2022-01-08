@@ -1,4 +1,3 @@
-import {Outlet} from "react-router";
 import {Link, Text} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 

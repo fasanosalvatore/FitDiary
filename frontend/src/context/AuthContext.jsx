@@ -1,8 +1,8 @@
-import React, { useState, createContext } from 'react';
+import React, {useState, createContext} from 'react';
 import {useNavigate} from "react-router";
 
 const AuthContext = createContext({});
-const { Provider } = AuthContext;
+const {Provider} = AuthContext;
 
 const AuthProvider = ({children}) => {
     const navigate = useNavigate()
@@ -17,7 +17,7 @@ const AuthProvider = ({children}) => {
         userInfo: userInfo ? JSON.parse(userInfo) : {}
     });
 
-    const setAuthInfo = ({accessToken, refreshToken, userInfo }) => {
+    const setAuthInfo = ({accessToken, refreshToken, userInfo}) => {
         localStorage.setItem('accessToken', JSON.stringify(accessToken));
         localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
@@ -28,7 +28,7 @@ const AuthProvider = ({children}) => {
         })
     };
 
-    const logout =() => {
+    const logout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('userInfo');
@@ -37,7 +37,7 @@ const AuthProvider = ({children}) => {
     }
 
     const isAuthenticated = () => {
-        if(!authState.accessToken || !authState.accessToken.expiresAt) {
+        if (!authState.accessToken || !authState.accessToken.expiresAt) {
             return false;
         }
         return (
@@ -64,4 +64,4 @@ const AuthProvider = ({children}) => {
     );
 };
 
-export { AuthContext, AuthProvider };
+export {AuthContext, AuthProvider};

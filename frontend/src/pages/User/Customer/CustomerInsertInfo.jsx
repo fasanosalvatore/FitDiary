@@ -10,8 +10,6 @@ import {
     SimpleGrid,
     Stack, Text, Tooltip, useBreakpointValue, useToast, VStack
 } from "@chakra-ui/react";
-import config from "../../../config.json";
-import authservice from "../../../services/auth.service";
 import {FetchContext} from "../../../context/FetchContext";
 
 
@@ -20,8 +18,6 @@ export default function CustomerInsertInfo() {
     const urlGetInfo = `utenti/profilo`;
     const {register, handleSubmit, getValues, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
-    const [showP, setShowP] = React.useState(false)
-    const [showCP, setShowCP] = React.useState(false)
     const toast = useToast({
         duration: 9000,
         isClosable: true,

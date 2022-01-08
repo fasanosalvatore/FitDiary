@@ -12,7 +12,6 @@ import {
     GridItem, Heading,
     SimpleGrid, Text, useBreakpointValue, VStack
 } from "@chakra-ui/react";
-import {Link} from "react-router-dom";
 import config from "../config.json";
 
 export default function PaySubscriptionForm(props) {
@@ -44,20 +43,20 @@ export default function PaySubscriptionForm(props) {
             return Promise.reject(error);
         }
 
-        console.log("CLIENT SECRED: "+newSubscriptionResp)
+        console.log("CLIENT SECRED: " + newSubscriptionResp)
 
         const {error, payementIntent} = await stripe.confirmPayment(
             newSubscriptionResp.clientSecret,
             {
                 payement_method: {
-                    card:cardNumber,
+                    card: cardNumber,
                 },
             }
-        ).then(e =>{
+        ).then(e => {
             console.log("PAYMENT SUCCESS")
             console.log(e)
             return true
-        }).catch(e =>{
+        }).catch(e => {
             console.log("PAYMENT ERROR")
             console.log(e)
             return false

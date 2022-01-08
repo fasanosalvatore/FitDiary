@@ -1,11 +1,11 @@
-import React, { createContext, useContext } from 'react';
+import React, {createContext, useContext} from 'react';
 import axios from 'axios';
-import { AuthContext } from './AuthContext';
+import {AuthContext} from './AuthContext';
 
 const FetchContext = createContext({});
-const { Provider } = FetchContext;
+const {Provider} = FetchContext;
 
-const FetchProvider = ({ children }) => {
+const FetchProvider = ({children}) => {
     const authContext = useContext(AuthContext);
 
     const authAxios = axios.create({
@@ -47,4 +47,4 @@ const FetchProvider = ({ children }) => {
     );
 };
 
-export { FetchContext, FetchProvider };
+export {FetchContext, FetchProvider};
