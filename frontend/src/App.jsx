@@ -12,7 +12,7 @@ import CustomerviewProtocol from "./pages/User/Customer/CustomerviewProtocol";
 import ProtocolsList from "./pages/User/Customer/ProtocolsList";
 import TrainerIndex from "./pages/User/Trainer/TrainerIndex";
 import Edit from "./pages/User/Edit";
-import {Box, ChakraProvider, Container, extendTheme} from "@chakra-ui/react";
+import {Box, ChakraProvider} from "@chakra-ui/react";
 import {AuthProvider} from "./context/AuthContext";
 import AppShell from "./AppShell";
 import Dashboard from "./pages/Dashboard";

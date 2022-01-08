@@ -13,7 +13,7 @@ import {FetchContext} from "../../../context/FetchContext";
 export default function Create() {
     const fetchContext = useContext(FetchContext);
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
-    const urlCreateCustomer = "utenti/createcliente";
+    const urlCreateCustomer = "utenti";
     const toast = useToast({
         duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
@@ -30,7 +30,7 @@ export default function Create() {
         try {
             const {data} = await fetchContext.authAxios.post(urlCreateCustomer, values);
             console.log(data);
-            toast(toastParam("Cliente creato con successo", "", "success"));
+            toast(toastParam("Cliente creato con successo", "Credenziali inviate via mail", "success"));
         } catch (error) {
             console.log(error);
         }

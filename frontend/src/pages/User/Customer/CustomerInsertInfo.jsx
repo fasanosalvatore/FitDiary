@@ -8,7 +8,7 @@ import {
     GridItem, Heading,
     Input,
     SimpleGrid,
-    Stack, Text, Tooltip, useBreakpointValue, useToast, VStack
+    useBreakpointValue, useToast, VStack
 } from "@chakra-ui/react";
 import {FetchContext} from "../../../context/FetchContext";
 
@@ -16,7 +16,7 @@ import {FetchContext} from "../../../context/FetchContext";
 export default function CustomerInsertInfo() {
     const urlEditInfo = `utenti/cliente`;
     const urlGetInfo = `utenti/profilo`;
-    const {register, handleSubmit, getValues, setValue, formState: {errors, isSubmitting}} = useForm();
+    const {register, handleSubmit, setValue, formState: {errors, isSubmitting}} = useForm();
     const colSpan = useBreakpointValue({base: 2, md: 1})
     const toast = useToast({
         duration: 9000,
@@ -69,7 +69,8 @@ export default function CustomerInsertInfo() {
     }
 
     return (
-
+        <>
+        {!isLoading &&(
         <VStack w="full" h="full" p={[5, 10, 20]}>
             <VStack spacing={3} alignItems="flex-start" pb={5}>
                 <Heading size="lg">Inserimento Dati Personali </Heading>
@@ -154,6 +155,7 @@ export default function CustomerInsertInfo() {
                     </GridItem>
                 </SimpleGrid>
             </form>
-        </VStack>
+        </VStack>)}
+        </>
     );
 }

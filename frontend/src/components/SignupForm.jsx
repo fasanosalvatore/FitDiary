@@ -24,7 +24,7 @@ import {
 } from "@stripe/react-stripe-js";
 import TierPrice from "./TierPrice";
 import {publicFetch} from "../util/fetch";
-import {AtSignIcon, PhoneIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import {AtSignIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 
 export default function SignupForm() {
     const urlSignup = 'utenti/preparatore';
@@ -257,7 +257,7 @@ export default function SignupForm() {
                 </GridItem>
                 <GridItem colSpan={2}>
                     <Button w="full" mt={4} colorScheme='teal' type='submit'
-                            isLoading={signupIsLoading}
+                            isLoading={signupIsLoading || isSubmitting}
                             isDisabled={!signupIsEnabled}>
                         Registrati e Paga
                     </Button>
