@@ -341,12 +341,20 @@ public class GestioneUtenzaController {
                 "Errore durante la lettura del body");
     }
 
+    /**
+     * restituisce la lista di clienti di un preparatore.
+     *
+     * @param request richiesta http
+     * @return lista clienti di un preparatore
+     */
     @GetMapping
-    public ResponseEntity<Object> listaClientiPreparatore(final HttpServletRequest
-                                                            request){
+    public ResponseEntity<Object> listaClientiPreparatore(
+            final HttpServletRequest
+                    request) {
         var idUtente = Long.parseLong(request.getUserPrincipal().getName());
-        List<Utente> listaClienti=service.getById(idUtente).getListaClienti();
-        return ResponseHandler.generateResponse(HttpStatus.OK,"listaClienti",listaClienti);
+        List<Utente> listaClienti = service.getById(idUtente).getListaClienti();
+        return ResponseHandler.generateResponse(HttpStatus.OK, "listaClienti",
+                listaClienti);
 
     }
 }
