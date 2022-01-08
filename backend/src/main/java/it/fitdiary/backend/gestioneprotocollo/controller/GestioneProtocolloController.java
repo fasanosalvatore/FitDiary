@@ -111,9 +111,9 @@ public class GestioneProtocolloController {
         }
     }
 
-    @PutMapping
+    @PutMapping("{idProtocollo}")
     private ResponseEntity<Object> modificaProtocollo(
-            @RequestParam("idProtocollo") final Long idProtocollo,
+            @PathVariable("idProtocollo") final Long idProtocollo,
             @RequestParam("schedaAlimentare")
             final MultipartFile schedaAlimentareMultipartFile,
             @RequestParam("schedaAllenamento")
@@ -186,6 +186,7 @@ public class GestioneProtocolloController {
 
     /**
      * funzione per creare file da MultipartFile.
+     *
      * @param multiPartFile input dal form
      * @return file
      * @throws IOException eccezione in caso di errore con il file
@@ -211,36 +212,8 @@ public class GestioneProtocolloController {
      * @return protocollo selezionato
      * @throws IOException
      */
-    @GetMapping("clienti/{id}/last")
-    public ResponseEntity<Object> visualizzaProtocolloFromCliente(
-            @PathVariable final Long id)
-            throws IOException {
-        var request = ((ServletRequestAttributes)
-                RequestContextHolder.getRequestAttributes()).getRequest();
-        var principal =
-                Long.parseLong(request.getUserPrincipal().getName());
-        Protocollo protocollo =
-                gestioneProtocolloService.getByIdProtocollo(id);
-        if (protocollo.getPreparatore().getId() != principal) {
-            return ResponseHandler.generateResponse(BAD_REQUEST,
-                    "Il preparatore non ha creato quel protocollo");
-        }
-        return ResponseHandler.generateResponse(HttpStatus.OK,
-                "protocollo",
-                protocollo);
-    }
-
-
-    /**
-     * Questa funzione permette di visualizzare un protocollo
-     * assegnato ad un suo cliente da parte di un preparatore.
-     *
-     * @param id indica l' identificativo del protocollo
-     * @return protocollo selezionato
-     * @throws IOException
-     */
-    @GetMapping("preparatore/{id}/last")
-    public ResponseEntity<Object> visualizzaProtocolloFromPreparatore(
+    @GetMapping("{id}")
+    public ResponseEntity<Object> visualizzaProtocollo(
             @PathVariable("id") final Long id)
             throws IOException {
         var request = ((ServletRequestAttributes)
@@ -249,33 +222,41 @@ public class GestioneProtocolloController {
                 Long.parseLong(request.getUserPrincipal().getName());
         Protocollo protocollo =
                 gestioneProtocolloService.getByIdProtocollo(id);
-        if (protocollo.getPreparatore().getId() != principal) {
-            return ResponseHandler.generateResponse(
-                    HttpStatus.NOT_ACCEPTABLE,
-                    "Il preparatore non ha creato quel protocollo");
+        if (protocollo.getCliente().getId() == principal
+                || protocollo.getPreparatore().getId() == principal) {
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    "protocollo",
+                    protocollo);
         }
-        Utente preparatore = protocollo.getPreparatore();
-        Utente cliente = protocollo.getCliente();
-        if (!gestioneUtenzaService.existsByPreparatoreAndId(preparatore,
-                cliente.getId())) {
-            return ResponseHandler.generateResponse(BAD_REQUEST,
-                    "Il cliente selezionato non appartiene al preparatore");
-        }
-        return ResponseHandler.generateResponse(HttpStatus.OK,
-                "protocollo",
-                protocollo
-        );
+        return ResponseHandler.generateResponse(BAD_REQUEST,
+                "l'utente non ha accesso a questo protocollo");
     }
 
+
+    /**
+     * Questa funzione permette di visualizzare una lista di protocolli.
+     *
+     * @param idCliente indica l' identificativo del cliente
+     * @return lista protocolli
+     */
+    @GetMapping
+    public ResponseEntity<Object> visualizzaStoricoProtocolli(
+            @RequestParam(name =
+                    "clienteId", required = false) final Long idCliente) {
+        if (idCliente != null) {
+            return visualizzaStoricoProtocolliPreparatore(idCliente);
+        } else {
+            return visualizzaStoricoProtocolliClienti();
+        }
+    }
 
     /**
      * @param idCliente id del cliente di
      *                  cui si vuole visualizzare il protocollo
      * @return lista di protocolli del cliente vuota o piena
      */
-    @GetMapping("cliente/{id}")
-    public ResponseEntity<Object> visualizzaStoricoProtocolliCliente(
-            @PathVariable("id") final Long idCliente) {
+    public ResponseEntity<Object> visualizzaStoricoProtocolliPreparatore(
+            final Long idCliente) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
 
@@ -286,8 +267,8 @@ public class GestioneProtocolloController {
                 preparatore, idCliente)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     "protocollo",
-                    "Il preparatore non può creare "
-                            + "un protocollo per questo cliente");
+                    "Il preparatore non può vedere "
+                            + "la lista dei protocolli per questo cliente");
         }
         try {
             Utente utenteCliente = gestioneUtenzaService.getById(idCliente);
@@ -304,17 +285,14 @@ public class GestioneProtocolloController {
 
 
     /**
-     * @param request HttpServletRequest
      * @return storico dei protocolli del cliente autenticato
      */
-    @GetMapping("cliente")
-    public ResponseEntity<Object> visualizzaStoricoProtocolli(
-            final HttpServletRequest request) {
-
+    public ResponseEntity<Object> visualizzaStoricoProtocolliClienti() {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
         Long idCliente = Long.parseLong(
                 request.getUserPrincipal().getName());
         Utente cliente = null;
-
         try {
             cliente = gestioneUtenzaService.getById(idCliente);
 
