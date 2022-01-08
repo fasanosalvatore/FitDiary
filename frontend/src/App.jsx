@@ -19,6 +19,7 @@ import Dashboard from "./pages/Dashboard";
 import {FetchProvider} from "./context/FetchContext";
 import IndexProtocols from "./pages/Protocols/Index"
 import CreateProtocol from "./pages/Protocols/Create"
+import TProtocolsList from "./pages/User/Trainer/TProtocolsList";
 
 const AppRoutes = () => {
     return (
@@ -36,12 +37,13 @@ const AppRoutes = () => {
             <Route path="/customer" element={<AppShell><CustomerIndex/></AppShell>}>
                 <Route path="create" element={<Create/>}/>
                 <Route path="protocol/:id" element={<CustomerviewProtocol/>}/>
-                <Route path="protocols" element={<ProtocolsList/>}/>
+                <Route path="protocols" element={ <ProtocolsList/>}/>
             </Route>
 
             <Route path="/trainer" element={<AppShell><TrainerIndex/></AppShell>}>
                 <Route path="edit" element={<AppShell><Edit/></AppShell>}/>
                 <Route path="addCustomer" element={<Create/>}/>
+                <Route path="protocols/:id" element={<TProtocolsList/>}/>
             </Route>
         </Routes>
     )
