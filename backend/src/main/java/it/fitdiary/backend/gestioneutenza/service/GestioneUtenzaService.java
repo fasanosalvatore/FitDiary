@@ -13,46 +13,30 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public interface GestioneUtenzaService extends UserDetailsService {
 
     /**
-     * @param preparatore
+     * @param preparatore preparatore
      * @return utente
      */
     Utente registrazione(Utente preparatore);
 
     /**
-     * @param idCliente
-     * @param clienteModificato
-     * @return utente
+     * @param id         id dell'utente
+     * @param utente dati dell'utente da modificare
+     * @return utente modificato
      */
-    Utente inserimentoDatiPersonaliCliente(Long idCliente,
-                                           Utente clienteModificato);
+    Utente modificaDatiPersonali(Long id,
+                                        Utente utente);
 
     /**
-     * @param idCliente         id del cliente
-     * @param clienteModificato
-     * @return utente
-     */
-    Utente modificaDatiPersonaliCliente(Long idCliente,
-                                        Utente clienteModificato);
-
-    /**
-     * @param idPreparatore         l'id del preparatore.
-     * @param preparatoreModificato il preparatore con i dati modificati.
-     * @return utente
-     */
-    Utente modificaDatiPersonaliPreparatore(Long idPreparatore,
-                                            Utente preparatoreModificato);
-
-    /**
-     * @param id
+     * @param id id utente
      * @return utente
      */
     Utente getById(Long id);
 
     /**
-     * @param idPreparatore
-     * @param nome
-     * @param cognome
-     * @param email
+     * @param idPreparatore id preparatore
+     * @param nome nome cliente
+     * @param cognome cognome cliente
+     * @param email email cliente
      * @return utente
      */
     Utente inserisciCliente(Long idPreparatore,
@@ -64,7 +48,8 @@ public interface GestioneUtenzaService extends UserDetailsService {
     /**
      * @param email email dell'utente
      * @return dettagli dell' utente
-     * @throws UsernameNotFoundException
+     * @throws UsernameNotFoundException lancia un eccezione se l'utente non
+     * è stato trovato
      */
     FitDiaryUserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException;

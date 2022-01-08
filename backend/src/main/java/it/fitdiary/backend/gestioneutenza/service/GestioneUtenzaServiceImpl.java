@@ -82,7 +82,7 @@ public class GestioneUtenzaServiceImpl
      * @param cognome       cognome del cliente.
      * @param emailCliente  email del cliente.
      * @return utente inserito nel sistema.
-     * @throws IllegalArgumentException
+     * @throws IllegalArgumentException eccezione
      */
     @Override
     public Utente inserisciCliente(final Long idPreparatore,
@@ -108,8 +108,7 @@ public class GestioneUtenzaServiceImpl
         String password = passwordGenerator.generate();
         emailService.sendSimpleMessage(newUtente, password);
         newUtente.setPassword(passwordEncoder.encode(password));
-        Utente newCliente = utenteRepository.save(newUtente);
-        return newCliente;
+        return utenteRepository.save(newUtente);
     }
 
     /**
@@ -117,7 +116,7 @@ public class GestioneUtenzaServiceImpl
      *
      * @param email email dell'utente da cercare.
      * @return UserDetails
-     * @throws UsernameNotFoundException
+     * @throws UsernameNotFoundException eccezione
      */
     @Override
     public FitDiaryUserDetails loadUserByUsername(final String email)
@@ -150,125 +149,65 @@ public class GestioneUtenzaServiceImpl
         return fitDiaryUser;
     }
 
-
     /**
-     * Questo metodo permette di inserire
-     * i dati nel sistema ad un cliente.
-     *
-     * @param idCliente         rappresenta l'insieme
-     *                          dei dati personali di un utente.
-     * @param clienteModificato
-     * @return utente rappresenta l'utente
-     * con i nuovi dati inserito nel database.
-     * @throws IllegalArgumentException
-     * lancia l'errore generato da un input errato.
-     */
-    @Override
-    public Utente inserimentoDatiPersonaliCliente(final Long idCliente,
-                                                  final Utente
-                                                          clienteModificato)
-            throws IllegalArgumentException {
-        if (idCliente == null) {
-            throw new IllegalArgumentException("Utente non valido");
-        }
-        Utente newUtente = utenteRepository.getById(idCliente);
-        if (newUtente == null) {
-            throw new IllegalArgumentException(
-                    "Utente non presente del Database");
-        }
-        newUtente.setDataNascita(clienteModificato.getDataNascita());
-        newUtente.setTelefono(clienteModificato.getTelefono());
-        newUtente.setCitta(clienteModificato.getCitta());
-        newUtente.setVia(clienteModificato.getVia());
-        newUtente.setCap(clienteModificato.getCap());
-        return utenteRepository.save(newUtente);
-    }
-
-    /**
-     * Questo metodo permette al cliente di inserire i dati
+     * Questo metodo permette all'utente di inserire i dati
      * da modificare nel sistema.
      *
-     * @param idCliente         rappresenta l'id del cliente
-     * @param clienteModificato rappresenta l'insieme
-     *                          dei dati personali di un utente.
+     * @param id rappresenta l'id del utente
+     * @param utente    rappresenta l'insieme
+     *                  dei dati personali di un utente.
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database.
-     * @throws IllegalArgumentException
-     * lancia l'errore generato da un input errato.
+     * @throws IllegalArgumentException lancia l'errore generato da un input errato.
      */
     @Override
-    public Utente modificaDatiPersonaliCliente(
-            final Long idCliente,
-            final Utente clienteModificato
+    public Utente modificaDatiPersonali(
+            final Long id,
+            final Utente utente
     ) throws IllegalArgumentException {
-        if (clienteModificato == null) {
+        if (utente == null) {
             throw new IllegalArgumentException("Utente non valido");
         }
-        Utente newUtente = utenteRepository.getById(idCliente);
+        Utente newUtente = utenteRepository.getById(id);
         if (newUtente == null) {
             throw new IllegalArgumentException(
                     "Utente non presente del Database");
         }
-        newUtente.setNome(clienteModificato.getNome());
-        newUtente.setCognome(clienteModificato.getCognome());
-        newUtente.setDataAggiornamento(
-                clienteModificato.getDataAggiornamento());
-        newUtente.setEmail(clienteModificato.getEmail());
-        newUtente.setPassword(
-                passwordEncoder.encode(clienteModificato.getPassword()));
-        newUtente.setDataNascita(clienteModificato.getDataNascita());
-        newUtente.setTelefono(clienteModificato.getTelefono());
-        newUtente.setCitta(clienteModificato.getCitta());
-        newUtente.setVia(clienteModificato.getVia());
-        newUtente.setCap(clienteModificato.getCap());
+        if (utente.getNome() != null && !utente.getNome().equals("")) {
+            newUtente.setNome(utente.getNome());
+        }
+        if (utente.getCognome() != null && !utente.getCognome().equals("")) {
+            newUtente.setCognome(utente.getCognome());
+        }
+        if (utente.getEmail() != null && !utente.getEmail().equals("")) {
+            newUtente.setEmail(utente.getEmail());
+        }
+        if (utente.getPassword() != null && !utente.getPassword().equals("")) {
+            newUtente.setPassword(passwordEncoder.encode(utente.getPassword()));
+        }
+        if (utente.getDataNascita() != null) {
+            newUtente.setDataNascita(utente.getDataNascita());
+        }
+        if (utente.getTelefono() != null && !utente.getTelefono().equals("")) {
+            newUtente.setTelefono(utente.getTelefono());
+        }
+        if (utente.getCitta() != null && !utente.getCitta().equals("")) {
+            newUtente.setCitta(utente.getCitta());
+        }
+        if (utente.getVia() != null && !utente.getVia().equals("")) {
+            newUtente.setVia(utente.getVia());
+        }
+        if (utente.getCap() != null && !utente.getCap().equals("")) {
+            newUtente.setCap(utente.getCap());
+        }
         return utenteRepository.save(newUtente);
-    }
-
-    /**
-     * Questo metodo permette di aggiornare
-     * i dati presenti nel database di un utente.
-     *
-     * @param preparatoreModificato rappresenta l' insieme di
-     *                              tutti i dati personali di un preparatore
-     *                              che devono essere aggiornati.
-     * @return updatedPerparatore rappresenta l' insieme
-     * di dati personali di un perparatore aggiornati.
-     * @throws IllegalArgumentException
-     * lancia l'errore generato da un input errato.
-     */
-    @Override
-    public Utente modificaDatiPersonaliPreparatore(
-            final Long idPreparatore,
-            final Utente preparatoreModificato
-    ) throws IllegalArgumentException {
-        Utente preparatoreDb = utenteRepository.getById(idPreparatore);
-        if (preparatoreModificato == null) {
-            throw new IllegalArgumentException("Utente non valido");
-        }
-        if (preparatoreDb == null) {
-            throw new IllegalArgumentException(
-                    "Utente non presente del Database");
-        }
-        preparatoreDb.setNome(preparatoreModificato.getNome());
-        preparatoreDb.setCognome(preparatoreModificato.getCognome());
-        preparatoreDb.setDataAggiornamento(
-                preparatoreModificato.getDataAggiornamento());
-        preparatoreDb.setEmail(preparatoreModificato.getEmail());
-        preparatoreDb.setPassword(
-                passwordEncoder.encode(preparatoreModificato.getPassword()));
-        preparatoreDb.setDataNascita(preparatoreModificato.getDataNascita());
-        preparatoreDb.setTelefono(preparatoreModificato.getTelefono());
-        preparatoreDb.setCitta(preparatoreModificato.getCitta());
-        preparatoreDb.setVia(preparatoreModificato.getVia());
-        preparatoreDb.setCap(preparatoreModificato.getCap());
-        return utenteRepository.save(preparatoreDb);
     }
 
     /**
      * Questo metodo permette di cercare un utente dal suo id.
      *
      * @param idUtente id dell'utente.
-     * @return
+     * @return utente
      */
     @Override
     public Utente getById(final Long idUtente) {
