@@ -38,9 +38,9 @@ export default function Profile() {
             {!isLoading && (
                 <Flex wrap={"wrap"} p={5}>
                     <Heading w={"full"} mb={5}>Profilo Utente</Heading>
-                    <Box bg={"white"} borderRadius='xl' p={10} w={"full"} minW={{base: '100%', xl: '48%'}}>
-                        <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
-                        <Flex p={10}>
+                    <Box bg={"white"} rounded={20} minW={{base: '100%', xl: '48%'}}>
+                        <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"} mb={10}/>
+                        <Flex  pb={10}>
                             <VStack w={"full"}>
                                 <Avatar size={"xl"}></Avatar>
                                 <Heading fontSize={"3xl"}
@@ -53,11 +53,12 @@ export default function Profile() {
                             </VStack>
                         </Flex>
                     </Box>
-                    <Box bg={"white"} rounded={20} padding={10} minW={{base: '100%', xl: '48%'}}
+                    <Box bg={"white"} rounded={20} pb={10} minW={{base: '100%', xl: '48%'}}
                          marginLeft={[0, 0, 0, 0, 5]}
                          marginTop={[5, 5, 5, 5, 0]}>
+                        <Box h={"20px"} bgGradient="linear(to-r, blue.800, blue.500)" borderTopRadius={"md"} mb={10}/>
                         <Flex>
-                            <VStack w={"full"} alignItems={"flex-start"}>
+                            <VStack w={"full"} alignItems={"flex-start"} >
                                 <SimpleGrid columns={2} w={"full"}>
                                     <GridItem minH={"5"} p={"3"} borderBottom={"1px"} borderColor={"gray.400"}><Text
                                         fontWeight={"bold"} color={"gray.600"}>Data di Nascita </Text></GridItem>
@@ -93,7 +94,7 @@ export default function Profile() {
                             </VStack>
                         </Flex>
                     </Box>
-                    <Box bg={"white"} rounded={20} padding={10} minW={"350"} mt={5} w={"full"}>
+                    <Box bg={"white"} rounded={20} padding={10} minW={{base: '100%', xl: '98%'}} mt={5}>
                         <Flex>
                             <VStack>
                                 <Icon></Icon>

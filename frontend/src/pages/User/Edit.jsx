@@ -7,7 +7,7 @@ import {
     FormErrorMessage,
     FormLabel,
     GridItem, Heading,
-    Input, InputGroup, InputLeftElement, InputRightElement,
+    Input, InputGroup, InputLeftElement, InputRightElement,Box,
     SimpleGrid,
     Tooltip, useBreakpointValue, useToast, VStack
 } from "@chakra-ui/react";
@@ -81,9 +81,10 @@ export default function Edit() {
         <>
             {!isLoading && (
                 <VStack w="full" h="full" p={[5, 10, 20]}>
-                    <VStack spacing={3} alignItems="flex-start" pb={5}>
-                        <Heading size="lg">Modifica Dati Personali</Heading>
-                    </VStack>
+                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
+                        <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
+                        <Heading size="lg" textAlign={"center"} pt={5}>Modifica Dati Personali</Heading>
+                    <Box pl={20} pr={20} pb={5} pt={5}>
                     <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                         <SimpleGrid vcolumns={2} columnGap={5} rowGap={5} w="full">
                             <GridItem colSpan={colSpan} w="100%">
@@ -288,7 +289,10 @@ export default function Edit() {
                             </GridItem>
                         </SimpleGrid>
                     </form>
+                    </Box>
+                    </Box>
                 </VStack>)}
-        </>
+
+                </>
     );
 }

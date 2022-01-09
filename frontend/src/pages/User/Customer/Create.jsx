@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
 import {
+    Box,
     Button,
     FormControl,
     FormErrorMessage,
@@ -38,40 +39,43 @@ export default function Create() {
 
     return (
         <VStack w="full" h="full" p={[5, 10, 20]}>
-            <VStack spacing={3} alignItems="flex-start" pb={5}>
-                <Heading size="2xl">Invita Cliente</Heading>
-            </VStack>
-            <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
-                <FormControl id={"nome"} isInvalid={errors.nome}>
-                    <FormLabel htmlFor="nome">Nome</FormLabel>
-                    <Input type="text" placeholder="Mario" {...register("nome", {
-                        required: "Il nome è obbligatorio",
-                        maxLength: {value: 50, message: "Il nome è troppo lungo"},
-                        pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato nome non valido"}
-                    })} />
-                    <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
-                </FormControl>
-                <FormControl id={"cognome"} isInvalid={errors.cognome}>
-                    <FormLabel htmlFor="cognome">Cognome</FormLabel>
-                    <Input type="text" placeholder="Rossi" {...register("cognome", {
-                        required: "Il cognome è obbligatorio",
-                        maxLenght: {value: 50, message: "Il cognome è troppo lungo"},
-                        pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato cognome non valido"}
-                    })} />
-                    <FormErrorMessage>{errors.cognome && errors.cognome.message}</FormErrorMessage>
-                </FormControl>
-                <FormControl id={"email"} isInvalid={errors.email}>
-                    <FormLabel>Email</FormLabel>
-                    <Input type="text" placeholder="Email" {...register("email", {
-                        required: "Il campo email è obbligatorio",
-                        pattern: {value: /^\S+@\S+$/i, message: "Formato email non valido"}
-                    })} />
-                    <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
-                </FormControl>
-                <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
-                    Invia Credenziali
-                </Button>
-            </form>
+            <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
+                <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
+                <Heading size="2xl" textAlign={"center"} pt={5}>Invita Cliente</Heading>
+                <Box pl={[5, 10, 20]} pr={[5, 10, 20]} pb={5} pt={5}>
+                    <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
+                        <FormControl id={"nome"} isInvalid={errors.nome} pt={5}>
+                            <FormLabel htmlFor="nome">Nome</FormLabel>
+                            <Input type="text" placeholder="Mario" {...register("nome", {
+                                required: "Il nome è obbligatorio",
+                                maxLength: {value: 50, message: "Il nome è troppo lungo"},
+                                pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato nome non valido"}
+                            })} />
+                            <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
+                        </FormControl>
+                        <FormControl id={"cognome"} isInvalid={errors.cognome} pt={5}>
+                            <FormLabel htmlFor="cognome">Cognome</FormLabel>
+                            <Input type="text" placeholder="Rossi" {...register("cognome", {
+                                required: "Il cognome è obbligatorio",
+                                maxLenght: {value: 50, message: "Il cognome è troppo lungo"},
+                                pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato cognome non valido"}
+                            })} />
+                            <FormErrorMessage>{errors.cognome && errors.cognome.message}</FormErrorMessage>
+                        </FormControl>
+                        <FormControl id={"email"} isInvalid={errors.email} pt={5}>
+                            <FormLabel>Email</FormLabel>
+                            <Input type="text" placeholder="Email" {...register("email", {
+                                required: "Il campo email è obbligatorio",
+                                pattern: {value: /^\S+@\S+$/i, message: "Formato email non valido"}
+                            })} />
+                            <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
+                        </FormControl>
+                        <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
+                            Invia Credenziali
+                        </Button>
+                    </form>
+                </Box>
+            </Box>
         </VStack>
     )
 }
