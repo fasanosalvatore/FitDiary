@@ -135,7 +135,7 @@ export default function SidebarWithHeader({children}) {
             </Drawer>
             {/* mobilenav */}
             <MobileNav onOpen={onOpen}/>
-            <Box ml={{base: 0, md: 60}} bg={"blue.50"} h={"100vh"}>
+            <Box ml={{base: 0, md: 60}} bg={"blue.50"}>
                 {children}
             </Box>
         </Box>
@@ -240,7 +240,7 @@ const MobileNav = ({onOpen, ...rest}) => {
                             <MenuItem>Settings</MenuItem>
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider/>
-                            <MenuItem><Link href={"/logout"}>Logout</Link></MenuItem>
+                            <Link href={"/logout"}><MenuItem>Logout</MenuItem></Link>
                         </MenuList>
                     </Menu>
                 </Flex>

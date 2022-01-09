@@ -18,7 +18,11 @@ export default function Login() {
     const authContext = useContext(AuthContext);
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = React.useState(false);
-    const toast = useToast()
+    const toast = useToast({
+        duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+            width: '100%', maxWidth: '100%',
+        },
+    })
     const navigate = useNavigate();
     const [showP, setShowP] = React.useState(false)
     const handleClickP = () => setShowP(!showP)
@@ -36,7 +40,6 @@ export default function Login() {
                 title: 'Accesso eseguito!',
                 description: "Verrai riderizionato a breve!",
                 status: 'success',
-                duration: 2000
             })
             setTimeout(() => {
                 navigate("/dashboard");
