@@ -84,8 +84,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     error.put("error_message", e.getMessage());
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(),
-                            ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                                            e.getMessage())
+                            ResponseHandler.generateResponse(
+                                    HttpStatus.UNAUTHORIZED, e.getMessage())
                                     .getBody());
                 }
             } else {
