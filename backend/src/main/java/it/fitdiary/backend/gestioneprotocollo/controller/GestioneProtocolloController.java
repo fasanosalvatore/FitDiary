@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -314,6 +313,11 @@ public class GestioneProtocolloController {
         }
     }
 
+    /**
+     * cattura dell'errore MissingServletRequestPartException.
+     * @param ex errore
+     * @return messaggio di errore formato jsend
+     */
     @ExceptionHandler(MissingServletRequestPartException.class)
     public ResponseEntity<Object> handleMissingRequestBody(
             final MissingServletRequestPartException ex) {
