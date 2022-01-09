@@ -38,7 +38,7 @@ export default function Profile() {
             {!isLoading && (
                 <Flex wrap={"wrap"} p={5}>
                     <Heading w={"full"} mb={5}>Profilo Utente</Heading>
-                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
+                    <Box bg={"white"} borderRadius='xl' p={10} w={"full"} minW={{base: '100%', xl: '48%'}}>
                         <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
                         <Flex p={10}>
                             <VStack w={"full"}>
@@ -53,7 +53,7 @@ export default function Profile() {
                             </VStack>
                         </Flex>
                     </Box>
-                    <Box bg={"white"} rounded={20} padding={10} minW={{base: '100%', xl: '49%'}}
+                    <Box bg={"white"} rounded={20} padding={10} minW={{base: '100%', xl: '48%'}}
                          marginLeft={[0, 0, 0, 0, 5]}
                          marginTop={[5, 5, 5, 5, 0]}>
                         <Flex>
