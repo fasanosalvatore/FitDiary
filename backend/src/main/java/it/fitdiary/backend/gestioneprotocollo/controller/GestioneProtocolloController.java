@@ -57,9 +57,9 @@ public class GestioneProtocolloController {
     private ResponseEntity<Object> creazioneProtocollo(
             @RequestParam("dataScadenza") final String dataScadenza,
             @RequestParam("idCliente") final Long idCliente,
-            @RequestParam(value = "schedaAlimentare",required = false)
+            @RequestParam(value = "schedaAlimentare", required = false)
             final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam(value = "schedaAllenamento",required = false)
+            @RequestParam(value = "schedaAllenamento", required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
@@ -75,8 +75,10 @@ public class GestioneProtocolloController {
                     "Il preparatore non può creare "
                             + "un protocollo per questo cliente");
         }
-        if (schedaAllenamentoMultipartFile.isEmpty()
-                && schedaAlimentareMultipartFile.isEmpty()) {
+        if ((schedaAllenamentoMultipartFile == null
+                || schedaAllenamentoMultipartFile.isEmpty())
+                && (schedaAlimentareMultipartFile == null
+                || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST, "protocollo",
                     "Almeno uno dei due file deve essere presente");
         }
@@ -114,9 +116,9 @@ public class GestioneProtocolloController {
     @PutMapping("{idProtocollo}")
     private ResponseEntity<Object> modificaProtocollo(
             @PathVariable("idProtocollo") final Long idProtocollo,
-            @RequestParam(value = "schedaAlimentare",required = false)
+            @RequestParam(value = "schedaAlimentare", required = false)
             final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam(value = "schedaAllenamento",required = false)
+            @RequestParam(value = "schedaAllenamento", required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
@@ -141,8 +143,10 @@ public class GestioneProtocolloController {
                     "Il preparatore non può modificare "
                             + "un protocollo per questo cliente");
         }
-        if (schedaAllenamentoMultipartFile.isEmpty()
-                && schedaAlimentareMultipartFile.isEmpty()) {
+        if ((schedaAllenamentoMultipartFile == null
+                || schedaAllenamentoMultipartFile.isEmpty())
+                && (schedaAlimentareMultipartFile == null
+                || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST,
                     "protocollo",
                     "Almeno uno dei due file deve essere presente");
@@ -193,7 +197,7 @@ public class GestioneProtocolloController {
      */
     public File getFile(final MultipartFile multiPartFile)
             throws IOException {
-        if (multiPartFile.isEmpty()) {
+        if (multiPartFile==null || multiPartFile.isEmpty()) {
             return null;
         }
         var file = new File(multiPartFile.getOriginalFilename());
