@@ -32,12 +32,12 @@ const AppRoutes = () => {
             <Route path="test" element={<AppShell><Edit/></AppShell>}/>
             <Route path="profile" element={<AppShell><Profile/></AppShell>}/>
             <Route path="account" element={<AppShell><Edit/></AppShell>}/>
-            <Route path="protocols" element={<AppShell><IndexProtocols/></AppShell>}/>
+            {/*<Route path="protocols" element={<AppShell><IndexProtocols/></AppShell>}/> */}
             <Route path="protocols/create" element={<AppShell><CreateProtocol/></AppShell>}/>
             <Route path="/customer" element={<AppShell><CustomerIndex/></AppShell>}>
                 <Route path="create" element={<Create/>}/>
             </Route>
-            <Route path="protocols" element={<AppShell><ProtocolsList/></AppShell>}/>
+            <Route path="protocols" element={<AppShell><IndexProtocols/><ProtocolsList/></AppShell>}/>
             <Route path="protocols/:id" element={<AppShell><CustomerviewProtocol/></AppShell>}/>
             <Route path="/trainer" element={<AppShell><TrainerIndex/></AppShell>}>
                 <Route path="edit" element={<AppShell><Edit/></AppShell>}/>
