@@ -86,8 +86,8 @@ const protocollo = {
                 "listaAlimenti": [
                     {
                         "id": 1,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
+                        "nome": "Biscotti",
+                        "pasto": "Colazione",
                         "giorno": "1",
                         "kcal": 200,
                         "grammi": 100.0
@@ -95,24 +95,24 @@ const protocollo = {
                     {
                         "id": 2,
                         "nome": "Pasta",
-                        "pasto": "pranzo",
+                        "pasto": "Pranzo",
                         "giorno": "1",
                         "kcal": 200,
                         "grammi": 100.0
                     },
                     {
                         "id": 3,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
+                        "nome": "Carne",
+                        "pasto": "Cena",
                         "giorno": "1",
                         "kcal": 200,
                         "grammi": 100.0
                     },
                     {
                         "id": 4,
-                        "nome": "Pasta",
-                        "pasto": "pranzo",
-                        "giorno": "1",
+                        "nome": "pasta e fagioli",
+                        "pasto": "colazione",
+                        "giorno": "2",
                         "kcal": 200,
                         "grammi": 100.0
                     },
@@ -120,7 +120,7 @@ const protocollo = {
                         "id": 5,
                         "nome": "Pasta",
                         "pasto": "pranzo",
-                        "giorno": "1",
+                        "giorno": "2",
                         "kcal": 200,
                         "grammi": 100.0
                     },
@@ -128,7 +128,7 @@ const protocollo = {
                         "id": 6,
                         "nome": "Pasta",
                         "pasto": "pranzo",
-                        "giorno": "1",
+                        "giorno": "2",
                         "kcal": 200,
                         "grammi": 100.0
                     },
@@ -136,7 +136,7 @@ const protocollo = {
                         "id": 7,
                         "nome": "Pasta",
                         "pasto": "pranzo",
-                        "giorno": "1",
+                        "giorno": "3",
                         "kcal": 200,
                         "grammi": 100.0
                     },
@@ -144,7 +144,7 @@ const protocollo = {
                         "id": 8,
                         "nome": "Pasta",
                         "pasto": "pranzo",
-                        "giorno": "1",
+                        "giorno": "3",
                         "kcal": 200,
                         "grammi": 100.0
                     },
@@ -152,7 +152,7 @@ const protocollo = {
                         "id": 9,
                         "nome": "Pasta",
                         "pasto": "pranzo",
-                        "giorno": "1",
+                        "giorno": "3",
                         "kcal": 200,
                         "grammi": 100.0
                     },
@@ -160,7 +160,7 @@ const protocollo = {
                         "id": 10,
                         "nome": "Pasta",
                         "pasto": "pranzo",
-                        "giorno": "1",
+                        "giorno": "4",
                         "kcal": 200,
                         "grammi": 100.0
                     },
@@ -168,7 +168,7 @@ const protocollo = {
                         "id": 11,
                         "nome": "Pasta",
                         "pasto": "pranzo",
-                        "giorno": "1",
+                        "giorno": "4",
                         "kcal": 200,
                         "grammi": 100.0
                     }
@@ -1532,4 +1532,8 @@ export function getProtocollo() {
 export function getProtocolList() {
     return listaProtocolli;
 
+}
+
+export function getSchedaAlimentare(){
+    return protocollo.listaAlimenti;
 }
