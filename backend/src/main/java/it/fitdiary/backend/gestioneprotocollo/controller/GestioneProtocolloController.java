@@ -57,9 +57,9 @@ public class GestioneProtocolloController {
     private ResponseEntity<Object> creazioneProtocollo(
             @RequestParam("dataScadenza") final String dataScadenza,
             @RequestParam("idCliente") final Long idCliente,
-            @RequestParam("schedaAlimentare")
+            @RequestParam(value = "schedaAlimentare",required = false)
             final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam("schedaAllenamento")
+            @RequestParam(value = "schedaAllenamento",required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
@@ -114,9 +114,9 @@ public class GestioneProtocolloController {
     @PutMapping("{idProtocollo}")
     private ResponseEntity<Object> modificaProtocollo(
             @PathVariable("idProtocollo") final Long idProtocollo,
-            @RequestParam("schedaAlimentare")
+            @RequestParam(value = "schedaAlimentare",required = false)
             final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam("schedaAllenamento")
+            @RequestParam(value = "schedaAllenamento",required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
