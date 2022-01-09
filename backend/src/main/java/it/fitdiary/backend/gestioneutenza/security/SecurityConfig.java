@@ -28,23 +28,35 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    /** Ruolo Admin. */
+    /**
+     * Ruolo Admin.
+     */
     public static final String ADMIN = "Preparatore";
-    /** Ruolo Preparatore. */
+    /**
+     * Ruolo Preparatore.
+     */
     public static final String PREPARATORE = "Preparatore";
-    /** Ruolo Cliente. */
+    /**
+     * Ruolo Cliente.
+     */
     public static final String CLIENTE = "Cliente";
-    /** UserDetailsService utilizzato per l'autenticazione. */
+    /**
+     * UserDetailsService utilizzato per l'autenticazione.
+     */
     private final UserDetailsService userDetailsService;
-    /** BCryptPasswordEncoder utilizzato per codificare le password. */
+    /**
+     * BCryptPasswordEncoder utilizzato per codificare le password.
+     */
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    /** @param auth AuthenticationManagerBuilder */
+    /**
+     * @param auth AuthenticationManagerBuilder
+     */
     @Override
     protected void configure(final AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(userDetailsService)
-            .passwordEncoder(bCryptPasswordEncoder);
+                .passwordEncoder(bCryptPasswordEncoder);
     }
 
     /**
@@ -88,34 +100,51 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //Sicurezza Routes
         http
-            //Routes pubbliche
-            .authorizeRequests()
-            .antMatchers(POST,
-                    "/api/v1/utenti/login",
-                    "/api/v1/utenti/preparatore",
-                    "/api/v1/abbonamento/acquista"
-            ).permitAll()
+                //Routes pubbliche
+                .authorizeRequests()
+                .antMatchers(POST,
+                        "/api/v1/utenti/login",
+                        "/api/v1/utenti/preparatore",
+                        "/api/v1/abbonamento/acquista"
+                ).permitAll()
 
-            //Routes per qualsiasi Utente Autenticato
-            .and().authorizeRequests()
-            .antMatchers(GET,
-                    "/api/v1/utenti/token/refresh",
-                    "/api/v1/utenti/token/expires",
-                    "/api/v1/utenti/profilo"
-            ).authenticated()
+                //Routes per qualsiasi Utente Autenticato
+                .and().authorizeRequests()
+                .antMatchers(GET,
+                        "/api/v1/utenti/token/refresh",
+                        "/api/v1/utenti/token/expires",
+                        "/api/v1/utenti/profilo"
+                ).authenticated()
+                .antMatchers(PUT, "/api/v1/utenti").authenticated()
 
-            //Routes Cliente con Ruolo
-            .and().authorizeRequests()
-            .antMatchers(POST, "/api/v1/utenti/cliente").hasAuthority(CLIENTE)
-            .antMatchers(PUT, "/api/v1/utenti/cliente").hasAuthority(CLIENTE)
+                //Routes Cliente con Ruolo
+                .and().authorizeRequests()
+                .antMatchers(POST, "/api/v1/utenti/cliente")
+                .hasAuthority(CLIENTE)
+                .antMatchers(PUT, "/api/v1/utenti/cliente")
+                .hasAuthority(CLIENTE)
 
-            //Routes Preparatore con Ruolo
-            .and().authorizeRequests()
-            .antMatchers(PUT, "/api/v1/utenti/preparatore")
-            .hasAuthority(PREPARATORE)
-            .antMatchers(POST, "/api/v1/utenti/createcliente")
-            .hasAuthority(PREPARATORE)
-            .anyRequest().authenticated();
+                //Routes Preparatore e Admin con Ruolo
+                .antMatchers(GET, "/api/v1/utenti")
+                .hasAnyAuthority(PREPARATORE, ADMIN)
+
+                //Routes Preparatore e Cliente con Ruolo
+                .antMatchers(GET, "/api/v1/protocolli/**")
+                .hasAnyAuthority(PREPARATORE, CLIENTE)
+                .antMatchers(GET, "/api/v1/protocolli")
+                .hasAnyAuthority(PREPARATORE, CLIENTE)
+
+                //Routes Preparatore con Ruolo
+                .and().authorizeRequests()
+                .antMatchers(PUT, "/api/v1/utenti/preparatore")
+                .hasAuthority(PREPARATORE)
+                .antMatchers(POST, "/api/v1/protocolli")
+                .hasAuthority(PREPARATORE)
+                .antMatchers(PUT, "/api/v1/protocolli/**")
+                .hasAuthority(PREPARATORE)
+                .antMatchers(POST, "/api/v1/utenti")
+                .hasAuthority(PREPARATORE)
+                .anyRequest().authenticated();
     }
 
     private CorsConfiguration corsConfigurer(final HttpServletRequest request) {
