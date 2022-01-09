@@ -43,7 +43,8 @@ public class SchedaAllenamentoAdapterImpl implements SchedaAllenamentoAdapter {
      * @throws IOException
      */
     @Override
-    public List<Esercizio> parse(final File file) throws IOException {
+    public List<Esercizio> parse(final File file)
+            throws IOException, IllegalArgumentException {
         List<Esercizio> esercizi = new ArrayList<Esercizio>();
         CSVFormat csvFormat =
                 CSVFormat.Builder.create().setHeader(

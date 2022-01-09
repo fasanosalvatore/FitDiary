@@ -43,11 +43,11 @@ public class SchedaAlimentareAdapterImpl implements SchedaAlimentareAdapter {
      */
     @Override
     public List<Alimento> parse(final File file)
-            throws IOException, NumberFormatException {
+            throws IOException, IllegalArgumentException {
         var alimenti = new ArrayList<Alimento>();
         CSVFormat csvFormat =
                 CSVFormat.Builder.create().setHeader(
-                            "Nome", "Pasto", "Giorno", "Kcal", "Grammi")
+                                "Nome", "Pasto", "Giorno", "Kcal", "Grammi")
                         .setDelimiter(';').build();
         var records =
                 csvFormat.parse(new FileReader(file));

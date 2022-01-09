@@ -12,5 +12,6 @@ public interface SchedaAllenamentoAdapter {
      * @return lista di esercizi
      * @throws IOException
      */
-    List<Esercizio> parse(File file) throws IOException;
+    List<Esercizio> parse(File file)
+            throws IOException, IllegalArgumentException;
 }

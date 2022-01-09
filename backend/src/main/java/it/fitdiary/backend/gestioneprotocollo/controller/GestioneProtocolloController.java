@@ -324,5 +324,4 @@ public class GestioneProtocolloController {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                 ex.getMessage());
     }
-
 }
