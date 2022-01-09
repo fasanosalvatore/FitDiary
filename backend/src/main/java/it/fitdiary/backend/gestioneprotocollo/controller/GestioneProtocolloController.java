@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -197,7 +200,7 @@ public class GestioneProtocolloController {
      */
     public File getFile(final MultipartFile multiPartFile)
             throws IOException {
-        if (multiPartFile==null || multiPartFile.isEmpty()) {
+        if (multiPartFile == null || multiPartFile.isEmpty()) {
             return null;
         }
         var file = new File(multiPartFile.getOriginalFilename());
@@ -309,6 +312,13 @@ public class GestioneProtocolloController {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     e.getMessage());
         }
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<Object> handleMissingRequestBody(
+            final MissingServletRequestPartException ex) {
+        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                ex.getMessage());
     }
 
 }
