@@ -37,7 +37,7 @@ public class SchedaAlimentare {
     @NotNull(message = "Le kcal assunte non possono essere nulle")
     @Column(name = "kcal_assunte")
     @Min(value = 0, message = "Le kcal assunte non possono essere minori di 0")
-    private Integer kcalAssunte;
+    private Float kcalAssunte;
     /**
      * listaAlimenti della scheda alimentare.
      */

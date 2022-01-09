@@ -19,7 +19,6 @@ import {useNavigate, useParams} from "react-router";
 import {FetchContext} from "../../../context/FetchContext";
 
 export default function TrainerViewTrainingCard() {
-    /**const protocollo = getProtocollo().data;**/
     const days=[1,2,3,4,5,6,7];
     const authContext=useContext(AuthContext);
     const {authState} = authContext;
@@ -56,8 +55,6 @@ export default function TrainerViewTrainingCard() {
         }
         listaProtocolli();
     },[])
-
-
     return(
         <>
             {!isLoading && (
@@ -78,7 +75,6 @@ export default function TrainerViewTrainingCard() {
                                     <Text>{moment(protocollo.protocollo.dataScadenza).format("DD/MM/yyyy")}</Text>
                                 </HStack>
                             </Flex>
-
                         </HStack>
                         <HStack w="full" h="full" align="start" pb={30}>
                             <Flex width="full" justify="space-between">
@@ -99,7 +95,6 @@ export default function TrainerViewTrainingCard() {
                                     )}
                             </Flex>
                         </HStack>
-
                         <Accordion defaultIndex={[0]}  w="full" mt={"60px"} >
                             {
                                 days.map((d, i) => {
@@ -118,7 +113,6 @@ export default function TrainerViewTrainingCard() {
                                                 {protocollo.protocollo.schedaAllenamento.listaEsercizi
                                                     .filter((esercizio) => esercizio.numeroAllenamento === d + "")
                                                     .map((c,key) => {
-
                                                         return (
                                                             <Table borderBottom={"solid 1px "} borderColor={"blue.200"} key={key} variant="unstyled" size="md" >
                                                                 <Thead>
@@ -134,19 +128,15 @@ export default function TrainerViewTrainingCard() {
                                                                         <Td textAlign="center" w={"25%"}>{c.nome} ({c.categoria})</Td>
                                                                         <Td textAlign="center" w={"25%"} isNumeric>{c.serie}</Td>
                                                                         <Td textAlign="center" w={"25%"} isNumeric>{c.ripetizioni}</Td>
-                                                                        <Td textAlign="center" w={"25%"} isNumeric>{c.recupero}'</Td>
+                                                                        <Td textAlign="center" w={"25%"} isNumeric>{c.recupero}</Td>
                                                                     </Tr>
                                                                 </Tbody>
                                                             </Table>
                                                         )})}
                                             </AccordionPanel>
                                         </AccordionItem>
-
                                     )})}
-
                         </Accordion>
-
-
                     </VStack>
                 </Flex>
             </Box>

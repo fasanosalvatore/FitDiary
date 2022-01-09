@@ -62,11 +62,11 @@ public class GestioneUtenzaController {
     /**
      * Access Token expiring time in ms.
      */
-    public static final int ACCESS_TOKEN_MS = 36000000;
+    public static final int ACCESS_TOKEN_MS = 1000*60*30;
     /**
      * Refresh Token expiring time in ms.
      */
-    public static final int REFRESH_TOKEN_MS = 1800000;
+    public static final int REFRESH_TOKEN_MS = 1000*60*60*24*7;
     /**
      * GestioneUtenzaService che si occupa della logica di business.
      */
@@ -178,9 +178,7 @@ public class GestioneUtenzaController {
                         decodedJWT.getClaim("email").asString());
                 var tokens = createTokensMap(
                         request, alg, user, ACCESS_TOKEN_MS,
-                        System.currentTimeMillis()
-                                - decodedJWT.getExpiresAt().getTime(),
-                        refreshToken);
+                        REFRESH_TOKEN_MS,null);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(),
                         ResponseHandler.generateResponse(HttpStatus.OK, tokens)
