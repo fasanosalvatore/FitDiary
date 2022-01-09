@@ -62,7 +62,7 @@ public class GestioneUtenzaController {
     /**
      * Access Token expiring time in ms.
      */
-    public static final int ACCESS_TOKEN_MS = 600000;
+    public static final int ACCESS_TOKEN_MS = 36000000;
     /**
      * Refresh Token expiring time in ms.
      */
