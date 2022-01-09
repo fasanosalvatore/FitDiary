@@ -25,7 +25,8 @@ import moment from "moment";
 import {BsGraphUp, BsGraphDown} from "react-icons/bs";
 import {useNavigate, useParams} from "react-router";
 import {FetchContext} from "../../../context/FetchContext";
-
+import restaurant from "../../../images/restaurant.png";
+import training from "../../../images/dumbbell.png";
 export default function CustomerviewProtocol() {
     const toast = useToast({
         duration: 9000,
@@ -86,13 +87,14 @@ export default function CustomerviewProtocol() {
     const {id} = useParams();
     console.log(id);
     moment.locale("it-IT");
+    const navigate=useNavigate();
     return (
         <>
             {!isLoading && (
                 <Flex wrap={"wrap"}>
-                    <Button leftIcon={<RiArrowGoBackLine/>} onClick={()=>history(-1)}>Torna alla lista protocolli</Button>
+                    <Button ml={5} mt={5} colorScheme={"blue"} leftIcon={<RiArrowGoBackLine/>} onClick={()=>history(-1)}>Torna al protocollo</Button>
                     <Heading w={"full"} mb={5} textAlign={"center"}>Protocollo n.{protocollo.protocollo.id}</Heading>
-                    <Box bg={"blackAlpha.50"} rounded={20} padding={10} minW={"full"} height={"auto"}>
+                    <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
                             <VStack w="full" h="full" align="start">
                                 <HStack w="full" h="full" align="start">
@@ -158,18 +160,18 @@ export default function CustomerviewProtocol() {
                                                     <Image
                                                         boxSize='70px'
                                                         objectFit='cover'
-                                                        src='https://cdn-icons-png.flaticon.com/512/1719/1719695.png'>
+                                                        src={training}>
                                                     </Image>
-                                                    <Button>Vedi Allenamento {/* PASSA SCHEDA ALLENAMENTO */}
+                                                    <Button onClick={()=>{navigate("/trainingcard/"+protocollo.protocollo.id)}}>Vedi Allenamento
                                                     </Button>
                                                 </VStack>
                                                 <VStack marginTop={5}>
                                                     <Image
                                                         boxSize='50px'
                                                         objectFit='cover'
-                                                        src='https://cdn-icons.flaticon.com/png/512/562/premium/562678.png?token=exp=1641581408~hmac=db43c7fac2d0e6178461bb7b44618bd2'>
+                                                        src={restaurant}>
                                                     </Image>
-                                                    <Button>Vedi Alimentazione {/* PASSA SCHEDA ALIMENTAZIONE */}</Button>
+                                                    <Button onClick={()=>{navigate("/dietcard/"+protocollo.protocollo.id)}}>Vedi Alimentazione</Button>
                                                 </VStack>
                                             </Box>
                                         </HStack>
