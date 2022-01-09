@@ -23,27 +23,27 @@ class SchedaAlimentareAdapterImplTest {
     @Test
     void parseSucces() throws IOException {
         var schedaAlimentare=new ArrayList<Alimento>();
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
-        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200,100f,
+        schedaAlimentare.add(new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null));
         File schedaAlimentareFile = new File(
                 getClass().getClassLoader().getResource("schedaAlimentare.csv")

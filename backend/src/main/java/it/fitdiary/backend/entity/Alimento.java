@@ -84,14 +84,16 @@ public class Alimento {
     @NotNull(message = "Le kcal non possono essere nulle")
     @Min(value = MIN_KCAL_VALUE,
             message = "Le kcal non possono essere minori di zero")
-    private Integer kcal;
+    private Float kcal;
     /**
      * grammi alimento.
      */
-    @NotNull(message = "I grammi non possono essere nulli")
-    @Min(value = MIN_G_VALUE,
-            message = "I grammi non possono essere minori di uno")
-    private Float grammi;
+    @NotNull(message = "Il campo grammi non può essere nullo")
+    @Column(length = MAX_PASTO_LENGTH)
+    @Size(min = MIN_G_VALUE, max = MAX_PASTO_LENGTH,
+            message = "Lunghezza del campo grammi non valida")
+    @NotBlank(message = "Il campo grammi non può essere vuoto")
+    private String grammi;
     /**
      * scheda alimantere.
      */

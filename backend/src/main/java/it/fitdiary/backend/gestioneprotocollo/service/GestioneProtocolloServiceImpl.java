@@ -132,7 +132,7 @@ public class GestioneProtocolloServiceImpl
                     .equals("csv")) {
                 List<Alimento> alimenti =
                         schedaAlimentareAdapter.parse(schedaAlimentareFile);
-                int kcal = 0;
+                float kcal = 0;
                 for (Alimento alimento : alimenti) {
                     kcal = kcal + alimento.getKcal();
                 }

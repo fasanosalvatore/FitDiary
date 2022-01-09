@@ -99,11 +99,11 @@ class GestioneProtocolloServiceImplTest {
         protocollo = new Protocollo(1L, LocalDate.parse("2022-01-05"),
                 new SchedaAlimentare(), new SchedaAllenamento(), cliente,
                 preparatore, null, null);
-        alimento = new Alimento(null,"Pasta","pranzo","1",200,100f,
+        alimento = new Alimento(null,"Pasta","pranzo","1",200f,"100",
                 null);
         esercizio = new Esercizio(null, "pushup", "3", "10", "1", "1", "petto",
                 null);
-        schedaAlimentare = new SchedaAlimentare(1L, 2000, null, protocollo);
+        schedaAlimentare = new SchedaAlimentare(1L, 2000f, null, protocollo);
         schedaAllenamento = new SchedaAllenamento(1L, "3", null, protocollo);
         fileSchedaAllenamento = new File(
                 getClass().getClassLoader().getResource("schedaAllenamento.csv")
@@ -233,9 +233,10 @@ class GestioneProtocolloServiceImplTest {
         List<Alimento> alimenti = new ArrayList<Alimento>();
         alimenti.add(alimento);
         when(mock(SchedaAlimentareAdapterImpl.class).parse(fileSchedaAlimentare)).thenReturn(alimenti);
-        SchedaAlimentare schedaAlimentarePre= new SchedaAlimentare(null, 200, null, protocollo);
+        SchedaAlimentare schedaAlimentarePre= new SchedaAlimentare(null, 200f
+                , null, protocollo);
         when(schedaAlimentareRepository.save(schedaAlimentarePre)).thenReturn(schedaAlimentare);
-        schedaAlimentare.setKcalAssunte(200);
+        schedaAlimentare.setKcalAssunte(200f);
         schedaAlimentare.setListaAlimenti(alimenti);
         protocollo.setSchedaAlimentare(schedaAlimentare);
         assertEquals(protocollo, gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileSchedaAlimentare));
@@ -246,9 +247,10 @@ class GestioneProtocolloServiceImplTest {
         List<Alimento> alimenti = new ArrayList<Alimento>();
         alimenti.add(alimento);
         when(mock(SchedaAlimentareAdapterImpl.class).parse(fileSchedaAlimentare)).thenReturn(alimenti);
-        SchedaAlimentare schedaAlimentarePre= new SchedaAlimentare(null, 200, null, protocollo);
+        SchedaAlimentare schedaAlimentarePre= new SchedaAlimentare(null, 200f
+                , null, protocollo);
         when(schedaAlimentareRepository.save(schedaAlimentarePre)).thenReturn(schedaAlimentare);
-        schedaAlimentare.setKcalAssunte(200);
+        schedaAlimentare.setKcalAssunte(200f);
         schedaAlimentare.setListaAlimenti(alimenti);
         protocollo.setSchedaAlimentare(schedaAlimentare);
         assertThrows(IllegalArgumentException.class,() -> gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileNotCsv));

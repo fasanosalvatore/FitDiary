@@ -62,8 +62,8 @@ public class Esercizio {
      * ripetizione degli esercizio.
      */
     @NotNull(message = "La ripetizione non può essere nulla")
-    @Column(length = INT10)
-    @Size(min = 1, max = INT10, message = "Lunghezza ripetizione non è valida")
+    @Column(length = INT20)
+    @Size(min = 1, max = INT20, message = "Lunghezza ripetizione non è valida")
     @NotBlank(message = "La ripetizione non può essere vuota")
     private String ripetizioni;
     /**

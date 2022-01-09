@@ -65,8 +65,8 @@ public class SchedaAlimentareAdapterImpl implements SchedaAlimentareAdapter {
             alimento.setNome(record.get(COLUMN_NOME));
             alimento.setPasto(record.get(COLUMN_PASTO));
             alimento.setGiorno(record.get(COLUMN_GIORNO));
-            alimento.setKcal(Integer.valueOf(record.get(COLUMN_KCAL)));
-            alimento.setGrammi(Float.valueOf(record.get(COLUMN_GRAMMI)));
+            alimento.setKcal(Float.valueOf(record.get(COLUMN_KCAL)));
+            alimento.setGrammi(record.get(COLUMN_GRAMMI));
             alimenti.add(alimento);
         }
         return alimenti;
