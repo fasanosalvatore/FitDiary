@@ -15,6 +15,8 @@ import {Link, useParams} from "react-router-dom";
 import {InfoIcon, SearchIcon} from '@chakra-ui/icons'
 import {FetchContext} from "../../../context/FetchContext";
 
+const urlProtocollo = "/protocols"
+
 function ProtocolsList() {
     moment.locale("it-IT");
     const {id} = useParams();
@@ -33,14 +35,16 @@ function ProtocolsList() {
         },
 
     })
-
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
     const [listProtocolli, setProtocolli] = useState();
     useEffect(() => {
         const listaProtocolli = async () => {
             try {
-                const {data} = await fetchContext.authAxios("protocolli");
+                let params = (new URL(document.location)).searchParams;
+                const idCliente = params.get("idCliente") || "";
+                console.log(idCliente);
+                const {data} = await fetchContext.authAxios("protocolli" + (idCliente !== "" ? "?clienteId=" + idCliente : ""));
                 console.log(data);
                 setProtocolli(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
@@ -64,8 +68,8 @@ function ProtocolsList() {
                 <VStack>
                     <HStack>
                 <span className="SearchSpan">
-        <SearchIcon/>
-      </span>
+                    <SearchIcon/>
+                </span>
                         <input
                             className="SearchInput"
                             type="text"
@@ -76,7 +80,7 @@ function ProtocolsList() {
                     {/* Barra di ricerca*/}
 
 
-                    {(listProtocolli.protocollo)?
+                    {(listProtocolli.protocollo) ?
                         <Heading w={"full"} mb={5} textAlign={"center"}>Ecco lo storico dei protocolli
                             di {listProtocolli.protocollo[0].cliente.nome} {listProtocolli.protocollo[0].cliente.cognome}</Heading>
                         : <Heading>Ecco la lista dei protocolli</Heading>}
@@ -97,7 +101,7 @@ function ProtocolsList() {
                                     <Td>{protocol.id}</Td>
                                     <Td>{moment(protocol.dataCreazione).format("DD/MM/yyyy")}</Td>
                                     <Td>{moment(protocol.dataScadenza).format("DD/MM/yyyy")}</Td>
-                                    <Td><Link to={"/customer/protocol/" + protocol.id}> <InfoIcon/></Link></Td>
+                                    <Td><Link to={urlProtocollo + "/" + protocol.id}> <InfoIcon/></Link></Td>
                                 </Tr>
                             ))}
                         </Tbody>

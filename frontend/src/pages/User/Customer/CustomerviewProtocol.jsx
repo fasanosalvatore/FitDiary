@@ -1,6 +1,22 @@
 import React from 'react';
 import {
-    Box, Heading, Text, Flex, VStack, HStack, Button, Table, Thead, Tbody, Tr, Th, Td, TableCaption, Icon, Image,
+    Box,
+    Heading,
+    Text,
+    Flex,
+    VStack,
+    HStack,
+    Button,
+    Table,
+    Thead,
+    Tbody,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    Icon,
+    Image,
+    useToast,
 } from '@chakra-ui/react';
 import {
     RiArrowGoBackLine,
@@ -11,7 +27,16 @@ import {BsGraphUp, BsGraphDown} from "react-icons/bs";
 import {useParams} from "react-router";
 
 export default function CustomerviewProtocol() {
-    /**const utente = authService.getCurrentUser().utente;**/
+    const toast = useToast({
+        duration: 9000,
+        isClosable: true,
+        variant: "solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+
+    })
     const protocollo = getProtocollo().data;
     const {id} = useParams();
     console.log(id);
@@ -55,22 +80,22 @@ export default function CustomerviewProtocol() {
                                             <Tbody>
                                                 <Tr>
                                                     <Td>Peso</Td>
-                                                    <Td>80 Kg<Icon as={BsGraphUp} color='green.500'
+                                                    <Td>Kg<Icon as={BsGraphUp} color='green.500'
                                                                    marginLeft={4}/></Td>
                                                 </Tr>
                                                 <Tr>
                                                     <Td>Circonferenza Bicipite{}</Td>
-                                                    <Td>40 cm<Icon as={BsGraphDown} color='red.500'
+                                                    <Td>cm<Icon as={BsGraphDown} color='red.500'
                                                                    marginLeft={4}/></Td>
                                                 </Tr>
                                                 <Tr>
                                                     <Td>Circonferenza Addome</Td>
-                                                    <Td>34 cm<Icon as={BsGraphDown} color='red.500'
+                                                    <Td>cm<Icon as={BsGraphDown} color='red.500'
                                                                    marginLeft={4}/></Td>
                                                 </Tr>
                                                 <Tr>
                                                     <Td>Circonferenza Quadricipite</Td>
-                                                    <Td>35 cm<Icon as={BsGraphUp} color='green.500'
+                                                    <Td>cm<Icon as={BsGraphUp} color='green.500'
                                                                    marginLeft={4}/></Td>
                                                 </Tr>
                                             </Tbody>
