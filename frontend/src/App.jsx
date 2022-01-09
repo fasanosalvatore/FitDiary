@@ -25,8 +25,8 @@ import TrainerViewTrainingCard from "../src/pages/User/Trainer/TrainerViewTraini
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/dietcard" element={<AppShell><TrainerViewDietCard/></AppShell>}/>
-            <Route path="/trainingcard" element={<AppShell><TrainerViewTrainingCard/></AppShell>}/>
+            <Route path="/dietcard/:id" element={<AppShell><TrainerViewDietCard/></AppShell>}/>
+            <Route path="/trainingcard/:id" element={<AppShell><TrainerViewTrainingCard/></AppShell>}/>
             <Route path="/" element={<Welcome/>}/>
             <Route path="signup" element={<Signup/>}/>
             <Route path="login" element={<Login/>}/>

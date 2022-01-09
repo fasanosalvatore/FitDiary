@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Box, Heading, Text, Flex, VStack, HStack, Button, Table, Tfoot,Thead, Tbody, Tr, Th, Td, TableCaption, Icon, Image,Divider, Accordion,
     AccordionItem,
     AccordionButton,
     AccordionPanel,
-    AccordionIcon,IconButton,Tooltip
+    AccordionIcon,IconButton,Tooltip,useToast
 } from '@chakra-ui/react';
 import{
     EditIcon
@@ -13,15 +13,54 @@ import {
     RiArrowGoBackLine,
 } from 'react-icons/ri';
 import {getProtocollo} from "../../../fakeBackend";
+import {AuthContext} from "../../../context/AuthContext";
 import moment from "moment";
+import {FetchContext} from "../../../context/FetchContext";
+import {useNavigate, useParams} from "react-router";
 
 export default function TrainerViewDietCard() {
-    const protocollo = getProtocollo().data;
+    const authContext=useContext(AuthContext);
+    const {authState} = authContext;
+    const {id} = useParams();
+    const navigate=useNavigate();
+    const [protocollo, setProtocolli] = useState();
+    const fetchContext = useContext(FetchContext);
+    const [isLoading, setLoading] = useState(true);
+
     const days=["Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato","Domenica"];
+    const toast = useToast({
+        duration: 9000,
+        isClosable: true,
+        variant: "solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+
+    })
+
+    useEffect(() => {
+        const listaProtocolli = async () => {
+            try{
+                const {data} = await fetchContext.authAxios("protocolli/" + id);
+                setProtocolli(data.data);
+                setLoading(false);
+            } catch (error) {
+                console.log(error);
+                toast({
+                    title: "ERROR",
+                    description: "NOT AUTHORIZED",
+                    status: "error"
+                })}
+        }
+        listaProtocolli();
+    },[])
 
     return(
+        <>
+            {!isLoading && (
         <Flex wrap={"wrap"}>
-            <Button leftIcon={<RiArrowGoBackLine/>}>Torna al protocollo</Button>
+            <Button onClick={()=>{navigate(-1)}} ml={5} mt={5} colorScheme={"blue"} leftIcon={<RiArrowGoBackLine/>}>Torna al protocollo</Button>
             <Heading w={"full"} mb={5} textAlign={"center"}>Scheda Alimentare</Heading>
             <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
                 <Flex width="full" justify="space-between">
@@ -45,7 +84,11 @@ export default function TrainerViewDietCard() {
                                 <Heading size={"sx"} textAlign="start" >Kcal totali:</Heading>
                                 <Text>{protocollo.protocollo.schedaAlimentare.kcalAssunte}</Text>
                             </HStack>
-                            <HStack >
+
+                                {
+                                    authState.userInfo.roles[0].toLowerCase()==='preparatore' && (
+
+                                <HStack >
                                 <Tooltip label='Modifica Scheda' fontSize='md'>
                                     <IconButton
                                         colorScheme='blue'
@@ -53,6 +96,7 @@ export default function TrainerViewDietCard() {
                                     />
                                 </Tooltip>
                             </HStack>
+                                )}
                             </Flex>
                         </HStack>
 
@@ -99,12 +143,11 @@ export default function TrainerViewDietCard() {
                             )})}
 
                         </Accordion>
-
-
                     </VStack>
                 </Flex>
             </Box>
         </Flex>
 
-    )
+    )}
+        </>);
 }
