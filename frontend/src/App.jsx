@@ -17,6 +17,8 @@ import {AuthProvider} from "./context/AuthContext";
 import AppShell from "./AppShell";
 import Dashboard from "./pages/Dashboard";
 import {FetchProvider} from "./context/FetchContext";
+import IndexProtocols from "./pages/Protocols/Index"
+import CreateProtocol from "./pages/Protocols/Create"
 
 
 const AppRoutes = () => {
@@ -30,6 +32,8 @@ const AppRoutes = () => {
             <Route path="test" element={<AppShell><Edit/></AppShell>}/>
             <Route path="profile" element={<AppShell><Profile/></AppShell>}/>
             <Route path="account" element={<AppShell><Edit/></AppShell>}/>
+            <Route path="protocols" element={<AppShell><IndexProtocols/></AppShell>}/>
+            <Route path="protocols/create" element={<AppShell><CreateProtocol/></AppShell>}/>
             <Route path="/customer" element={<AppShell><CustomerIndex/></AppShell>}>
                 <Route path="create" element={<Create/>}/>
             </Route>

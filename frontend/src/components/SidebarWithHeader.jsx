@@ -29,7 +29,7 @@ import {
     FiChevronDown, FiUser, FiBook, FiUsers, FiUserPlus
 } from 'react-icons/fi';
 import Logo from "./Logo";
-import {Link as ReactLink} from "react-router-dom";
+import {Link as ReactLink, useSearchParams} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
 
 const navItems = [
@@ -114,7 +114,7 @@ const NavItem = ({navItem, ...rest}) => {
 
 export default function SidebarWithHeader({children}) {
     const {isOpen, onOpen, onClose} = useDisclosure();
-
+    const [params] = useSearchParams();
     return (
         <Box minH="100vh" bg={useColorModeValue('white', 'gray.900')}>
             <SidebarContent
@@ -135,7 +135,7 @@ export default function SidebarWithHeader({children}) {
             </Drawer>
             {/* mobilenav */}
             <MobileNav onOpen={onOpen}/>
-            <Box ml={{base: 0, md: 60}}>
+            <Box ml={{base: 0, md: 60}} bg={"blue.50"}>
                 {children}
             </Box>
         </Box>
@@ -240,7 +240,7 @@ const MobileNav = ({onOpen, ...rest}) => {
                             <MenuItem>Settings</MenuItem>
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider/>
-                            <MenuItem><Link href={"/logout"}>Logout</Link></MenuItem>
+                            <Link href={"/logout"}><MenuItem>Logout</MenuItem></Link>
                         </MenuList>
                     </Menu>
                 </Flex>

@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -57,9 +59,9 @@ public class GestioneProtocolloController {
     private ResponseEntity<Object> creazioneProtocollo(
             @RequestParam("dataScadenza") final String dataScadenza,
             @RequestParam("idCliente") final Long idCliente,
-            @RequestParam(value = "schedaAlimentare",required = false)
+            @RequestParam(value = "schedaAlimentare", required = false)
             final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam(value = "schedaAllenamento",required = false)
+            @RequestParam(value = "schedaAllenamento", required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
@@ -75,8 +77,10 @@ public class GestioneProtocolloController {
                     "Il preparatore non può creare "
                             + "un protocollo per questo cliente");
         }
-        if (schedaAllenamentoMultipartFile.isEmpty()
-                && schedaAlimentareMultipartFile.isEmpty()) {
+        if ((schedaAllenamentoMultipartFile == null
+                || schedaAllenamentoMultipartFile.isEmpty())
+                && (schedaAlimentareMultipartFile == null
+                || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST, "protocollo",
                     "Almeno uno dei due file deve essere presente");
         }
@@ -114,9 +118,9 @@ public class GestioneProtocolloController {
     @PutMapping("{idProtocollo}")
     private ResponseEntity<Object> modificaProtocollo(
             @PathVariable("idProtocollo") final Long idProtocollo,
-            @RequestParam(value = "schedaAlimentare",required = false)
+            @RequestParam(value = "schedaAlimentare", required = false)
             final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam(value = "schedaAllenamento",required = false)
+            @RequestParam(value = "schedaAllenamento", required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
@@ -141,8 +145,10 @@ public class GestioneProtocolloController {
                     "Il preparatore non può modificare "
                             + "un protocollo per questo cliente");
         }
-        if (schedaAllenamentoMultipartFile.isEmpty()
-                && schedaAlimentareMultipartFile.isEmpty()) {
+        if ((schedaAllenamentoMultipartFile == null
+                || schedaAllenamentoMultipartFile.isEmpty())
+                && (schedaAlimentareMultipartFile == null
+                || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST,
                     "protocollo",
                     "Almeno uno dei due file deve essere presente");
@@ -193,7 +199,7 @@ public class GestioneProtocolloController {
      */
     public File getFile(final MultipartFile multiPartFile)
             throws IOException {
-        if (multiPartFile.isEmpty()) {
+        if (multiPartFile == null || multiPartFile.isEmpty()) {
             return null;
         }
         var file = new File(multiPartFile.getOriginalFilename());
@@ -305,6 +311,18 @@ public class GestioneProtocolloController {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     e.getMessage());
         }
+    }
+
+    /**
+     * cattura dell'errore MissingServletRequestPartException.
+     * @param ex errore
+     * @return messaggio di errore formato jsend
+     */
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<Object> handleMissingRequestBody(
+            final MissingServletRequestPartException ex) {
+        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                ex.getMessage());
     }
 
 }

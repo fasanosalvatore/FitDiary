@@ -6,7 +6,7 @@ import React from "react";
 import Logo from "./Logo";
 
 export default function Footer() {
-    return (<Box bg={"gray.100"} as="footer" mx="auto" maxW="7xl" px={{base: '4', md: '8'}}>
+    return (<Box bg={"gray.100"} as="footer" mx="auto" maxW="7xl" px={{base: '4', md: '8'}} >
         <Container
             as={Stack}
             maxW={'6xl'}
