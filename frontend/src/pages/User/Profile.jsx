@@ -10,7 +10,7 @@ import {
     Text,
     VStack
 } from "@chakra-ui/react";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {FetchContext} from "../../context/FetchContext";
 import moment from "moment";
 
@@ -38,8 +38,9 @@ export default function Profile() {
             {!isLoading && (
                 <Flex wrap={"wrap"} p={5}>
                     <Heading w={"full"} mb={5}>Profilo Utente</Heading>
-                    <Box bg={"blackAlpha.50"} rounded={20} padding={10} minW={{base: '100%', xl: '49%'}}>
-                        <Flex>
+                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
+                        <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
+                        <Flex p={10}>
                             <VStack w={"full"}>
                                 <Avatar size={"xl"}></Avatar>
                                 <Heading fontSize={"3xl"}
@@ -52,7 +53,7 @@ export default function Profile() {
                             </VStack>
                         </Flex>
                     </Box>
-                    <Box bg={"blackAlpha.50"} rounded={20} padding={10} minW={{base: '100%', xl: '49%'}}
+                    <Box bg={"white"} rounded={20} padding={10} minW={{base: '100%', xl: '49%'}}
                          marginLeft={[0, 0, 0, 0, 5]}
                          marginTop={[5, 5, 5, 5, 0]}>
                         <Flex>
@@ -92,7 +93,7 @@ export default function Profile() {
                             </VStack>
                         </Flex>
                     </Box>
-                    <Box bg={"blackAlpha.50"} rounded={20} padding={10} minW={"350"} mt={5} w={"full"}>
+                    <Box bg={"white"} rounded={20} padding={10} minW={"350"} mt={5} w={"full"}>
                         <Flex>
                             <VStack>
                                 <Icon></Icon>

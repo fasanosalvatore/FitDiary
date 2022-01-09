@@ -29,7 +29,7 @@ import {
     FiChevronDown, FiUser, FiBook, FiUsers, FiUserPlus
 } from 'react-icons/fi';
 import Logo from "./Logo";
-import {Link as ReactLink} from "react-router-dom";
+import {Link as ReactLink, useSearchParams} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
 
 const navItems = [
@@ -114,7 +114,7 @@ const NavItem = ({navItem, ...rest}) => {
 
 export default function SidebarWithHeader({children}) {
     const {isOpen, onOpen, onClose} = useDisclosure();
-
+    const [params] = useSearchParams();
     return (
         <Box minH="100vh" bg={useColorModeValue('white', 'gray.900')}>
             <SidebarContent
