@@ -9,7 +9,7 @@ import {
     SimpleGrid,
     Text, useToast,
     VStack
-} from "@chakra-ui/react";
+}from "@chakra-ui/react";
 import {useForm} from "react-hook-form"
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useDropzone} from 'react-dropzone';

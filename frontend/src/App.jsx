@@ -19,11 +19,14 @@ import Dashboard from "./pages/Dashboard";
 import {FetchProvider} from "./context/FetchContext";
 import IndexProtocols from "./pages/Protocols/Index"
 import CreateProtocol from "./pages/Protocols/Create"
-
+import TrainerViewDietCard from "../src/pages/User/Trainer/TrainerViewDietCard";
+import TrainerViewTrainingCard from "../src/pages/User/Trainer/TrainerViewTrainingCard";
 
 const AppRoutes = () => {
     return (
         <Routes>
+            <Route path="/dietcard/:id" element={<AppShell><TrainerViewDietCard/></AppShell>}/>
+            <Route path="/trainingcard/:id" element={<AppShell><TrainerViewTrainingCard/></AppShell>}/>
             <Route path="/" element={<Welcome/>}/>
             <Route path="signup" element={<Signup/>}/>
             <Route path="login" element={<Login/>}/>
@@ -32,13 +35,14 @@ const AppRoutes = () => {
             <Route path="test" element={<AppShell><Edit/></AppShell>}/>
             <Route path="profile" element={<AppShell><Profile/></AppShell>}/>
             <Route path="account" element={<AppShell><Edit/></AppShell>}/>
-            <Route path="protocols" element={<AppShell><IndexProtocols/></AppShell>}/>
+            {/*<Route path="protocols" element={<AppShell><IndexProtocols/></AppShell>}/> */}
             <Route path="protocols/create" element={<AppShell><CreateProtocol/></AppShell>}/>
             <Route path="/customer" element={<AppShell><CustomerIndex/></AppShell>}>
                 <Route path="create" element={<Create/>}/>
             </Route>
-            <Route path="protocols" element={<AppShell><ProtocolsList/></AppShell>}/>
+            <Route path="protocols" element={<AppShell><IndexProtocols/><ProtocolsList/></AppShell>}/>
             <Route path="protocols/:id" element={<AppShell><CustomerviewProtocol/></AppShell>}/>
+
             <Route path="/trainer" element={<AppShell><TrainerIndex/></AppShell>}>
                 <Route path="edit" element={<AppShell><Edit/></AppShell>}/>
                 <Route path="addCustomer" element={<Create/>}/>

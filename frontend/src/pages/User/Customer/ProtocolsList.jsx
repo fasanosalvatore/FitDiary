@@ -65,7 +65,7 @@ function ProtocolsList() {
     return (
         <>
             {!isLoading && (
-                <VStack>
+                <VStack backgroundColor={"whiteAlpha.600"}>
                     <HStack>
                 <span className="SearchSpan">
                     <SearchIcon/>

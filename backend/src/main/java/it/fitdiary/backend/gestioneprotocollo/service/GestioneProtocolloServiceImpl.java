@@ -120,7 +120,7 @@ public class GestioneProtocolloServiceImpl
      */
     public Protocollo inserisciSchedaAlimentare(final Protocollo protocollo,
                                                 final File schedaAlimentareFile)
-            throws IOException {
+            throws IOException, IllegalArgumentException {
         if (schedaAlimentareFile != null) {
             if (protocollo.getSchedaAlimentare() != null) {
                 alimentoRepository.deleteAllBySchedaAlimentareId(
@@ -164,7 +164,7 @@ public class GestioneProtocolloServiceImpl
     public Protocollo inserisciSchedaAllenamento(final Protocollo protocollo,
                                                  final File
                                                          schedaAllenamentoFile)
-            throws IOException {
+            throws IOException, IllegalArgumentException {
         if (schedaAllenamentoFile != null) {
 
             if (protocollo.getSchedaAllenamento() != null) {

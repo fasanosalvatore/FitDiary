@@ -26,11 +26,11 @@ public class CustomAuthenticationFilter
     /**
      * Access Token expiring time in ms.
      */
-    public static final int ACCESS_TOKEN_MS = 600000;
+    public static final int ACCESS_TOKEN_MS = 36000000;
     /**
      * Refresh Token expiring time in ms.
      */
-    public static final int REFRESH_TOKEN_MS = 1800000;
+    public static final int REFRESH_TOKEN_MS = 108000000;
     /**
      * AuthenticationManager usato per l'autenticazione.
      */
