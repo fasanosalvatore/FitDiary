@@ -24,7 +24,7 @@ public class GestioneReportServiceImpl implements GestioneReportService {
     private final ReportRepository reportRepository;
 
     /**
-     * repository dell'immagini del report
+     * repository dell'immagini del report.
      */
     private final ImmaginiReportRepository immaginiReportRepository;
 

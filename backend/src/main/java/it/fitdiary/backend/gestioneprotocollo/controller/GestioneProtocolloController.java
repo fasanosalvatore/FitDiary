@@ -4,6 +4,7 @@ import it.fitdiary.backend.entity.Protocollo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
+import it.fitdiary.backend.utility.FileUtility;
 import it.fitdiary.backend.utility.ResponseHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -92,8 +92,10 @@ public class GestioneProtocolloController {
         File schedaAlimentareFile;
         File schedaAllenamentoFile;
         try {
-            schedaAlimentareFile = getFile(schedaAlimentareMultipartFile);
-            schedaAllenamentoFile = getFile(schedaAllenamentoMultipartFile);
+            schedaAlimentareFile =
+                    FileUtility.getFile(schedaAlimentareMultipartFile);
+            schedaAllenamentoFile =
+                    FileUtility.getFile(schedaAllenamentoMultipartFile);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(
                     HttpStatus.INTERNAL_SERVER_ERROR, "protocollo",
@@ -157,8 +159,10 @@ public class GestioneProtocolloController {
         File schedaAlimentareFile;
         File schedaAllenamentoFile;
         try {
-            schedaAlimentareFile = getFile(schedaAlimentareMultipartFile);
-            schedaAllenamentoFile = getFile(schedaAllenamentoMultipartFile);
+            schedaAlimentareFile =
+                    FileUtility.getFile(schedaAlimentareMultipartFile);
+            schedaAllenamentoFile =
+                    FileUtility.getFile(schedaAllenamentoMultipartFile);
         } catch (Exception e) {
             return ResponseHandler.generateResponse(
                     HttpStatus.INTERNAL_SERVER_ERROR, "protocollo",
@@ -188,26 +192,6 @@ public class GestioneProtocolloController {
                     "protocollo",
                     e.getMessage());
         }
-    }
-
-    /**
-     * funzione per creare file da MultipartFile.
-     *
-     * @param multiPartFile input dal form
-     * @return file
-     * @throws IOException eccezione in caso di errore con il file
-     */
-    public File getFile(final MultipartFile multiPartFile)
-            throws IOException {
-        if (multiPartFile == null || multiPartFile.isEmpty()) {
-            return null;
-        }
-        var file = new File(multiPartFile.getOriginalFilename());
-        file.createNewFile();
-        var fos = new FileOutputStream(file);
-        fos.write(multiPartFile.getBytes());
-        fos.close();
-        return file;
     }
 
     /**
@@ -315,6 +299,7 @@ public class GestioneProtocolloController {
 
     /**
      * cattura dell'errore MissingServletRequestPartException.
+     *
      * @param ex errore
      * @return messaggio di errore formato jsend
      */

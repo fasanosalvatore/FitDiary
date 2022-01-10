@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface GestioneReportService {
+    /**
+     * @param cliente Cliente di cui visualizzare lo storico dei progressi
+     * @return lista di report del cliente
+     */
     List<Report> visualizzazioneStoricoProgressi(Utente cliente);
     /**
      * metodo che permette d'inserire un report a un cliente.
