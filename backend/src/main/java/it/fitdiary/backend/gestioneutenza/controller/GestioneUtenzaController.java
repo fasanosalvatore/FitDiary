@@ -93,7 +93,7 @@ public class GestioneUtenzaController {
                 + "(?=.*[@$!%*?^#()<>+&.])"
                 + "[A-Za-z\\d@$!%*?^#()<>+&.]{8,}$")) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    "password",
+                    (Object)
                     "password non valida");
         }
         Utente newUtente;
@@ -150,7 +150,7 @@ public class GestioneUtenzaController {
                     newUtente);
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
+                    (Object) e.getMessage());
         }
     }
 
@@ -280,7 +280,7 @@ public class GestioneUtenzaController {
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    "Errore nei parametri della richiesta");
+                    (Object) "Errore nei parametri della richiesta");
         } catch (MailException e) {
             log.error(e.getMessage());
             return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY,
@@ -301,7 +301,7 @@ public class GestioneUtenzaController {
                 constraintViolation.getPropertyPath().toString(),
                 constraintViolation.getMessage()));
 
-        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, "fail",
+        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                 errors);
     }
 
@@ -323,7 +323,7 @@ public class GestioneUtenzaController {
             );
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
+                    (Object) e.getMessage());
         }
     }
 
@@ -343,7 +343,7 @@ public class GestioneUtenzaController {
         if (!service.existsByPreparatoreAndId(
                 preparatore, idCliente)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                    "utente",
+                    (Object)
                     "Il preparatore non può accedere "
                             + "al profilo di questo cliente");
         }
@@ -365,7 +365,7 @@ public class GestioneUtenzaController {
     public ResponseEntity<Object> handleMissingRequestBody(
             final HttpMessageNotReadableException ex) {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                "Errore durante la lettura del body");
+                (Object)"Errore durante la lettura del body");
     }
 
     /**

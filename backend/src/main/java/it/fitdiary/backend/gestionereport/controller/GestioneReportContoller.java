@@ -61,7 +61,7 @@ public class GestioneReportContoller {
             if (!gestioneUtenzaService.existsByPreparatoreAndId(
                     preparatore, idCliente)) {
                 return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                        "report",
+                        (Object)
                         "Il preparatore non può accedere "
                                 + "ai report di questo cliente");
             }
@@ -114,7 +114,7 @@ public class GestioneReportContoller {
             report.setCliente(gestioneUtenzaService.getById(idCliente));
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    "cliente", e.getMessage());
+                    (Object) e.getMessage());
         }
         var listaLinkFoto = new ArrayList<String>();
         for (MultipartFile immagine : immagini) {
@@ -158,21 +158,21 @@ public class GestioneReportContoller {
             report = gestioneReportService.getById(id);
         } catch (IllegalArgumentException ex) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                    "report",
+                    (Object)
                     "Il report da visualizzare non esiste");
         }
         if (utente.getRuolo().getNome().equals(Ruolo.RUOLOPREPARATORE)) {
             if (!gestioneUtenzaService.existsByPreparatoreAndId(
                     utente, report.getCliente().getId())) {
                 return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                        "report",
+                        (Object)
                         "Il preparatore non può accedere "
                                 + "al report di questo cliente");
             }
         } else {
             if (idUtente != report.getCliente().getId()) {
                 return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                        "report",
+                        (Object)
                         "Il cliente non può accedere "
                                 + "al report di questo cliente");
             }
