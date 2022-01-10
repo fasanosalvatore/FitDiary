@@ -66,27 +66,6 @@ public class GestioneProtocolloServiceImpl
     private final EsercizioRepository esercizioRepository;
 
     /**
-     * @param protocolloRep        repository del protocollo
-     * @param alimentoRep          repository degli alimenti
-     * @param schedaAlimentareRep  repository della scheda alimentare
-     * @param schedaAllenamentoRep repository della scheda allenamento
-     * @param esercizioRep         repository degli esercizi
-     */
-    @Autowired
-    public GestioneProtocolloServiceImpl(
-            final ProtocolloRepository protocolloRep,
-            final AlimentoRepository alimentoRep,
-            final SchedaAlimentareRepository schedaAlimentareRep,
-            final SchedaAllenamentoRepository schedaAllenamentoRep,
-            final EsercizioRepository esercizioRep) {
-        this.protocolloRepository = protocolloRep;
-        this.alimentoRepository = alimentoRep;
-        this.schedaAlimentareRepository = schedaAlimentareRep;
-        this.schedaAllenamentoRepository = schedaAllenamentoRep;
-        this.esercizioRepository = esercizioRep;
-    }
-
-    /**
      * @param protocollo            nuovo protocollo
      * @param schedaAlimentareFile  file scheda alimentare del nuovo protocollo
      * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
