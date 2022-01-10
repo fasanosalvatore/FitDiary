@@ -192,7 +192,7 @@ public class Utente {
      * Lista di report associati ad un utente.
      */
     @OneToMany(mappedBy = "cliente")
-    @JsonManagedReference
+    @JsonIgnore
     private List<Report> listaReport;
 
     /**

@@ -69,7 +69,6 @@ public class Report {
      * cliente.
      */
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "cliente_id")
     private Utente cliente;
 
