@@ -7,6 +7,7 @@ import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestionereport.service.GestioneReportService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
+import it.fitdiary.backend.utility.FileUtility;
 import it.fitdiary.backend.utility.ResponseHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -122,7 +121,7 @@ public class GestioneReportContoller {
                 continue;
             }
             try {
-                var img = cloudinary.uploader().upload(getFile(immagine),
+                var img = cloudinary.uploader().upload(FileUtility.getFile(immagine),
                         ObjectUtils.asMap("access_mode", "authenticated",
                                 "access_type", "token"));
                 listaLinkFoto.add((String) img.get("secure_url"));
@@ -139,23 +138,5 @@ public class GestioneReportContoller {
                 newReport);
     }
 
-    /**
-     * funzione per creare file da MultipartFile.
-     *
-     * @param multiPartFile input dal form
-     * @return file
-     * @throws IOException eccezione in caso di errore con il file
-     */
-    public File getFile(final MultipartFile multiPartFile)
-            throws IOException {
-        if (multiPartFile == null || multiPartFile.isEmpty()) {
-            return null;
-        }
-        var file = new File(multiPartFile.getOriginalFilename());
-        file.createNewFile();
-        var fos = new FileOutputStream(file);
-        fos.write(multiPartFile.getBytes());
-        fos.close();
-        return file;
-    }
+
 }
