@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.Stripe;
 import com.stripe.model.Customer;
+import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
@@ -35,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -328,35 +328,31 @@ public class GestioneUtenzaController {
     }
 
     /**
-     *
      * @param idCliente id utente di cui visualizzare profilo
      * @return Utente di cui voglio visualizzare il profilo
      */
     @GetMapping("{id}")
     public ResponseEntity<Object> visualizzaProfiloUtente(
             @PathVariable("id") final Long idCliente) {
-        HashMap<String,Object> map=new HashMap<String,Object>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
         Long idPreparatore = Long.parseLong(
                 request.getUserPrincipal().getName());
-            Utente preparatore = service.getById(idPreparatore);
-            if (!service.existsByPreparatoreAndId(
-                    preparatore, idCliente)) {
-                return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                        "utente",
-                        "Il preparatore non può accedere "
-                                + "al profilo di questo cliente");
-            }
-            Utente cliente=service.getById(idCliente);
-            map.put("cliente",cliente);
-            map.put("protocollo",cliente.getListaProtocolli());
-            map.put("report",cliente.getListaReport());
-            return ResponseHandler.generateResponse(HttpStatus.OK, map);
+        Utente preparatore = service.getById(idPreparatore);
+        if (!service.existsByPreparatoreAndId(
+                preparatore, idCliente)) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    "utente",
+                    "Il preparatore non può accedere "
+                            + "al profilo di questo cliente");
         }
-
-
-
+        Utente cliente = service.getById(idCliente);
+        map.put("cliente", cliente);
+        map.put("protocollo", cliente.getListaProtocolli());
+        map.put("report", cliente.getListaReport());
+        return ResponseHandler.generateResponse(HttpStatus.OK, map);
+    }
 
 
     /**
@@ -373,21 +369,26 @@ public class GestioneUtenzaController {
     }
 
     /**
-     * restituisce la lista di clienti di un preparatore.
+     * restituisce la lista di clienti di un preparatore o admin.
      *
      * @param request richiesta http
-     * @return lista clienti di un preparatore
+     * @return lista clienti
      */
     @GetMapping
-    public ResponseEntity<Object> listaClientiPreparatore(
+    public ResponseEntity<Object> visualizzaListaUtenti(
             final HttpServletRequest
                     request) {
-        var idUtente = Long.parseLong(request.getUserPrincipal().getName());
-        List<Utente> listaClienti =
-                service.getById(idUtente).getListaClienti();
+        var idUtente = Long.parseLong(request.getUserPrincipal()
+                .getName());
+        Utente utente = service.getById(idUtente);
+        if (utente.getRuolo().getNome().equals(Ruolo.RUOLOADMIN)) {
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    "utenti",
+                   service.visualizzaListaUtenti());
+        }
         return ResponseHandler.generateResponse(HttpStatus.OK,
-                "listaClienti",
-                listaClienti);
+                "clienti",
+                utente.getListaClienti());
 
     }
 }
