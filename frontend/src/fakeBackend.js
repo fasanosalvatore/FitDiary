@@ -1501,6 +1501,121 @@ const listaProtocolli = {
     "status": "success"
 }
 
+const report={
+    "data": {
+        "report": {
+            "id": 3,
+            "peso": 100.0,
+            "pesoStimato": 100.0,
+            "crfBicipite": 30.0,
+            "crfAddome": 30.0,
+            "crfQuadricipite": 30.0,
+            "cliente": {
+                "id": 2,
+                "nome": "Daniele",
+                "cognome": "Giaquinto",
+                "email": "giaqui@gmail.com",
+                "attivo": true,
+                "dataNascita": "1989-02-25",
+                "sesso": "M",
+                "telefono": "3406683793",
+                "via": "Via Antinori, 2",
+                "cap": "84085",
+                "citta": "Mercato San Severino",
+                "preparatore": null,
+                "ruolo": {
+                    "id": 2,
+                    "nome": "Preparatore",
+                    "dataCreazione": "2000-01-01T00:00:01",
+                    "dataAggiornamento": "2000-01-01T00:00:01"
+                },
+                "dataCreazione": "2000-01-01T00:00:01",
+                "dataAggiornamento": "2000-01-01T00:00:01"
+            },
+            "dataCreazione": "2022-01-10T22:50:11.9569611",
+            "dataAggiornamento": "2022-01-10T22:50:11.978902",
+            "immaginiReports": [
+                {
+                    "id": 39,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--x7pX8LhW--/v1641851397/hhs0lf48vlx425sgbwii.jpg"
+                },
+                {
+                    "id": 40,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--xAkMOAai--/v1641851398/tc42i4pbb3m79nxsak5c.jpg"
+                },
+                {
+                    "id": 41,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--m4lJP2Pv--/v1641851399/xni3eizy6eyfm3ipxx4s.jpg"
+                },
+                {
+                    "id": 42,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--0bdhMYeB--/v1641851400/d9lczoh9rockpuseew2d.jpg"
+                },
+                {
+                    "id": 43,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--HLIZL2mk--/v1641851400/mxfvksiqvtyhlyr9grlq.jpg"
+                },
+                {
+                    "id": 44,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--IKRdk-ZM--/v1641851401/xhjuar9cx0vplqma9t91.jpg"
+                },
+                {
+                    "id": 45,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--kF5IJH4A--/v1641851402/sw0wytnnf1tf3zej7yad.jpg"
+                },
+                {
+                    "id": 46,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--F_x-mrci--/v1641851403/wx1tfj91cebispbrpwun.jpg"
+                },
+                {
+                    "id": 47,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--JFiB5spy--/v1641851403/cjmp9u8u3oylr6ibreoe.jpg"
+                },
+                {
+                    "id": 48,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--6nF9aO_F--/v1641851404/eu5wzbp9ttn6sdpaeztw.jpg"
+                },
+                {
+                    "id": 49,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--NbeZQNjb--/v1641851405/cm8v1ot0ktaphxg9ymgt.jpg"
+                },
+                {
+                    "id": 50,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--n912yuxU--/v1641851406/jrg59nrwqdvge9lthey6.jpg"
+                },
+                {
+                    "id": 51,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--upUvzDei--/v1641851407/brmcudpoutdnsbiptltr.jpg"
+                },
+                {
+                    "id": 52,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--yC2uBGDU--/v1641851407/nwmz7foy09r7dkgqlkdz.jpg"
+                },
+                {
+                    "id": 53,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--gsEHBpnq--/v1641851408/qu9ohhvmqrbqxeb1qyqb.jpg"
+                },
+                {
+                    "id": 54,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--rSzJZ4E3--/v1641851409/eyzb4l5e2t2qvkweexfy.jpg"
+                },
+                {
+                    "id": 55,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--0-gWV_tR--/v1641851410/ivzrn05ksbhxemf7ldom.jpg"
+                },
+                {
+                    "id": 56,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s--OcL5nkAZ--/v1641851410/kmotyammmmaaalx5drzj.jpg"
+                },
+                {
+                    "id": 57,
+                    "url": "https://res.cloudinary.com/hdjxm4zyg/image/upload/s---ORsyA5t--/v1641851411/lnednkhvwklkbmxlmf3n.jpg"
+                }
+            ]
+        }
+    },
+    "status": "success"
+}
 
 let currentUser = {
     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aWFxdWlAZ21haWwuY29tIiwicm9sZXMiOlsiUFJFUEFSQVRPUkUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJleHAiOjE2NDEwODQzNzh9.EkW-6T5Pso5ttM6gKJXwnP03iUdWNbvXDK7tRQOsLU4",
@@ -1524,16 +1639,17 @@ export function getCurrentFakeUser() {
 }
 
 export function getProtocollo() {
-
-
     return protocollo;
 }
 
 export function getProtocolList() {
     return listaProtocolli;
-
 }
 
 export function getSchedaAlimentare() {
     return protocollo.listaAlimenti;
+}
+
+export function getReport(){
+    return report;
 }

@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.Stripe;
 import com.stripe.model.Customer;
+import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
@@ -35,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -369,21 +369,26 @@ public class GestioneUtenzaController {
     }
 
     /**
-     * restituisce la lista di clienti di un preparatore.
+     * restituisce la lista di clienti di un preparatore o admin.
      *
      * @param request richiesta http
-     * @return lista clienti di un preparatore
+     * @return lista clienti
      */
     @GetMapping
-    public ResponseEntity<Object> listaClientiPreparatore(
+    public ResponseEntity<Object> visualizzaListaUtenti(
             final HttpServletRequest
                     request) {
-        var idUtente = Long.parseLong(request.getUserPrincipal().getName());
-        List<Utente> listaClienti =
-                service.getById(idUtente).getListaClienti();
+        var idUtente = Long.parseLong(request.getUserPrincipal()
+                .getName());
+        Utente utente = service.getById(idUtente);
+        if (utente.getRuolo().getNome().equals(Ruolo.RUOLOADMIN)) {
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    "utenti",
+                   service.visualizzaListaUtenti());
+        }
         return ResponseHandler.generateResponse(HttpStatus.OK,
-                "listaClienti",
-                listaClienti);
+                "clienti",
+                utente.getListaClienti());
 
     }
 }
