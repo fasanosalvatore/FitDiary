@@ -3,7 +3,6 @@ package it.fitdiary.backend.gestionereport.controller;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import it.fitdiary.backend.entity.Report;
-import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestionereport.service.GestioneReportService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
@@ -121,9 +120,11 @@ public class GestioneReportContoller {
                 continue;
             }
             try {
-                var img = cloudinary.uploader().upload(FileUtility.getFile(immagine),
-                        ObjectUtils.asMap("access_mode", "authenticated",
-                                "access_type", "token"));
+                var img = cloudinary.uploader()
+                        .upload(FileUtility.getFile(immagine),
+                                ObjectUtils.asMap("access_mode",
+                                        "authenticated",
+                                        "access_type", "token"));
                 listaLinkFoto.add((String) img.get("secure_url"));
             } catch (IOException e) {
                 e.printStackTrace();

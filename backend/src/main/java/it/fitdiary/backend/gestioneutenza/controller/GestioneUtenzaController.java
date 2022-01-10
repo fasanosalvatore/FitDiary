@@ -328,35 +328,31 @@ public class GestioneUtenzaController {
     }
 
     /**
-     *
      * @param idCliente id utente di cui visualizzare profilo
      * @return Utente di cui voglio visualizzare il profilo
      */
     @GetMapping("{id}")
     public ResponseEntity<Object> visualizzaProfiloUtente(
             @PathVariable("id") final Long idCliente) {
-        HashMap<String,Object> map=new HashMap<String,Object>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
         Long idPreparatore = Long.parseLong(
                 request.getUserPrincipal().getName());
-            Utente preparatore = service.getById(idPreparatore);
-            if (!service.existsByPreparatoreAndId(
-                    preparatore, idCliente)) {
-                return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                        "utente",
-                        "Il preparatore non può accedere "
-                                + "al profilo di questo cliente");
-            }
-            Utente cliente=service.getById(idCliente);
-            map.put("cliente",cliente);
-            map.put("protocollo",cliente.getListaProtocolli());
-            map.put("report",cliente.getListaReport());
-            return ResponseHandler.generateResponse(HttpStatus.OK, map);
+        Utente preparatore = service.getById(idPreparatore);
+        if (!service.existsByPreparatoreAndId(
+                preparatore, idCliente)) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    "utente",
+                    "Il preparatore non può accedere "
+                            + "al profilo di questo cliente");
         }
-
-
-
+        Utente cliente = service.getById(idCliente);
+        map.put("cliente", cliente);
+        map.put("protocollo", cliente.getListaProtocolli());
+        map.put("report", cliente.getListaReport());
+        return ResponseHandler.generateResponse(HttpStatus.OK, map);
+    }
 
 
     /**
