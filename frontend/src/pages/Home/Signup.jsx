@@ -6,6 +6,7 @@ import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
 import Logo from "../../components/Logo";
 import {Link as ReactLink} from "react-router-dom";
+import {GradientBar} from "../../components/GradientBar";
 
 export default function Signup() {
 
@@ -14,7 +15,7 @@ export default function Signup() {
     return (
         <VStack w="full" h="full" pt={10} pb={10}>
             <Box bg={"white"} borderRadius='md' pb={5}>
-                <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
+                <GradientBar/>
                 <Flex justifyContent={"center"} wrap={"wrap"}>
                     <Text mb={0} pb={0} color={"blue.500"} fontSize={"8xl"} w={"full"} textAlign={"center"}>
                         <Link as={ReactLink} to={"/"}><Logo/></Link>

@@ -7,9 +7,12 @@ import {
     FormErrorMessage,
     FormLabel,
     Heading,
-    Input, useToast, VStack
+    Input,
+    useToast,
+    VStack
 } from "@chakra-ui/react";
 import {FetchContext} from "../../../context/FetchContext";
+import {GradientBar} from "../../../components/GradientBar";
 
 export default function Create() {
     const fetchContext = useContext(FetchContext);
@@ -38,11 +41,11 @@ export default function Create() {
     }
 
     return (
-        <VStack w="full" h="full" p={[5, 10, 20]}>
+        <VStack w="full" h="full" px={[0, 5, 10, 20]} py={10}>
             <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
-                <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
+                <GradientBar/>
                 <Heading size="2xl" textAlign={"center"} pt={5}>Invita Cliente</Heading>
-                <Box pl={[5, 10, 20]} pr={[5, 10, 20]} pb={5} pt={5}>
+                <Box pl={[0, 5, 20]} pr={[0, 5, 20]} pb={5} pt={5}>
                     <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                         <FormControl id={"nome"} isInvalid={errors.nome} pt={5}>
                             <FormLabel htmlFor="nome">Nome</FormLabel>

@@ -9,7 +9,10 @@ import {
     FormLabel,
     GridItem,
     Heading,
-    Input, InputGroup, InputLeftElement, InputRightElement,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    InputRightElement,
     Radio,
     RadioGroup,
     SimpleGrid,
@@ -19,9 +22,7 @@ import {
     useBreakpointValue,
     useToast
 } from "@chakra-ui/react";
-import {
-    CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe
-} from "@stripe/react-stripe-js";
+import {CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe} from "@stripe/react-stripe-js";
 import TierPrice from "./TierPrice";
 import {publicFetch} from "../util/fetch";
 import {AtSignIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";

@@ -1,16 +1,16 @@
 import React from 'react';
 import {
     Box,
-    Stack,
-    HStack,
-    Heading,
-    Text,
-    VStack,
-    useColorModeValue,
-    List,
-    ListItem,
-    ListIcon,
     Button,
+    Heading,
+    HStack,
+    List,
+    ListIcon,
+    ListItem,
+    Stack,
+    Text,
+    useColorModeValue,
+    VStack,
 } from "@chakra-ui/react";
 import {FaCheckCircle} from 'react-icons/fa';
 import {createBreakpoints} from '@chakra-ui/theme-tools'

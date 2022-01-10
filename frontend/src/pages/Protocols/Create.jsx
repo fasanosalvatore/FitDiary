@@ -1,28 +1,31 @@
 import {
-    Box, Button,
+    Box,
+    Button,
     FormControl,
     FormLabel,
     GridItem,
     Heading,
-    HStack, Icon,
+    HStack,
     Input,
     SimpleGrid,
-    Text, useToast,
+    Text,
+    useToast,
     VStack
-}from "@chakra-ui/react";
+} from "@chakra-ui/react";
 import {useForm} from "react-hook-form"
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useDropzone} from 'react-dropzone';
 import {FetchContext} from "../../context/FetchContext";
 import {CloseIcon} from "@chakra-ui/icons";
 import Select from "react-select";
+import {GradientBar} from "../../components/GradientBar";
 
 const urlProtocolli = "protocolli";
 const urlUtenti = "utenti";
 
 const Create = () => {
     const fetchContext = useContext(FetchContext);
-    const [options, setOptions] = useState([{ }]);
+    const [options, setOptions] = useState([{}]);
     const [isLoading, setisLoading] = useState(false);
     const [selectedFileAllenamento, setselectedFileAllenamento] = useState(null);
     const [selectedFileAlimentare, setselectedFileAlimentare] = useState(null);
@@ -32,19 +35,21 @@ const Create = () => {
             width: '100%', maxWidth: '100%',
         },
     })
+
     function toastParam(title, description, status) {
         return {
             title: title, description: description, status: status
         };
     }
+
     const onDropAllenamento = useCallback(acceptedFileAllenamento => {
         console.log(acceptedFileAllenamento)
         setValue("fileAllenamento", acceptedFileAllenamento);
-    }, [])
+    }, [setValue])
     const onDropAlimentare = useCallback(acceptedFileAlimentare => {
         console.log(acceptedFileAlimentare)
         setValue("schedaAlimentare", acceptedFileAlimentare);
-    }, [])
+    }, [setValue])
     const {
         acceptedFiles: acceptedFileAllenamento,
         getRootProps: getRootPropsAllenamento,
@@ -61,12 +66,12 @@ const Create = () => {
     const onSubmit = async (values) => {
         const formData = new FormData();
         console.log(values);
-        formData.append("dataScadenza",values.dataScadenza)
-        formData.append("idCliente",values.idCliente)
-        if(values.schedaAllenamento)
-            formData.append("schedaAllenamento",values.schedaAllenamento[0])
-        if(values.schedaAlimentare)
-            formData.append("schedaAlimentare",values.schedaAlimentare[0])
+        formData.append("dataScadenza", values.dataScadenza)
+        formData.append("idCliente", values.idCliente)
+        if (values.schedaAllenamento)
+            formData.append("schedaAllenamento", values.schedaAllenamento[0])
+        if (values.schedaAlimentare)
+            formData.append("schedaAlimentare", values.schedaAlimentare[0])
         try {
             const {data} = await fetchContext.authAxios.post(urlProtocolli, formData)
             console.log(data);
@@ -86,15 +91,17 @@ const Create = () => {
         setisLoading(true);
         const getUsers = async () => {
             try {
-                const {data: {data:{listaClienti}}} = await fetchContext.authAxios(urlUtenti);
-                setOptions(listaClienti.map(e => {return {value:e.id, label:e.nome}}))
+                const {data: {data: {listaClienti}}} = await fetchContext.authAxios(urlUtenti);
+                setOptions(listaClienti.map(e => {
+                    return {value: e.id, label: e.nome}
+                }))
                 setisLoading(false);
             } catch (error) {
                 console.log(error)
             }
         }
         getUsers();
-    },[fetchContext])
+    }, [fetchContext])
 
     useEffect(() => {
         setselectedFileAlimentare(acceptedFileAlimentare[0]);
@@ -109,7 +116,7 @@ const Create = () => {
         <>
             <VStack w="full" h="full" p={[5, 10, 20]}>
                 <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
-                    <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
+                    <GradientBar/>
                     <VStack spacing={3} alignItems="center" pb={5} mt={5}>
                         <Heading size="2xl">Crea Protocollo</Heading>
                         <form onSubmit={handleSubmit(onSubmit)} style={{width: "100%"}}>
@@ -117,7 +124,9 @@ const Create = () => {
                                 <GridItem colSpan={2}>
                                     <FormControl id={"idCliente"}>
                                         <FormLabel>Cliente</FormLabel>
-                                        <Select options={options} isLoading={isLoading} onChange={(e) => {setValue("idCliente",e.value)}}/>
+                                        <Select options={options} isLoading={isLoading} onChange={(e) => {
+                                            setValue("idCliente", e.value)
+                                        }}/>
                                     </FormControl>
                                 </GridItem>
                                 <GridItem colSpan={2}>
@@ -135,7 +144,10 @@ const Create = () => {
                                         <FormLabel>Scheda Alimentare</FormLabel>
                                         {selectedFileAlimentare != null && (
                                             <HStack>
-                                                <CloseIcon cursor={"pointer"} color={"red"} onClick={()=> {setselectedFileAlimentare(null);setValue("schedaAlimentare", null);}}/>
+                                                <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
+                                                    setselectedFileAlimentare(null);
+                                                    setValue("schedaAlimentare", null);
+                                                }}/>
                                                 <Text>
                                                     {selectedFileAlimentare.path}
                                                 </Text>
@@ -165,7 +177,10 @@ const Create = () => {
                                         <FormLabel>Scheda Allenamento</FormLabel>
                                         {selectedFileAllenamento != null && (
                                             <HStack>
-                                                <CloseIcon cursor={"pointer"} color={"red"} onClick={()=> {setselectedFileAllenamento(null);setValue("fileAllenamento", null);}}/>
+                                                <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
+                                                    setselectedFileAllenamento(null);
+                                                    setValue("fileAllenamento", null);
+                                                }}/>
                                                 <Text>
                                                     {selectedFileAllenamento.path}
                                                 </Text>

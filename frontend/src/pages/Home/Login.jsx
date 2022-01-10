@@ -2,17 +2,25 @@ import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
 import {Link, useNavigate} from "react-router-dom";
 import {
+    Box,
     Button,
     FormControl,
     FormErrorMessage,
     FormLabel,
-    GridItem, Heading,
-    Input, InputGroup, InputRightElement,
-    SimpleGrid, Text, VStack, useToast, Box
+    GridItem,
+    Heading,
+    Input,
+    InputGroup,
+    InputRightElement,
+    SimpleGrid,
+    Text,
+    useToast,
+    VStack
 } from "@chakra-ui/react";
 import {AuthContext} from "../../context/AuthContext";
 import {publicFetch} from "../../util/fetch";
 import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import {GradientBar} from "../../components/GradientBar";
 
 export default function Login() {
     const authContext = useContext(AuthContext);
@@ -33,7 +41,7 @@ export default function Login() {
             const formData = new FormData();
             formData.append("email", values.email);
             formData.append("password", values.password);
-            const {data:{data}} = await publicFetch.post('utenti/login',formData);
+            const {data: {data}} = await publicFetch.post('utenti/login', formData);
             setIsSuccessfullySubmitted(true);
             authContext.setAuthState(data);
             toast({
@@ -58,7 +66,7 @@ export default function Login() {
 
         <VStack w="full" h="full" p={[5, 10, 20]}>
             <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
-                <Box h={"20px"} bgGradient="linear(to-r, blue.500, blue.800)" borderTopRadius={"md"}/>
+                <GradientBar/>
                 <VStack spacing={3} alignItems="center" pb={5} mt={5}>
                     <Heading size="2xl">Login</Heading>
                 </VStack>
@@ -80,7 +88,7 @@ export default function Login() {
                                     <FormLabel>Password</FormLabel>
                                     <InputGroup>
                                         <Input type={showP ? 'text' : 'password'}
-                                            placeholder="Password" {...register("password", {
+                                               placeholder="Password" {...register("password", {
                                             required: "Il campo password è obbligatorio",
                                             maxLength: {value: 255, message: "Password troppo lunga"},
                                         })} />
@@ -95,12 +103,13 @@ export default function Login() {
                                 </FormControl>
                             </GridItem>
                             <GridItem colSpan={2}>
-                                <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting || isSuccessfullySubmitted}
+                                <Button w="full" mt={4} colorScheme='teal'
+                                        isLoading={isSubmitting || isSuccessfullySubmitted}
                                         type='submit'>
                                     Login
                                 </Button>
                                 <Text align={"center"} fontSize={"large"}>Non hai ancora un account su FitDiary?
-                                        <Link to={"/signup"}> Registrati</Link></Text>
+                                    <Link to={"/signup"}> Registrati</Link></Text>
                             </GridItem>
                         </SimpleGrid>
                     </form>

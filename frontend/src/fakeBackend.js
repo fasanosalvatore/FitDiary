@@ -1534,6 +1534,6 @@ export function getProtocolList() {
 
 }
 
-export function getSchedaAlimentare(){
+export function getSchedaAlimentare() {
     return protocollo.listaAlimenti;
 }

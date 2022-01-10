@@ -1,33 +1,32 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
     Box,
-    Heading,
-    Text,
-    Flex,
-    VStack,
-    HStack,
     Button,
-    Table,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
-    TableCaption,
+    Flex,
+    Heading,
+    HStack,
     Icon,
     Image,
+    Table,
+    TableCaption,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
     useToast,
+    VStack,
 } from '@chakra-ui/react';
-import {
-    RiArrowGoBackLine,
-} from 'react-icons/ri';
+import {RiArrowGoBackLine,} from 'react-icons/ri';
 import moment from "moment";
-import {BsGraphUp, BsGraphDown} from "react-icons/bs";
+import {BsGraphDown, BsGraphUp} from "react-icons/bs";
 import {useNavigate, useParams} from "react-router";
-import {FetchContext} from "../../../context/FetchContext";
-import restaurant from "../../../images/restaurant.png";
-import training from "../../../images/dumbbell.png";
-export default function CustomerviewProtocol() {
+import {FetchContext} from "../../context/FetchContext";
+import restaurant from "../../images/restaurant.png";
+import training from "../../images/dumbbell.png";
+
+export default function View() {
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -41,7 +40,8 @@ export default function CustomerviewProtocol() {
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
     const [protocollo, setProtocolli] = useState();
-    const [report, setReport] = useState();
+    const {id} = useParams();
+
     let history = useNavigate();
 
     useEffect(() => {
@@ -81,18 +81,16 @@ export default function CustomerviewProtocol() {
         }
         report();
         */
-    }, []);
+    }, [fetchContext, toast, id]);
 
-
-    const {id} = useParams();
-    console.log(id);
     moment.locale("it-IT");
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     return (
         <>
             {!isLoading && (
                 <Flex wrap={"wrap"}>
-                    <Button ml={5} mt={5} colorScheme={"blue"} leftIcon={<RiArrowGoBackLine/>} onClick={()=>history(-1)}>Torna al protocollo</Button>
+                    <Button ml={5} mt={5} colorScheme={"blue"} leftIcon={<RiArrowGoBackLine/>}
+                            onClick={() => history(-1)}>Torna al protocollo</Button>
                     <Heading w={"full"} mb={5} textAlign={"center"}>Protocollo n.{protocollo.protocollo.id}</Heading>
                     <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
@@ -130,22 +128,22 @@ export default function CustomerviewProtocol() {
                                                         <Tr>
                                                             <Td>Peso</Td>
                                                             <Td>{/*report. */}Kg<Icon as={BsGraphUp} color='green.500'
-                                                                        marginLeft={4}/></Td>
+                                                                                      marginLeft={4}/></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Bicipite{}</Td>
                                                             <Td>{/*report. */}cm<Icon as={BsGraphDown} color='red.500'
-                                                                        marginLeft={4}/></Td>
+                                                                                      marginLeft={4}/></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Addome</Td>
                                                             <Td>{/*report. */}cm<Icon as={BsGraphDown} color='red.500'
-                                                                        marginLeft={4}/></Td>
+                                                                                      marginLeft={4}/></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Quadricipite</Td>
                                                             <Td>{/*report. */}cm<Icon as={BsGraphUp} color='green.500'
-                                                                        marginLeft={4}/></Td>
+                                                                                      marginLeft={4}/></Td>
                                                         </Tr>
                                                     </Tbody>
                                                 </Table>
@@ -162,7 +160,9 @@ export default function CustomerviewProtocol() {
                                                         objectFit='cover'
                                                         src={training}>
                                                     </Image>
-                                                    <Button onClick={()=>{navigate("/trainingcard/"+protocollo.protocollo.id)}}>Vedi Allenamento
+                                                    <Button onClick={() => {
+                                                        navigate("/trainingcard/" + protocollo.protocollo.id)
+                                                    }}>Vedi Allenamento
                                                     </Button>
                                                 </VStack>
                                                 <VStack marginTop={5}>
@@ -171,7 +171,9 @@ export default function CustomerviewProtocol() {
                                                         objectFit='cover'
                                                         src={restaurant}>
                                                     </Image>
-                                                    <Button onClick={()=>{navigate("/dietcard/"+protocollo.protocollo.id)}}>Vedi Alimentazione</Button>
+                                                    <Button onClick={() => {
+                                                        navigate("/dietcard/" + protocollo.protocollo.id)
+                                                    }}>Vedi Alimentazione</Button>
                                                 </VStack>
                                             </Box>
                                         </HStack>

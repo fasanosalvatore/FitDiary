@@ -17,7 +17,7 @@ export default function Logout() {
         })
         setTimeout(() => {
             authContext.logout();
-        },2000)
+        }, 2000)
     })
 
     return (

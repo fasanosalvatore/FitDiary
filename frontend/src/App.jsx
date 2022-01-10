@@ -1,53 +1,62 @@
-import React from "react";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import React, {useContext} from "react";
+import {Box, ChakraProvider} from "@chakra-ui/react";
+import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
+import {AuthContext, AuthProvider} from "./context/AuthContext";
+import {FetchProvider} from "./context/FetchContext";
+import {Navigate} from "react-router";
 
+import AppShell from "./AppShell";
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Home/Login";
 import Logout from "./pages/Home/Logout";
 import Signup from "./pages/Home/Signup";
-import CustomerIndex from "./pages/User/Customer/CustomerIndex";
-import Profile from "./pages/User/Profile";
-import Create from "./pages/User/Customer/Create";
-import CustomerviewProtocol from "./pages/User/Customer/CustomerviewProtocol";
-import ProtocolsList from "./pages/User/Customer/ProtocolsList";
-import TrainerIndex from "./pages/User/Trainer/TrainerIndex";
-import Edit from "./pages/User/Edit";
-import {Box, ChakraProvider} from "@chakra-ui/react";
-import {AuthProvider} from "./context/AuthContext";
-import AppShell from "./AppShell";
 import Dashboard from "./pages/Dashboard";
-import {FetchProvider} from "./context/FetchContext";
-import IndexProtocols from "./pages/Protocols/Index"
-import CreateProtocol from "./pages/Protocols/Create"
-import TrainerViewDietCard from "../src/pages/User/Trainer/TrainerViewDietCard";
-import TrainerViewTrainingCard from "../src/pages/User/Trainer/TrainerViewTrainingCard";
+
+import UsersProfile from "./pages/User/Profile";
+import UsersEdit from "./pages/User/Edit";
+
+import CustomersIndex from "./pages/User/Customer/Index";
+import CustomersCreate from "./pages/User/Customer/Create";
+
+import TrainersIndex from "./pages/User/Trainer/Index";
+
+import ProtocolsIndex from "./pages/Protocols/Index"
+import ProtocolsCreate from "./pages/Protocols/Create"
+import ProtocolsView from "./pages/Protocols/View";
+import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
+import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
+
+const AuthenticatedRoute = () => {
+    const authContext = useContext(AuthContext);
+    console.log(authContext.isAuthenticated());
+    return (
+        !authContext.isAuthenticated() ? <Navigate to={"/login"}/> : <AppShell><Outlet/></AppShell>
+    )
+}
 
 const AppRoutes = () => {
     return (
         <Routes>
-            <Route path="/dietcard/:id" element={<AppShell><TrainerViewDietCard/></AppShell>}/>
-            <Route path="/trainingcard/:id" element={<AppShell><TrainerViewTrainingCard/></AppShell>}/>
             <Route path="/" element={<Welcome/>}/>
             <Route path="signup" element={<Signup/>}/>
             <Route path="login" element={<Login/>}/>
-            <Route path="logout" element={<Logout/>}/>
-            <Route path="dashboard" element={<AppShell><Dashboard/></AppShell>}/>
-            <Route path="test" element={<AppShell><Edit/></AppShell>}/>
-            <Route path="profile" element={<AppShell><Profile/></AppShell>}/>
-            <Route path="account" element={<AppShell><Edit/></AppShell>}/>
-            {/*<Route path="protocols" element={<AppShell><IndexProtocols/></AppShell>}/> */}
-            <Route path="protocols/create" element={<AppShell><CreateProtocol/></AppShell>}/>
-            <Route path="/customer" element={<AppShell><CustomerIndex/></AppShell>}>
-                <Route path="create" element={<Create/>}/>
+            <Route path="/" element={<AuthenticatedRoute/>}>
+                <Route path="dashboard" index element={<Dashboard/>}/>
+                <Route path="account" element={<UsersEdit/>}/>
+                <Route path="profile" element={<UsersProfile/>}/>
+                <Route path="logout" element={<Logout/>}/>
+                <Route path="protocols" element={<ProtocolsIndex/>}/>
+                <Route path="protocols/:id" element={<ProtocolsView/>}/>
+                <Route path="protocols/create" element={<ProtocolsCreate/>}/>
+                <Route path="dietcard/:id" element={<ProtocolsDietCardsView/>}/>
+                <Route path="trainingcard/:id" element={<ProtocolsTrainingCardsView/>}/>
+                <Route path="/customers" element={<CustomersIndex/>}>
+                    <Route path="create" element={<CustomersCreate/>}/>
+                </Route>
             </Route>
-            <Route path="protocols" element={<AppShell><IndexProtocols/><ProtocolsList/></AppShell>}/>
-            <Route path="protocols/:id" element={<AppShell><CustomerviewProtocol/></AppShell>}/>
-
-            <Route path="/trainer" element={<AppShell><TrainerIndex/></AppShell>}>
-                <Route path="edit" element={<AppShell><Edit/></AppShell>}/>
-                <Route path="addCustomer" element={<Create/>}/>
+            <Route path="/trainer" element={<AppShell><TrainersIndex/></AppShell>}>
+                <Route path="edit" element={<AppShell><UsersEdit/></AppShell>}/>
             </Route>
-
         </Routes>
     )
 }

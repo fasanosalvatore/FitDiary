@@ -1,4 +1,4 @@
-import React, {useState, createContext} from 'react';
+import React, {createContext, useState} from 'react';
 import {useNavigate} from "react-router";
 
 const AuthContext = createContext({});
@@ -41,12 +41,12 @@ const AuthProvider = ({children}) => {
             return false;
         }
         return (
-            new Date().getTime() / 1000 < authState.accessToken.expiresAt
+            new Date().getTime() < authState.accessToken.expiresAt
         );
     };
 
     const isAdmin = () => {
-        return authState.userInfo.roles[0] === 'admin';
+        return authState.userInfo?.roles[0] === 'admin';
     }
 
     return (

@@ -1,42 +1,46 @@
 import React, {useContext} from 'react';
 import {
-    IconButton,
     Avatar,
     Box,
     CloseButton,
-    Flex,
-    HStack,
-    VStack,
-    Icon,
-    useColorModeValue,
-    Link,
     Drawer,
     DrawerContent,
-    Text,
-    useDisclosure,
+    Flex,
+    HStack,
+    Icon,
+    IconButton,
+    Link,
     Menu,
     MenuButton,
     MenuDivider,
     MenuItem,
     MenuList,
+    Text,
+    useColorModeValue,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
 import {
-    FiHome,
-    FiTrendingUp,
-    FiSettings,
-    FiMenu,
     FiBell,
-    FiChevronDown, FiUser, FiBook, FiUsers, FiUserPlus
+    FiBook,
+    FiChevronDown,
+    FiHome,
+    FiMenu,
+    FiSettings,
+    FiTrendingUp,
+    FiUser,
+    FiUserPlus,
+    FiUsers
 } from 'react-icons/fi';
 import Logo from "./Logo";
-import {Link as ReactLink, useSearchParams} from "react-router-dom";
+import {Link as ReactLink} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
 
 const navItems = [
     {
         name: 'Home',
         icon: FiHome,
-        to: "/",
+        to: "/dashboard",
         allowedRoles: ['admin', 'cliente', 'preparatore']
     },
     {
@@ -48,7 +52,7 @@ const navItems = [
     {
         name: 'Aggiungi Cliente',
         icon: FiUserPlus,
-        to: "/trainer/addCustomer",
+        to: "/customers/create",
         allowedRoles: ['admin', 'preparatore']
     },
     {
@@ -114,12 +118,11 @@ const NavItem = ({navItem, ...rest}) => {
 
 export default function SidebarWithHeader({children}) {
     const {isOpen, onOpen, onClose} = useDisclosure();
-    const [params] = useSearchParams();
     return (
-        <Box minH="100vh" bg={useColorModeValue('white', 'gray.900')}>
-            <SidebarContent
-                onClose={() => onClose}
-                display={{base: 'none', md: 'block'}}
+        <Box h={"90%"} bg={useColorModeValue('blue.50', 'gray.900')}>
+            <SidebarContent h={"full"}
+                            onClose={() => onClose}
+                            display={{base: 'none', md: 'block'}}
             />
             <Drawer
                 autoFocus={false}
@@ -167,13 +170,15 @@ const SidebarContent = ({onClose, ...rest}) => {
                 </Link>
                 <CloseButton display={{base: 'flex', md: 'none'}} onClick={onClose}/>
             </Flex>
-            {navItems.map((item) => (
-                <NavItemContainer key={item.name}>
-                    {item.allowedRoles.includes(authState.userInfo.roles[0].toLowerCase()) && (
-                        <NavItem key={item} navItem={item}/>
-                    )}
-                </NavItemContainer>
-            ))}
+            <Box pt={5}>
+                {navItems.map((item) => (
+                    <NavItemContainer key={item.name}>
+                        {item.allowedRoles.includes(authState.userInfo.roles[0].toLowerCase()) && (
+                            <NavItem key={item} navItem={item}/>
+                        )}
+                    </NavItemContainer>
+                ))}
+            </Box>
         </Box>
     );
 };
@@ -182,14 +187,14 @@ const MobileNav = ({onOpen, ...rest}) => {
     const authContext = useContext(AuthContext);
     const {authState} = authContext;
     return (
-        <Flex
-            ml={{base: 0, md: 60}}
-            px={{base: 4, md: 4}}
-            height="20"
-            alignItems="center"
-            borderBottomWidth="1px"
-            justifyContent={{base: 'space-between', md: 'flex-end'}}
-            {...rest}>
+        <Flex bg={"white"}
+              ml={{base: 0, md: 60}}
+              px={{base: 4, md: 4}}
+              height="20"
+              alignItems="center"
+              borderBottomWidth="1px"
+              justifyContent={{base: 'space-between', md: 'flex-end'}}
+              {...rest}>
             <IconButton
                 display={{base: 'flex', md: 'none'}}
                 onClick={onOpen}
@@ -240,7 +245,7 @@ const MobileNav = ({onOpen, ...rest}) => {
                             <MenuItem>Settings</MenuItem>
                             <MenuItem>Billing</MenuItem>
                             <MenuDivider/>
-                            <Link href={"/logout"}><MenuItem>Logout</MenuItem></Link>
+                            <ReactLink to={"/logout"}><MenuItem>Logout</MenuItem></ReactLink>
                         </MenuList>
                     </Menu>
                 </Flex>

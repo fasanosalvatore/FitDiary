@@ -1,6 +1,6 @@
 import {Outlet} from "react-router";
 
-export default function CustomerIndex() {
+export default function Index() {
     return (
         <>
             <Outlet/>
