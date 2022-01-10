@@ -2001,4 +2001,5 @@ export function getReport() {
 }
 export function getListaReport(){
 
+    return listaReport;
 }
