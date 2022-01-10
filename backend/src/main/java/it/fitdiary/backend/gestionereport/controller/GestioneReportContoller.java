@@ -3,6 +3,7 @@ package it.fitdiary.backend.gestionereport.controller;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import it.fitdiary.backend.entity.Report;
+import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestionereport.service.GestioneReportService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -137,6 +139,47 @@ public class GestioneReportContoller {
                 listaLinkFoto);
         return ResponseHandler.generateResponse(HttpStatus.CREATED, "report",
                 newReport);
+    }
+
+    /**
+     * @param id id del report da visualizzare
+     * @return report da visualizzare
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<Object> visualizzaReport(
+            @PathVariable("id") final Long id) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+
+        Long idUtente = Long.parseLong(request.getUserPrincipal().getName());
+        Utente utente = gestioneUtenzaService.getById(idUtente);
+        Report report = null;
+        try {
+            report = gestioneReportService.getById(id);
+        } catch (IllegalArgumentException ex) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    "report",
+                    "Il report da visualizzare non esiste");
+        }
+        if (utente.getRuolo().getNome().equals(Ruolo.RUOLOPREPARATORE)) {
+            if (!gestioneUtenzaService.existsByPreparatoreAndId(
+                    utente, report.getCliente().getId())) {
+                return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                        "report",
+                        "Il preparatore non può accedere "
+                                + "al report di questo cliente");
+            }
+        } else {
+            if (idUtente != report.getCliente().getId()) {
+                return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                        "report",
+                        "Il cliente non può accedere "
+                                + "al report di questo cliente");
+            }
+        }
+        return ResponseHandler.generateResponse(HttpStatus.OK, "report",
+                report);
+
     }
 
 
