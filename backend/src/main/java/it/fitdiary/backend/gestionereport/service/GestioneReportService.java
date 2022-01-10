@@ -19,4 +19,10 @@ public interface GestioneReportService {
      * @return report salvato nel db
      */
     Report inserimentoReport(Report report, ArrayList<String> urlImmagini);
+
+    /**
+     * @param idReport id del report da visualizzare
+     * @return report con id specificato
+     */
+    Report getById(Long idReport);
 }

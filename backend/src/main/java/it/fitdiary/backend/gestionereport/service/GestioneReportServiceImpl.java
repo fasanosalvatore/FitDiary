@@ -59,4 +59,24 @@ public class GestioneReportServiceImpl implements GestioneReportService {
         newReport.setImmaginiReports(listaImmagini);
         return newReport;
     }
+
+    /**
+     * @param idReport id del report da visualizzare
+     * @return report con id specificato
+     */
+    @Override
+    public Report getById(final Long idReport) {
+        if (idReport == null) {
+            throw new IllegalArgumentException("Id report non valido");
+        }
+        Report report = null;
+        if (reportRepository.existsById(idReport)) {
+            report = reportRepository.
+                    findById(idReport).get();
+        } else {
+            throw new IllegalArgumentException("Il report non esiste");
+        }
+
+        return report;
+    }
 }
