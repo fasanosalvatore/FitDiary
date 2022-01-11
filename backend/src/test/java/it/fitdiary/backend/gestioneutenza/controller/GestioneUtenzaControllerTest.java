@@ -374,7 +374,7 @@ class GestioneUtenzaControllerTest {
         Utente cliente = new Utente(2L, "Rebecca", "La Gamba", "rebe@gmail.com"
                 , "Rebecca123*", true, LocalDate.parse("2000-10" +
                 "-03"), "F", null, null, null,
-                null, preparatore, ruoloPrep, null, null, null,null, null);
+                null, preparatore, ruoloCliente, null, null, null,null, null);
 
         Principal principal = () -> "1";
         when(gestioneUtenzaService.getById(Long.parseLong(principal.getName()))).thenReturn(preparatore);
@@ -399,7 +399,7 @@ class GestioneUtenzaControllerTest {
         Utente cliente = new Utente(2L, "Rebecca", "La Gamba", "rebe@gmail.com"
                 , "Rebecca123*", true, LocalDate.parse("2000-10" +
                 "-03"), "F", null, null, null,
-                null, preparatore, ruoloPrep, null, null, null,null, null);
+                null, preparatore, ruoloCliente, null, null, null,null, null);
 
         Principal principal = () -> "1";
         when(gestioneUtenzaService.getById(Long.parseLong(principal.getName()))).thenReturn(preparatore);
@@ -425,7 +425,7 @@ class GestioneUtenzaControllerTest {
         Utente cliente = new Utente(2L, "Rebecca", "La Gamba", "rebe@gmail.com"
                 , "Rebecca123*", true, LocalDate.parse("2000-10" +
                 "-03"), "F", null, null, null,
-                null, preparatore, ruoloPrep, null, null, null,null, null);
+                null, preparatore, ruoloCliente, null, null, null,null, null);
         Utente admin = new Utente(3L, "Salvatore", "Fasano", "toretore@gmail.com"
                 , "Tore123*", true, LocalDate.parse("1998-11" +
                 "-03"), "M", null, null, null,
@@ -455,7 +455,7 @@ class GestioneUtenzaControllerTest {
         Utente cliente = new Utente(2L, "Rebecca", "La Gamba", "rebe@gmail.com"
                 , "Rebecca123*", true, LocalDate.parse("2000-10" +
                 "-03"), "F", null, null, null,
-                null, preparatore, ruoloPrep, null, null, null,null, null);
+                null, preparatore, ruoloCliente, null, null, null,null, null);
         Utente admin = new Utente(3L, "Salvatore", "Fasano", "toretore@gmail.com"
                 , "Tore123*", true, LocalDate.parse("1998-11" +
                 "-03"), "M", null, null, null,
