@@ -247,4 +247,21 @@ class GestioneReportContollerTest {
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().is2xxSuccessful());
     }
+
+    @Test
+    void visualizzazioneStoricoProgressiCliente() throws Exception {
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.getById(cliente.getId())).thenReturn(cliente);
+        when(gestioneReportService.visualizzazioneStoricoProgressi(cliente)).thenReturn(cliente.getListaReport());
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get(
+                                "/api/v1/reports")
+                        .principal(principal);
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+    }
 }
