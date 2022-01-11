@@ -33,7 +33,7 @@ public class Protocollo {
      * id protocollo.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * data scadenza protocollo.

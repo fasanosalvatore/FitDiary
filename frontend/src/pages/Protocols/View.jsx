@@ -17,16 +17,28 @@ import {
     Tr,
     useToast,
     VStack,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,Divider
 } from '@chakra-ui/react';
-import { RiArrowGoBackLine, } from 'react-icons/ri';
+import{ArrowRightIcon,ArrowLeftIcon} from '@chakra-ui/icons';
+import {RiArrowGoBackLine} from 'react-icons/ri';
 import moment from "moment";
-import { BsGraphDown, BsGraphUp } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router";
-import { FetchContext } from "../../context/FetchContext";
-import restaurant from "../../images/restaurant.png";
+import {BsGraphDown, BsGraphUp} from "react-icons/bs";
+import {useNavigate, useParams} from "react-router";
+import {FetchContext} from "../../context/FetchContext";
+import dish from "../../images/dish.png";
 import training from "../../images/dumbbell.png";
-
+import photo from "../../images/photos.png";
 export default function View() {
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -149,35 +161,78 @@ export default function View() {
                                                 </Table>
                                             </Box>
                                         </HStack>
+
                                         <HStack alignItems={"center"} marginTop={"auto"} marginBottom={"auto"}>
-                                            <Box backgroundColor={"white"} p={3} borderRadius={15} w={400} h={310}>
+                                            <Box backgroundColor={"white"} p={3} borderRadius={15} w={450} h={310} mr={30} ml={25}>
                                                 <VStack alignItems={"center"}>
-                                                    <Heading size="xs"> Vuoi visualizzare le tue schede?</Heading>
+                                                    <Heading size="xs" mb={5}> Vuoi visualizzare le tue schede?</Heading>
                                                 </VStack>
-                                                <VStack marginTop={5}>
-                                                    <Image
-                                                        boxSize='70px'
-                                                        objectFit='cover'
-                                                        src={training}>
-                                                    </Image>
-                                                    <Button onClick={() => {
-                                                        navigate("/trainingcard/" + protocollo.protocollo.id)
-                                                    }}>Vedi Allenamento
-                                                    </Button>
+                                            <Flex justify="center">
+                                                <HStack >
+                                                    <VStack alignItems={"center"}>
+                                                        <Image
+                                                            boxSize='70px'
+                                                            htmlHeight='10px'
+                                                            objectFit='cover'
+                                                            src={training}>
+                                                        </Image>
+                                                        <Button onClick={() => {
+                                                            navigate("/trainingcard/" + protocollo.protocollo.id)
+                                                        }}>Vedi Allenamento
+                                                        </Button>
+                                                    </VStack>
+                                                    <VStack alignItems={"center"}>
+                                                        <Image
+                                                            boxSize='70px'
+                                                            objectFit='cover'
+                                                            src={dish}>
+                                                        </Image>
+                                                        <Button onClick={() => {
+                                                            navigate("/dietcard/" + protocollo.protocollo.id)
+                                                        }}>Vedi Alimentazione</Button>
+                                                    </VStack>
+                                                </HStack>
+                                                </Flex>
+                                                <Divider mt={5}></Divider>
+                                                <VStack alignItems={"center"}>
+                                                    <Heading size="xs" mb={5} mt={5}> Qui puoi visionare le foto del report</Heading>
                                                 </VStack>
-                                                <VStack marginTop={5}>
-                                                    <Image
-                                                        boxSize='50px'
-                                                        objectFit='cover'
-                                                        src={restaurant}>
-                                                    </Image>
-                                                    <Button onClick={() => {
-                                                        navigate("/dietcard/" + protocollo.protocollo.id)
-                                                    }}>Vedi Alimentazione</Button>
-                                                </VStack>
+                                                <Flex justify="center">
+                                                <HStack alignItems={"center"}>
+                                                    <VStack align="center">
+                                                        <Image
+                                                            boxSize='60px'
+                                                            objectFit='cover'
+                                                            src={photo}>
+                                                        </Image>
+                                                        <Button onClick={onOpen}>Visualizza Foto</Button>
+                                                        <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
+                                                            <ModalOverlay />
+                                                            <ModalContent>
+                                                                <ModalHeader textAlign={"center"}>Foto del cliente</ModalHeader>
+                                                                <ModalCloseButton/>
+                                                                <ModalBody align={"center"}>
+                                                                    <Flex justify="center">
+                                                                        <HStack align="center">
+                                                                            <Button variant='ghost' textAlign="center" align="start" leftIcon={<ArrowLeftIcon/>}></Button>
+                                                                            <Image boxSize='200px' src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
+                                                                            <Button variant='ghost' textAlign="center" align="end" leftIcon={<ArrowRightIcon/>}></Button>
+                                                                        </HStack>
+                                                                    </Flex>
+                                                                </ModalBody>
+                                                                <ModalFooter>
+                                                                </ModalFooter>
+                                                            </ModalContent>
+                                                        </Modal>
+                                                    </VStack>
+                                                </HStack>
+                                                </Flex>
                                             </Box>
                                         </HStack>
                                     </Flex>
+                                </HStack>
+                                <HStack>
+
                                 </HStack>
                                 <HStack>
                                     <Heading size="s">Hai completato il protocollo?</Heading>
