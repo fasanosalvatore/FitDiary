@@ -334,7 +334,7 @@ class GestioneProtocolloControllerTest {
         Long idCliente = 2L;
         when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
-       when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
+        when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
 
         MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
