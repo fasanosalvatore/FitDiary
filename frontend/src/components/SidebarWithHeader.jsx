@@ -165,7 +165,7 @@ const SidebarContent = ({onClose, ...rest}) => {
             <Flex h="20" alignItems="center" mx="8" justifyContent={{base: "space-evenly", md: "center"}}>
                 <Link href={"/"}>
                     <Text fontSize="8xl" fontFamily="monospace" fontWeight="bold" color={"blue.500"}>
-                        <Logo/>
+                        <Logo penColor="black" viewBox={"0 -35 250 250"}/>
                     </Text>
                 </Link>
                 <CloseButton display={{base: 'flex', md: 'none'}} onClick={onClose}/>
@@ -187,69 +187,78 @@ const MobileNav = ({onOpen, ...rest}) => {
     const authContext = useContext(AuthContext);
     const {authState} = authContext;
     return (
-        <Flex bg={"white"}
-              ml={{base: 0, md: 60}}
-              px={{base: 4, md: 4}}
-              height="20"
-              alignItems="center"
-              borderBottomWidth="1px"
-              justifyContent={{base: 'space-between', md: 'flex-end'}}
-              {...rest}>
-            <IconButton
-                display={{base: 'flex', md: 'none'}}
-                onClick={onOpen}
-                variant="outline"
-                aria-label="open menu"
-                icon={<FiMenu/>}
-            />
-            <Text
-                display={{base: 'flex', md: 'none'}}
-                fontSize="2xl"
-                fontFamily="monospace"
-                fontWeight="bold">
-                Logo
-            </Text>
-            <HStack spacing={{base: '0', md: '6'}}>
-                <IconButton
-                    color={"blue.500"}
-                    size="lg"
-                    variant="ghost"
-                    aria-label="open menu"
-                    icon={<FiBell/>}
-                />
-                <Flex alignItems={'center'}>
-                    <Menu>
-                        <MenuButton
-                            py={2}
-                            transition="all 0.3s"
-                            _focus={{boxShadow: 'none'}}>
-                            <HStack>
-                                <Avatar size={'sm'}/>
-                                <VStack
-                                    display={{base: 'none', md: 'flex'}}
-                                    alignItems="flex-start"
-                                    spacing="1px"
-                                    ml="2">
-                                    <Text fontSize="sm">{authState.userInfo.name} {authState.userInfo.surname}</Text>
-                                    <Text fontSize="xs" color="gray.600">
-                                        {authState.userInfo.roles[0] || ""}
-                                    </Text>
-                                </VStack>
-                                <Box display={{base: 'none', md: 'flex'}}>
-                                    <FiChevronDown/>
-                                </Box>
-                            </HStack>
-                        </MenuButton>
-                        <MenuList>
-                            <MenuItem>Profile</MenuItem>
-                            <MenuItem>Settings</MenuItem>
-                            <MenuItem>Billing</MenuItem>
-                            <MenuDivider/>
-                            <ReactLink to={"/logout"}><MenuItem>Logout</MenuItem></ReactLink>
-                        </MenuList>
-                    </Menu>
-                </Flex>
-            </HStack>
-        </Flex>
+      <Flex
+        bg={"white"}
+        ml={{ base: 0, md: 60 }}
+        px={{ base: 4, md: 4 }}
+        height="20"
+        alignItems="center"
+        borderBottomWidth="1px"
+        justifyContent={{ base: "space-between", md: "flex-end" }}
+        {...rest}
+      >
+        <IconButton
+          display={{ base: "flex", md: "none" }}
+          onClick={onOpen}
+          variant="outline"
+          aria-label="open menu"
+          icon={<FiMenu />}
+        />
+        <Text
+          display={{ base: "flex", md: "none" }}
+          fontSize="2xl"
+          fontFamily="monospace"
+          fontWeight="bold"
+        >
+          <Logo penColor="black" viewBox={"0 -35 250 250"} boxSize="3em"/>
+        </Text>
+        <HStack spacing={{ base: "0", md: "6" }}>
+          <IconButton
+            color={"blue.500"}
+            size="lg"
+            variant="ghost"
+            aria-label="open menu"
+            icon={<FiBell />}
+          />
+          <Flex alignItems={"center"}>
+            <Menu>
+              <MenuButton
+                py={2}
+                transition="all 0.3s"
+                _focus={{ boxShadow: "none" }}
+              >
+                <HStack>
+                  <Avatar size={"sm"} />
+                  <VStack
+                    display={{ base: "none", md: "flex" }}
+                    alignItems="flex-start"
+                    spacing="1px"
+                    ml="2"
+                  >
+                    <Text fontSize="sm">
+                      {authState.userInfo.name} {authState.userInfo.surname}
+                    </Text>
+                    <Text fontSize="xs" color="gray.600">
+                      {authState.userInfo.roles[0] || ""}
+                    </Text>
+                  </VStack>
+                  <Box display={{ base: "none", md: "flex" }}>
+                    <FiChevronDown />
+                  </Box>
+                </HStack>
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Profile</MenuItem>
+                <MenuItem>Settings</MenuItem>
+                <MenuItem>Billing</MenuItem>
+                <MenuDivider />
+                <ReactLink to={"/logout"}>
+                  <MenuItem>Logout</MenuItem>
+                </ReactLink>
+              </MenuList>
+            </Menu>
+          </Flex>
+        </HStack>
+      </Flex>
     );
 };
