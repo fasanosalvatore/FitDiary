@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     Accordion,
     AccordionButton,
@@ -22,17 +22,17 @@ import {
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {EditIcon} from '@chakra-ui/icons';
-import {RiArrowGoBackLine,} from 'react-icons/ri';
-import {AuthContext} from "../../../context/AuthContext";
+import { EditIcon } from '@chakra-ui/icons';
+import { RiArrowGoBackLine, } from 'react-icons/ri';
+import { AuthContext } from "../../../context/AuthContext";
 import moment from "moment";
-import {FetchContext} from "../../../context/FetchContext";
-import {useNavigate, useParams} from "react-router";
+import { FetchContext } from "../../../context/FetchContext";
+import { useNavigate, useParams } from "react-router";
 
 export default function View() {
     const authContext = useContext(AuthContext);
-    const {authState} = authContext;
-    const {id} = useParams();
+    const { authState } = authContext;
+    const { id } = useParams();
     const navigate = useNavigate();
     const [protocollo, setProtocolli] = useState();
     const fetchContext = useContext(FetchContext);
@@ -53,7 +53,7 @@ export default function View() {
     useEffect(() => {
         const listaProtocolli = async () => {
             try {
-                const {data} = await fetchContext.authAxios("protocolli/" + id);
+                const { data } = await fetchContext.authAxios("protocolli/" + id);
                 setProtocolli(data.data);
                 setLoading(false);
             } catch (error) {
@@ -74,7 +74,7 @@ export default function View() {
                 <Flex wrap={"wrap"}>
                     <Button onClick={() => {
                         navigate(-1)
-                    }} ml={5} mt={5} colorScheme={"blue"} leftIcon={<RiArrowGoBackLine/>}>Torna al protocollo</Button>
+                    }} ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}>Torna al protocollo</Button>
                     <Heading w={"full"} mb={5} textAlign={"center"}>Scheda Alimentare</Heading>
                     <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
@@ -106,7 +106,7 @@ export default function View() {
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
                                                         <IconButton
                                                             colorScheme='blue'
-                                                            icon={<EditIcon/>}
+                                                            icon={<EditIcon />}
                                                         />
                                                     </Tooltip>
                                                 </HStack>
@@ -125,7 +125,7 @@ export default function View() {
                                                             <Box flex='1' textAlign='left'>
                                                                 {d}
                                                             </Box>
-                                                            <AccordionIcon/>
+                                                            <AccordionIcon />
                                                         </AccordionButton>
                                                     </h2>
                                                     <AccordionPanel pb={4}>
@@ -135,8 +135,8 @@ export default function View() {
 
                                                                 return (
                                                                     <Table borderBottom={"solid 1px "}
-                                                                           borderColor={"blue.200"} key={key}
-                                                                           variant="unstyled" size="md">
+                                                                        borderColor={"blue.200"} key={key}
+                                                                        variant="unstyled" size="md">
                                                                         <Thead>
                                                                             <Tr>
                                                                                 <Th textAlign="center"
