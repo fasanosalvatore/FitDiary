@@ -119,29 +119,31 @@ const NavItem = ({navItem, ...rest}) => {
 export default function SidebarWithHeader({children}) {
     const {isOpen, onOpen, onClose} = useDisclosure();
     return (
-        <Box h={"90%"} bg={useColorModeValue('blue.50', 'gray.900')}>
-            <SidebarContent h={"full"}
-                            onClose={() => onClose}
-                            display={{base: 'none', md: 'block'}}
-            />
-            <Drawer
-                autoFocus={false}
-                isOpen={isOpen}
-                placement="left"
-                onClose={onClose}
-                returnFocusOnClose={false}
-                onOverlayClick={onClose}
-                size="full">
-                <DrawerContent>
-                    <SidebarContent onClose={onClose}/>
-                </DrawerContent>
-            </Drawer>
-            {/* mobilenav */}
-            <MobileNav onOpen={onOpen}/>
-            <Box ml={{base: 0, md: 60}} bg={"blue.50"}>
-                {children}
-            </Box>
+      <Box bg={useColorModeValue("blue.50", "gray.900")}>
+        <SidebarContent
+          h={"full"}
+          onClose={() => onClose}
+          display={{ base: "none", md: "block" }}
+        />
+        <Drawer
+          autoFocus={false}
+          isOpen={isOpen}
+          placement="left"
+          onClose={onClose}
+          returnFocusOnClose={false}
+          onOverlayClick={onClose}
+          size="full"
+        >
+          <DrawerContent>
+            <SidebarContent onClose={onClose} />
+          </DrawerContent>
+        </Drawer>
+        {/* mobilenav */}
+        <MobileNav minHeight="10vh" onOpen={onOpen} />
+        <Box minHeight="70vh" ml={{ base: 0, md: 60 }} bg={"blue.50"}>
+          {children}
         </Box>
+      </Box>
     );
 }
 
