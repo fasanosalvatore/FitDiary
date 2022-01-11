@@ -26,4 +26,10 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
      * dei clienti di quel preparatore, falso altrimenti
      */
     boolean existsByPreparatoreAndId(Utente preparatore, Long idCliente);
+
+    /**
+     *
+     * @param idCliente id del cliente
+     */
+    boolean deleteUtenteById(Long idCliente);
 }

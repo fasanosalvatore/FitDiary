@@ -9,6 +9,7 @@ import com.stripe.Stripe;
 import com.stripe.model.Customer;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
@@ -94,7 +95,7 @@ public class GestioneUtenzaController {
                 + "[A-Za-z\\d@$!%*?^#()<>+&.]{8,}$")) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     (Object)
-                    "password non valida");
+                            "password non valida");
         }
         Utente newUtente;
         try {
@@ -344,7 +345,7 @@ public class GestioneUtenzaController {
                 preparatore, idCliente)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     (Object)
-                    "Il preparatore non può accedere "
+                            "Il preparatore non può accedere "
                             + "al profilo di questo cliente");
         }
         Utente cliente = service.getById(idCliente);
@@ -365,7 +366,7 @@ public class GestioneUtenzaController {
     public ResponseEntity<Object> handleMissingRequestBody(
             final HttpMessageNotReadableException ex) {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                (Object)"Errore durante la lettura del body");
+                (Object) "Errore durante la lettura del body");
     }
 
     /**
@@ -384,11 +385,65 @@ public class GestioneUtenzaController {
         if (utente.getRuolo().getNome().equals(Ruolo.RUOLOADMIN)) {
             return ResponseHandler.generateResponse(HttpStatus.OK,
                     "utenti",
-                   service.visualizzaListaUtenti());
+                    service.visualizzaListaUtenti());
         }
         return ResponseHandler.generateResponse(HttpStatus.OK,
                 "clienti",
                 utente.getListaClienti());
 
+    }
+
+    /**
+     * permette di eliminare un cliente dal sistema
+     *
+     * @param idCliente identificativo del cliente da eliminare
+     * @return risposta di conferma di eliminazione
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<Object> eliminaCliente(
+            @PathVariable("id") final Long idCliente) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        Long idAdmin = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente admin = service.getById(idAdmin);
+        if (admin.getRuolo().getNome() != "ADMIN") {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    (Object) "Questo utente non è un admin");
+        }
+        if (!service.deleteUtenteById(idCliente)) {
+            return ResponseHandler.generateResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    (Object) "Eliminazone non andata a buon fine");
+
+        }
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                (Object) "Eliminazone andata a buon fine");
+    }
+    /**
+     * permette di disattivare un cliente dalla piattaforma
+     *
+     * @param idCliente identificativo del cliente da eliminare
+     * @return il nuovo cliente
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<Object> disattivaCliente(
+            @PathVariable("id") final Long idCliente) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        Long idPreparatore = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente preparatore = service.getById(idPreparatore);
+        if (!service.existsByPreparatoreAndId(
+                preparatore, idCliente)) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    (Object)
+                            "Il preparatore non può accedere "
+                            + "al profilo di questo cliente");
+        }
+        Utente cliente = service.getById(idCliente);
+        cliente.setAttivo(false);
+        return ResponseHandler.generateResponse(HttpStatus.OK, "cliente",
+                cliente);
     }
 }

@@ -136,14 +136,14 @@ public class GestioneProtocolloController {
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     (Object)
-                    "Il protocollo da modificare non esiste");
+                            "Il protocollo da modificare non esiste");
         }
         Long idCliente = protocollo.getCliente().getId();
         if (!gestioneUtenzaService.existsByPreparatoreAndId(preparatore,
                 idCliente)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     (Object)
-                    "Il preparatore non può modificare "
+                            "Il preparatore non può modificare "
                             + "un protocollo per questo cliente");
         }
         if ((schedaAllenamentoMultipartFile == null
@@ -152,7 +152,7 @@ public class GestioneProtocolloController {
                 || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST,
                     (Object)
-                    "Almeno uno dei due file deve essere presente");
+                            "Almeno uno dei due file deve essere presente");
         }
 
         File schedaAlimentareFile;
@@ -172,13 +172,11 @@ public class GestioneProtocolloController {
                 gestioneProtocolloService.inserisciSchedaAlimentare(
                         protocollo,
                         schedaAlimentareFile);
-                schedaAlimentareFile.delete();
             }
             if (schedaAllenamentoFile != null) {
                 gestioneProtocolloService.inserisciSchedaAllenamento(
                         protocollo,
                         schedaAllenamentoFile);
-                schedaAllenamentoFile.delete();
             }
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "protocollo", protocollo);
@@ -218,7 +216,7 @@ public class GestioneProtocolloController {
                     protocollo);
         }
         return ResponseHandler.generateResponse(BAD_REQUEST,
-                (Object)"l'utente non ha accesso a questo protocollo");
+                (Object) "l'utente non ha accesso a questo protocollo");
     }
 
 
@@ -256,7 +254,7 @@ public class GestioneProtocolloController {
                 preparatore, idCliente)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     (Object)
-                    "Il preparatore non può vedere "
+                            "Il preparatore non può vedere "
                             + "la lista dei protocolli per questo cliente");
         }
         try {
@@ -268,7 +266,7 @@ public class GestioneProtocolloController {
                                     utenteCliente));
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    (Object)e.getMessage());
+                    (Object) e.getMessage());
         }
     }
 
@@ -292,7 +290,7 @@ public class GestioneProtocolloController {
                                     cliente));
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    (Object)e.getMessage());
+                    (Object) e.getMessage());
         }
     }
 
