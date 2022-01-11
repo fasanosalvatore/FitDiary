@@ -35,10 +35,11 @@ import {FetchContext} from "../../context/FetchContext";
 import dish from "../../images/dish.png";
 import training from "../../images/dumbbell.png";
 import photo from "../../images/photos.png";
+import {getReport} from "../../fakeBackend";
+
 export default function View() {
-
+    const report=getReport;
     const { isOpen, onOpen, onClose } = useDisclosure()
-
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -215,7 +216,7 @@ export default function View() {
                                                                     <Flex justify="center">
                                                                         <HStack align="center">
                                                                             <Button variant='ghost' textAlign="center" align="start" leftIcon={<ArrowLeftIcon/>}></Button>
-                                                                            <Image boxSize='200px' src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
+                                                                            <Image boxSize={550} src='https://res.cloudinary.com/hdjxm4zyg/image/upload/s--J9CYotxd--/v1641863408/evssjeyaofzzdrf8yywq.jpg' alt='Dan Abramov' />
                                                                             <Button variant='ghost' textAlign="center" align="end" leftIcon={<ArrowRightIcon/>}></Button>
                                                                         </HStack>
                                                                     </Flex>

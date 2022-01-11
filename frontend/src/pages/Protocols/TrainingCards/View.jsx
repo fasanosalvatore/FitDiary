@@ -1,35 +1,20 @@
-import React, {useContext, useEffect, useState,} from 'react';
+import React, {useCallback, useContext, useEffect, useState,} from 'react';
+import {useDropzone} from 'react-dropzone';
 import {
-    Accordion,
-    AccordionButton,
-    AccordionIcon,
-    AccordionItem,
-    AccordionPanel,
-    Box,
-    Button,
-    Flex,
-    Heading,
-    HStack,
-    IconButton,
-    Table,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tooltip,
-    Tr,
-    useToast,
-    VStack
+    Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Heading,
+    HStack, IconButton, Table, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useToast, VStack,Modal, ModalOverlay,
+    ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure,FormControl,FormLabel,Input
 } from '@chakra-ui/react';
-import {EditIcon} from '@chakra-ui/icons';
+import {EditIcon,CloseIcon} from '@chakra-ui/icons';
 import {RiArrowGoBackLine,} from 'react-icons/ri';
 import {AuthContext} from "../../../context/AuthContext";
 import moment from "moment";
 import {useNavigate, useParams} from "react-router";
 import {FetchContext} from "../../../context/FetchContext";
+import {useForm} from "react-hook-form"
 
 export default function View() {
+    const urlSchedaAllenamento = "schedaAllenamento";
     const days = [1, 2, 3, 4, 5, 6, 7];
     const authContext = useContext(AuthContext);
     const {authState} = authContext;
@@ -38,6 +23,9 @@ export default function View() {
     const [protocollo, setProtocolli] = useState();
     const fetchContext = useContext(FetchContext);
     const [isLoading, setLoading] = useState(true);
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [selectedFileAllenamento, setselectedFileAllenamento] = useState(null);
+    const {handleSubmit, register, setValue} = useForm();
 
     const toast = useToast({
         duration: 9000,
@@ -49,6 +37,44 @@ export default function View() {
         },
 
     })
+
+    function toastParam(title, description, status) {
+        return {
+            title: title, description: description, status: status
+        };
+    }
+
+    const onDropAllenamento = useCallback(acceptedFileAllenamento => {
+        console.log(acceptedFileAllenamento)
+        setValue("fileAllenamento", acceptedFileAllenamento);
+    }, [setValue])
+
+    const {
+        acceptedFiles: acceptedFileAllenamento,
+        getRootProps: getRootPropsAllenamento,
+        getInputProps: getInputPropsAllenamento,
+        isDragActive: isDragActiveAllenamento
+    } = useDropzone({onDrop: onDropAllenamento, maxFiles: 1})
+
+    const onSubmit = async (values) => {
+        const formData = new FormData();
+        if (values.schedaAllenamento)
+            formData.append("schedaAllenamento", values.schedaAllenamento[0])
+        try {
+            const {data} = await fetchContext.authAxios.post(urlSchedaAllenamento, formData)
+            console.log(data);
+            toast(toastParam("Modifica effettuata con successo!", "Scheda allenamento modificata correttamente", data.status))
+        } catch (error) {
+            console.log(error.response);
+            toast(toastParam("Errore", error.response.data.data, "error"))
+        }
+
+    }
+
+    useEffect(() => {
+        setselectedFileAllenamento(acceptedFileAllenamento[0]);
+    }, [acceptedFileAllenamento]);
+
 
     useEffect(() => {
         const listaProtocolli = async () => {
@@ -103,9 +129,59 @@ export default function View() {
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
                                                         <IconButton
                                                             colorScheme='blue'
+                                                            onClick={onOpen}
                                                             icon={<EditIcon/>}
                                                         />
                                                     </Tooltip>
+                                                    <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
+                                                        <ModalOverlay />
+                                                        <ModalContent>
+                                                            <form onSubmit={handleSubmit(onSubmit)}>
+                                                            <ModalHeader textAlign={"center"}>Carica la nuova scheda modificata</ModalHeader>
+                                                            <ModalCloseButton/>
+                                                            <ModalBody align={"center"}>
+                                                                <Flex justify="center">
+                                                                    <HStack align="center">
+                                                                        <FormControl id={"fileAllenamento"}>
+                                                                            {selectedFileAllenamento != null && (
+                                                                                <HStack>
+                                                                                    <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
+                                                                                        setselectedFileAllenamento(null);
+                                                                                        setValue("fileAllenamento", null);
+                                                                                    }}/>
+                                                                                    <Text>
+                                                                                        {selectedFileAllenamento.path}
+                                                                                    </Text>
+                                                                                </HStack>
+                                                                            )}
+                                                                            {!selectedFileAllenamento && (
+                                                                                <div {...getRootPropsAllenamento()}>
+                                                                                    <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
+                                                                                         borderColor={"gray.200"}>
+                                                                                        <Input {...getInputPropsAllenamento()}/>
+                                                                                        {
+                                                                                            isDragActiveAllenamento ?
+                                                                                                <p style={{color: "gray", textAlign: "center"}}>
+                                                                                                    Lascia il file qui ...
+                                                                                                </p> :
+                                                                                                <p style={{color: "gray", textAlign: "center"}}>
+                                                                                                    Clicca e trascina un file qui, oppure clicca per
+                                                                                                    selezionare un file
+                                                                                                </p>
+                                                                                        }
+                                                                                    </Box>
+                                                                                </div>
+                                                                            )}
+                                                                        </FormControl>
+                                                                    </HStack>
+                                                                </Flex>
+                                                            </ModalBody>
+                                                            <ModalFooter>
+                                                                <Button colorScheme='blue' type={"submit"}>Carica</Button>
+                                                            </ModalFooter>
+                                                            </form>
+                                                        </ModalContent>
+                                                    </Modal>
                                                 </HStack>
                                             )}
                                     </Flex>
