@@ -35,6 +35,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -76,6 +77,9 @@ class GestioneProtocolloControllerTest {
     private Utente cliente3;
     private Utente preparatore1;
     private Protocollo protocollo;
+    private Protocollo protocolloConSchedaAlimentare;
+    private Protocollo protocolloConSchedaAllenamento;
+    private Protocollo protocolloPieno;
     private Alimento alimento;
     private Esercizio esercizio;
     private SchedaAllenamento schedaAllenamento;
@@ -114,7 +118,14 @@ class GestioneProtocolloControllerTest {
         protocollo =
                 new Protocollo(1L, LocalDate.now(), null, null, cliente,
                         preparatore, LocalDateTime.now(), null);
-
+        protocolloConSchedaAlimentare =
+                new Protocollo(1L, LocalDate.now(), schedaAlimentare, null, cliente,
+                        preparatore, LocalDateTime.now(), null);
+        protocolloConSchedaAllenamento =
+                new Protocollo(1L, LocalDate.now(), null, schedaAllenamento, cliente,
+                        preparatore, LocalDateTime.now(), null);
+        protocolloPieno = new Protocollo(1L, LocalDate.now(), schedaAlimentare, schedaAllenamento, cliente,
+                preparatore, LocalDateTime.now(), null);
          cliente1 = new Utente(1L, "Rebecca", "Di Matteo",
                 "beccadimatteoo@gmail.com", "Becca123*", true,
                 LocalDate.parse("2000-10-30"), null, "3894685921",
@@ -405,6 +416,171 @@ class GestioneProtocolloControllerTest {
                         .param("dataScadenza", dataScadenza).param("idCliente", idCliente.toString())
 
                         .principal(principal);
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().isBadRequest());
+        fileUtility.close();
+    }
+
+   @Test
+    public void modificaProtocolloSuccess()
+            throws Exception {
+        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
+        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
+        Principal principal = () -> "1";
+        Long idCliente = 1L;
+        Long idProtocollo = 1L;
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
+        when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
+        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
+
+        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
+
+       when(gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileSchedaAlimentare)).thenReturn(protocolloConSchedaAlimentare);
+       when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocolloConSchedaAlimentare, fileSchedaAllenamento)).thenReturn(protocolloPieno);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                      .param("idProtocollo", idProtocollo.toString())
+                        .principal(principal);
+        requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+        fileUtility.close();
+    }
+
+    @Test
+    public void modificaProtocolloErrorUnauthorized()
+            throws Exception {
+        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
+        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
+        Principal principal = () -> "1";
+        Long idCliente = 1L;
+        Long idProtocollo = 1L;
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
+        when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
+        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(false);
+
+        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
+
+        when(gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileSchedaAlimentare)).thenReturn(protocolloConSchedaAlimentare);
+        when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocolloConSchedaAlimentare, fileSchedaAllenamento)).thenReturn(protocolloPieno);
+
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                        .param("idProtocollo", idProtocollo.toString())
+                        .principal(principal);
+        requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().isUnauthorized());
+        fileUtility.close();
+    }
+
+    @Test
+    public void modificaProtocolloSuccessSchedaAllenamentoEmpty()
+            throws Exception {
+        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
+        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento",new byte[0]);
+        Principal principal = () -> "1";
+        Long idCliente = 1L;
+        Long idProtocollo = 1L;
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
+        when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
+        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
+
+        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(null);
+
+        when(gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileSchedaAlimentare)).thenReturn(protocolloConSchedaAlimentare);
+
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                        .param("idProtocollo", idProtocollo.toString())
+                        .principal(principal);
+        requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+        fileUtility.close();
+    }
+
+    @Test
+    public void modificaProtocolloSuccessSchedaAlimentareEmpty()
+            throws Exception {
+        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", new byte[0]);
+        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
+        Principal principal = () -> "1";
+        Long idCliente = 1L;
+        Long idProtocollo = 1L;
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
+        when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
+        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
+
+        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(null);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
+
+        when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocollo, fileSchedaAllenamento)).thenReturn(protocolloConSchedaAllenamento);
+
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                        .param("idProtocollo", idProtocollo.toString())
+                        .principal(principal);
+        requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+        fileUtility.close();
+    }
+
+    @Test
+    public void modificaProtocolloErrorSchedeEmpty()
+            throws Exception {
+        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", new byte[0]);
+        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", new byte[0]);
+        Principal principal = () -> "1";
+        Long idCliente = 1L;
+        Long idProtocollo = 1L;
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
+        when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
+        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
+
+        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(null);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(null);
+
+
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                        .param("idProtocollo", idProtocollo.toString())
+                        .principal(principal);
+        requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
                         .build()
