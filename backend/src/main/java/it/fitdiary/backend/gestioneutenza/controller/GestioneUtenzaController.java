@@ -420,4 +420,30 @@ public class GestioneUtenzaController {
         return ResponseHandler.generateResponse(HttpStatus.OK,
                 (Object) "Eliminazone andata a buon fine");
     }
+    /**
+     * permette di disattivare un cliente dalla piattaforma
+     *
+     * @param idCliente identificativo del cliente da eliminare
+     * @return il nuovo cliente
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<Object> disattivaCliente(
+            @PathVariable("id") final Long idCliente) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        Long idPreparatore = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente preparatore = service.getById(idPreparatore);
+        if (!service.existsByPreparatoreAndId(
+                preparatore, idCliente)) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    (Object)
+                            "Il preparatore non può accedere "
+                            + "al profilo di questo cliente");
+        }
+        Utente cliente = service.getById(idCliente);
+        cliente.setAttivo(false);
+        return ResponseHandler.generateResponse(HttpStatus.OK, "cliente",
+                cliente);
+    }
 }
