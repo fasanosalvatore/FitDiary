@@ -229,4 +229,22 @@ class GestioneReportContollerTest {
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().isUnauthorized());
     }
+    @Test
+    void visualizzazioneStoricoProgressiPreparatore() throws Exception {
+        Principal principal = () -> "2";
+        when(gestioneUtenzaService.getById(preparatore.getId())).thenReturn(preparatore);
+        when(gestioneUtenzaService.existsByPreparatoreAndId(preparatore,cliente.getId())).thenReturn(true);
+        when(gestioneReportService.visualizzazioneStoricoProgressi(cliente)).thenReturn(cliente.getListaReport());
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get(
+                                "/api/v1/reports").param("clienteId",
+                                String.valueOf(cliente.getId()))
+                        .principal(principal);
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+    }
 }
