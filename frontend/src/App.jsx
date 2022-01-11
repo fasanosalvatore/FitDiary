@@ -22,6 +22,7 @@ import TrainersIndex from "./pages/User/Trainer/Index";
 
 import ProtocolsIndex from "./pages/Protocols/Index"
 import ProtocolsCreate from "./pages/Protocols/Create"
+import ReportsCreate from "./pages/Reports/Create"
 import ProtocolsView from "./pages/Protocols/View";
 import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
 import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
@@ -51,6 +52,9 @@ const AppRoutes = () => {
                 <Route path="dietcard/:id" element={<ProtocolsDietCardsView/>}/>
                 <Route path="trainingcard/:id" element={<ProtocolsTrainingCardsView/>}/>
                 <Route path="/customers" element={<CustomersIndex/>}>
+                    <Route path="create" element={<CustomersCreate/>}/>
+                </Route>
+                <Route path="reports/" element={<ReportsCreate/>}>
                     <Route path="create" element={<CustomersCreate/>}/>
                 </Route>
             </Route>
