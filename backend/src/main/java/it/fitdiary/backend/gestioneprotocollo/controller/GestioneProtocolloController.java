@@ -172,13 +172,11 @@ public class GestioneProtocolloController {
                 gestioneProtocolloService.inserisciSchedaAlimentare(
                         protocollo,
                         schedaAlimentareFile);
-                schedaAlimentareFile.delete();
             }
             if (schedaAllenamentoFile != null) {
                 gestioneProtocolloService.inserisciSchedaAllenamento(
                         protocollo,
                         schedaAllenamentoFile);
-                schedaAllenamentoFile.delete();
             }
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "protocollo", protocollo);
