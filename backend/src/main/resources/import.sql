@@ -133,22 +133,10 @@ INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recup
 INSERT INTO `report` (`id`, `crf_addome`, `crf_bicipite`, `crf_quadricipite`, `data_aggiornamento`, `data_creazione`, `peso`, `peso_stimato`, `cliente_id`) VALUES (1, 30, 30, 30, '2022-01-10 22:36:03', '2022-01-10 22:36:03', 100, 100, 4);
 
 /*immaginiReport*/
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (1, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--HXODmb5F--/v1641850547/kekubv0cfancvjbozddu.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (2, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--QR4rcqxE--/v1641850548/xxdazt3mhy9wlbi0y2ou.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (3, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--9QHwbnCh--/v1641850549/eztvpf5shkdowapjdept.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (4, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--DsdAP9j2--/v1641850549/cax8c65h9wr3pewghuyp.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (5, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--3Eyqe8vy--/v1641850550/wlcham11nx7mlmjzqfzx.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (6, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--oQMH9Twx--/v1641850551/jhzbjoes58edmzaqchgb.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (7, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--ifeJ8xyE--/v1641850552/nbjlnwwkcoavshcyninl.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (8, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--fOGi0MCj--/v1641850553/r2qylhgpg71pycbkql5q.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (9, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--dmvqsq3r--/v1641850554/yfzoizjq5nmnthw6yh7l.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (10, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--AFuuPcwG--/v1641850554/v1b2wt9xee6xihivvhzo.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (11, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--GGUVtinN--/v1641850555/igsjcda2elwy30azk3x0.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (12, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--N1L7z3hy--/v1641850556/eu5zzgqh0pwcmzwdzl3e.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (13, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--xpg58nIo--/v1641850557/gtzsjnfhpoyjptbtql7n.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (14, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--iXZOd67t--/v1641850558/ulkefg5ismw98emj9kio.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (15, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--RCTyPTRB--/v1641850559/zyviu1qpmuffxkbqgbgu.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (16, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--pbkEPYqa--/v1641850560/qhejkbtknuc3rv5ceknz.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (17, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--AnqKiQ4W--/v1641850560/aansb0hrhj5ie6gckkhg.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (18, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--pLWbEj4q--/v1641850562/lbhzercbjhiqrtq2qtyf.jpg', 1);
-INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (19, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--Cdv4fEVZ--/v1641850562/d1ckb9tidbexn0gozqx2.jpg', 1);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (1, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--J9CYotxd--/v1641863408/evssjeyaofzzdrf8yywq.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (2, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--XeZpEzAu--/v1641863409/xi8pg8u9y5prdvf69ild.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (3, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--9GWTvtks--/v1641863410/qwih8qpvc39lyuw8l0m5.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (4, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--FvFZllyI--/v1641863411/ylrrm8gkcvvp2uvu5ujo.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (5, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--SGmo-p_X--/v1641863413/pdimpx91p5cyz86hppee.png', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (6, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--a8dfKwK9--/v1641863414/zoveedipdtfcz9zazdgz.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (7, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--DuJJQu8E--/v1641863415/fpugynqoqg2nbwbkfjwp.jpg', 2);
