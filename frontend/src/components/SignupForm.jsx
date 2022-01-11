@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {Link, useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from "react-router-dom";
 import {
     Box,
     Button,
@@ -22,19 +22,19 @@ import {
     useBreakpointValue,
     useToast
 } from "@chakra-ui/react";
-import {CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe} from "@stripe/react-stripe-js";
+import { CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import TierPrice from "./TierPrice";
-import {publicFetch} from "../util/fetch";
-import {AtSignIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import { publicFetch } from "../util/fetch";
+import { AtSignIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 export default function SignupForm() {
     const urlSignup = 'utenti/preparatore';
     const urlBuy = 'abbonamento/acquista';
-    const {register, handleSubmit, getValues, formState: {errors, isSubmitting}} = useForm();
+    const { register, handleSubmit, getValues, formState: { errors, isSubmitting } } = useForm();
     const [signupIsLoading, setSignupIsLoading] = useState(false);
     const [signupIsEnabled, setSignupIsEnable] = useState(false);
-    const [cardComplete, setCardComplete] = useState({cardNumber: false, cardExpiry: false, cardCvc: false})
-    const colSpan = useBreakpointValue({base: 2, md: 1})
+    const [cardComplete, setCardComplete] = useState({ cardNumber: false, cardExpiry: false, cardCvc: false })
+    const colSpan = useBreakpointValue({ base: 2, md: 1 })
     const stripe = useStripe();
     const elements = useElements();
     const [showP, setShowP] = React.useState(false)
@@ -56,7 +56,7 @@ export default function SignupForm() {
     const navigate = useNavigate();
 
     function handleCardElementOnChange(e) {
-        setCardComplete({...cardComplete, [e.elementType]: e.complete})
+        setCardComplete({ ...cardComplete, [e.elementType]: e.complete })
     }
 
     useEffect(() => {
@@ -64,16 +64,16 @@ export default function SignupForm() {
     }, [cardComplete])
 
 
-//Chiamata API creazione utente
+    //Chiamata API creazione utente
     const onSubmit = async values => {
         if (!stripe || !elements) {
             return "";
         }
         setSignupIsLoading(true);
         try {
-            const {data: data2} = await publicFetch.post(urlSignup, values)
-            const {data: {response: {utente, ...customerId}}} = data2;
-            const {data: {data: {Utente: {clientSecret}}}} = await publicFetch.post(urlBuy, customerId);
+            const { data: data2 } = await publicFetch.post(urlSignup, values)
+            const { data: { response: { utente, ...customerId } } } = data2;
+            const { data: { data: { Utente: { clientSecret } } } } = await publicFetch.post(urlBuy, customerId);
             const stripePayment = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
                     card: elements.getElement(CardNumberElement),
@@ -103,14 +103,14 @@ export default function SignupForm() {
         return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
     }
 
-    return (<form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
+    return (<form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={2} columnGap={5} rowGap={5} w="full">
             <GridItem colSpan={colSpan} w="100%">
                 <FormControl id={"nome"} isInvalid={errors.nome} isRequired>
                     <FormLabel htmlFor="nome">Nome</FormLabel>
                     <Input type="text" placeholder="Mario" {...register("nome", {
                         required: "Il nome è obbligatorio",
-                        maxLength: {value: 50, message: "Il nome è troppo lungo"},
+                        maxLength: { value: 50, message: "Il nome è troppo lungo" },
                         pattern: {
                             value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
                             message: "Formato nome non valido"
@@ -124,7 +124,7 @@ export default function SignupForm() {
                     <FormLabel>Cognome</FormLabel>
                     <Input type="text" placeholder="Rossi" {...register("cognome", {
                         required: "Il cognome è obbligatorio",
-                        maxLength: {value: 50, message: "Il cognome è troppo lungo"},
+                        maxLength: { value: 50, message: "Il cognome è troppo lungo" },
                         pattern: {
                             value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
                             message: "Formato cognome non valido"
@@ -149,10 +149,10 @@ export default function SignupForm() {
                     <FormLabel>Sesso</FormLabel>
                     <RadioGroup>
                         <Stack direction="row">
-                            <Radio {...register("sesso", {required: "Il campo sesso è obbligatorio"})} type="radio"
-                                   value="M" py={2} pr={5}>Maschio</Radio>
-                            <Radio {...register("sesso", {required: "Il campo sesso è obbligatorio"})} type="radio"
-                                   value="F" pl={5} pr={5}>Femmina</Radio>
+                            <Radio {...register("sesso", { required: "Il campo sesso è obbligatorio" })} type="radio"
+                                value="M" py={2} pr={5}>Maschio</Radio>
+                            <Radio {...register("sesso", { required: "Il campo sesso è obbligatorio" })} type="radio"
+                                value="F" pl={5} pr={5}>Femmina</Radio>
                         </Stack>
                     </RadioGroup>
                     <FormErrorMessage>{errors.sesso && errors.sesso.message}</FormErrorMessage>
@@ -164,11 +164,11 @@ export default function SignupForm() {
                     <InputGroup>
                         <InputLeftElement
                             pointerEvents='none'
-                            children={<AtSignIcon color='gray.300'/>}
+                            children={<AtSignIcon color='gray.300' />}
                         />
                         <Input type="text" placeholder="Email" {...register("email", {
                             required: "Il campo email è obbligatorio",
-                            pattern: {value: /^\S+@\S+$/i, message: "Formato email non valido"}
+                            pattern: { value: /^\S+@\S+$/i, message: "Formato email non valido" }
                         })} />
                     </InputGroup>
                     <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
@@ -183,7 +183,7 @@ export default function SignupForm() {
                         <InputGroup>
                             <Input type={showP ? 'text' : 'password'} placeholder="Password" {...register("password", {
                                 required: "Il campo password è obbligatorio",
-                                maxLength: {value: 255, message: "Password troppo lunga"},
+                                maxLength: { value: 255, message: "Password troppo lunga" },
                                 pattern: {
                                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&.])[A-Za-z\d@$!%*?^#()<>+&.]{8,}$/i,
                                     message: "Formato password non valido"
@@ -191,8 +191,8 @@ export default function SignupForm() {
                             })} />
                             <InputRightElement width='2.5rem'>
                                 <Button bg={"transparent"} h='1.75rem' size='sm' onClick={handleClickP}>
-                                    {showP ? <ViewOffIcon color='gray.900'/> :
-                                        <ViewIcon color='gray.900'/>}
+                                    {showP ? <ViewOffIcon color='gray.900' /> :
+                                        <ViewIcon color='gray.900' />}
                                 </Button>
                             </InputRightElement>
                         </InputGroup>
@@ -205,20 +205,20 @@ export default function SignupForm() {
                     <FormLabel>Conferma Password</FormLabel>
                     <InputGroup>
                         <Input type={showCP ? 'text' : 'password'}
-                               placeholder="Conferma Password" {...register("confermaPassword", {
-                            required: "Il campo conferma password è obbligatorio",
-                            validate: value => {
-                                if (value === getValues("password")) {
-                                    return true
-                                } else {
-                                    return "Le password non coincidono"
+                            placeholder="Conferma Password" {...register("confermaPassword", {
+                                required: "Il campo conferma password è obbligatorio",
+                                validate: value => {
+                                    if (value === getValues("password")) {
+                                        return true
+                                    } else {
+                                        return "Le password non coincidono"
+                                    }
                                 }
-                            }
-                        })} />
+                            })} />
                         <InputRightElement width='2.5rem'>
                             <Button bg={"transparent"} h='1.75rem' size='sm' onClick={handleClickCP}>
-                                {showCP ? <ViewOffIcon color='gray.900'/> :
-                                    <ViewIcon color='gray.900'/>}
+                                {showCP ? <ViewOffIcon color='gray.900' /> :
+                                    <ViewIcon color='gray.900' />}
                             </Button>
                         </InputRightElement>
                     </InputGroup>
@@ -236,30 +236,30 @@ export default function SignupForm() {
                         <GridItem colSpan={2} w="100%">
                             <FormLabel htmlFor="numeroCarta">Numero Carta</FormLabel>
                             <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
-                                <CardNumberElement options={{showIcon: true}} onChange={handleCardElementOnChange}/>
+                                <CardNumberElement options={{ showIcon: true }} onChange={handleCardElementOnChange} />
                             </Box>
                         </GridItem>
                         <GridItem colSpan={colSpan} w="100%">
                             <FormLabel htmlFor="dataScadenza">Data Scadenza</FormLabel>
                             <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
-                                <CardExpiryElement onChange={handleCardElementOnChange}/>
+                                <CardExpiryElement onChange={handleCardElementOnChange} />
                             </Box>
                         </GridItem>
                         <GridItem colSpan={colSpan} w="100%">
                             <FormLabel htmlFor="CVV">CVV</FormLabel>
                             <Box border="1px" borderRadius={4} borderColor={"gray.200"} p={2.5}>
-                                <CardCvcElement onChange={handleCardElementOnChange}/>
+                                <CardCvcElement onChange={handleCardElementOnChange} />
                             </Box>
                         </GridItem>
                     </SimpleGrid>
                 </Box>
                 <GridItem colSpan={2}>
-                    <TierPrice/>
+                    <TierPrice />
                 </GridItem>
                 <GridItem colSpan={2}>
-                    <Button w="full" mt={4} colorScheme='teal' type='submit'
-                            isLoading={signupIsLoading || isSubmitting}
-                            isDisabled={!signupIsEnabled}>
+                    <Button w="full" mt={4} colorScheme='fitdiary' type='submit'
+                        isLoading={signupIsLoading || isSubmitting}
+                        isDisabled={!signupIsEnabled}>
                         Registrati e Paga
                     </Button>
                     <Text align={"center"} fontSize={"large"}>Hai gia un account? <Link

@@ -73,7 +73,7 @@ export default function Create() {
                             })} />
                             <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                         </FormControl>
-                        <Button w="full" mt={4} colorScheme='teal' isLoading={isSubmitting} type='submit'>
+                        <Button w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting} type='submit'>
                             Invia Credenziali
                         </Button>
                     </form>

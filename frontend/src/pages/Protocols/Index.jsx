@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -19,17 +19,18 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import moment from "moment";
-import {InfoIcon, SearchIcon} from '@chakra-ui/icons'
-import {FetchContext} from "../../context/FetchContext";
-import {AuthContext} from "../../context/AuthContext";
-import {GradientBar} from "../../components/GradientBar";
+import { InfoIcon, SearchIcon } from '@chakra-ui/icons'
+import { FetchContext } from "../../context/FetchContext";
+import { AuthContext } from "../../context/AuthContext";
+import { GradientBar } from "../../components/GradientBar";
+import { Link as ReactLink } from "react-router-dom"
 
 const urlProtocollo = "/protocols"
 
 function Index() {
     moment.locale("it-IT");
     const authContext = useContext(AuthContext)
-    const {authState} = authContext;
+    const { authState } = authContext;
     const [search, setSearch] = useState("");
     const onChange = (e) => {
         setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
@@ -48,7 +49,7 @@ function Index() {
             try {
                 let params = (new URL(document.location)).searchParams;
                 const idCliente = params.get("idCliente") || "";
-                const {data} = await fetchContext.authAxios("protocolli" + (idCliente !== "" ? "?clienteId=" + idCliente : ""));
+                const { data } = await fetchContext.authAxios("protocolli" + (idCliente !== "" ? "?clienteId=" + idCliente : ""));
                 setProtocolli(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
@@ -64,21 +65,26 @@ function Index() {
 
     return (
         <>
-            {authState.userInfo.roles[0].toLowerCase() === "preparatore" &&
-                <Link to="/protocols/create" mx={10}>
-                    <Button colorScheme={"blue"} color={"white"} m={10}>Crea Protocollo</Button>
-                </Link>}
-            {(!isLoading && listProtocolli) && (
+            {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
+                <ReactLink to="/protocols/create">
+                    <Button colorScheme={"fitdiary"} color={"white"} mx={[0, 5, 10, 20]} my={5}>
+                        Crea Protocollo
+                    </Button>
+                </ReactLink>
+            )}
+            {!isLoading && listProtocolli && (
                 <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
-                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
-                        <GradientBar/>
-                        <Heading size="lg" textAlign={"center"} pt={5}>Visualizzazione Protocolli</Heading>
+                    <Box bg={"white"} borderRadius="xl" pb={5} w={"full"}>
+                        <GradientBar />
+                        <Heading size="lg" textAlign={"center"} pt={5}>
+                            Visualizzazione Protocolli
+                        </Heading>
                         <Box pl={10} pr={10} pb={5} pt={5}>
                             <HStack>
                                 <InputGroup>
                                     <InputLeftElement
-                                        pointerEvents='none'
-                                        children={<SearchIcon color='gray.300'/>}
+                                        pointerEvents="none"
+                                        children={<SearchIcon color="gray.300" />}
                                     />
                                     <Input
                                         className="SearchInput"
@@ -89,10 +95,12 @@ function Index() {
                                 </InputGroup>
                             </HStack>
                             {/* Barra di ricerca*/}
-                            {listProtocolli.protocollo.length > 0 ?
+                            {listProtocolli.protocollo.length > 0 ? (
                                 <>
-                                    <Heading w={"full"} mb={5} textAlign={"center"}>Ecco lo storico dei protocolli
-                                        di {listProtocolli.protocollo[0].cliente.nome} {listProtocolli.protocollo[0].cliente.cognome}
+                                    <Heading w={"full"} mb={5} textAlign={"center"}>
+                                        Ecco lo storico dei protocolli di{" "}
+                                        {listProtocolli.protocollo[0].cliente.nome}{" "}
+                                        {listProtocolli.protocollo[0].cliente.cognome}
                                     </Heading>
                                     <Table variant={"unstyled"} colorScheme={"gray"} size="md">
                                         <TableCaption>Lista Protocolli</TableCaption>
@@ -105,20 +113,41 @@ function Index() {
                                             </Tr>
                                         </Thead>
                                         <Tbody>
-                                            {listProtocolli.protocollo.map((protocol) => (protocol.id === parseInt(search) || search === "") && (
-                                                <Tr>
-                                                    <Td>{protocol.id}</Td>
-                                                    <Td>{moment(protocol.dataCreazione).format("DD/MM/yyyy")}</Td>
-                                                    <Td>{moment(protocol.dataScadenza).format("DD/MM/yyyy")}</Td>
-                                                    <Td><Link to={urlProtocollo + "/" + protocol.id}> <InfoIcon/></Link></Td>
-                                                </Tr>
-                                            ))}
+                                            {listProtocolli.protocollo.map(
+                                                (protocol) =>
+                                                    (protocol.id === parseInt(search) ||
+                                                        search === "") && (
+                                                        <Tr>
+                                                            <Td>{protocol.id}</Td>
+                                                            <Td>
+                                                                {moment(protocol.dataCreazione).format(
+                                                                    "DD/MM/yyyy"
+                                                                )}
+                                                            </Td>
+                                                            <Td>
+                                                                {moment(protocol.dataScadenza).format(
+                                                                    "DD/MM/yyyy"
+                                                                )}
+                                                            </Td>
+                                                            <Td>
+                                                                <Link to={urlProtocollo + "/" + protocol.id}>
+                                                                    {" "}
+                                                                    <InfoIcon />
+                                                                </Link>
+                                                            </Td>
+                                                        </Tr>
+                                                    )
+                                            )}
                                         </Tbody>
                                     </Table>
                                 </>
-                                :
-                                <Heading py={5} textAlign={"center"}>Non c'è niente qui...</Heading>}
-                        </Box></Box>
+                            ) : (
+                                <Heading py={5} textAlign={"center"}>
+                                    Non c'è niente qui...
+                                </Heading>
+                            )}
+                        </Box>
+                    </Box>
                 </VStack>
             )}
         </>
