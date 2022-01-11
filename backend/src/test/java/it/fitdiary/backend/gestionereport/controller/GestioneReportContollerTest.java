@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -50,23 +51,46 @@ class GestioneReportContollerTest {
     @MockBean
     private GestioneUtenzaServiceImpl gestioneUtenzaService;
     private Ruolo ruoloCliente;
+    private Ruolo ruoloPreparatore;
     private Utente cliente;
+    private Utente cliente2;
+    private Utente preparatore;
+    private Utente preparatore2;
+    private List<Utente> listaClienti;
+    private List<Report> listaReport;
     private Report report;
     private ImmaginiReport img;
     private ArrayList<ImmaginiReport> immaginiReports;
 
     @BeforeEach
     void setUp() {
-        ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
+        ruoloCliente = new Ruolo(3L, Ruolo.RUOLOCLIENTE, null, null);
+        ruoloPreparatore = new Ruolo(2L, Ruolo.RUOLOPREPARATORE, null, null);
         cliente = new Utente(1L, "Rebecca", "Di Matteo",
                 "beccadimatteoo@gmail.com", "Becca123*", true, null, null, null,
+                null, null, null, preparatore, ruoloCliente, null, null, listaReport, null,
+                null);
+        cliente2 = new Utente(3L, "Roberta", "Carlito",
+                "roberta@gmail.com", "Passwprd*", true, null, null, null,
                 null, null, null, null, ruoloCliente, null, null, null, null,
+                null);
+        listaClienti = new ArrayList<Utente>();
+        listaClienti.add(cliente);
+        preparatore = new Utente(2L, "Mario", "Rossi",
+                "mariorossi@gmail.com", "Password123*", true, null, null, null,
+                null, null, null, null, ruoloPreparatore, null, listaClienti, null, null,
+                null);
+        preparatore2 = new Utente(4L, "Tommaso", "Rossi",
+                "tomrossi@gmail.com", "Password123*", true, null, null, null,
+                null, null, null, null, ruoloPreparatore, null, null, null, null,
                 null);
         img = new ImmaginiReport(1l, "img1", null);
         immaginiReports = new ArrayList<>();
         immaginiReports.add(img);
         report = new Report(1l, 80f, 100f, 40f, 40f, 40f, cliente, null, null,
                 immaginiReports);
+        listaReport = new ArrayList<Report>();
+        listaReport.add(report);
     }
 
     @Test
@@ -96,5 +120,79 @@ class GestioneReportContollerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    void visualizzaReportSuccessFromCliente() throws Exception {
+        Principal principal = () -> "1";
+        long idReport=1L;
+        when(gestioneUtenzaService.getById(1l)).thenReturn(cliente);
+        when(gestioneReportService.getById(idReport)).thenReturn(report);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get(
+                                "/api/v1/reports/1")
+                        .principal(principal);
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    void visualizzaReportErrorFromCliente() throws Exception {
+        Principal principal = () -> "3";
+        long idReport=1L;
+        when(gestioneUtenzaService.getById(3l)).thenReturn(cliente2);
+        when(gestioneReportService.getById(idReport)).thenReturn(report);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get(
+                                "/api/v1/reports/1")
+                        .principal(principal);
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().isUnauthorized());
+    }
+
+    @Test
+    void visualizzaReportSuccessFromPreparatore() throws Exception {
+        Principal principal = () -> "2";
+        long idReport=1L;
+        when(gestioneUtenzaService.getById(2l)).thenReturn(preparatore);
+        when(gestioneReportService.getById(idReport)).thenReturn(report);
+        when(gestioneUtenzaService.existsByPreparatoreAndId(preparatore, report.getCliente().getId())).thenReturn(true);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get(
+                                "/api/v1/reports/1")
+                        .principal(principal);
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+
+    @Test
+    void visualizzaReportErrorFromPreparatore() throws Exception {
+        Principal principal = () -> "4";
+        long idReport=1L;
+        when(gestioneUtenzaService.getById(4l)).thenReturn(preparatore2);
+        when(gestioneReportService.getById(idReport)).thenReturn(report);
+        when(gestioneUtenzaService.existsByPreparatoreAndId(preparatore2, report.getCliente().getId())).thenReturn(false);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get(
+                                "/api/v1/reports/1")
+                        .principal(principal);
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().isUnauthorized());
     }
 }
