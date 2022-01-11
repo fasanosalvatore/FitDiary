@@ -69,4 +69,10 @@ public interface GestioneUtenzaService extends UserDetailsService {
      * @return lista degli utenti del sistema
      */
     List<Utente> visualizzaListaUtenti();
+
+    /**
+     *
+     * @param idCliente id del cliente
+     */
+    Boolean deleteUtenteById(Long idCliente);
 }

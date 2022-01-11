@@ -9,6 +9,7 @@ import com.stripe.Stripe;
 import com.stripe.model.Customer;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
@@ -390,5 +391,33 @@ public class GestioneUtenzaController {
                 "clienti",
                 utente.getListaClienti());
 
+    }
+
+    /**
+     * permette di eliminare un cliente dal sistema
+     *
+     * @param idCliente identificativo del cliente da eliminare
+     * @return risposta di conferma di eliminazione
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<Object> eliminaCliente(
+            @PathVariable("id") final Long idCliente) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        Long idAdmin = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente admin = service.getById(idAdmin);
+        if (admin.getRuolo().getNome() != "ADMIN") {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    (Object) "Questo utente non è un admin");
+        }
+        if (!service.deleteUtenteById(idCliente)) {
+            return ResponseHandler.generateResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    (Object) "Eliminazone non andata a buon fine");
+
+        }
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                (Object) "Eliminazone andata a buon fine");
     }
 }

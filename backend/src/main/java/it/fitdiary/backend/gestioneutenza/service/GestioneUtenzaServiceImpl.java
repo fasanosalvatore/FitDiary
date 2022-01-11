@@ -240,6 +240,13 @@ public class GestioneUtenzaServiceImpl
         return utenteRepository.existsByPreparatoreAndId(preparatore,
                 idCliente);
     }
+    @Override
+    public Boolean deleteUtenteById(Long idCliente){
+        if (idCliente == null) {
+            throw new IllegalArgumentException("Id cliente non valido");
+        }
+        return utenteRepository.deleteUtenteById(idCliente);
+    }
 
     /**
      * @return lista utenti del sistema
@@ -248,5 +255,6 @@ public class GestioneUtenzaServiceImpl
     public List<Utente> visualizzaListaUtenti() {
         return utenteRepository.findAll();
     }
+
 }
 
