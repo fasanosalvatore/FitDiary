@@ -17,8 +17,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -68,4 +70,28 @@ class GestioneReportServiceImplTest {
                 gestioneReportService.inserimentoReport(reportNotSave,
                         urlString));
     }
+
+
+    @Test
+    void getByIdSuccess() {
+        when(reportRepository.existsById(1L)).thenReturn(true);
+        when(reportRepository.findById(1L)).thenReturn(
+                Optional.ofNullable(report));
+        assertEquals(report,
+                gestioneReportService.getById(1L));
+    }
+
+    @Test
+    void getByIdIdNonValido() {
+        assertThrows(IllegalArgumentException.class,
+                () -> gestioneReportService.getById(null));
+    }
+
+    @Test
+    void getByIdReportNonEsistente() {
+        when(reportRepository.existsById(1L)).thenReturn(false);
+        assertThrows(IllegalArgumentException.class,
+                () -> gestioneReportService.getById(1L));
+    }
+
 }
