@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mail.MailException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -399,7 +400,7 @@ public class GestioneUtenzaController {
      * @param idCliente identificativo del cliente da eliminare
      * @return risposta di conferma di eliminazione
      */
-    @GetMapping("{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<Object> eliminaCliente(
             @PathVariable("id") final Long idCliente) {
         HttpServletRequest request = ((ServletRequestAttributes)
@@ -426,7 +427,7 @@ public class GestioneUtenzaController {
      * @param idCliente identificativo del cliente da eliminare
      * @return il nuovo cliente
      */
-    @GetMapping("{id}")
+    @PutMapping ("{id}")
     public ResponseEntity<Object> disattivaCliente(
             @PathVariable("id") final Long idCliente) {
         HttpServletRequest request = ((ServletRequestAttributes)
