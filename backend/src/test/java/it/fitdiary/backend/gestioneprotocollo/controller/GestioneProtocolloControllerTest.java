@@ -1,5 +1,7 @@
 package it.fitdiary.backend.gestioneprotocollo.controller;
 
+import com.stripe.exception.InvalidRequestException;
+import com.stripe.model.Customer;
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.Alimento;
 import it.fitdiary.backend.entity.Esercizio;
@@ -13,11 +15,15 @@ import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloServiceI
 import it.fitdiary.backend.gestioneutenza.controller.GestioneUtenzaController;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
+import it.fitdiary.backend.utility.FileUtility;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -79,6 +85,7 @@ class GestioneProtocolloControllerTest {
     private File fileSchedaAlimentare;
     private File fileSchedaAlimentareError;
     private File fileNotCsv;
+
 
     @BeforeEach
     public void setUp() {
@@ -318,18 +325,6 @@ class GestioneProtocolloControllerTest {
     }
 
     @Test
-    public void getFileSuccess() throws IOException {
-        MockMultipartFile mockMultipartFile= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
-        assertEquals(fileSchedaAlimentare, gestioneProtocolloController.getFile(mockMultipartFile));
-    }
-
-    @Test
-    public void getFileError() throws IOException {
-        MockMultipartFile mockMultipartFile= new MockMultipartFile("schedaAlimentare", new byte[0]);
-        assertEquals(null, gestioneProtocolloController.getFile(mockMultipartFile));
-    }
-
-    @Test
     public void creazioneProtocolloSuccess()
             throws Exception {
         String dataScadenza= "2023-12-12";
@@ -340,8 +335,10 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
        when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
-       when(mock(GestioneProtocolloController.class).getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
-       when(mock(GestioneProtocolloController.class).getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
+
+        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
         Protocollo protocolloPre = new Protocollo();
         protocolloPre.setDataScadenza(LocalDate.parse(dataScadenza));
         protocolloPre.setCliente(cliente3);
@@ -359,7 +356,7 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().is2xxSuccessful());
-
+        fileUtility.close();
     }
 
     @Test
@@ -398,8 +395,10 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
         when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
-        when(mock(GestioneProtocolloController.class).getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
-        when(mock(GestioneProtocolloController.class).getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
+
+        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(
                                 "/api/v1/protocolli").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
@@ -412,6 +411,6 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().isBadRequest());
-
+        fileUtility.close();
     }
 }

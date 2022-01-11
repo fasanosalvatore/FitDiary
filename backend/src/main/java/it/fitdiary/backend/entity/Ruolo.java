@@ -24,6 +24,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Ruolo {
     /**
+     * ruolo preparatore.
+     */
+    public static final String RUOLOPREPARATORE = "Preparatore";
+    /**
+     * ruolo preparatore.
+     */
+    public static final String RUOLOCLIENTE = "Cliente";
+    /**
+     * ruolo admin.
+     */
+    public static final String RUOLOADMIN = "Admin";
+    /**
      * lunghezza massima nome ruolo.
      */
     public static final int MAX_ROLE_NAME_LENGTH = 20;

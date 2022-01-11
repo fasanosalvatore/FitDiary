@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -238,6 +239,15 @@ public class GestioneUtenzaServiceImpl
         }
         return utenteRepository.existsByPreparatoreAndId(preparatore,
                 idCliente);
+    }
+
+    /**
+     *
+     * @return lista utenti del sistema
+     */
+    @Override
+    public List<Utente> visualizzaListaUtenti(){
+        return utenteRepository.findAll();
     }
 }
 

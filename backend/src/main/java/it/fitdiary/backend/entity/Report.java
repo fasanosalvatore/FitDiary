@@ -1,9 +1,9 @@
 package it.fitdiary.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,12 +14,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Report {
@@ -67,7 +70,6 @@ public class Report {
      * cliente.
      */
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "cliente_id")
     private Utente cliente;
 
@@ -84,4 +86,10 @@ public class Report {
     @Column(name = "data_aggiornamento")
     @UpdateTimestamp
     private LocalDateTime dataAggiornamento;
+
+    /**
+     * listaAlimenti della scheda alimentare.
+     */
+    @OneToMany(mappedBy = "report")
+    private List<ImmaginiReport> immaginiReports;
 }

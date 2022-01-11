@@ -6,6 +6,8 @@ import org.springframework.mail.MailException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
+
 
 /**
  *
@@ -62,4 +64,10 @@ public interface GestioneUtenzaService extends UserDetailsService {
      */
     Boolean existsByPreparatoreAndId(Utente preparatore,
                                      Long idCliente);
+
+    /**
+     * 
+     * @return lista degli utenti del sistema
+     */
+    List<Utente> visualizzaListaUtenti();
 }
