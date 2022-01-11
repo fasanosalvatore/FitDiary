@@ -360,5 +360,59 @@ class GestioneUtenzaControllerTest {
                 .perform(requestBuilder);
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
+
+    @Test
+    void visualizzaProfiloUtenteOnSuccess() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null,null);
+        Ruolo ruoloCliente = new Ruolo(2L, "CLIENTE", null,null);
+
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
+                , "Davide123*", true, LocalDate.parse("2000-03" +
+                "-03"), "M", null, null, null,
+                null, null, ruoloPrep, null, null, null,null, null);
+        Utente cliente = new Utente(2L, "Rebecca", "La Gamba", "rebe@gmail.com"
+                , "Rebecca123*", true, LocalDate.parse("2000-10" +
+                "-03"), "F", null, null, null,
+                null, utente, ruoloPrep, null, null, null,null, null);
+
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.getById(Long.parseLong(principal.getName()))).thenReturn(utente);
+        when(gestioneUtenzaService.existsByPreparatoreAndId(utente,cliente.getId())).thenReturn(true);
+        when(gestioneUtenzaService.getById(cliente.getId())).thenReturn(cliente);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/utenti/2").principal(principal);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+    }
+    @Test
+    void visualizzaProfiloUtenteFailed() throws Exception {
+        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null,null);
+        Ruolo ruoloCliente = new Ruolo(2L, "CLIENTE", null,null);
+
+        Utente utente = new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
+                , "Davide123*", true, LocalDate.parse("2000-03" +
+                "-03"), "M", null, null, null,
+                null, null, ruoloPrep, null, null, null,null, null);
+        Utente cliente = new Utente(2L, "Rebecca", "La Gamba", "rebe@gmail.com"
+                , "Rebecca123*", true, LocalDate.parse("2000-10" +
+                "-03"), "F", null, null, null,
+                null, utente, ruoloPrep, null, null, null,null, null);
+
+        Principal principal = () -> "1";
+        when(gestioneUtenzaService.getById(Long.parseLong(principal.getName()))).thenReturn(utente);
+        when(gestioneUtenzaService.existsByPreparatoreAndId(utente,cliente.getId())).thenReturn(false);
+        when(gestioneUtenzaService.getById(cliente.getId())).thenReturn(cliente);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.get("/api/v1/utenti/2").principal(principal);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().is4xxClientError());
+    }
+    /**@Test
+    void visualizzaListaUtenti() {
+    }*/
 }
 
