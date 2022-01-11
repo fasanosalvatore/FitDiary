@@ -94,7 +94,7 @@ public class GestioneUtenzaController {
                 + "[A-Za-z\\d@$!%*?^#()<>+&.]{8,}$")) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     (Object)
-                    "password non valida");
+                            "password non valida");
         }
         Utente newUtente;
         try {
@@ -344,7 +344,7 @@ public class GestioneUtenzaController {
                 preparatore, idCliente)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     (Object)
-                    "Il preparatore non può accedere "
+                            "Il preparatore non può accedere "
                             + "al profilo di questo cliente");
         }
         Utente cliente = service.getById(idCliente);
@@ -365,7 +365,7 @@ public class GestioneUtenzaController {
     public ResponseEntity<Object> handleMissingRequestBody(
             final HttpMessageNotReadableException ex) {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                (Object)"Errore durante la lettura del body");
+                (Object) "Errore durante la lettura del body");
     }
 
     /**
@@ -384,7 +384,7 @@ public class GestioneUtenzaController {
         if (utente.getRuolo().getNome().equals(Ruolo.RUOLOADMIN)) {
             return ResponseHandler.generateResponse(HttpStatus.OK,
                     "utenti",
-                   service.visualizzaListaUtenti());
+                    service.visualizzaListaUtenti());
         }
         return ResponseHandler.generateResponse(HttpStatus.OK,
                 "clienti",

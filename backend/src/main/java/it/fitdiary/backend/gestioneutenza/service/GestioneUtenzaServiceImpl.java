@@ -160,7 +160,7 @@ public class GestioneUtenzaServiceImpl
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database.
      * @throws IllegalArgumentException lancia l'errore generato
-     * da un input errato.
+     *                                  da un input errato.
      */
     @Override
     public Utente modificaDatiPersonali(
@@ -242,11 +242,10 @@ public class GestioneUtenzaServiceImpl
     }
 
     /**
-     *
      * @return lista utenti del sistema
      */
     @Override
-    public List<Utente> visualizzaListaUtenti(){
+    public List<Utente> visualizzaListaUtenti() {
         return utenteRepository.findAll();
     }
 }
