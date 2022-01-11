@@ -1,5 +1,5 @@
-import {useForm} from 'react-hook-form';
-import React, {useContext, useEffect, useState} from 'react';
+import { useForm } from 'react-hook-form';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     Button,
     FormControl,
@@ -13,14 +13,14 @@ import {
     useToast,
     VStack
 } from "@chakra-ui/react";
-import {FetchContext} from "../../../context/FetchContext";
+import { FetchContext } from "../../../context/FetchContext";
 
 
 export default function CustomerInsertInfo() {
     const urlEditInfo = `utenti/cliente`;
     const urlGetInfo = `utenti/profilo`;
-    const {register, handleSubmit, setValue, formState: {errors, isSubmitting}} = useForm();
-    const colSpan = useBreakpointValue({base: 2, md: 1})
+    const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm();
+    const colSpan = useBreakpointValue({ base: 2, md: 1 })
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -38,7 +38,7 @@ export default function CustomerInsertInfo() {
     useEffect(() => {
         const getInfoUtente = async () => {
             try {
-                const {data} = await fetchContext.authAxios.get(urlGetInfo)
+                const { data } = await fetchContext.authAxios.get(urlGetInfo)
                 const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
                 fields.forEach(field => setValue(field, data.data.utente[field]));
                 setLoading(false);
@@ -55,7 +55,7 @@ export default function CustomerInsertInfo() {
         console.log("submitting values");
         console.log(values);
         try {
-            const {data} = await fetchContext.authAxios.post(urlEditInfo, values)
+            const { data } = await fetchContext.authAxios.post(urlEditInfo, values)
             console.log(data);
         } catch (error) {
             console.log(error.response)
@@ -78,7 +78,7 @@ export default function CustomerInsertInfo() {
                     <VStack spacing={3} alignItems="flex-start" pb={5}>
                         <Heading size="lg">Inserimento Dati Personali </Heading>
                     </VStack>
-                    <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
+                    <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
                         <SimpleGrid>
                             <GridItem colSpan={colSpan} w="100%">
                                 <FormControl id={"dataNascita"} isInvalid={errors.dataNascita}>
@@ -109,7 +109,7 @@ export default function CustomerInsertInfo() {
                                             value: /^[+03][0-9]{3,14}$/i,
                                             message: "Formato numero di telefono non valido"
                                         }
-                                    })}/>
+                                    })} />
                                     <FormErrorMessage>{errors.telefono && errors.telefono.message}</FormErrorMessage>
                                 </FormControl>
                             </GridItem>
@@ -154,14 +154,14 @@ export default function CustomerInsertInfo() {
                                         maxLength: {
                                             value: 5,
                                             message: "Formato del CAP non valido"
-                                        }, pattern: {value: /^[0-9]{5}$/i, message: "Formato nome non valido"}
+                                        }, pattern: { value: /^[0-9]{5}$/i, message: "Formato nome non valido" }
                                     })} />
                                     <FormErrorMessage>{errors.cap && errors.cap.message}</FormErrorMessage>
                                 </FormControl>
                             </GridItem>
                             <GridItem colSpan={colSpan} w="100%">
-                                <Button size="lg" w="full" mt={4} colorScheme='teal' isLoading={isSubmitting}
-                                        type='submit'>
+                                <Button size="lg" w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting}
+                                    type='submit'>
                                     Modifica dati Personali
                                 </Button>
                             </GridItem>
