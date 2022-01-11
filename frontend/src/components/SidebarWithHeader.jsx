@@ -212,7 +212,7 @@ const MobileNav = ({onOpen, ...rest}) => {
           fontFamily="monospace"
           fontWeight="bold"
         >
-          <Logo penColor="black" viewBox={"0 -35 250 250"} boxSize="3em"/>
+          <Logo penColor="black" viewBox={"0 -35 250 250"} boxSize="3em" />
         </Text>
         <HStack spacing={{ base: "0", md: "6" }}>
           <IconButton
@@ -250,9 +250,12 @@ const MobileNav = ({onOpen, ...rest}) => {
                 </HStack>
               </MenuButton>
               <MenuList>
-                <MenuItem>Profile</MenuItem>
-                <MenuItem>Settings</MenuItem>
-                <MenuItem>Billing</MenuItem>
+                <ReactLink to={"/profile"}>
+                  <MenuItem>Profile</MenuItem>
+                </ReactLink>
+                <ReactLink to={"/account"}>
+                  <MenuItem>Settings</MenuItem>
+                </ReactLink>
                 <MenuDivider />
                 <ReactLink to={"/logout"}>
                   <MenuItem>Logout</MenuItem>
