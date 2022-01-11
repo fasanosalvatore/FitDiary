@@ -94,4 +94,9 @@ class GestioneReportServiceImplTest {
                 () -> gestioneReportService.getById(1L));
     }
 
+    @Test
+    void visualizzazioneStoricoProgressi() {
+        assertThrows(IllegalArgumentException.class,
+                () -> gestioneReportService.visualizzazioneStoricoProgressi(null));
+    }
 }

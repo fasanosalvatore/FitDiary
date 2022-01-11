@@ -1,6 +1,7 @@
 package it.fitdiary.backend.utility;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +23,8 @@ public class FileUtilityTest {
     @BeforeEach
     public void setUp() {
         fileSchedaAlimentare = new File(
-                getClass().getClassLoader().getResource("schedaAlimentare.csv")
+                Objects.requireNonNull(getClass().getClassLoader()
+                                .getResource("schedaAllenamento.csv"))
                         .getFile());
     }
 
