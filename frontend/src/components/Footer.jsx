@@ -18,7 +18,7 @@ export default function Footer() {
         ml={{ base: 0, md: 60 }}
         px={[0, 5, 10]}
         minHeight="20vh"
-        bgGradient="linear(to-r, blue.800, blue.500)"
+        bgGradient="linear(to-r, fitdiary.900, fitdiary.400)"
         as="footer"
         mx="auto"
         direction={{ base: "column", md: "row" }}
@@ -32,7 +32,7 @@ export default function Footer() {
             transitionDuration="1"
             transitionTimingFunction="ease-in-out"
             color="white"
-            _hover={{ color: "blue.300" }}
+            _hover={{ color: "fitdiary.300" }}
           >
             <Logo
               viewBox="-10 -50 250 250"

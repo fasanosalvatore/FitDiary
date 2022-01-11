@@ -296,7 +296,7 @@ export default function Edit() {
                                         </FormControl>
                                     </GridItem>
                                     <GridItem colSpan={2} w="100%">
-                                        <Button size="lg" w="full" mt={4} colorScheme='teal' isLoading={isSubmitting}
+                                        <Button size="lg" w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting}
                                                 type='submit'>
                                             Modifica dati Personali
                                         </Button>

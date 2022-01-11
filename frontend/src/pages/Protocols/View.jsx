@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -18,11 +18,11 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react';
-import {RiArrowGoBackLine,} from 'react-icons/ri';
+import { RiArrowGoBackLine, } from 'react-icons/ri';
 import moment from "moment";
-import {BsGraphDown, BsGraphUp} from "react-icons/bs";
-import {useNavigate, useParams} from "react-router";
-import {FetchContext} from "../../context/FetchContext";
+import { BsGraphDown, BsGraphUp } from "react-icons/bs";
+import { useNavigate, useParams } from "react-router";
+import { FetchContext } from "../../context/FetchContext";
 import restaurant from "../../images/restaurant.png";
 import training from "../../images/dumbbell.png";
 
@@ -40,14 +40,14 @@ export default function View() {
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
     const [protocollo, setProtocolli] = useState();
-    const {id} = useParams();
+    const { id } = useParams();
 
     let history = useNavigate();
 
     useEffect(() => {
         const listaProtocolli = async () => {
             try {
-                const {data} = await fetchContext.authAxios("protocolli/" + id);
+                const { data } = await fetchContext.authAxios("protocolli/" + id);
                 console.log(data);
                 setProtocolli(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
@@ -89,8 +89,8 @@ export default function View() {
         <>
             {!isLoading && (
                 <Flex wrap={"wrap"}>
-                    <Button ml={5} mt={5} colorScheme={"blue"} leftIcon={<RiArrowGoBackLine/>}
-                            onClick={() => history(-1)}>Torna al protocollo</Button>
+                    <Button ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}
+                        onClick={() => history(-1)}>Torna al protocollo</Button>
                     <Heading w={"full"} mb={5} textAlign={"center"}>Protocollo n.{protocollo.protocollo.id}</Heading>
                     <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
@@ -128,22 +128,22 @@ export default function View() {
                                                         <Tr>
                                                             <Td>Peso</Td>
                                                             <Td>{/*report. */}Kg<Icon as={BsGraphUp} color='green.500'
-                                                                                      marginLeft={4}/></Td>
+                                                                marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
-                                                            <Td>Circonferenza Bicipite{}</Td>
+                                                            <Td>Circonferenza Bicipite{ }</Td>
                                                             <Td>{/*report. */}cm<Icon as={BsGraphDown} color='red.500'
-                                                                                      marginLeft={4}/></Td>
+                                                                marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Addome</Td>
                                                             <Td>{/*report. */}cm<Icon as={BsGraphDown} color='red.500'
-                                                                                      marginLeft={4}/></Td>
+                                                                marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Quadricipite</Td>
                                                             <Td>{/*report. */}cm<Icon as={BsGraphUp} color='green.500'
-                                                                                      marginLeft={4}/></Td>
+                                                                marginLeft={4} /></Td>
                                                         </Tr>
                                                     </Tbody>
                                                 </Table>
@@ -189,7 +189,5 @@ export default function View() {
                 </Flex>
             )}
         </>
-
-
     );
 }
