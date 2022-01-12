@@ -1,9 +1,10 @@
-package it.fitdiary.backend.gestioneutenza.controller;
+package it.fitdiary.backend.unit.gestioneutenza.controller;
 
 import com.stripe.exception.InvalidRequestException;
 import com.stripe.model.Customer;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestioneutenza.controller.GestioneUtenzaController;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package it.fitdiary.backend.gestionereport.controller;
+package it.fitdiary.backend.unit.gestionereport.controller;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -6,6 +6,7 @@ import it.fitdiary.backend.entity.ImmaginiReport;
 import it.fitdiary.backend.entity.Report;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestionereport.controller.GestioneReportContoller;
 import it.fitdiary.backend.gestionereport.service.GestioneReportServiceImpl;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.FileUtility;

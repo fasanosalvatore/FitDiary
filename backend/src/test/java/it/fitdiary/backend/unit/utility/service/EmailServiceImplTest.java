@@ -1,7 +1,8 @@
-package it.fitdiary.backend.utility.service;
+package it.fitdiary.backend.unit.utility.service;
 
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.utility.service.EmailServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

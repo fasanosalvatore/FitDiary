@@ -1,6 +1,7 @@
-package it.fitdiary.backend.gestioneprotocollo.adapter;
+package it.fitdiary.backend.unit.gestioneprotocollo.adapter;
 
 import it.fitdiary.backend.entity.Alimento;
+import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapterImpl;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
