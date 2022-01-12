@@ -1,30 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    Box,
-    Button,
-    Flex,
-    Heading,
-    HStack,
-    Icon,
-    Image,
-    Table,
-    TableCaption,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tr,
-    useToast,
-    VStack,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,Divider
+    Box, Button, Flex, Heading, HStack, Icon, Image, Table, TableCaption, Tbody,
+    Td, Text, Th, Thead, Tr, useToast, VStack, Modal, ModalOverlay, ModalContent,
+    ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure,Divider
 } from '@chakra-ui/react';
 import{ArrowRightIcon,ArrowLeftIcon} from '@chakra-ui/icons';
 import {RiArrowGoBackLine} from 'react-icons/ri';
@@ -207,7 +185,7 @@ export default function View() {
                                                             src={photo}>
                                                         </Image>
                                                         <Button colorScheme='fitdiary' onClick={onOpen}>Visualizza Foto</Button>
-                                                        <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
+                                                        <Modal colorScheme='blue' isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
                                                             <ModalOverlay />
                                                             <ModalContent>
                                                                 <ModalHeader textAlign={"center"}>Foto del cliente</ModalHeader>
@@ -237,7 +215,9 @@ export default function View() {
                                 </HStack>
                                 <HStack>
                                     <Heading size="s">Hai completato il protocollo?</Heading>
-                                    <Button colorScheme='fitdiary'>Inserisci report</Button>
+                                    <Button onClick={() => {
+                                        navigate("/reports/" + "create")
+                                    }} colorScheme='fitdiary'>Inserisci report</Button>
                                 </HStack>
                             </VStack>
                         </Flex>
