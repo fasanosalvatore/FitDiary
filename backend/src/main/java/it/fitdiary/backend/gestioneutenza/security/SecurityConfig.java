@@ -129,7 +129,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyAuthority(PREPARATORE, ADMIN)
 
                 //Routes Preparatore e Cliente con Ruolo
-                .antMatchers(GET, "/api/v1/protocolli/**")
+                .antMatchers(GET, "/api/v1/protocolli/**","/api/v1/utenti/hello")
                 .hasAnyAuthority(PREPARATORE, CLIENTE)
                 .antMatchers(GET, "/api/v1/protocolli")
                 .hasAnyAuthority(PREPARATORE, CLIENTE)
