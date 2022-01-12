@@ -16,7 +16,7 @@ import { FetchContext } from "../../../context/FetchContext";
 import {useForm} from "react-hook-form"
 
 export default function View() {
-    const urlSchedaAllenamento = "schedaAllenamento";
+    const urlProtocolli = "protocolli";
     const days = [1, 2, 3, 4, 5, 6, 7];
     const authContext = useContext(AuthContext);
     const { authState } = authContext;
@@ -26,7 +26,7 @@ export default function View() {
     const fetchContext = useContext(FetchContext);
     const [isLoading, setLoading] = useState(true);
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [selectedFileAllenamento, setselectedFileAllenamento] = useState(null);
+    const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
     const {handleSubmit, register, setValue} = useForm();
 
     const toast = useToast({
@@ -46,13 +46,13 @@ export default function View() {
         };
     }
 
-    const onDropAllenamento = useCallback(acceptedFileAllenamento => {
-        console.log(acceptedFileAllenamento)
-        setValue("fileAllenamento", acceptedFileAllenamento);
+    const onDropAllenamento = useCallback(acceptedSchedaAllenamento => {
+        console.log(acceptedSchedaAllenamento)
+        setValue("schedaAllenamento", acceptedSchedaAllenamento);
     }, [setValue])
 
     const {
-        acceptedFiles: acceptedFileAllenamento,
+        acceptedFiles: acceptedSchedaAllenamento,
         getRootProps: getRootPropsAllenamento,
         getInputProps: getInputPropsAllenamento,
         isDragActive: isDragActiveAllenamento
@@ -60,12 +60,14 @@ export default function View() {
 
     const onSubmit = async (values) => {
         const formData = new FormData();
+        console.log(values)
         if (values.schedaAllenamento)
             formData.append("schedaAllenamento", values.schedaAllenamento[0])
         try {
-            const {data} = await fetchContext.authAxios.post(urlSchedaAllenamento, formData)
+            const {data} = await fetchContext.authAxios.put(urlProtocolli+"/"+id, formData)
+            setProtocolli(data.data);
             console.log(data);
-            toast(toastParam("Modifica effettuata con successo!", "Scheda allenamento modificata correttamente", data.status))
+            toast(toastParam("Modifica effettuata con successo!", "Scheda Allenamento modificata correttamente", data.status))
         } catch (error) {
             console.log(error.response);
             toast(toastParam("Errore", error.response.data.data, "error"))
@@ -74,8 +76,8 @@ export default function View() {
     }
 
     useEffect(() => {
-        setselectedFileAllenamento(acceptedFileAllenamento[0]);
-    }, [acceptedFileAllenamento]);
+        setselectedSchedaAllenamento(acceptedSchedaAllenamento[0]);
+    }, [acceptedSchedaAllenamento]);
 
 
     useEffect(() => {
@@ -94,7 +96,7 @@ export default function View() {
             }
         }
         listaProtocolli();
-    }, [fetchContext, toast, id])
+    }, [fetchContext])
     return (
         <>
             {!isLoading && (
@@ -130,7 +132,7 @@ export default function View() {
                                                 <HStack>
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
                                                         <IconButton
-                                                            colorScheme='blue'
+                                                            colorScheme='fitdiary'
                                                             onClick={onOpen}
                                                             icon={<EditIcon/>}
                                                         />
@@ -140,23 +142,23 @@ export default function View() {
                                                         <ModalContent>
                                                             <form onSubmit={handleSubmit(onSubmit)}>
                                                             <ModalHeader textAlign={"center"}>Carica la nuova scheda modificata</ModalHeader>
-                                                            <ModalCloseButton/>
+                                                            <ModalCloseButton />
                                                             <ModalBody align={"center"}>
                                                                 <Flex justify="center">
                                                                     <HStack align="center">
-                                                                        <FormControl id={"fileAllenamento"}>
-                                                                            {selectedFileAllenamento != null && (
+                                                                        <FormControl id={"schedaAllenamento"}>
+                                                                            {selectedSchedaAllenamento != null && (
                                                                                 <HStack>
                                                                                     <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
-                                                                                        setselectedFileAllenamento(null);
-                                                                                        setValue("fileAllenamento", null);
+                                                                                        setselectedSchedaAllenamento(null);
+                                                                                        setValue("schedaAllenamento", null);
                                                                                     }}/>
                                                                                     <Text>
-                                                                                        {selectedFileAllenamento.path}
+                                                                                        {selectedSchedaAllenamento.path}
                                                                                     </Text>
                                                                                 </HStack>
                                                                             )}
-                                                                            {!selectedFileAllenamento && (
+                                                                            {!selectedSchedaAllenamento && (
                                                                                 <div {...getRootPropsAllenamento()}>
                                                                                     <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
                                                                                          borderColor={"gray.200"}>
@@ -179,7 +181,7 @@ export default function View() {
                                                                 </Flex>
                                                             </ModalBody>
                                                             <ModalFooter>
-                                                                <Button colorScheme='blue' type={"submit"}>Carica</Button>
+                                                                <Button colorScheme='fitdiary' type={"submit"}>Carica</Button>
                                                             </ModalFooter>
                                                             </form>
                                                         </ModalContent>
