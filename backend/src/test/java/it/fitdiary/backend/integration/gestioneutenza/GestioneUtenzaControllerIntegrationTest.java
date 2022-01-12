@@ -41,19 +41,27 @@ class GestioneUtenzaControllerIntegrationTest {
     private RuoloRepository ruoloRepository;
 
     private Utente preparatore;
+    private Utente preparatore2;
     private String tokenPreparatore;
+    private String tokenPreparatore2;
     private Utente cliente;
+    private Utente cliente2;
     private String tokenCliente;
+    private String tokenCliente2;
     private Utente admin;
     private String tokenAdmin;
 
     @BeforeEach
     void setUp() {
         preparatore = utenteRepository.findByEmail("preparatore@fitdiary.it");
+        preparatore2 = utenteRepository.findByEmail("giaqui@gmail.com");
         cliente = utenteRepository.findByEmail("cliente@fitdiary.it");
+        cliente2 = utenteRepository.findByEmail("inapina@libero.it");
         admin = utenteRepository.findByEmail("admin@fitdiary.it");
         tokenPreparatore = setUpToken(preparatore.getEmail(), "Password123!");
+        tokenPreparatore2 = setUpToken(preparatore2.getEmail(), "Password123!");
         tokenCliente = setUpToken(cliente.getEmail(), "Password123!");
+        tokenCliente2 = setUpToken(cliente2.getEmail(), "Password123!");
         tokenAdmin = setUpToken(admin.getEmail(), "Password123!");
     }
 
@@ -117,7 +125,31 @@ class GestioneUtenzaControllerIntegrationTest {
         assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
     }
 
+    @Test
+    public void visualizzaProfiloUtenteSuccess()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(tokenPreparatore2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/4",
+                        port), HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
+
+    @Test
+    public void visualizzaProfiloUtenteErrorUnauthorized()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(tokenPreparatore);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/4",
+                        port), HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
+    }
 }
 
 
