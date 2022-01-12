@@ -177,7 +177,7 @@ export default function View() {
                                                             objectFit='cover'
                                                             src={training}>
                                                         </Image>
-                                                        <Button onClick={() => {
+                                                        <Button colorScheme='fitdiary' onClick={() => {
                                                             navigate("/trainingcard/" + protocollo.protocollo.id)
                                                         }}>Vedi Allenamento
                                                         </Button>
@@ -188,7 +188,7 @@ export default function View() {
                                                             objectFit='cover'
                                                             src={dish}>
                                                         </Image>
-                                                        <Button onClick={() => {
+                                                        <Button colorScheme='fitdiary' onClick={() => {
                                                             navigate("/dietcard/" + protocollo.protocollo.id)
                                                         }}>Vedi Alimentazione</Button>
                                                     </VStack>
@@ -206,7 +206,7 @@ export default function View() {
                                                             objectFit='cover'
                                                             src={photo}>
                                                         </Image>
-                                                        <Button onClick={onOpen}>Visualizza Foto</Button>
+                                                        <Button colorScheme='fitdiary' onClick={onOpen}>Visualizza Foto</Button>
                                                         <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
                                                             <ModalOverlay />
                                                             <ModalContent>
@@ -237,7 +237,7 @@ export default function View() {
                                 </HStack>
                                 <HStack>
                                     <Heading size="s">Hai completato il protocollo?</Heading>
-                                    <Button>Inserisci report</Button>
+                                    <Button colorScheme='fitdiary'>Inserisci report</Button>
                                 </HStack>
                             </VStack>
                         </Flex>
