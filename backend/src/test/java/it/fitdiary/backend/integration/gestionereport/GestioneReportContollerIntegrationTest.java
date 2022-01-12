@@ -168,7 +168,27 @@ class GestioneReportContollerIntegrationTest {
                 "/v1/reports/1", HttpMethod.GET, entity, String.class);
         assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
     }
+    @Test
+    void visualizzazioneStoricoProgressiPreparatore() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(tokenPreparatore2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        var c = restTemplate.exchange("http" +
+                "://localhost:" + port + "/api" +
+                "/v1/reports?clienteId=4", HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
+    @Test
+    void visualizzazioneStoricoProgressiCliente() throws Exception {
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(tokenCliente2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        var c = restTemplate.exchange("http" +
+                "://localhost:" + port + "/api" +
+                "/v1/reports", HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
   /*
   @Test
     void inserisciReportWithFoto() throws Exception {
@@ -207,121 +227,11 @@ class GestioneReportContollerIntegrationTest {
                 MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
-    @Test
-    void visualizzaReportSuccessFromCliente() throws Exception {
-        Principal principal = () -> "1";
-        long idReport = 1L;
-        when(gestioneUtenzaService.getById(1l)).thenReturn(cliente);
-        when(gestioneReportService.getById(idReport)).thenReturn(report);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get(
-                                "/api/v1/reports/1")
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().is2xxSuccessful());
-    }
 
-    @Test
-    void visualizzaReportErrorFromCliente() throws Exception {
-        Principal principal = () -> "3";
-        long idReport = 1L;
-        when(gestioneUtenzaService.getById(3l)).thenReturn(cliente2);
-        when(gestioneReportService.getById(idReport)).thenReturn(report);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get(
-                                "/api/v1/reports/1")
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().isUnauthorized());
-    }
 
-    @Test
-    void visualizzaReportSuccessFromPreparatore() throws Exception {
-        Principal principal = () -> "2";
-        long idReport = 1L;
-        when(gestioneUtenzaService.getById(2l)).thenReturn(preparatore);
-        when(gestioneReportService.getById(idReport)).thenReturn(report);
-        when(gestioneUtenzaService.existsByPreparatoreAndId(preparatore,
-                report.getCliente().getId())).thenReturn(true);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get(
-                                "/api/v1/reports/1")
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().is2xxSuccessful());
-    }
 
-    @Test
-    void visualizzaReportErrorFromPreparatore() throws Exception {
-        Principal principal = () -> "4";
-        long idReport = 1L;
-        when(gestioneUtenzaService.getById(4l)).thenReturn(preparatore2);
-        when(gestioneReportService.getById(idReport)).thenReturn(report);
-        when(gestioneUtenzaService.existsByPreparatoreAndId(preparatore2,
-                report.getCliente().getId())).thenReturn(false);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get(
-                                "/api/v1/reports/1")
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().isUnauthorized());
-    }
 
-    @Test
-    void visualizzazioneStoricoProgressiPreparatore() throws Exception {
-        Principal principal = () -> "2";
-        when(gestioneUtenzaService.getById(preparatore.getId())).thenReturn(
-                preparatore);
-        when(gestioneUtenzaService.existsByPreparatoreAndId(preparatore,
-                cliente.getId())).thenReturn(true);
-        when(gestioneReportService.visualizzazioneStoricoProgressi(
-                cliente)).thenReturn(cliente.getListaReport());
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get(
-                                "/api/v1/reports").param("clienteId",
-                                String.valueOf(cliente.getId()))
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().is2xxSuccessful());
-    }
 
-    @Test
-    void visualizzazioneStoricoProgressiCliente() throws Exception {
-        Principal principal = () -> "1";
-        when(gestioneUtenzaService.getById(cliente.getId())).thenReturn(
-                cliente);
-        when(gestioneReportService.visualizzazioneStoricoProgressi(
-                cliente)).thenReturn(cliente.getListaReport());
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get(
-                                "/api/v1/reports")
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().is2xxSuccessful());
-    }
+
 */
 }
