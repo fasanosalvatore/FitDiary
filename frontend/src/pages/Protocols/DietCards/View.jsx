@@ -1,33 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-    Accordion,
-    AccordionButton,
-    AccordionIcon,
-    AccordionItem,
-    AccordionPanel,
-    Box,
-    Button,
-    Flex,
-    Heading,
-    HStack,
-    IconButton,
-    Table,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tooltip,
-    Tr,
-    useToast,
-    VStack
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {useDropzone} from 'react-dropzone';
+
+import {Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Heading, HStack,
+    IconButton, Table, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useToast,
+    VStack,Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
+    ModalCloseButton, useDisclosure,FormControl,FormLabel,Input
 } from '@chakra-ui/react';
-import { EditIcon } from '@chakra-ui/icons';
+import { EditIcon,CloseIcon} from '@chakra-ui/icons';
 import { RiArrowGoBackLine, } from 'react-icons/ri';
 import { AuthContext } from "../../../context/AuthContext";
 import moment from "moment";
 import { FetchContext } from "../../../context/FetchContext";
 import { useNavigate, useParams } from "react-router";
+import {useForm} from "react-hook-form"
 
 export default function View() {
     const authContext = useContext(AuthContext);
@@ -37,8 +22,13 @@ export default function View() {
     const [protocollo, setProtocolli] = useState();
     const fetchContext = useContext(FetchContext);
     const [isLoading, setLoading] = useState(true);
+    const urlProtocolli = "protocolli";
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [selectedSchedaAlimentare, setselectedSchedaAlimentare] = useState(null);
+    const {handleSubmit, register, setValue} = useForm();
 
     const days = ["Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato", "Domenica"];
+
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -49,6 +39,44 @@ export default function View() {
         },
 
     })
+    function toastParam(title, description, status) {
+        return {
+            title: title, description: description, status: status
+        };
+    }
+
+    const onDropAlimentare = useCallback(acceptedSchedaAlimentare => {
+        console.log(acceptedSchedaAlimentare)
+        setValue("schedaAlimentare", acceptedSchedaAlimentare);
+    }, [setValue])
+
+    const {
+        acceptedFiles: acceptedSchedaAlimentare,
+        getRootProps: getRootPropsAlimentare,
+        getInputProps: getInputPropsAlimentare,
+        isDragActive: isDragActiveAlimentare
+    } = useDropzone({onDrop: onDropAlimentare, maxFiles: 1})
+
+    const onSubmit = async (values) => {
+        const formData = new FormData();
+        console.log(values)
+        if (values.schedaAlimentare)
+            formData.append("schedaAlimentare", values.schedaAlimentare[0])
+        try {
+            const {data} = await fetchContext.authAxios.put(urlProtocolli+"/"+id, formData)
+            console.log(data);
+            setProtocolli(data.data);
+            toast(toastParam("Modifica effettuata con successo!", "Scheda Alimentare modificata correttamente", data.status))
+        } catch (error) {
+            console.log(error.response);
+            toast(toastParam("Errore", error.response.data.data, "error"))
+        }
+
+    }
+
+    useEffect(() => {
+        setselectedSchedaAlimentare(acceptedSchedaAlimentare[0]);
+    }, [acceptedSchedaAlimentare]);
 
     useEffect(() => {
         const listaProtocolli = async () => {
@@ -66,7 +94,7 @@ export default function View() {
             }
         }
         listaProtocolli();
-    }, [fetchContext, id, toast])
+    }, [fetchContext])
 
     return (
         <>
@@ -105,10 +133,60 @@ export default function View() {
                                                 <HStack>
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
                                                         <IconButton
-                                                            colorScheme='blue'
+                                                            onClick={onOpen}
+                                                            colorScheme='fitdiary'
                                                             icon={<EditIcon />}
                                                         />
                                                     </Tooltip>
+                                                    <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
+                                                        <ModalOverlay />
+                                                        <ModalContent>
+                                                            <form onSubmit={handleSubmit(onSubmit)}>
+                                                                <ModalHeader textAlign={"center"}>Carica la nuova scheda modificata</ModalHeader>
+                                                                <ModalCloseButton />
+                                                                <ModalBody align={"center"}>
+                                                                    <Flex justify="center">
+                                                                        <HStack align="center">
+                                                                            <FormControl id={"schedaAlimentare"}>
+                                                                                {selectedSchedaAlimentare != null && (
+                                                                                    <HStack>
+                                                                                        <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
+                                                                                            setselectedSchedaAlimentare(null);
+                                                                                            setValue("schedaAlimentare", null);
+                                                                                        }}/>
+                                                                                        <Text>
+                                                                                            {selectedSchedaAlimentare.path}
+                                                                                        </Text>
+                                                                                    </HStack>
+                                                                                )}
+                                                                                {!selectedSchedaAlimentare && (
+                                                                                    <div {...getRootPropsAlimentare()}>
+                                                                                        <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
+                                                                                             borderColor={"gray.200"}>
+                                                                                            <Input {...getInputPropsAlimentare()}/>
+                                                                                            {
+                                                                                                isDragActiveAlimentare ?
+                                                                                                    <p style={{color: "gray", textAlign: "center"}}>
+                                                                                                        Lascia il file qui ...
+                                                                                                    </p> :
+                                                                                                    <p style={{color: "gray", textAlign: "center"}}>
+                                                                                                        Clicca e trascina un file qui, oppure clicca per
+                                                                                                        selezionare un file
+                                                                                                    </p>
+                                                                                            }
+                                                                                        </Box>
+                                                                                    </div>
+                                                                                )}
+                                                                            </FormControl>
+                                                                        </HStack>
+                                                                    </Flex>
+                                                                </ModalBody>
+                                                                <ModalFooter>
+                                                                    <Button colorScheme='fitdiary' type={"submit"}>Carica</Button>
+                                                                </ModalFooter>
+                                                            </form>
+                                                        </ModalContent>
+                                                    </Modal>
                                                 </HStack>
                                             )}
                                     </Flex>
