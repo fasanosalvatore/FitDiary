@@ -408,18 +408,16 @@ public class GestioneUtenzaController {
         Long idAdmin = Long.parseLong(
                 request.getUserPrincipal().getName());
         Utente admin = service.getById(idAdmin);
-        if (admin.getRuolo().getNome() != "ADMIN") {
+        Ruolo adminRuolo= new Ruolo(3L,"ADMIN",null,null);
+        if (!admin.getRuolo().equals(adminRuolo)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     (Object) "Questo utente non è un admin");
         }
-        if (!service.deleteUtenteById(idCliente)) {
-            return ResponseHandler.generateResponse(
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    (Object) "Eliminazone non andata a buon fine");
-
+        else{
+            service.deleteUtenteById(idCliente);
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    (Object) "Eliminazone andata a buon fine");
         }
-        return ResponseHandler.generateResponse(HttpStatus.OK,
-                (Object) "Eliminazone andata a buon fine");
     }
     /**
      * permette di disattivare un cliente dalla piattaforma

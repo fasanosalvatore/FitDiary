@@ -74,5 +74,5 @@ public interface GestioneUtenzaService extends UserDetailsService {
      *
      * @param idCliente id del cliente
      */
-    Boolean deleteUtenteById(Long idCliente);
+    void deleteUtenteById(Long idCliente);
 }
