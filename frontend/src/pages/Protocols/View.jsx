@@ -1,30 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
-    Box,
-    Button,
-    Flex,
-    Heading,
-    HStack,
-    Icon,
-    Image,
-    Table,
-    TableCaption,
-    Tbody,
-    Td,
-    Text,
-    Th,
-    Thead,
-    Tr,
-    useToast,
-    VStack,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,Divider
+    Box, Button, Flex, Heading, HStack, Icon, Image, Table, TableCaption, Tbody,
+    Td, Text, Th, Thead, Tr, useToast, VStack, Modal, ModalOverlay, ModalContent,
+    ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure,Divider
 } from '@chakra-ui/react';
 import{ArrowRightIcon,ArrowLeftIcon} from '@chakra-ui/icons';
 import {RiArrowGoBackLine} from 'react-icons/ri';
@@ -35,10 +13,11 @@ import {FetchContext} from "../../context/FetchContext";
 import dish from "../../images/dish.png";
 import training from "../../images/dumbbell.png";
 import photo from "../../images/photos.png";
+import {getReport} from "../../fakeBackend";
+
 export default function View() {
-
+    const report=getReport;
     const { isOpen, onOpen, onClose } = useDisclosure()
-
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -176,7 +155,7 @@ export default function View() {
                                                             objectFit='cover'
                                                             src={training}>
                                                         </Image>
-                                                        <Button onClick={() => {
+                                                        <Button colorScheme='fitdiary' onClick={() => {
                                                             navigate("/trainingcard/" + protocollo.protocollo.id)
                                                         }}>Vedi Allenamento
                                                         </Button>
@@ -187,7 +166,7 @@ export default function View() {
                                                             objectFit='cover'
                                                             src={dish}>
                                                         </Image>
-                                                        <Button onClick={() => {
+                                                        <Button colorScheme='fitdiary' onClick={() => {
                                                             navigate("/dietcard/" + protocollo.protocollo.id)
                                                         }}>Vedi Alimentazione</Button>
                                                     </VStack>
@@ -205,8 +184,8 @@ export default function View() {
                                                             objectFit='cover'
                                                             src={photo}>
                                                         </Image>
-                                                        <Button onClick={onOpen}>Visualizza Foto</Button>
-                                                        <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
+                                                        <Button colorScheme='fitdiary' onClick={onOpen}>Visualizza Foto</Button>
+                                                        <Modal colorScheme='blue' isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
                                                             <ModalOverlay />
                                                             <ModalContent>
                                                                 <ModalHeader textAlign={"center"}>Foto del cliente</ModalHeader>
@@ -215,7 +194,7 @@ export default function View() {
                                                                     <Flex justify="center">
                                                                         <HStack align="center">
                                                                             <Button variant='ghost' textAlign="center" align="start" leftIcon={<ArrowLeftIcon/>}></Button>
-                                                                            <Image boxSize='200px' src='https://bit.ly/dan-abramov' alt='Dan Abramov' />
+                                                                            <Image boxSize={550} src='https://res.cloudinary.com/hdjxm4zyg/image/upload/s--J9CYotxd--/v1641863408/evssjeyaofzzdrf8yywq.jpg' alt='Dan Abramov' />
                                                                             <Button variant='ghost' textAlign="center" align="end" leftIcon={<ArrowRightIcon/>}></Button>
                                                                         </HStack>
                                                                     </Flex>
@@ -236,7 +215,9 @@ export default function View() {
                                 </HStack>
                                 <HStack>
                                     <Heading size="s">Hai completato il protocollo?</Heading>
-                                    <Button>Inserisci report</Button>
+                                    <Button onClick={() => {
+                                        navigate("/reports/" + "create")
+                                    }} colorScheme='fitdiary'>Inserisci report</Button>
                                 </HStack>
                             </VStack>
                         </Flex>

@@ -1,5 +1,7 @@
-package it.fitdiary.backend.utility;
+package it.fitdiary.backend.unit.utility;
 
+import it.fitdiary.backend.utility.FileUtility;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -31,7 +33,7 @@ public class FileUtilityTest {
     @Test
     public void getFileSuccess() throws IOException {
         MockMultipartFile mockMultipartFile= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
-        assertEquals(fileSchedaAlimentare, FileUtility.getFile(mockMultipartFile));
+        Assertions.assertEquals(fileSchedaAlimentare, FileUtility.getFile(mockMultipartFile));
     }
 
     @Test

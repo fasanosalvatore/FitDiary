@@ -1,10 +1,11 @@
-package it.fitdiary.backend.gestioneutenza.service;
+package it.fitdiary.backend.unit.gestioneutenza.service;
 
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
+import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.PasswordGenerator;
 import it.fitdiary.backend.utility.service.EmailServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

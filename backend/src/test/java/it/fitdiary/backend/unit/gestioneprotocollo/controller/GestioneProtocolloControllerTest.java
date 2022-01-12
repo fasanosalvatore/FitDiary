@@ -1,4 +1,4 @@
-package it.fitdiary.backend.gestioneprotocollo.controller;
+package it.fitdiary.backend.unit.gestioneprotocollo.controller;
 
 import com.stripe.exception.InvalidRequestException;
 import com.stripe.model.Customer;
@@ -10,6 +10,7 @@ import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestioneprotocollo.controller.GestioneProtocolloController;
 import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloService;
 import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloServiceImpl;
 import it.fitdiary.backend.gestioneutenza.controller.GestioneUtenzaController;

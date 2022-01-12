@@ -1,6 +1,7 @@
-package it.fitdiary.backend.gestioneprotocollo.adapter;
+package it.fitdiary.backend.unit.gestioneprotocollo.adapter;
 
 import it.fitdiary.backend.entity.Esercizio;
+import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapterImpl;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

@@ -329,6 +329,11 @@ public class GestioneUtenzaController {
         }
     }
 
+    @GetMapping("hello")
+    public String Hello(){
+        return "hello";
+    }
+
     /**
      * @param idCliente id utente di cui visualizzare profilo
      * @return Utente di cui voglio visualizzare il profilo
@@ -425,7 +430,7 @@ public class GestioneUtenzaController {
      * @param idCliente identificativo del cliente da eliminare
      * @return il nuovo cliente
      */
-    @PutMapping ("{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Object> disattivaCliente(
             @PathVariable("id") final Long idCliente) {
         HttpServletRequest request = ((ServletRequestAttributes)

@@ -1,5 +1,7 @@
-package it.fitdiary.backend.utility;
+package it.fitdiary.backend.unit.utility;
 
+import it.fitdiary.backend.utility.ResponseHandler;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ class ResponseHandlerTest {
         map.put("status", statusMessage);
         var status= HttpStatus.CONTINUE;
         var response=new ResponseEntity<Object> (map, status);
-        assertEquals(response,ResponseHandler.generateResponse(status,
+        Assertions.assertEquals(response, ResponseHandler.generateResponse(status,
                 (Object) "test"));
 
     }
