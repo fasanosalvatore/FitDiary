@@ -3,13 +3,7 @@ package it.fitdiary.backend.integration.gestioneutenza;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
-import it.fitdiary.backend.integration.JSendDTO;
-import it.fitdiary.backend.integration.RetrieveUtil;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -64,27 +58,28 @@ class GestioneUtenzaControllerIntegrationTest {
     }
 
     private String setUpToken(String email, String password) {
-        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
-        parts.add("email",email);
-        parts.add("password",password);
-        var c =restTemplate.postForEntity("http" +
+        MultiValueMap<String, Object> parts =
+                new LinkedMultiValueMap<String, Object>();
+        parts.add("email", email);
+        parts.add("password", password);
+        var c = restTemplate.postForEntity("http" +
                 "://localhost:" + port + "/api" +
-                "/v1/utenti/login", parts,Object.class);
-        var d=(LinkedHashMap) c.getBody();
-        return (String) ((LinkedHashMap)((LinkedHashMap)d.get("data")).get(
+                "/v1/utenti/login", parts, Object.class);
+        var d = (LinkedHashMap) c.getBody();
+        return (String) ((LinkedHashMap) ((LinkedHashMap) d.get("data")).get(
                 "accessToken")).get("token");
     }
 
     private static Stream<Arguments> provideStringForIsHello() {
         return Stream.of(
-            Arguments.of("", false),
-            Arguments.of("hello", true),
-            Arguments.of("hello ", false),
-            Arguments.of("ciao", false)
+                Arguments.of("", false),
+                Arguments.of("hello", true),
+                Arguments.of("hello ", false),
+                Arguments.of("ciao", false)
         );
     }
 
-    private Stream<Arguments>  provideUtenteAndTokenForUtenteEsistente() {
+    private Stream<Arguments> provideUtenteAndTokenForUtenteEsistente() {
         return Stream.of(
                 Arguments.of(this.preparatore, this.tokenPreparatore),
                 Arguments.of("hello", true),
@@ -96,34 +91,31 @@ class GestioneUtenzaControllerIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("provideStringForIsHello")
-    public void isHello_shouldPassIfStringMatches(String input, boolean expected) {
+    public void isHello_shouldPassIfStringMatches(String input,
+                                                  boolean expected) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(tokenPreparatore);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        var c=restTemplate.exchange("http" +
+        var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/utenti/hello", HttpMethod.GET, entity, String.class);
         System.out.println(c);
-        assertEquals(expected,input.equals("hello"));
+        assertEquals(expected, input.equals("hello"));
     }
 
     @Test
     public void utenteEsistente_WhenRetrieveProfile_ReturnValidUser()
             throws IOException {
-        //given
-        final HttpUriRequest request = new HttpGet(String.format("http://localhost:%d/api/v1/utenti/profilo",port));
-        request.setHeader("Authorization","Bearer " + tokenPreparatore);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(tokenPreparatore);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        //when
-        final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-        final JSendDTO dto = RetrieveUtil.retrieveResourceFromResponse(response,JSendDTO.class);
-
-        //then
-        assertEquals(HttpStatus.SC_OK,response.getStatusLine().getStatusCode());
-        assertTrue(dto.getData().toString().contains(preparatore.getNome()));
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/profilo",
+                        port), HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
     }
-
 
 
 }
