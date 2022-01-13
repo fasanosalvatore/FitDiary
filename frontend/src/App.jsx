@@ -12,6 +12,7 @@ import Logout from "./pages/Home/Logout";
 import Signup from "./pages/Home/Signup";
 import Dashboard from "./pages/Dashboard";
 
+import UsersIndex from "./pages/User/Index";
 import UsersProfile from "./pages/User/Profile";
 import UsersEdit from "./pages/User/Edit";
 
@@ -51,6 +52,8 @@ const AppRoutes = () => {
                 <Route path="protocols/create" element={<ProtocolsCreate />} />
                 <Route path="dietcard/:id" element={<ProtocolsDietCardsView />} />
                 <Route path="trainingcard/:id" element={<ProtocolsTrainingCardsView />} />
+                <Route path="users" element={<UsersIndex/>}/>
+                <Route path="customers" element={<UsersIndex/>}/>
                 <Route path="/customers" element={<CustomersIndex />}>
                     <Route path="create" element={<CustomersCreate />} />
                 </Route>

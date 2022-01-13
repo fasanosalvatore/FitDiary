@@ -8,6 +8,7 @@ import {
     InputGroup,
     InputLeftElement,
     Link,
+    Text,
     Table,
     TableCaption,
     Tbody,
@@ -67,93 +68,97 @@ function Index() {
     }, [fetchContext]);
 
     return (
-        <>
-            {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
-                <ReactLink to="/protocols/create">
-                    <Button colorScheme={"fitdiary"} color={"white"} mx={[0, 5, 10, 20]} my={5}>
-                        Crea Protocollo
-                    </Button>
-                </ReactLink>
-            )}
-            {!isLoading && listProtocolli && (
-                <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
-                    <Box bg={"white"} borderRadius="xl" pb={5} w={"full"}>
-                        <GradientBar />
-                        <Heading size="lg" textAlign={"center"} pt={5}>
-                            Visualizzazione Protocolli
-                        </Heading>
-                        <Box pl={10} pr={10} pb={5} pt={5}>
-                            <HStack>
-                                <InputGroup>
-                                    <InputLeftElement
-                                        pointerEvents="none"
-                                        children={<SearchIcon color="gray.300" />}
-                                    />
-                                    <Input
-                                        className="SearchInput"
-                                        type="text"
-                                        onChange={onChange}
-                                        placeholder="Search"
-                                    />
-                                </InputGroup>
-                            </HStack>
-                            {/* Barra di ricerca*/}
-                            {listProtocolli.protocollo.length > 0 ? (
-                                <>
-                                    <Heading w={"full"} mb={5} textAlign={"center"}>
-                                        Ecco lo storico dei protocolli di{" "}
-                                        {listProtocolli.protocollo[0].cliente.nome}{" "}
-                                        {listProtocolli.protocollo[0].cliente.cognome}
-                                    </Heading>
-                                    <Table variant={"unstyled"} colorScheme={"gray"} size="md">
-                                        <TableCaption>Lista Protocolli</TableCaption>
-                                        <Thead color>
-                                            <Tr>
-                                                <Th>ID</Th>
-                                                <Th>Data Creazione</Th>
-                                                <Th>Data Scadenza</Th>
-                                                <Th>Azione</Th>
-                                            </Tr>
-                                        </Thead>
-                                        <Tbody>
-                                            {listProtocolli.protocollo.map(
-                                                (protocol) =>
-                                                    (protocol.id === parseInt(search) ||
-                                                        search === "") && (
-                                                        <Tr>
-                                                            <Td>{protocol.id}</Td>
-                                                            <Td>
-                                                                {moment(protocol.dataCreazione).format(
-                                                                    "DD/MM/yyyy"
-                                                                )}
-                                                            </Td>
-                                                            <Td>
-                                                                {moment(protocol.dataScadenza).format(
-                                                                    "DD/MM/yyyy"
-                                                                )}
-                                                            </Td>
-                                                            <Td>
-                                                                <Link to={urlProtocollo + "/" + protocol.id}>
-                                                                    {" "}
-                                                                    <InfoIcon />
-                                                                </Link>
-                                                            </Td>
-                                                        </Tr>
-                                                    )
-                                            )}
-                                        </Tbody>
-                                    </Table>
-                                </>
-                            ) : (
-                                <Heading py={5} textAlign={"center"}>
-                                    Non c'è niente qui...
-                                </Heading>
-                            )}
-                        </Box>
-                    </Box>
-                </VStack>
-            )}
-        </>
+      <>
+        {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
+          <ReactLink to="/protocols/create">
+            <Button
+              colorScheme={"fitdiary"}
+              color={"white"}
+              mx={[0, 5, 10, 20]}
+              my={5}
+            >
+              Crea Protocollo
+            </Button>
+          </ReactLink>
+        )}
+        {!isLoading && listProtocolli && (
+          <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
+            <Heading size="lg" w="full" pt={5}>
+              Visualizzazione Protocolli
+            </Heading>
+            <Box bg={"white"} borderRadius="xl" pb={5} w={"full"}>
+              <GradientBar />
+
+              <Box pl={10} pr={10} pb={5} pt={5}>
+                <HStack>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<SearchIcon color="gray.300" />}
+                    />
+                    <Input
+                      className="SearchInput"
+                      type="text"
+                      onChange={onChange}
+                      placeholder="Search"
+                    />
+                  </InputGroup>
+                </HStack>
+                {/* Barra di ricerca*/}
+                {listProtocolli.protocollo.length > 0 ? (
+                  <>
+                    <Text fontSize="xl" my={5}>
+                      Protocolli di {listProtocolli.protocollo[0].cliente.nome}{" "}
+                      {listProtocolli.protocollo[0].cliente.cognome}
+                    </Text>
+                    <Table variant={"striped"} colorScheme={"gray"} size="md">
+                      <TableCaption>Lista Protocolli</TableCaption>
+                      <Thead bg="fitdiary.100">
+                        <Tr>
+                          <Th>ID</Th>
+                          <Th>Data Creazione</Th>
+                          <Th>Data Scadenza</Th>
+                          <Th>Azione</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {listProtocolli.protocollo.map(
+                          (protocol) =>
+                            (protocol.id === parseInt(search) ||
+                              search === "") && (
+                              <Tr>
+                                <Td>{protocol.id}</Td>
+                                <Td>
+                                  {moment(protocol.dataCreazione).format(
+                                    "DD/MM/yyyy"
+                                  )}
+                                </Td>
+                                <Td>
+                                  {moment(protocol.dataScadenza).format(
+                                    "DD/MM/yyyy"
+                                  )}
+                                </Td>
+                                <Td>
+                                  <ReactLink to={urlProtocollo + "/" + protocol.id}>
+                                    <InfoIcon />
+                                  </ReactLink>
+                                </Td>
+                              </Tr>
+                            )
+                        )}
+                      </Tbody>
+                    </Table>
+                  </>
+                ) : (
+                  <Heading py={5} textAlign={"center"}>
+                    Non c'è niente qui...
+                  </Heading>
+                )}
+              </Box>
+            </Box>
+          </VStack>
+        )}
+      </>
     );
 }
 
