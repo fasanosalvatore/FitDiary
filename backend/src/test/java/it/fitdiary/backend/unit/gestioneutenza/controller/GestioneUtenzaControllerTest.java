@@ -6,7 +6,6 @@ import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.controller.GestioneUtenzaController;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
-import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -501,13 +500,14 @@ class GestioneUtenzaControllerTest {
 
     @Test
     void eliminaClienteSuccess() throws Exception {
-        Ruolo ruoloAdmin = new Ruolo(3L, "ADMIN", null, null);
+        Ruolo ruoloAdmin = new Ruolo(3L, Ruolo.RUOLOADMIN, null, null);
 
         Utente admin =
                 new Utente(3L, "Salvatore", "Fasano", "toretore@gmail.com"
                         , "Tore123*", true, LocalDate.parse("1998-11" +
                         "-03"), "M", null, null, null,
-                        null, null, ruoloAdmin, null, null, null, null, null);
+                        null, null, ruoloAdmin, null,
+                        null, null, null, null);
 
         Principal principal = () -> "3";
         when(gestioneUtenzaService.getById(admin.getId())).thenReturn(admin);
@@ -521,28 +521,6 @@ class GestioneUtenzaControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().is2xxSuccessful());
-    }
-
-    @Test
-    void eliminaClienteInternalServerError() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
-
-        Utente admin =
-                new Utente(3L, "Salvatore", "Fasano", "toretore@gmail.com"
-                        , "Tore123*", true, LocalDate.parse("1998-11" +
-                        "-03"), "M", null, null, null,
-                        null, null, ruoloPrep, null, null, null, null, null);
-        Principal principal = () -> "3";
-        when(gestioneUtenzaService.getById(admin.getId())).thenReturn(admin);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.delete("/api/v1/utenti/2")
-                        .principal(principal);
-        ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
-                        .build()
-                        .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
@@ -566,8 +544,8 @@ class GestioneUtenzaControllerTest {
                 cliente.getId())).thenReturn(true);
         when(gestioneUtenzaService.getById(preparatore.getId())).thenReturn(
                 preparatore);
-        when(gestioneUtenzaService.getById(cliente.getId())).thenReturn(
-                cliente);
+        cliente.setAttivo(false);
+        when(gestioneUtenzaService.disattivaUtente(cliente.getId())).thenReturn(cliente);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.put("/api/v1/utenti/2")
                         .principal(principal);
@@ -600,8 +578,6 @@ class GestioneUtenzaControllerTest {
                 cliente.getId())).thenReturn(false);
         when(gestioneUtenzaService.getById(preparatore.getId())).thenReturn(
                 preparatore);
-        when(gestioneUtenzaService.getById(cliente.getId())).thenReturn(
-                cliente);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.put("/api/v1/utenti/2")
                         .principal(principal);

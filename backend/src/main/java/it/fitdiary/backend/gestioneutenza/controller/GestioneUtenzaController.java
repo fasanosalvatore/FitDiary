@@ -302,28 +302,22 @@ public class GestioneUtenzaController {
     /**
      * permette di eliminare un cliente dal sistema.
      *
-     * @param idCliente identificativo del cliente da eliminare
+     * @param idUtente identificativo del cliente da eliminare
      * @return risposta di conferma di eliminazione
      */
     @DeleteMapping("{id}")
     public ResponseEntity<Object> eliminaCliente(
-            @PathVariable("id") final Long idCliente) {
+            @PathVariable("id") final Long idUtente) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
         Long idAdmin = Long.parseLong(
                 request.getUserPrincipal().getName());
         Utente admin = service.getById(idAdmin);
-        Ruolo adminRuolo= new Ruolo(3L,"ADMIN",null,null);
-        if (!admin.getRuolo().equals(adminRuolo)) {
-            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                    (Object) "Questo utente non è un admin");
-        }
-        else{
-            service.deleteUtenteById(idCliente);
-            return ResponseHandler.generateResponse(HttpStatus.OK,
-                    (Object) "Eliminazone andata a buon fine");
-        }
+        service.deleteUtenteById(idUtente);
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                (Object) "Eliminazone andata a buon fine");
     }
+
     /**
      * permette di disattivare un cliente dalla piattaforma.
      *
@@ -345,8 +339,7 @@ public class GestioneUtenzaController {
                             "Il preparatore non può accedere "
                             + "al profilo di questo cliente");
         }
-        Utente cliente = service.getById(idCliente);
-        cliente.setAttivo(false);
+        var cliente = service.disattivaUtente(idCliente);
         return ResponseHandler.generateResponse(HttpStatus.OK, "cliente",
                 cliente);
     }
