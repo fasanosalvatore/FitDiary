@@ -42,9 +42,10 @@ export default function Login() {
             const formData = new FormData();
             formData.append("email", values.email);
             formData.append("password", values.password);
-            const { data: { data } } = await publicFetch.post('utenti/login', formData);
+            const { data} = await publicFetch.post('utenti/login', formData);
+            console.log(data);
             setIsSuccessfullySubmitted(true);
-            authContext.setAuthState(data);
+            authContext.setAuthState(data.data);
             toast({
                 title: 'Accesso eseguito!',
                 description: "Verrai riderizionato a breve!",

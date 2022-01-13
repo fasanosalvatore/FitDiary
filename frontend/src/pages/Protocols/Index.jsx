@@ -45,9 +45,12 @@ function Index() {
     const fetchContext = useContext(FetchContext);
     const [listProtocolli, setProtocolli] = useState();
     useEffect(() => {
+        console.log( "ciao")
         const listaProtocolli = async () => {
+            console.log("lista");
             try {
                 let params = (new URL(document.location)).searchParams;
+                console.log(params.get("idCliente"));
                 const idCliente = params.get("idCliente") || "";
                 const { data } = await fetchContext.authAxios("protocolli" + (idCliente !== "" ? "?clienteId=" + idCliente : ""));
                 setProtocolli(data.data);
@@ -61,7 +64,7 @@ function Index() {
 
         }
         listaProtocolli();
-    }, [fetchContext, toast]);
+    }, [fetchContext]);
 
     return (
         <>

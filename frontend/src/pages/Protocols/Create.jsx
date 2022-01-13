@@ -27,8 +27,8 @@ const Create = () => {
   const fetchContext = useContext(FetchContext);
   const [options, setOptions] = useState([{}]);
   const [isLoading, setisLoading] = useState(false);
-  const [selectedFileAllenamento, setselectedFileAllenamento] = useState(null);
-  const [selectedFileAlimentare, setselectedFileAlimentare] = useState(null);
+  const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
+  const [selectedSchedaAlimentare, setselectedSchedaAlimentare] = useState(null);
   const { handleSubmit, register, setValue } = useForm();
   const toast = useToast({
     duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
@@ -42,22 +42,22 @@ const Create = () => {
     };
   }
 
-  const onDropAllenamento = useCallback(acceptedFileAllenamento => {
-    console.log(acceptedFileAllenamento)
-    setValue("fileAllenamento", acceptedFileAllenamento);
+  const onDropAllenamento = useCallback(acceptedSchedaAllenamento => {
+    console.log(acceptedSchedaAllenamento)
+    setValue("schedaAllenamento", acceptedSchedaAllenamento);
   }, [setValue])
-  const onDropAlimentare = useCallback(acceptedFileAlimentare => {
-    console.log(acceptedFileAlimentare)
-    setValue("schedaAlimentare", acceptedFileAlimentare);
+  const onDropAlimentare = useCallback(acceptedSchedaAlimentare => {
+    console.log(acceptedSchedaAlimentare)
+    setValue("schedaAlimentare", acceptedSchedaAlimentare);
   }, [setValue])
   const {
-    acceptedFiles: acceptedFileAllenamento,
+    acceptedFiles: acceptedSchedaAllenamento,
     getRootProps: getRootPropsAllenamento,
     getInputProps: getInputPropsAllenamento,
     isDragActive: isDragActiveAllenamento
   } = useDropzone({ onDrop: onDropAllenamento, maxFiles: 1 })
   const {
-    acceptedFiles: acceptedFileAlimentare,
+    acceptedFiles: acceptedSchedaAlimentare,
     getRootProps: getRootPropsAlimentare,
     getInputProps: getInputPropsAlimentare,
     isDragActive: isDragActiveAlimentare
@@ -84,17 +84,20 @@ const Create = () => {
   }
 
   useEffect(() => {
-    setselectedFileAllenamento(acceptedFileAllenamento[0]);
-  }, [acceptedFileAllenamento]);
+    setselectedSchedaAllenamento(acceptedSchedaAllenamento[0]);
+  }, [acceptedSchedaAllenamento]);
 
   useEffect(() => {
     setisLoading(true);
     const getUsers = async () => {
       try {
-        const { data: { data: { listaClienti } } } = await fetchContext.authAxios(urlUtenti);
-        setOptions(listaClienti.map(e => {
-          return { value: e.id, label: e.nome }
-        }))
+        const { data: { data: { clienti } } } = await fetchContext.authAxios(urlUtenti);
+        console.log(clienti);
+        setOptions(
+          clienti.map((e) => {
+            return { value: e.id, label: e.nome };
+          })
+        );
         setisLoading(false);
       } catch (error) {
         console.log(error)
@@ -104,8 +107,8 @@ const Create = () => {
   }, [fetchContext])
 
   useEffect(() => {
-    setselectedFileAlimentare(acceptedFileAlimentare[0]);
-  }, [acceptedFileAlimentare]);
+    setselectedSchedaAlimentare(acceptedSchedaAlimentare[0]);
+  }, [acceptedSchedaAlimentare]);
 
   //Verifica se una data inserita è precedenta alla odierna
   function isValidDate(value) {
@@ -142,17 +145,17 @@ const Create = () => {
                 <GridItem colSpan={2}>
                   <FormControl id={"schedaAlimentare"}>
                     <FormLabel>Scheda Alimentare</FormLabel>
-                    {selectedFileAlimentare != null && (
+                    {selectedSchedaAlimentare != null && (
                       <HStack>
                         <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
-                          setselectedFileAlimentare(null);
+                          setselectedSchedaAlimentare(null);
                           setValue("schedaAlimentare", null);
                         }} />
                         <Text>
-                          {selectedFileAlimentare.path}
+                          {selectedSchedaAlimentare.path}
                         </Text>
                       </HStack>)}
-                    {!selectedFileAlimentare && (
+                    {!selectedSchedaAlimentare && (
                       <div {...getRootPropsAlimentare()}>
                         <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
                           borderColor={"gray.200"}>
@@ -173,20 +176,20 @@ const Create = () => {
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={2}>
-                  <FormControl id={"fileAllenamento"}>
+                  <FormControl id={"schedaAllenamento"}>
                     <FormLabel>Scheda Allenamento</FormLabel>
-                    {selectedFileAllenamento != null && (
+                    {selectedSchedaAllenamento != null && (
                       <HStack>
                         <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
-                          setselectedFileAllenamento(null);
-                          setValue("fileAllenamento", null);
+                          setselectedSchedaAllenamento(null);
+                          setValue("schedaAllenamento", null);
                         }} />
                         <Text>
-                          {selectedFileAllenamento.path}
+                          {selectedSchedaAllenamento.path}
                         </Text>
                       </HStack>
                     )}
-                    {!selectedFileAllenamento && (
+                    {!selectedSchedaAllenamento && (
                       <div {...getRootPropsAllenamento()}>
                         <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
                           borderColor={"gray.200"}>

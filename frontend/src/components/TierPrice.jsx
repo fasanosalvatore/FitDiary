@@ -79,7 +79,7 @@ export default function TierPrice() {
                             </ListItem>
                             <ListItem>
                                 <ListIcon as={FaCheckCircle} color="green.500" />
-                                Protocolli illimiati.
+                                Protocolli illimitati.
                             </ListItem>
                             <ListItem>
                                 <ListIcon as={FaCheckCircle} color="green.500" />
