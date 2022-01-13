@@ -241,7 +241,7 @@ public class GestioneUtenzaController {
     @GetMapping("{id}")
     public ResponseEntity<Object> visualizzaProfiloUtente(
             @PathVariable("id") final Long idCliente) {
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<>();
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
         Long idPreparatore = Long.parseLong(
@@ -325,7 +325,7 @@ public class GestioneUtenzaController {
      * @return il nuovo cliente
      */
     @PutMapping("{id}")
-    public ResponseEntity<Object> disattivaCliente(
+    public ResponseEntity<Object> disattivaOrAttivaCliente(
             @PathVariable("id") final Long idCliente) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
@@ -339,7 +339,7 @@ public class GestioneUtenzaController {
                             "Il preparatore non può accedere "
                             + "al profilo di questo cliente");
         }
-        var cliente = service.disattivaUtente(idCliente);
+        var cliente = service.disattivaOrAttivaUtente(idCliente);
         return ResponseHandler.generateResponse(HttpStatus.OK, "cliente",
                 cliente);
     }

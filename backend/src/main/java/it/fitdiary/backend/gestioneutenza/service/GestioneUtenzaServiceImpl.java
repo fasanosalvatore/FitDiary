@@ -269,13 +269,13 @@ public class GestioneUtenzaServiceImpl
      * @return utente disattivato.
      */
     @Override
-    public Utente disattivaUtente(final long id) {
+    public Utente disattivaOrAttivaUtente(final long id) {
         Utente utente = utenteRepository.getById(id);
         if (utente == null) {
             throw new IllegalArgumentException(
                     "Utente non presente del Database");
         }
-        utente.setAttivo(false);
+        utente.setAttivo(!utente.getAttivo());
         return utenteRepository.save(utente);
     }
 }

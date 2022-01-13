@@ -81,5 +81,5 @@ public interface GestioneUtenzaService extends UserDetailsService {
      * @param id id dell'utente
      * @return utente disattivato
      */
-    Utente disattivaUtente(long id);
+    Utente disattivaOrAttivaUtente(long id);
 }
