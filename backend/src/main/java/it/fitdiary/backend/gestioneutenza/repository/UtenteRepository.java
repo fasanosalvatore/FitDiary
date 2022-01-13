@@ -2,6 +2,9 @@ package it.fitdiary.backend.gestioneutenza.repository;
 
 import it.fitdiary.backend.entity.Utente;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface UtenteRepository extends JpaRepository<Utente, Long> {
     /**
@@ -32,5 +35,7 @@ public interface UtenteRepository extends JpaRepository<Utente, Long> {
      * @param idCliente
      * @return true se il cliente viene eliminato, altrimenti false.
      */
-    boolean deleteUtenteById(Long idCliente);
+    @Modifying
+    @Query("delete from Utente u where u.id = :idCliente")
+    void deleteUtenteById(@Param("idCliente") Long idCliente);
 }

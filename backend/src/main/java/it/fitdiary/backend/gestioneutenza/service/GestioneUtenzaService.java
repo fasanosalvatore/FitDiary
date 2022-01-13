@@ -76,5 +76,5 @@ public interface GestioneUtenzaService extends UserDetailsService {
      * @return ritorna se il cliente è stato eliminato o meno.
      * todo: non funziona!!!
      */
-    Boolean deleteUtenteById(Long idCliente);
+    void deleteUtenteById(Long idCliente);
 }

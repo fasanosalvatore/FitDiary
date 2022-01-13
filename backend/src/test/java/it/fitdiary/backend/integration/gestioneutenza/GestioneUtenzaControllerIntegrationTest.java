@@ -3,13 +3,7 @@ package it.fitdiary.backend.integration.gestioneutenza;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
-import it.fitdiary.backend.integration.JSendDTO;
-import it.fitdiary.backend.integration.RetrieveUtil;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,19 +43,27 @@ class GestioneUtenzaControllerIntegrationTest {
     private RuoloRepository ruoloRepository;
 
     private Utente preparatore;
+    private Utente preparatore2;
     private String tokenPreparatore;
+    private String tokenPreparatore2;
     private Utente cliente;
+    private Utente cliente2;
     private String tokenCliente;
+    private String tokenCliente2;
     private Utente admin;
     private String tokenAdmin;
 
     @BeforeEach
     void setUp() {
         preparatore = utenteRepository.findByEmail("preparatore@fitdiary.it");
+        preparatore2 = utenteRepository.findByEmail("giaqui@gmail.com");
         cliente = utenteRepository.findByEmail("cliente@fitdiary.it");
+        cliente2 = utenteRepository.findByEmail("inapina@libero.it");
         admin = utenteRepository.findByEmail("admin@fitdiary.it");
         tokenPreparatore = setUpToken(preparatore.getEmail(), "Password123!");
+        tokenPreparatore2 = setUpToken(preparatore2.getEmail(), "Password123!");
         tokenCliente = setUpToken(cliente.getEmail(), "Password123!");
+        tokenCliente2 = setUpToken(cliente2.getEmail(), "Password123!");
         tokenAdmin = setUpToken(admin.getEmail(), "Password123!");
     }
 
@@ -83,14 +85,14 @@ class GestioneUtenzaControllerIntegrationTest {
 
     private static Stream<Arguments> provideStringForIsHello() {
         return Stream.of(
-            Arguments.of("", false),
-            Arguments.of("hello", true),
-            Arguments.of("hello ", false),
-            Arguments.of("ciao", false)
+                Arguments.of("", false),
+                Arguments.of("hello", true),
+                Arguments.of("hello ", false),
+                Arguments.of("ciao", false)
         );
     }
 
-    private Stream<Arguments>  provideUtenteAndTokenForUtenteEsistente() {
+    private Stream<Arguments> provideUtenteAndTokenForUtenteEsistente() {
         return Stream.of(
                 Arguments.of(this.preparatore, this.tokenPreparatore),
                 Arguments.of("hello", true),
@@ -102,16 +104,17 @@ class GestioneUtenzaControllerIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("provideStringForIsHello")
-    public void isHello_shouldPassIfStringMatches(String input, boolean expected) {
+    public void isHello_shouldPassIfStringMatches(String input,
+                                                  boolean expected) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(tokenPreparatore);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        var c=restTemplate.exchange("http" +
+        var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/utenti/hello", HttpMethod.GET, entity, String.class);
         System.out.println(c);
-        assertEquals(expected,input.equals("hello"));
+        assertEquals(expected, input.equals("hello"));
     }
 
     @Test
@@ -129,8 +132,31 @@ class GestioneUtenzaControllerIntegrationTest {
         assertTrue(c.getBody().contains(preparatore.getNome()));
     }
 
+    @Test
+    public void visualizzaProfiloUtenteSuccess()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(tokenPreparatore2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/4",
+                        port), HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
 
+    @Test
+    public void visualizzaProfiloUtenteErrorUnauthorized()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(tokenPreparatore);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/4",
+                        port), HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
+    }
 }
 
 

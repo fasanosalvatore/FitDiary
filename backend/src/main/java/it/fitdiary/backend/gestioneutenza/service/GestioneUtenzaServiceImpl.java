@@ -241,11 +241,12 @@ public class GestioneUtenzaServiceImpl
                 idCliente);
     }
     @Override
-    public Boolean deleteUtenteById(Long idCliente){
+    public void deleteUtenteById(Long idCliente){
         if (idCliente == null) {
             throw new IllegalArgumentException("Id cliente non valido");
+
         }
-        return utenteRepository.deleteUtenteById(idCliente);
+       utenteRepository.deleteUtenteById(idCliente);
     }
 
     /**
