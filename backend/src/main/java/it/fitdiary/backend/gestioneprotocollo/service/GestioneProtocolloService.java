@@ -53,4 +53,11 @@ public interface GestioneProtocolloService {
     Protocollo inserisciSchedaAlimentare(Protocollo protocollo,
                                          File schedaAlimentareFile)
             throws IOException;
+
+    /**
+     * @param preparatore preparatore
+     * @param page numero pagine
+     * @return lista protocolli creati da un preparatore divisi in pagine
+     */
+    List<Protocollo> getAllProtocolliPreparatore(Utente preparatore, int page);
 }

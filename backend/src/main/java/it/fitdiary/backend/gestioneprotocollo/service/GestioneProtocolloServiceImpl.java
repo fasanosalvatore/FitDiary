@@ -18,6 +18,7 @@ import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoReposi
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,6 +34,10 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class GestioneProtocolloServiceImpl
         implements GestioneProtocolloService {
+    /**
+     * numero di protocolli in una pagina.
+     */
+    public static final int PAGE_SIZE = 50;
     /**
      * Repository del protocollo.
      */
@@ -212,4 +217,18 @@ public class GestioneProtocolloServiceImpl
 
     }
 
+    /**
+     * @param preparatore preparatore
+     * @param page        numero pagine
+     * @return lista protocolli creati dal preparatore
+     */
+    @Override
+    public List<Protocollo> getAllProtocolliPreparatore(
+            final Utente preparatore, final int page) {
+        var pageProtocolli =
+                protocolloRepository.findByPreparatoreOrderByDataScadenzaDesc(
+                        preparatore,
+                        Pageable.ofSize(PAGE_SIZE).withPage(page - 1));
+        return pageProtocolli.toList();
+    }
 }

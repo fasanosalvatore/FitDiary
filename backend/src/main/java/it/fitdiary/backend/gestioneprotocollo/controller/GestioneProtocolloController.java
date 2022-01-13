@@ -1,6 +1,7 @@
 package it.fitdiary.backend.gestioneprotocollo.controller;
 
 import it.fitdiary.backend.entity.Protocollo;
+import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
@@ -224,17 +225,42 @@ public class GestioneProtocolloController {
      * Questa funzione permette di visualizzare una lista di protocolli.
      *
      * @param idCliente indica l' identificativo del cliente
+     * @param page      indica la pagina della lista di protocolli da prendere
      * @return lista protocolli
      */
     @GetMapping
     public ResponseEntity<Object> visualizzaStoricoProtocolli(
             @RequestParam(name =
-                    "clienteId", required = false) final Long idCliente) {
+                    "clienteId", required = false) final Long idCliente,
+            @RequestParam(name = "page", required = false) final Integer page) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        Long idUtente = Long.parseLong(
+                request.getUserPrincipal().getName());
         if (idCliente != null) {
             return visualizzaStoricoProtocolliPreparatore(idCliente);
         } else {
-            return visualizzaStoricoProtocolliClienti();
+            if (gestioneUtenzaService.getById(idUtente).getRuolo().equals(
+                    Ruolo.RUOLOCLIENTE)) {
+                return visualizzaStoricoProtocolliClienti();
+            } else {
+                return visualizzaListaProtocollo(page == null ? 1 : page);
+            }
         }
+    }
+
+
+    private ResponseEntity<Object> visualizzaListaProtocollo(final int page) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+
+        Long idPreparatore = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente preparatore = gestioneUtenzaService.getById(idPreparatore);
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                "protocollo",
+                gestioneProtocolloService.getAllProtocolliPreparatore(
+                        preparatore, page));
     }
 
     /**
