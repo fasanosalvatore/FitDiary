@@ -111,7 +111,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //Routes per qualsiasi Utente Autenticato
                 .and().authorizeRequests()
                 .antMatchers(GET,
-                        "/api/v1/utenti/token/refresh",
                         "/api/v1/utenti/token/expires",
                         "/api/v1/utenti/profilo"
                 ).authenticated()
@@ -129,7 +128,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyAuthority(PREPARATORE, ADMIN)
 
                 //Routes Preparatore e Cliente con Ruolo
-                .antMatchers(GET, "/api/v1/protocolli/**","/api/v1/utenti/hello")
+                .antMatchers(GET, "/api/v1/protocolli/**")
                 .hasAnyAuthority(PREPARATORE, CLIENTE)
                 .antMatchers(GET, "/api/v1/protocolli")
                 .hasAnyAuthority(PREPARATORE, CLIENTE)

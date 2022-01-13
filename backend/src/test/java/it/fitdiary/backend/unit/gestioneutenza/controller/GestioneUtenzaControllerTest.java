@@ -301,69 +301,6 @@ class GestioneUtenzaControllerTest {
     }
 
     @Test
-    void refreshTokenSuccess() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(2L, "PREPARATORE", null,null);
-        Utente utente = new Utente(2L, "Davide", "La Gamba", "giaqui@gmail.com"
-                , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), "M", null, null, null,
-                null, null, ruoloPrep, null, null, null,null, null);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwicm9sZXMiOlsiUHJlcGFyYXRvcmUiXSwiaXNzIjoiL2FwaS92MS91dGVudGkvbG9naW4iLCJleHAiOjkyMjMzNzIwMzY4NTQ3NzUsImVtYWlsIjoiZ2lhcXVpQGdtYWlsLmNvbSJ9.WY9dtCdMOipeFtD6Y8ptjSGK4u5ujFbxiOYWeR67bro");
-        FitDiaryUserDetails userDetails=new FitDiaryUserDetails(utente.getId().toString(), utente.getPassword(), new ArrayList<>());
-        userDetails.setId(utente.getId());
-        userDetails.setName(utente.getNome());
-        userDetails.setSurname(utente.getCognome());
-        userDetails.setGender(utente.getSesso());
-        when(gestioneUtenzaService.loadUserByUsername("giaqui@gmail.com")).thenReturn(userDetails);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isOk());
-    }
-
-    @Test
-    void refreshTokenFailure() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null,null);
-        Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
-                , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), "M", null, null, null,
-                null, null, ruoloPrep, null, null, null,null, null);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "Bearer ");
-        FitDiaryUserDetails userDetails=new FitDiaryUserDetails(utente.getId().toString(), utente.getPassword(), new ArrayList<>());
-        userDetails.setId(utente.getId());
-        userDetails.setName(utente.getNome());
-        userDetails.setSurname(utente.getCognome());
-        userDetails.setGender(utente.getSesso());
-        when(gestioneUtenzaService.loadUserByUsername("giaqui@gmail.com")).thenReturn(userDetails);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
-    void refreshTokenNoToken() throws Exception {
-        Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null,null);
-        Utente utente = new Utente(1L, "Davide", "La Gamba", "giaqui@gmail.com"
-                , "Davide123*", true, LocalDate.parse("2000-03" +
-                "-03"), "M", null, null, null,
-                null, null, ruoloPrep, null, null, null,null, null);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.get("/api/v1/utenti/token/refresh").header("Authorization", "");
-        FitDiaryUserDetails userDetails=new FitDiaryUserDetails(utente.getId().toString(), utente.getPassword(), new ArrayList<>());
-        userDetails.setId(utente.getId());
-        userDetails.setName(utente.getNome());
-        userDetails.setSurname(utente.getCognome());
-        userDetails.setGender(utente.getSesso());
-        when(gestioneUtenzaService.loadUserByUsername("giaqui@gmail.com")).thenReturn(userDetails);
-        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(this.gestioneUtenzaController)
-                .build()
-                .perform(requestBuilder);
-        actualPerformResult.andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
     void visualizzaProfiloUtenteOnSuccess() throws Exception {
         Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null,null);
         Ruolo ruoloCliente = new Ruolo(2L, "CLIENTE", null,null);

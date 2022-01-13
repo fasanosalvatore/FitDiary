@@ -24,9 +24,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -67,12 +69,16 @@ class GestioneUtenzaControllerIntegrationTest {
         MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
         parts.add("email",email);
         parts.add("password",password);
-        var c =restTemplate.postForEntity("http" +
+        var c = restTemplate.postForEntity("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/utenti/login", parts,Object.class);
-        var d=(LinkedHashMap) c.getBody();
-        return (String) ((LinkedHashMap)((LinkedHashMap)d.get("data")).get(
-                "accessToken")).get("token");
+        for(String cookie : Objects.requireNonNull(
+                c.getHeaders().get(HttpHeaders.SET_COOKIE))){
+            if(cookie.contains("accessToken")){
+                return cookie + ";refreshToken=test";
+            }
+        }
+        return null;
     }
 
     private static Stream<Arguments> provideStringForIsHello() {
@@ -111,17 +117,16 @@ class GestioneUtenzaControllerIntegrationTest {
     @Test
     public void utenteEsistente_WhenRetrieveProfile_ReturnValidUser()
             throws IOException {
-        //given
-        final HttpUriRequest request = new HttpGet(String.format("http://localhost:%d/api/v1/utenti/profilo",port));
-        request.setHeader("Authorization","Bearer " + tokenPreparatore);
-
         //when
-        final HttpResponse response = HttpClientBuilder.create().build().execute(request);
-        final JSendDTO dto = RetrieveUtil.retrieveResourceFromResponse(response,JSendDTO.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore);
 
+        var entity = new HttpEntity<String>(headers);
+        //given
+        var c = restTemplate.exchange(String.format("http://localhost:%d/api/v1/utenti/profilo",port),HttpMethod.GET,entity,String.class);
         //then
-        assertEquals(HttpStatus.SC_OK,response.getStatusLine().getStatusCode());
-        assertTrue(dto.getData().toString().contains(preparatore.getNome()));
+        assertEquals(HttpStatus.SC_OK,c.getStatusCodeValue());
+        assertTrue(c.getBody().contains(preparatore.getNome()));
     }
 
 

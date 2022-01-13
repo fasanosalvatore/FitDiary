@@ -70,9 +70,11 @@ public interface GestioneUtenzaService extends UserDetailsService {
      */
     List<Utente> visualizzaListaUtenti();
 
+
     /**
-     *
-     * @param idCliente id del cliente
+     * @param idCliente l'id del cliente da eliminare.
+     * @return ritorna se il cliente è stato eliminato o meno.
+     * todo: non funziona!!!
      */
     Boolean deleteUtenteById(Long idCliente);
 }
