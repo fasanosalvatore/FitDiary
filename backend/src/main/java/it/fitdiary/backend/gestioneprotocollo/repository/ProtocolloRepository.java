@@ -17,11 +17,11 @@ public interface ProtocolloRepository extends JpaRepository<Protocollo, Long> {
     List<Protocollo> findAllByCliente(Utente cliente);
 
     /**
-     *
      * @param preparatore preparatore
-     * @param pageable divisione in pagine
+     * @param pageable    divisione in pagine
      * @return pagina del preparatore
      */
-    Page<Protocollo> findByPreparatoreOrderByDataScadenzaDesc(Utente preparatore,
-                                                             Pageable pageable);
+    Page<Protocollo> findByPreparatoreOrderByDataScadenzaDesc(
+            Utente preparatore,
+            Pageable pageable);
 }
