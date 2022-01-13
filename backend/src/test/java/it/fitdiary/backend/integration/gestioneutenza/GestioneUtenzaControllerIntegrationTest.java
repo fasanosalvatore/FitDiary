@@ -83,40 +83,6 @@ class GestioneUtenzaControllerIntegrationTest {
         return null;
     }
 
-    private static Stream<Arguments> provideStringForIsHello() {
-        return Stream.of(
-                Arguments.of("", false),
-                Arguments.of("hello", true),
-                Arguments.of("hello ", false),
-                Arguments.of("ciao", false)
-        );
-    }
-
-    private Stream<Arguments> provideUtenteAndTokenForUtenteEsistente() {
-        return Stream.of(
-                Arguments.of(this.preparatore, this.tokenPreparatore),
-                Arguments.of("hello", true),
-                Arguments.of("hello ", false),
-                Arguments.of("ciao", false)
-        );
-    }
-
-
-    @ParameterizedTest
-    @MethodSource("provideStringForIsHello")
-    public void isHello_shouldPassIfStringMatches(String input,
-                                                  boolean expected) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(tokenPreparatore);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        var c = restTemplate.exchange("http" +
-                "://localhost:" + port + "/api" +
-                "/v1/utenti/hello", HttpMethod.GET, entity, String.class);
-        System.out.println(c);
-        assertEquals(expected, input.equals("hello"));
-    }
-
     @Test
     public void utenteEsistente_WhenRetrieveProfile_ReturnValidUser()
             throws IOException {
@@ -136,7 +102,7 @@ class GestioneUtenzaControllerIntegrationTest {
     public void visualizzaProfiloUtenteSuccess()
             throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(tokenPreparatore2);
+        headers.add("Cookie", tokenPreparatore2);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         var c = restTemplate.exchange(
@@ -149,7 +115,7 @@ class GestioneUtenzaControllerIntegrationTest {
     public void visualizzaProfiloUtenteErrorUnauthorized()
             throws IOException {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(tokenPreparatore);
+        headers.add("Cookie", tokenPreparatore);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         var c = restTemplate.exchange(
