@@ -240,13 +240,18 @@ public class GestioneUtenzaServiceImpl
         return utenteRepository.existsByPreparatoreAndId(preparatore,
                 idCliente);
     }
+
+    /**
+     * elimina un utente dal database
+     * @param idUtente l'id del utente da eliminare.
+     */
     @Override
-    public void deleteUtenteById(Long idCliente){
-        if (idCliente == null) {
-            throw new IllegalArgumentException("Id cliente non valido");
+    public void deleteUtenteById(Long idUtente){
+        if (idUtente == null) {
+            throw new IllegalArgumentException("Id utente non valido");
 
         }
-       utenteRepository.deleteUtenteById(idCliente);
+        utenteRepository.deleteById(idUtente);
     }
 
     /**
@@ -257,5 +262,15 @@ public class GestioneUtenzaServiceImpl
         return utenteRepository.findAll();
     }
 
+    @Override
+    public Utente disattivaUtente(long idCliente) {
+        Utente utente = utenteRepository.getById(idCliente);
+        if (utente == null) {
+            throw new IllegalArgumentException(
+                    "Utente non presente del Database");
+        }
+        utente.setAttivo(false);
+        return utenteRepository.save(utente);
+    }
 }
 
