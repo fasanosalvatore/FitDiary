@@ -545,7 +545,7 @@ class GestioneUtenzaControllerTest {
         when(gestioneUtenzaService.getById(preparatore.getId())).thenReturn(
                 preparatore);
         cliente.setAttivo(false);
-        when(gestioneUtenzaService.disattivaUtente(cliente.getId())).thenReturn(cliente);
+        when(gestioneUtenzaService.disattivaOrAttivaUtente(cliente.getId())).thenReturn(cliente);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.put("/api/v1/utenti/2")
                         .principal(principal);
