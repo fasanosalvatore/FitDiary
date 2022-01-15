@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StimaProgressiAdapterImp implements StimaProgressiAdapter {
+public class StimaProgressiAdapterImpl implements StimaProgressiAdapter {
 
     /**
      * modello d'intelligenza artificiale.
@@ -18,7 +18,7 @@ public class StimaProgressiAdapterImp implements StimaProgressiAdapter {
     /**
      * constructor.
      */
-    public StimaProgressiAdapterImp() {
+    public StimaProgressiAdapterImpl() {
         modelloIntelligente =
                 Model.fromFile(new File(getClass()
                         .getClassLoader()
