@@ -1,7 +1,7 @@
 import { Box, Button, ButtonGroup, Flex, Heading, Text, VStack } from "@chakra-ui/react"
-import { GradientBar } from "components/GradientBar";
-import { AuthContext } from "context/AuthContext";
-import { FetchContext } from "context/FetchContext";
+import { GradientBar } from "../../components/GradientBar";
+import { AuthContext } from "../../context/AuthContext";
+import { FetchContext } from "../../context/FetchContext";
 import React, { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 
