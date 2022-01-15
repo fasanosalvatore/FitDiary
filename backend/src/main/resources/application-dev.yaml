@@ -24,3 +24,8 @@ spring:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      max-file-size: 30MB
+cloudinary:
+  url: cloudinary://988346186838798:HkCMSqB99uwY8VaPv5a3y7h6Eiw@hdjxm4zyg

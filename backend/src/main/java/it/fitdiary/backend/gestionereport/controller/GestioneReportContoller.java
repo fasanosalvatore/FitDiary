@@ -11,6 +11,8 @@ import it.fitdiary.backend.utility.FileUtility;
 import it.fitdiary.backend.utility.ResponseHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +42,11 @@ public class GestioneReportContoller {
      * Service di gestione utenza.
      */
     private final GestioneUtenzaService gestioneUtenzaService;
+    /**
+     * Environment per prendere le proprietà dall application yaml.
+     */
+    @Autowired
+    private Environment env;
 
     /**
      * @param idCliente id del cliente di cui si vuole visualizzare lo storico
@@ -62,7 +69,7 @@ public class GestioneReportContoller {
                     preparatore, idCliente)) {
                 return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                         (Object)
-                        "Il preparatore non può accedere "
+                                "Il preparatore non può accedere "
                                 + "ai report di questo cliente");
             }
             return ResponseHandler.generateResponse(HttpStatus.OK,
@@ -100,10 +107,8 @@ public class GestioneReportContoller {
                 RequestContextHolder.getRequestAttributes()).getRequest();
         Long idCliente = Long.parseLong(
                 request.getUserPrincipal().getName());
-        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "hdjxm4zyg",
-                "api_key", "988346186838798",
-                "api_secret", "HkCMSqB99uwY8VaPv5a3y7h6Eiw"));
+        Cloudinary cloudinary = new Cloudinary(env.getProperty("cloudinary"
+                + ".url"));
         var report = new Report();
         report.setPeso(peso);
         report.setCrfBicipite(crfBicipite);
@@ -159,21 +164,21 @@ public class GestioneReportContoller {
         } catch (IllegalArgumentException ex) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                     (Object)
-                    "Il report da visualizzare non esiste");
+                            "Il report da visualizzare non esiste");
         }
         if (utente.getRuolo().getNome().equals(Ruolo.RUOLOPREPARATORE)) {
             if (!gestioneUtenzaService.existsByPreparatoreAndId(
                     utente, report.getCliente().getId())) {
                 return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                         (Object)
-                        "Il preparatore non può accedere "
+                                "Il preparatore non può accedere "
                                 + "al report di questo cliente");
             }
         } else {
             if (idUtente != report.getCliente().getId()) {
                 return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
                         (Object)
-                        "Il cliente non può accedere "
+                                "Il cliente non può accedere "
                                 + "al report di questo cliente");
             }
         }
