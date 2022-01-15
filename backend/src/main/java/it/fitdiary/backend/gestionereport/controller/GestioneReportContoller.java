@@ -6,6 +6,7 @@ import it.fitdiary.backend.entity.Report;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestionereport.service.GestioneReportService;
+import it.fitdiary.backend.gestionestimaprogressi.service.GestioneStimaProgressiService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.FileUtility;
 import it.fitdiary.backend.utility.ResponseHandler;
@@ -34,6 +35,10 @@ import java.util.ArrayList;
 @RequestMapping(path = "api/v1/reports")
 @RequiredArgsConstructor
 public class GestioneReportContoller {
+    /**
+     * Service di stima progressi.
+     */
+    private final GestioneStimaProgressiService gestioneStimaProgressiService;
     /**
      * Service di gestionereport.
      */
@@ -114,7 +119,6 @@ public class GestioneReportContoller {
         report.setCrfBicipite(crfBicipite);
         report.setCrfAddome(crfAddome);
         report.setCrfQuadricipite(crfQuadricipite);
-        report.setPesoStimato(100f);
         try {
             report.setCliente(gestioneUtenzaService.getById(idCliente));
         } catch (IllegalArgumentException e) {
@@ -140,7 +144,8 @@ public class GestioneReportContoller {
                         "errore nel caricamento delle immagini");
             }
         }
-        var newReport = gestioneReportService.inserimentoReport(report,
+        var newReport = gestioneReportService.inserimentoReport(
+                gestioneStimaProgressiService.generazioneStimaProgressi(report),
                 listaLinkFoto);
         return ResponseHandler.generateResponse(HttpStatus.CREATED, "report",
                 newReport);
