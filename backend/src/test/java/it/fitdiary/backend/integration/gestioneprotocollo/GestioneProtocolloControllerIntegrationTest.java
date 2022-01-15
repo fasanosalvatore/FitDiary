@@ -117,7 +117,7 @@ public class GestioneProtocolloControllerIntegrationTest {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
-                "/v1/protocolli", HttpMethod.POST, entity, String.class);
+                "/v1/protocolli/1", HttpMethod.GET, entity, String.class);
         assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
 
 
