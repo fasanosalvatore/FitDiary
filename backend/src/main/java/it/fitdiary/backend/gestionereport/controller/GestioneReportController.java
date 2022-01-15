@@ -34,7 +34,7 @@ import java.util.ArrayList;
 @Slf4j
 @RequestMapping(path = "api/v1/reports")
 @RequiredArgsConstructor
-public class GestioneReportContoller {
+public class GestioneReportController {
     /**
      * Service di stima progressi.
      */
