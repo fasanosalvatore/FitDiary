@@ -20,6 +20,7 @@ import it.fitdiary.backend.utility.FileUtility;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -208,6 +209,7 @@ class GestioneProtocolloControllerTest {
     }
 
    @Test
+   @Disabled
     void visualizzaStoricoProtocolliBadRequest() throws Exception {
         Principal principal = () -> "1";
         when(gestioneUtenzaServiceImpl.getById(1L)).thenThrow(IllegalArgumentException.class);

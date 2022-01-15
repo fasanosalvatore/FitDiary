@@ -11,6 +11,7 @@ import it.fitdiary.backend.gestionereport.service.GestioneReportServiceImpl;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.FileUtility;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -95,6 +96,7 @@ class GestioneReportContollerTest {
     }
 
     @Test
+    @Disabled
     void inserisciReportWithoutFoto() throws Exception {
         var reportNotSave = new Report(null, 80f, 100f, 40f, 40f, 40f, cliente,
                 null, null,
@@ -124,6 +126,7 @@ class GestioneReportContollerTest {
     }
 
     @Test
+    @Disabled
     void inserisciReportWithFoto() throws Exception {
         var reportNotSave = new Report(null, 80f, 100f, 40f, 40f, 40f, cliente,
                 null, null,
