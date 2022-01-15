@@ -11,20 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Collections;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class GestioneReportContollerIntegrationTest {
     @LocalServerPort
     private int port;
@@ -76,25 +80,35 @@ class GestioneReportContollerIntegrationTest {
     }
 
     @Test
-    @Disabled
     void inserisciReport() throws Exception {
+        MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
         var parts = new JSONObject();
         var foto = new File(
                 getClass().getClassLoader()
                         .getResource("Schermata-2016-10-27-alle-14.52.19.png")
                         .getFile());
-        parts.put("immagini",foto );
-        parts.put("peso", Collections.singletonList(60f));
-        parts.put("crfBicipite", Collections.singletonList(40f));
-        parts.put("crfAddome", Collections.singletonList(40f));
-        parts.put("crfQuadricipite", Collections.singletonList(40f));
+        var fotoIn=new FileInputStream(foto);
+        byte[] b=new byte[fotoIn.available()];
+        fotoIn.read(b);
+        ByteArrayResource bytes = new ByteArrayResource(b) {
+            @Override
+            public String getFilename() {
+                return "Schermata-2016-10-27-alle-14.52.19.png";
+            }
+        };
+        multipartRequest.add("immagini",bytes);
+        multipartRequest.add("peso", 60f);
+        multipartRequest.add("crfBicipite", 40f);
+        multipartRequest.add("crfAddome", 40f);
+        multipartRequest.add("crfQuadricipite", 40f);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenCliente);
-        HttpEntity<String> entity = new HttpEntity<>(parts.toString(),headers);
+        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
         var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/reports", HttpMethod.POST, entity, String.class);
+        System.out.println(c);
         assertEquals(HttpStatus.SC_CREATED, c.getStatusCodeValue());
 
     }
