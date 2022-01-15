@@ -232,4 +232,105 @@ public class GestioneProtocolloControllerIntegrationTest {
     }
 
 
+    @Test
+    public void modificaProtocolloSuccess() throws Exception{
+        MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
+        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
+        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
+        schedaAllenamento.read(bSchedaAllenamento);
+        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
+        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
+        schedaAlimentare.read(bSchedaAlimentare);
+        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
+            @Override
+            public String getFilename() {
+                return fileSchedaAlimentare.getPath();
+            }
+        };
+
+        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
+            @Override
+            public String getFilename() {
+                return fileSchedaAllenamento.getPath();
+            }
+        };
+        multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
+        multipartRequest.add("schedaAlimentare", schedaAlimentarebytes);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
+        var c = restTemplate.exchange("http" +
+                "://localhost:" + port + "/api" +
+                "/v1/protocolli/1", HttpMethod.PUT, entity, String.class);
+        assertEquals(HttpStatus.SC_CREATED, c.getStatusCodeValue());
+    }
+
+    @Test
+    public void modificaProtocolloBadRequest() throws Exception{
+        MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
+        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
+        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
+        schedaAllenamento.read(bSchedaAllenamento);
+        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
+        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
+        schedaAlimentare.read(bSchedaAlimentare);
+        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
+            @Override
+            public String getFilename() {
+                return fileSchedaAlimentare.getPath();
+            }
+        };
+
+        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
+            @Override
+            public String getFilename() {
+                return fileSchedaAllenamento.getPath();
+            }
+        };
+        multipartRequest.add("schedaAllenamento", schedaAlimentarebytes);
+        multipartRequest.add("schedaAlimentare", schedaAllenamentobytes);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
+        var c = restTemplate.exchange("http" +
+                "://localhost:" + port + "/api" +
+                "/v1/protocolli/1", HttpMethod.PUT, entity, String.class);
+        assertEquals(HttpStatus.SC_BAD_REQUEST, c.getStatusCodeValue());
+    }
+
+    @Test
+    public void modificaProtocolloUnauthorized() throws Exception{
+        MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
+        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
+        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
+        schedaAllenamento.read(bSchedaAllenamento);
+        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
+        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
+        schedaAlimentare.read(bSchedaAlimentare);
+        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
+            @Override
+            public String getFilename() {
+                return fileSchedaAlimentare.getPath();
+            }
+        };
+
+        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
+            @Override
+            public String getFilename() {
+                return fileSchedaAllenamento.getPath();
+            }
+        };
+        multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
+        multipartRequest.add("schedaAlimentare", schedaAlimentarebytes);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Cookie", tokenPreparatore);
+        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
+        var c = restTemplate.exchange("http" +
+                "://localhost:" + port + "/api" +
+                "/v1/protocolli/1", HttpMethod.PUT, entity, String.class);
+        assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
+    }
 }
