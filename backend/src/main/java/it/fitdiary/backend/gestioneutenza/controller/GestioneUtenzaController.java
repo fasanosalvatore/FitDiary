@@ -315,7 +315,7 @@ public class GestioneUtenzaController {
         Utente admin = service.getById(idAdmin);
         service.deleteUtenteById(idUtente);
         return ResponseHandler.generateResponse(HttpStatus.OK,
-                (Object) "Eliminazone andata a buon fine");
+                (Object) "Eliminazione andata a buon fine");
     }
 
     /**
