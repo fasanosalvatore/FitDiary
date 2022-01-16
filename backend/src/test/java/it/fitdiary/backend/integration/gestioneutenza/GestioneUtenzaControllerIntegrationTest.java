@@ -102,6 +102,7 @@ class GestioneUtenzaControllerIntegrationTest {
         assertTrue(c.getBody().contains(preparatore.getNome()));
     }
 
+
     @Test
     public void visualizzaProfiloUtenteSuccess()
             throws IOException {
@@ -127,6 +128,31 @@ class GestioneUtenzaControllerIntegrationTest {
                         port), HttpMethod.GET, entity, String.class);
         assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
     }
+    @Test
+    public void visualizzaListaUtentiPreparatore()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti",
+                        port), HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
+    @Test
+    public void visualizzaListaUtentiAdmin()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti",
+                        port), HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
+
 }
 
 
