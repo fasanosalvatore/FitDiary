@@ -4,8 +4,11 @@ import it.fitdiary.backend.entity.ImmaginiReport;
 import it.fitdiary.backend.entity.Report;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestioneprotocollo.controller.GestioneProtocolloController;
 import it.fitdiary.backend.gestionereport.controller.GestioneReportController;
 import it.fitdiary.backend.gestionereport.service.GestioneReportServiceImpl;
+import it.fitdiary.backend.gestionestimaprogressi.service.GestioneStimaProgressiService;
+import it.fitdiary.backend.gestionestimaprogressi.service.GestioneStimaProgressiServiceImpl;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.FileUtility;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +53,8 @@ class GestioneReportControllerTest {
     private GestioneReportServiceImpl gestioneReportService;
     @MockBean
     private GestioneUtenzaServiceImpl gestioneUtenzaService;
+    @MockBean
+    private GestioneStimaProgressiServiceImpl gestioneStimaProgressiService;
     private Ruolo ruoloCliente;
     private Ruolo ruoloPreparatore;
     private Utente cliente;
