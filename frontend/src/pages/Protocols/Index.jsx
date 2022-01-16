@@ -46,9 +46,8 @@ function Index() {
     const fetchContext = useContext(FetchContext);
     const [listProtocolli, setProtocolli] = useState();
     useEffect(() => {
-        console.log( "ciao")
+
         const listaProtocolli = async () => {
-            console.log("lista");
             try {
                 let params = (new URL(document.location)).searchParams;
                 console.log(params.get("idCliente"));
@@ -126,7 +125,7 @@ function Index() {
                           (protocol) =>
                             (protocol.id === parseInt(search) ||
                               search === "") && (
-                              <Tr>
+                              <Tr key={protocol.id}>
                                 <Td>{protocol.id}</Td>
                                 <Td>
                                   {moment(protocol.dataCreazione).format(
