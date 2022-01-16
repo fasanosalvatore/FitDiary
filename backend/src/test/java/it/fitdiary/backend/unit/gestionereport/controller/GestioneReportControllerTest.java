@@ -20,6 +20,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -55,6 +56,8 @@ class GestioneReportControllerTest {
     private GestioneUtenzaServiceImpl gestioneUtenzaService;
     @MockBean
     private GestioneStimaProgressiServiceImpl gestioneStimaProgressiService;
+    @MockBean
+    private Environment env;
     private Ruolo ruoloCliente;
     private Ruolo ruoloPreparatore;
     private Utente cliente;
@@ -99,7 +102,6 @@ class GestioneReportControllerTest {
     }
 
     @Test
-    @Disabled
     void inserisciReportWithoutFoto() throws Exception {
         var reportNotSave = new Report(null, 80f, 100f, 40f, 40f, 40f, cliente,
                 null, null,
@@ -111,6 +113,9 @@ class GestioneReportControllerTest {
         Principal principal = () -> "1";
         when(gestioneUtenzaService.getById(1l)).thenReturn(cliente);
         when(gestioneReportService.inserimentoReport(reportNotSave,urlString)).thenReturn(report);
+        when(gestioneStimaProgressiService.generazioneStimaProgressi(report)).thenReturn(report);
+        when(env.getProperty("cloudinary.url")).thenReturn("cloudinary" +
+                "://988346186838798:HkCMSqB99uwY8VaPv5a3y7h6Eiw@hdjxm4zyg");
         var map=new HashMap<String,Object>();
                 MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(
@@ -129,7 +134,6 @@ class GestioneReportControllerTest {
     }
 
     @Test
-    @Disabled
     void inserisciReportWithFoto() throws Exception {
         var reportNotSave = new Report(null, 80f, 100f, 40f, 40f, 40f, cliente,
                 null, null,
@@ -147,6 +151,9 @@ class GestioneReportControllerTest {
         fileUtility.when(()->FileUtility.getFile(multipartFoto)).thenReturn(foto);
         when(gestioneUtenzaService.getById(1l)).thenReturn(cliente);
         when(gestioneReportService.inserimentoReport(reportNotSave,urlString)).thenReturn(report);
+        when(gestioneStimaProgressiService.generazioneStimaProgressi(report)).thenReturn(report);
+        when(env.getProperty("cloudinary.url")).thenReturn("cloudinary" +
+                "://988346186838798:HkCMSqB99uwY8VaPv5a3y7h6Eiw@hdjxm4zyg");
         var map=new HashMap<String,Object>();
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(

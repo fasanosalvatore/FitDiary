@@ -52,7 +52,6 @@ class GestioneUtenzaControllerTest {
     }
 
     @Test
-    @Disabled
     void registrazioneNewUserReturnCreated() throws Exception {
         Ruolo ruoloPrep = new Ruolo(1L, "PREPARATORE", null, null);
         String utenteJson = "{\n" +
