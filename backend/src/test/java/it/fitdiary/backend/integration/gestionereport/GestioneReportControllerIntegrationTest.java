@@ -82,7 +82,6 @@ class GestioneReportControllerIntegrationTest {
     }
 
     @Test
-    @Disabled
     void inserisciReport() throws Exception {
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
         var parts = new JSONObject();
@@ -117,7 +116,6 @@ class GestioneReportControllerIntegrationTest {
     }
 
     @Test
-    @Disabled
     void visualizzaReportSuccessFromCliente() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie", tokenCliente2);
@@ -129,7 +127,6 @@ class GestioneReportControllerIntegrationTest {
     }
 
     @Test
-    @Disabled
     void visualizzaReportSuccessFromPreparatore() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie", tokenPreparatore2);
@@ -137,6 +134,7 @@ class GestioneReportControllerIntegrationTest {
         var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/reports/1", HttpMethod.GET, entity, String.class);
+        System.out.println(c);
         assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
     }
 

@@ -130,7 +130,7 @@ INSERT INTO esercizio (id, categoria, nome, numero_allenamento, recupero, ripeti
 INSERT INTO esercizio (id, categoria, nome, numero_allenamento, recupero, ripetizioni, serie, scheda_allenamento_id) VALUES (17, 'braccio', 'Curl manubri seduto', '4', '90''''', '6 - 12 -50% MAX-20%', '6', 1);
 
 /* report*/
-INSERT INTO report (id, crf_addome, crf_bicipite, crf_quadricipite, data_aggiornamento, data_creazione, peso, peso_stimato, cliente_id) VALUES (2, 30, 30, 30, '2022-01-10', '2022-01-10', 100, 100, 4);
+INSERT INTO report (id, crf_addome, crf_bicipite, crf_quadricipite, data_aggiornamento, data_creazione, peso, peso_stimato, cliente_id) VALUES (1, 30, 30, 30, '2022-01-10', '2022-01-10', 100, 100, 4);
 
 /* immaginiReport */
 INSERT INTO immagini_report (id, url, report_id) VALUES (1, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--J9CYotxd--/v1641863408/evssjeyaofzzdrf8yywq.jpg', 2);
