@@ -68,7 +68,8 @@ public class GestioneUtenzaServiceImpl
             throw new IllegalArgumentException(
                     "email già presente nel " + "database");
         }
-        preparatore.setRuolo(ruoloRepository.findByNome(Ruolo.RUOLOPREPARATORE));
+        preparatore.setRuolo(ruoloRepository.findByNome(
+                Ruolo.RUOLOPREPARATORE));
         preparatore.setAttivo(true);
         preparatore.setPassword(
                 passwordEncoder.encode(preparatore.getPassword()));

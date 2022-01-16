@@ -257,6 +257,39 @@ class GestioneUtenzaControllerIntegrationTest {
                         port), HttpMethod.POST, entity, String.class);
         assertEquals(HttpStatus.SC_BAD_REQUEST, c.getStatusCodeValue());
     }
+
+    @Test
+    public void modificaDatiPersonaliSuccess()
+            throws Exception {
+        var parts = new HashMap<String, String>();
+        parts.put("nome", "Davide");
+        parts.put("cognome", "Rossi");
+        parts.put("email", "prova123@fitdiary.it");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenCliente2);
+        HttpEntity<?> entity = new HttpEntity<>(parts,headers);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti",
+                        port), HttpMethod.PUT, entity, String.class);
+        assertEquals(HttpStatus.SC_CREATED, c.getStatusCodeValue());
+    }
+
+    @Test
+    public void modificaDatiPersonaliErrorBadRequest() {
+        var parts = new HashMap<String, String>();
+        parts.put("nome", "Davide");
+        parts.put("cognome", "Rossi");
+        parts.put("email", "prova123fitdiary.it");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenCliente2);
+        HttpEntity<?> entity = new HttpEntity<>(parts,headers);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti",
+                        port), HttpMethod.PUT, entity, String.class);
+        assertEquals(HttpStatus.SC_BAD_REQUEST, c.getStatusCodeValue());
+    }
 }
 
 
