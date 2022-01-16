@@ -1843,6 +1843,59 @@ const listaReport = {
         "success"
 }
 
+const user=
+    {
+    "data": {
+    "clienti": [
+        {
+            "id": 4,
+            "nome": "Costantina",
+            "cognome": "Trascendentina",
+            "email": "inapina@libero.it",
+            "attivo": true,
+            "dataNascita": "2001-08-13",
+            "sesso": "F",
+            "telefono": "3356895789",
+            "via": "Corso Vittorio Emanuele, 25/B",
+            "cap": "84100",
+            "citta": "Salerno",
+            "preparatore": {
+                "id": 2,
+                "nome": "Daniele",
+                "cognome": "Giaquinto",
+                "email": "giaqui@gmail.com",
+                "attivo": true,
+                "dataNascita": "1989-02-25",
+                "sesso": "M",
+                "telefono": "3406683793",
+                "via": "Via Antinori, 2",
+                "cap": "84085",
+                "citta": "Mercato San Severino",
+                "preparatore": null,
+                "ruolo": {
+                    "id": 2,
+                    "nome": "Preparatore",
+                    "dataCreazione": "2000-01-01T00:00:01",
+                    "dataAggiornamento": "2000-01-01T00:00:01"
+                },
+                "dataCreazione": "2000-01-01T00:00:01",
+                "dataAggiornamento": "2000-01-01T00:00:01"
+            },
+            "ruolo": {
+                "id": 3,
+                "nome": "Cliente",
+                "dataCreazione": "2000-01-01T00:00:01",
+                "dataAggiornamento": "2000-01-01T00:00:01"
+            },
+            "dataCreazione": "2000-01-01T00:00:01",
+            "dataAggiornamento": "2000-01-01T00:00:01"
+        },
+    ]
+},
+    "status": "success"
+}
+
+
 const report = {
     "data": {
         "report": {
