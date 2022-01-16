@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class GestioneReportContollerIntegrationTest {
+class GestioneReportControllerIntegrationTest {
     @LocalServerPort
     private int port;
     @Autowired

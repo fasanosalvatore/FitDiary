@@ -1,12 +1,10 @@
 package it.fitdiary.backend.unit.gestionereport.controller;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import it.fitdiary.backend.entity.ImmaginiReport;
 import it.fitdiary.backend.entity.Report;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
-import it.fitdiary.backend.gestionereport.controller.GestioneReportContoller;
+import it.fitdiary.backend.gestionereport.controller.GestioneReportController;
 import it.fitdiary.backend.gestionereport.service.GestioneReportServiceImpl;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.FileUtility;
@@ -40,14 +38,14 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = {GestioneReportContoller.class})
+@ContextConfiguration(classes = {GestioneReportController.class})
 @ExtendWith(SpringExtension.class)
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-class GestioneReportContollerTest {
+class GestioneReportControllerTest {
 
     @Autowired
-    private GestioneReportContoller gestioneReportContoller;
+    private GestioneReportController gestioneReportController;
     @MockBean
     private GestioneReportServiceImpl gestioneReportService;
     @MockBean
@@ -118,7 +116,7 @@ class GestioneReportContollerTest {
 
                         .principal(principal);
         ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                MockMvcBuilders.standaloneSetup(gestioneReportController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
@@ -153,7 +151,7 @@ class GestioneReportContollerTest {
                         .param("crfAddome", "40").param("crfQuadricipite", "40")
                         .principal(principal);
         ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                MockMvcBuilders.standaloneSetup(gestioneReportController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
@@ -171,7 +169,7 @@ class GestioneReportContollerTest {
                                 "/api/v1/reports/1")
                         .principal(principal);
         ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                MockMvcBuilders.standaloneSetup(gestioneReportController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
@@ -189,7 +187,7 @@ class GestioneReportContollerTest {
                                 "/api/v1/reports/1")
                         .principal(principal);
         ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                MockMvcBuilders.standaloneSetup(gestioneReportController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
@@ -208,7 +206,7 @@ class GestioneReportContollerTest {
                                 "/api/v1/reports/1")
                         .principal(principal);
         ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                MockMvcBuilders.standaloneSetup(gestioneReportController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
@@ -227,7 +225,7 @@ class GestioneReportContollerTest {
                                 "/api/v1/reports/1")
                         .principal(principal);
         ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                MockMvcBuilders.standaloneSetup(gestioneReportController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
@@ -245,7 +243,7 @@ class GestioneReportContollerTest {
                                 String.valueOf(cliente.getId()))
                         .principal(principal);
         ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                MockMvcBuilders.standaloneSetup(gestioneReportController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
@@ -262,7 +260,7 @@ class GestioneReportContollerTest {
                                 "/api/v1/reports")
                         .principal(principal);
         ResultActions actualPerformResult =
-                MockMvcBuilders.standaloneSetup(gestioneReportContoller)
+                MockMvcBuilders.standaloneSetup(gestioneReportController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
