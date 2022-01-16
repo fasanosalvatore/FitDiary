@@ -207,7 +207,18 @@ class GestioneUtenzaControllerIntegrationTest {
         assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
     }
 
+    @Test
+    public void visualizzaProfiloSuccess()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenCliente2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/profilo",
+                        port), HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
 }
 
 
