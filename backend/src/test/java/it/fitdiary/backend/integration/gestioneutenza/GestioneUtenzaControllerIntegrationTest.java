@@ -152,6 +152,49 @@ class GestioneUtenzaControllerIntegrationTest {
                         port), HttpMethod.GET, entity, String.class);
         assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
     }
+    @Test
+    public void disattivaOrAttivaClienteDisattivaSuccess()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/4",
+                        port), HttpMethod.PUT, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
+
+    @Test
+    public void disattivaOrAttivaClienteAttivaSuccess()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/4",
+                        port), HttpMethod.PUT, entity, String.class);
+        var cAttiva = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/4",
+                        port), HttpMethod.PUT, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, cAttiva.getStatusCodeValue());
+    }
+
+    @Test
+    public void disattivaOrAttivaClienteErrorUnauthorized()
+            throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/4",
+                        port), HttpMethod.PUT, entity, String.class);
+
+        assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
+    }
+
 
 }
 
