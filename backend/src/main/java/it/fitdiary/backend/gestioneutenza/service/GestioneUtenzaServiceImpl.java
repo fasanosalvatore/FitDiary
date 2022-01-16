@@ -1,5 +1,6 @@
 package it.fitdiary.backend.gestioneutenza.service;
 
+import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
@@ -67,7 +68,7 @@ public class GestioneUtenzaServiceImpl
             throw new IllegalArgumentException(
                     "email già presente nel " + "database");
         }
-        preparatore.setRuolo(ruoloRepository.findByNome("Preparatore"));
+        preparatore.setRuolo(ruoloRepository.findByNome(Ruolo.RUOLOPREPARATORE));
         preparatore.setAttivo(true);
         preparatore.setPassword(
                 passwordEncoder.encode(preparatore.getPassword()));
@@ -103,7 +104,7 @@ public class GestioneUtenzaServiceImpl
         newUtente.setNome(nome);
         newUtente.setCognome(cognome);
         newUtente.setEmail(emailCliente);
-        newUtente.setRuolo(ruoloRepository.findByNome("CLIENTE"));
+        newUtente.setRuolo(ruoloRepository.findByNome(Ruolo.RUOLOCLIENTE));
         newUtente.setAttivo(true);
         newUtente.setPreparatore(preparatore);
         String password = passwordGenerator.generate();
