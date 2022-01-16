@@ -12,9 +12,10 @@ import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter, FaWhatsapp } 
 import React from "react";
 import Logo from "./Logo";
 
-export default function Footer() {
+export default function Footer(props) {
     return (
       <Flex
+        width={props.width ? props.width : "auto"}
         ml={{ base: 0, md: 60 }}
         px={[0, 5, 10]}
         minHeight="20vh"
