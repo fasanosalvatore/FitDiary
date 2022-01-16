@@ -210,7 +210,6 @@ class GestioneProtocolloControllerTest {
     }
 
    @Test
-   @Disabled
     void visualizzaStoricoProtocolliBadRequest() throws Exception {
         Principal principal = () -> "1";
         when(gestioneUtenzaServiceImpl.getById(1L)).thenThrow(IllegalArgumentException.class);

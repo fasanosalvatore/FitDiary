@@ -237,10 +237,18 @@ public class GestioneProtocolloController {
                 RequestContextHolder.getRequestAttributes()).getRequest();
         Long idUtente = Long.parseLong(
                 request.getUserPrincipal().getName());
+
         if (idCliente != null) {
             return visualizzaStoricoProtocolliPreparatore(idCliente);
         } else {
-            if (gestioneUtenzaService.getById(idUtente).getRuolo().equals(
+            Utente user;
+            try {
+                user = gestioneUtenzaService.getById(idUtente);
+            } catch (IllegalArgumentException e) {
+                return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                        (Object) e.getMessage());
+            }
+            if (user.getRuolo().equals(
                     Ruolo.RUOLOCLIENTE)) {
                 return visualizzaStoricoProtocolliClienti();
             } else {
