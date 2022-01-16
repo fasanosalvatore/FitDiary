@@ -20,7 +20,7 @@ import CustomersIndex from "./pages/User/Customer/Index";
 import CustomersCreate from "./pages/User/Customer/Create";
 
 import TrainersIndex from "./pages/User/Trainer/Index";
-
+import StoricoProgressi from "./pages/Protocols/StoricoProgressi";
 import ProtocolsIndex from "./pages/Protocols/Index"
 import ProtocolsCreate from "./pages/Protocols/Create"
 import ReportsCreate from "./pages/Reports/Create"
@@ -57,6 +57,7 @@ const AppRoutes = () => {
                 <Route path="/customers" element={<CustomersIndex />}>
                     <Route path="create" element={<CustomersCreate />} />
                 </Route>
+                <Route path="progress" element={<StoricoProgressi/>} />
                 <Route path="reports/" element={<ReportsCreate />}>
                     <Route path="create" element={<CustomersCreate />} />
                 </Route>
