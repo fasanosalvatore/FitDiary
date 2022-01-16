@@ -36,7 +36,7 @@ export default function Welcome() {
                     </VStack>
                 </Flex>
                 <Flex backgroundColor={"whiteAlpha.700"} width={"full"} justify={"center"}>
-                    <TierPrice />
+                    <TierPrice link={"/signup"}/>
                 </Flex>
                 <Footer width={"full"} />
             </VStack>

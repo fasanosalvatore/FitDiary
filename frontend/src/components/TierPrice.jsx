@@ -13,7 +13,8 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import { FaCheckCircle } from 'react-icons/fa';
-import { createBreakpoints } from '@chakra-ui/theme-tools'
+import { createBreakpoints } from '@chakra-ui/theme-tools';
+import {Link as ReactLink} from "react-router-dom";
 
 function PriceWrapper({ children }) {
     return (
@@ -37,7 +38,7 @@ createBreakpoints({
     '2xl': '1536px',
 })
 
-export default function TierPrice() {
+export default function TierPrice(props) {
     return (
         <Box py={12}>
             <VStack spacing={2} textAlign="center">
@@ -140,7 +141,7 @@ export default function TierPrice() {
                                 </ListItem>
                                 <ListItem>
                                     <ListIcon as={FaCheckCircle} color="green.500" />
-                                    Protocolli illimiati.
+                                    Protocolli illimitati.
                                 </ListItem>
                                 <ListItem>
                                     <ListIcon as={FaCheckCircle} color="green.500" />
@@ -152,9 +153,11 @@ export default function TierPrice() {
                                 </ListItem>
                             </List>
                             <Box w="80%" pt={7}>
-                                <Button w="full" colorScheme="fitdiary">
-                                    Default
-                                </Button>
+                                <ReactLink to={props.link?props.link:""}>
+                                    <Button w="full" colorScheme="fitdiary">
+                                        Default
+                                    </Button>
+                                </ReactLink>
                             </Box>
                         </VStack>
                     </Box>
@@ -187,7 +190,7 @@ export default function TierPrice() {
                             </ListItem>
                             <ListItem>
                                 <ListIcon as={FaCheckCircle} color="green.500" />
-                                Protocolli illimiati.
+                                Protocolli illimitati.
                             </ListItem>
                             <ListItem>
                                 <ListIcon as={FaCheckCircle} color="green.500" />
