@@ -28,6 +28,7 @@ import ProtocolsView from "./pages/Protocols/View";
 import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
 import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
 
+
 const AuthenticatedRoute = () => {
     const authContext = useContext(AuthContext);
     console.log(authContext.isAuthenticated());
