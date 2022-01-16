@@ -1843,8 +1843,7 @@ const listaReport = {
         "success"
 }
 
-const user=
-    {
+const Utente= {
     "data": {
     "clienti": [
         {
