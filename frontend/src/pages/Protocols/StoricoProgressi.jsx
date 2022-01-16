@@ -85,7 +85,9 @@ function StoricoProgressi() {
     useEffect(async () => {
         const getReports = async () => {
             try {
-                const {data} = await fetchContext.authAxios("reports");
+                let params = (new URL(document.location)).searchParams;
+                const idCliente = params.get("idCliente") || "";
+                const {data} = await fetchContext.authAxios("reports"+ (idCliente !== "" ? "?clienteId=" + idCliente : ""));
                 setReport(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
