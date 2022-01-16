@@ -3,7 +3,9 @@ package it.fitdiary.backend.integration.gestioneutenza;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
+import it.fitdiary.backend.utility.service.NuovoCliente;
 import org.apache.http.HttpStatus;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +18,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,6 +26,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -218,6 +222,40 @@ class GestioneUtenzaControllerIntegrationTest {
                 String.format("http://localhost:%d/api/v1/utenti/profilo",
                         port), HttpMethod.GET, entity, String.class);
         assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
+
+    @Test
+    public void iscrizioneClienteSuccess()
+            throws Exception {
+        var parts = new HashMap<String, String>();
+        parts.put("nome", "Davide");
+        parts.put("cognome", "Rossi");
+        parts.put("email", "prova123@fitdiary.it");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<?> entity = new HttpEntity<>(parts,headers);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti",
+                        port), HttpMethod.POST, entity, String.class);
+        assertEquals(HttpStatus.SC_CREATED, c.getStatusCodeValue());
+    }
+
+    @Test
+    public void iscrizioneClienteErrorBadRequest()
+            throws Exception {
+        var parts = new HashMap<String, String>();
+        parts.put("nome", "Davide");
+        parts.put("cognome", "");
+        parts.put("email", "prova123@fitdiary.it");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<?> entity = new HttpEntity<>(parts,headers);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti",
+                        port), HttpMethod.POST, entity, String.class);
+        assertEquals(HttpStatus.SC_BAD_REQUEST, c.getStatusCodeValue());
     }
 }
 
