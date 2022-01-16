@@ -113,6 +113,33 @@ public class GestioneProtocolloControllerIntegrationTest {
         assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
 
     }
+
+    @Test
+    void visualizzaStoricoProtocolliPreparatoreForCliente() throws Exception {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        var c = restTemplate.exchange("http" +
+                "://localhost:" + port + "/api" +
+                "/v1/protocolli/?clienteId=4", HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+
+    }
+
+    @Test
+    void visualizzaStoricoProtocolliPreparatore() throws Exception {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        var c = restTemplate.exchange("http" +
+                "://localhost:" + port + "/api" +
+                "/v1/protocolli/", HttpMethod.GET, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+
+    }
+
     @Test
     public void visualizzaProtocolloFromClienteTest_Success(){
 
