@@ -195,6 +195,18 @@ class GestioneUtenzaControllerIntegrationTest {
         assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
     }
 
+    @Test
+    public void eliminaClienteSuccess()
+            {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenAdmin);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/6",
+                        port), HttpMethod.DELETE, entity, String.class);
+        assertEquals(HttpStatus.SC_OK, c.getStatusCodeValue());
+    }
+
 
 }
 
