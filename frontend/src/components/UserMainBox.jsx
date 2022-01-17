@@ -24,7 +24,7 @@ export function UserMainBox(props) {
                                 <Button bg={"fitdiary.300"} color={"white"}>Modifica</Button>
                             </Link>)}
                         {props.showMoreBtns && (
-                            <Link to={"/reports"}>
+                            <Link to={`/progress?idCliente=${props.utente.id}`}>
                                 <Button bg={"green.400"} color={"white"}>Progressi</Button>
                             </Link>
                         )}

@@ -39,16 +39,18 @@ export default function Index() {
               customers.map((c) => (
                 <Box key={c.id} rounded={10} p={1} bg="gray.100" w="full" mb={5}>
                     <Flex alignItems="center" justifyContent="space-between">
+                        <Link to={`/customers/${c.id}`}>
                         <Text>
                             {c.nome} {c.cognome}
                         </Text>
+                        </Link>
                         <Text>{c.ruolo.nome}</Text>
                         <ButtonGroup>
-                            <Link to={`/customers/${c.id}`}>
-                                <Button colorScheme="fitdiary">More</Button>
-                            </Link>
                             <Link to={`/protocols?idCliente=${c.id}`}>
                                 <Button colorScheme="fitdiary">Protocolli</Button>
+                            </Link>
+                            <Link to={`/progress?idCliente=${c.id}`}>
+                                <Button bg={"green.400"} color={"white"}>Progressi</Button>
                             </Link>
                             {authContext.isAdmin() ? (
                                 <Button colorScheme="red">Elimina</Button>

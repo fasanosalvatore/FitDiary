@@ -64,7 +64,7 @@ const navItems = [
   {
     name: 'Progressi',
     icon: FiTrendingUp,
-    to: "/reports",
+    to: "/progress",
     allowedRoles: ['admin', 'cliente']
   },
   {

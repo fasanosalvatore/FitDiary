@@ -50,9 +50,9 @@ function Index() {
         const listaProtocolli = async () => {
             try {
                 let params = (new URL(document.location)).searchParams;
-                console.log(params.get("idCliente"));
                 const idCliente = params.get("idCliente") || "";
                 const { data } = await fetchContext.authAxios("protocolli" + (idCliente !== "" ? "?clienteId=" + idCliente : ""));
+                console.log(data)
                 setProtocolli(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
