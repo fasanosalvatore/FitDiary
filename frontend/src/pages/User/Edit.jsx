@@ -202,6 +202,7 @@ export default function Edit() {
                                         <FormControl id={"citta"} isInvalid={errors.citta}>
                                             <FormLabel htmlFor="citta"> Città</FormLabel>
                                             <Input type="text" placeholder="Roma"{...register("citta", {
+                                               required:  "E' richiesto il nome della Città",
                                                 maxLength: {
                                                     value: 20,
                                                     message: "Il nome della città è troppo lungo"
@@ -218,9 +219,13 @@ export default function Edit() {
                                         <FormControl id={"via"} isInvalid={errors.via}>
                                             <FormLabel htmlFor="via">Via</FormLabel>
                                             <Input type="text" placeholder=" Via Roma"{...register("via", {
+                                                required:"la via è richiesta",
                                                 maxLength: {
                                                     value: 50,
                                                     message: "Il nome della via è troppo lungo"
+                                                },pattern: {
+                                                    value: /[a-z][A-Z][.,' -]/i,
+                                                    message: "Formato via non valido"
                                                 }
                                             })} />
                                             <FormErrorMessage>{errors.via && errors.via.message}</FormErrorMessage>
