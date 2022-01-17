@@ -55,26 +55,32 @@ export default function View() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
     const {handleSubmit, setValue} = useForm();
-
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
         variant: "solid",
         containerStyle: {
             width: '100%',
             maxWidth: '100%',
         },
-
     })
+    useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
 
-    function toastParam(title, description, status) {
-        return {
-            title: title, description: description, status: status
-        };
-    }
+            toast({
+                title,
+                description: body,
+                status: stat,
+                duration: 9000,
+                isClosable: true
+            });
+        }
+    }, [toastMessage, toast]);
+
 
     const onDropAllenamento = useCallback(acceptedSchedaAllenamento => {
-        console.log(acceptedSchedaAllenamento)
         setValue("schedaAllenamento", acceptedSchedaAllenamento);
     }, [setValue])
 
@@ -87,17 +93,14 @@ export default function View() {
 
     const onSubmit = async (values) => {
         const formData = new FormData();
-        console.log(values)
         if (values.schedaAllenamento)
             formData.append("schedaAllenamento", values.schedaAllenamento[0])
         try {
             const {data} = await fetchContext.authAxios.put(urlProtocolli+"/"+id, formData)
             setProtocolli(data.data);
-            console.log(data);
-            toast(toastParam("Modifica effettuata con successo!", "Scheda Allenamento modificata correttamente", data.status))
+            setToastMessage({title:"Completato!", body:"Scheda Allenamento modificata correttamente", stat:"success"})
         } catch (error) {
-            console.log(error.response);
-            toast(toastParam("Errore", error.response.data.data, "error"))
+            setToastMessage({title:"Errore", body:error.response.data.data, stat:"error"})
         }
 
     }
@@ -108,22 +111,18 @@ export default function View() {
 
 
     useEffect(() => {
+        console.log("pages/protocols/trainingcards/view");
         const listaProtocolli = async () => {
             try {
                 const { data } = await fetchContext.authAxios("protocolli/" + id);
                 setProtocolli(data.data);
                 setLoading(false);
             } catch (error) {
-                console.log(error);
-                toast({
-                    title: "ERROR",
-                    description: "NOT AUTHORIZED",
-                    status: "error"
-                })
+                setToastMessage({title:"Errore", body:error.message, stat:"error"})
             }
         }
         listaProtocolli();
-    }, [fetchContext,id,toast])
+    }, [fetchContext,id])
     return (
         <>
             {!isLoading && (

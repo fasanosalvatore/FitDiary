@@ -35,17 +35,38 @@ function Index() {
     const onChange = (e) => {
         setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
     }
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 9000, isClosable: true, variant: "solid", containerStyle: {
-            width: '100%', maxWidth: '100%',
+        duration: 3000,
+        isClosable: true,
+        variant: "solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
         },
-
     })
+    useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
+
+            toast({
+                title,
+                description: body,
+                status: stat,
+                duration: 9000,
+                isClosable: true
+            });
+        }
+    }, [toastMessage, toast]);
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
     const [listProtocolli, setProtocolli] = useState();
-    useEffect(() => {
 
+
+
+
+    useEffect(() => {
+        console.log("pages/protocols/index")
         const listaProtocolli = async () => {
             try {
                 let params = (new URL(document.location)).searchParams;
@@ -55,15 +76,12 @@ function Index() {
                 setProtocolli(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
-                console.log(error);
-                toast({
-                    title: "ERROR", description: "NOT AUTHORIZED", status: "error"
-                })
+                setToastMessage({title:"Errore", body:error.message, stat:"error"});
             }
 
         }
         listaProtocolli();
-    }, [fetchContext,toast]);
+    }, [fetchContext]);
 
     return (
       <>

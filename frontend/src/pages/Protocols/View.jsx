@@ -40,7 +40,7 @@ import photo from "../../images/photos.png";
 export default function View() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const toast = useToast({
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
         variant: "solid",
         containerStyle: {
@@ -49,6 +49,7 @@ export default function View() {
         },
 
     })
+    const [toastMessage, setToastMessage] = useState(undefined);
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
     const [protocollo, setProtocolli] = useState();
@@ -57,20 +58,28 @@ export default function View() {
     let history = useNavigate();
 
     useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
+
+            toast({
+                title,
+                description: body,
+                status: stat,
+                duration: 9000,
+                isClosable: true
+            });
+        }
+    }, [toastMessage, toast]);
+
+    useEffect(() => {
+        console.log("pages/protocols/view");
         const listaProtocolli = async () => {
             try {
                 const { data } = await fetchContext.authAxios("protocolli/" + id);
-                console.log(data);
                 setProtocolli(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
-
             } catch (error) {
-                console.log(error);
-                toast({
-                    title: "ERROR",
-                    description: "NOT AUTHORIZED",
-                    status: "error"
-                })
+                setToastMessage({title: "Error", body: error.message, stat: "error"});
             }
         }
         listaProtocolli();
@@ -93,7 +102,7 @@ export default function View() {
         }
         report();
         */
-    }, [fetchContext,id,toast]);
+    }, [fetchContext,id]);
 
     moment.locale("it-IT");
     const navigate = useNavigate();

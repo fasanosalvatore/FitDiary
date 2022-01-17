@@ -103,6 +103,7 @@ export default function View() {
     }
 
     useEffect(() => {
+        console.log("pages/protocols/dietcard/view");
         setselectedSchedaAlimentare(acceptedSchedaAlimentare[0]);
     }, [acceptedSchedaAlimentare]);
 
