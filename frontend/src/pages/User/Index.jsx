@@ -1,9 +1,10 @@
-import { Box, Button, ButtonGroup, Flex, Heading, Text, VStack } from "@chakra-ui/react"
-import { GradientBar } from "../../components/GradientBar";
-import { AuthContext } from "../../context/AuthContext";
-import { FetchContext } from "../../context/FetchContext";
-import React, { useContext, useEffect, useState } from "react"
-import { Link } from "react-router-dom";
+import {Box, Button, ButtonGroup, Flex, Heading, Text} from "@chakra-ui/react"
+import {GradientBar} from "../../components/GradientBar";
+import {AuthContext} from "../../context/AuthContext";
+import {FetchContext} from "../../context/FetchContext";
+import React, {useContext, useEffect, useState} from "react"
+import {ButtonsUserActions} from "../../components/ButtonsUserActions";
+import {Link} from "react-router-dom";
 
 export default function Index() {
     const authContext = useContext(AuthContext);
@@ -37,24 +38,27 @@ export default function Index() {
             ) : (
               customers.map((c) => (
                 <Box key={c.id} rounded={10} p={1} bg="gray.100" w="full" mb={5}>
-                  <Flex alignItems="center" justifyContent="space-between">
-                    <Text>
-                      {c.nome} {c.cognome}
-                    </Text>
-                    <Text>{c.ruolo.nome}</Text>
-                    <ButtonGroup>
-                      <Link to={`/protocols?idCliente=${c.id}`}>
-                        <Button colorScheme="fitdiary">Protocolli</Button>
-                      </Link>
-                      {authContext.isAdmin() ? (
-                        <Button colorScheme="red">Elimina</Button>
-                      ) : (
-                        <Button colorScheme={c.attivo ? "red" : "green"}>
-                          {c.attivo ? "Disattiva" : "Attiva"}
-                        </Button>
-                      )}
-                    </ButtonGroup>
-                  </Flex>
+                    <Flex alignItems="center" justifyContent="space-between">
+                        <Text>
+                            {c.nome} {c.cognome}
+                        </Text>
+                        <Text>{c.ruolo.nome}</Text>
+                        <ButtonGroup>
+                            <Link to={`/customers/${c.id}`}>
+                                <Button colorScheme="fitdiary">More</Button>
+                            </Link>
+                            <Link to={`/protocols?idCliente=${c.id}`}>
+                                <Button colorScheme="fitdiary">Protocolli</Button>
+                            </Link>
+                            {authContext.isAdmin() ? (
+                                <Button colorScheme="red">Elimina</Button>
+                            ) : (
+                                <Button colorScheme={c.attivo ? "red" : "green"}>
+                                    {c.attivo ? "Disattiva" : "Attiva"}
+                                </Button>
+                            )}
+                        </ButtonGroup>
+                    </Flex>
                 </Box>
               ))
             )}

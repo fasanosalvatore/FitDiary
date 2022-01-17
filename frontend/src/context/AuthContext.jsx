@@ -50,7 +50,15 @@ const AuthProvider = ({children}) => {
     };
 
     const isAdmin = () => {
-        return authState.userInfo?.roles[0] === 'admin';
+        return authState.userInfo?.roles[0].toLowerCase() === 'admin';
+    }
+
+    const isCustomer = () => {
+        return authState.userInfo?.roles[0].toLowerCase()  === 'cliente';
+    }
+
+    const isTrainer = () => {
+        return authState.userInfo?.roles[0].toLowerCase()  === 'preparatore';
     }
 
     return (
@@ -60,7 +68,9 @@ const AuthProvider = ({children}) => {
                 setAuthState: authInfo => setAuthInfo(authInfo),
                 logout,
                 isAuthenticated,
-                isAdmin
+                isAdmin,
+                isTrainer,
+                isCustomer
             }}
         >
             {children}

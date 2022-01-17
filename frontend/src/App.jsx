@@ -27,6 +27,7 @@ import ReportsCreate from "./pages/Reports/Create"
 import ProtocolsView from "./pages/Protocols/View";
 import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
 import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
+import CustomersView from "./pages/User/Customer/View";
 
 
 const AuthenticatedRoute = () => {
@@ -55,7 +56,8 @@ const AppRoutes = () => {
                 <Route path="trainingcard/:id" element={<ProtocolsTrainingCardsView />} />
                 <Route path="users" element={<UsersIndex/>}/>
                 <Route path="customers" element={<UsersIndex/>}/>
-                <Route path="/customers" element={<CustomersIndex />}>
+                <Route path="customers/:id" element={<CustomersView/>}/>
+                <Route path="customers" element={<CustomersIndex />}>
                     <Route path="create" element={<CustomersCreate />} />
                 </Route>
                 <Route path="progress" element={<StoricoProgressi/>} />
