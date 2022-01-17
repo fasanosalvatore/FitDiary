@@ -1,19 +1,18 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
-    Chart as ChartJS,
     CategoryScale,
+    Chart as ChartJS,
+    Legend,
     LinearScale,
-    PointElement,
     LineElement,
+    PointElement,
     Title,
     Tooltip,
-    Legend,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import { useEffect, useState } from "react";
-import {Heading, Text, useToast, VStack } from "@chakra-ui/react";
-import { InfoIcon } from "@chakra-ui/icons";
-import { FetchContext } from "../../context/FetchContext";
+import {Line} from 'react-chartjs-2';
+import {Heading, Text, useToast, VStack} from "@chakra-ui/react";
+import {InfoIcon} from "@chakra-ui/icons";
+import {FetchContext} from "../../context/FetchContext";
 import TableResponsive from "../../components/TableResponsive";
 
 const urlReport = "/progress"

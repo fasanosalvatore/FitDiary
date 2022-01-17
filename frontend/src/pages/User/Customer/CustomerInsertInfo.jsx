@@ -1,5 +1,5 @@
-import { useForm } from 'react-hook-form';
-import React, { useContext, useEffect, useState } from 'react';
+import {useForm} from 'react-hook-form';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Button,
     FormControl,
@@ -13,7 +13,7 @@ import {
     useToast,
     VStack
 } from "@chakra-ui/react";
-import { FetchContext } from "../../../context/FetchContext";
+import {FetchContext} from "../../../context/FetchContext";
 
 
 export default function CustomerInsertInfo() {

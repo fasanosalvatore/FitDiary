@@ -1,40 +1,40 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import {
-  Avatar,
-  Box,
-  CloseButton,
-  Drawer,
-  DrawerContent,
-  Flex,
-  HStack,
-  Icon,
-  IconButton,
-  Link,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Text,
-  useColorModeValue,
-  useDisclosure,
-  VStack,
+    Avatar,
+    Box,
+    CloseButton,
+    Drawer,
+    DrawerContent,
+    Flex,
+    HStack,
+    Icon,
+    IconButton,
+    Link,
+    Menu,
+    MenuButton,
+    MenuDivider,
+    MenuItem,
+    MenuList,
+    Text,
+    useColorModeValue,
+    useDisclosure,
+    VStack,
 } from '@chakra-ui/react';
 import {
-  FiBell,
-  FiBook,
-  FiChevronDown,
-  FiHome,
-  FiMenu,
-  FiSettings,
-  FiTrendingUp,
-  FiUser,
-  FiUserPlus,
-  FiUsers
+    FiBell,
+    FiBook,
+    FiChevronDown,
+    FiHome,
+    FiMenu,
+    FiSettings,
+    FiTrendingUp,
+    FiUser,
+    FiUserPlus,
+    FiUsers
 } from 'react-icons/fi';
 import Logo from "./Logo";
-import { Link as ReactLink } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import {Link as ReactLink} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
 const navItems = [
   {

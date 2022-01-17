@@ -1,19 +1,46 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {useDropzone} from 'react-dropzone';
 
 import {
-    Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Heading, HStack,
-    IconButton, Table, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useToast,
-    VStack, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,
-    ModalCloseButton, useDisclosure, FormControl, Input
+    Accordion,
+    AccordionButton,
+    AccordionIcon,
+    AccordionItem,
+    AccordionPanel,
+    Box,
+    Button,
+    Flex,
+    FormControl,
+    Heading,
+    HStack,
+    IconButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tooltip,
+    Tr,
+    useDisclosure,
+    useToast,
+    VStack
 } from '@chakra-ui/react';
-import { EditIcon, CloseIcon } from '@chakra-ui/icons';
-import { RiArrowGoBackLine, } from 'react-icons/ri';
-import { AuthContext } from "../../../context/AuthContext";
+import {CloseIcon, EditIcon} from '@chakra-ui/icons';
+import {RiArrowGoBackLine,} from 'react-icons/ri';
+import {AuthContext} from "../../../context/AuthContext";
 import moment from "moment";
-import { FetchContext } from "../../../context/FetchContext";
-import { useNavigate, useParams } from "react-router";
-import { useForm } from "react-hook-form"
+import {FetchContext} from "../../../context/FetchContext";
+import {useNavigate, useParams} from "react-router";
+import {useForm} from "react-hook-form"
 
 export default function View() {
     const authContext = useContext(AuthContext);

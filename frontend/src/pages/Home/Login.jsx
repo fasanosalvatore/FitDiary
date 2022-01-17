@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link as ReactLink, useNavigate } from "react-router-dom";
+import React, {useContext} from 'react';
+import {useForm} from 'react-hook-form';
+import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {
     Box,
     Button,
@@ -9,19 +9,19 @@ import {
     FormLabel,
     GridItem,
     Heading,
-    Link,
     Input,
     InputGroup,
     InputRightElement,
+    Link,
     SimpleGrid,
     Text,
     useToast,
     VStack
 } from "@chakra-ui/react";
-import { AuthContext } from "../../context/AuthContext";
-import { publicFetch } from "../../util/fetch";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { GradientBar } from "../../components/GradientBar";
+import {AuthContext} from "../../context/AuthContext";
+import {publicFetch} from "../../util/fetch";
+import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
+import {GradientBar} from "../../components/GradientBar";
 
 export default function Login() {
     const authContext = useContext(AuthContext);
