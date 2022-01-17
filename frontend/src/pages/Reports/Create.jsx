@@ -8,7 +8,6 @@ import {
     HStack, Image,
     Input,
     SimpleGrid,
-    Text,
     useToast,
     VStack
 } from "@chakra-ui/react";
@@ -16,7 +15,6 @@ import {useForm} from "react-hook-form"
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useDropzone} from 'react-dropzone';
 import {FetchContext} from "../../context/FetchContext";
-import {CloseIcon} from "@chakra-ui/icons";
 import {GradientBar} from "../../components/GradientBar";
 
 const urlReports = "reports";
@@ -24,7 +22,7 @@ const urlReports = "reports";
 const Create = () => {
     const fetchContext = useContext(FetchContext);
     const [selectedFileImages, setselectedFileImages] = useState([]);
-    const {register, handleSubmit,setValue, formState: {errors, isSubmitting}} = useForm();
+    const {register, handleSubmit,setValue, formState: {errors}} = useForm();
     const toast = useToast({
         duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
@@ -160,10 +158,10 @@ const Create = () => {
                                             </SimpleGrid>
                                             </VStack>
                                             )}
-                                        {selectedFileImages.length == 0 && (
+                                        {selectedFileImages.length === 0 && (
                                             <div {...getRootPropsImages()}>
                                                 <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
-                                                     borderColor={"gray.200"}>
+                                                    borderColor={"gray.200"}>
                                                     <Input {...getInputPropsImages()}/>
                                                     {
                                                         isDragActiveImages ?

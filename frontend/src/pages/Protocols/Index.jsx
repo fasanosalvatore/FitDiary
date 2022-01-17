@@ -7,7 +7,6 @@ import {
     Input,
     InputGroup,
     InputLeftElement,
-    Link,
     Text,
     Table,
     TableCaption,
@@ -64,7 +63,7 @@ function Index() {
 
         }
         listaProtocolli();
-    }, [fetchContext]);
+    }, [fetchContext,toast]);
 
     return (
       <>

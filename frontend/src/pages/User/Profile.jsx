@@ -4,7 +4,6 @@ import {FetchContext} from "../../context/FetchContext";
 import {UserMainBox} from "../../components/UserMainBox";
 import {UserInfoBox} from "../../components/UserInfoBox";
 import {UserDataBox} from "../../components/UserDataBox";
-import {AuthContext} from "../../context/AuthContext";
 
 const urlGetInfo = `utenti/profilo`;
 

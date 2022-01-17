@@ -13,10 +13,8 @@ import {FetchContext} from "../../context/FetchContext";
 import dish from "../../images/dish.png";
 import training from "../../images/dumbbell.png";
 import photo from "../../images/photos.png";
-import {getReport} from "../../fakeBackend";
 
 export default function View() {
-    const report=getReport;
     const { isOpen, onOpen, onClose } = useDisclosure()
     const toast = useToast({
         duration: 9000,
@@ -72,7 +70,7 @@ export default function View() {
         }
         report();
         */
-    }, [fetchContext, toast, id]);
+    }, [fetchContext,id,toast]);
 
     moment.locale("it-IT");
     const navigate = useNavigate();
@@ -216,7 +214,7 @@ export default function View() {
                                 <HStack>
                                     <Heading size="s">Hai completato il protocollo?</Heading>
                                     <Button onClick={() => {
-                                        navigate("/reports/" + "create")
+                                        navigate("/reports/create")
                                     }} colorScheme='fitdiary'>Inserisci report</Button>
                                 </HStack>
                             </VStack>
