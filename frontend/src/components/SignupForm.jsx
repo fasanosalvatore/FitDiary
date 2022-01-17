@@ -100,16 +100,17 @@ export default function SignupForm() {
 
     //Verifica se una data inserita è precedenta alla odierna
     function isValidDate(value) {
-        return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
+        return (!isNaN(Date.parse(value)) && (new Date(value) <= Date.now()) ? true : "Inserisci una data valida");
     }
 
     return (<form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={2} columnGap={5} rowGap={5} w="full">
             <GridItem colSpan={colSpan} w="100%">
-                <FormControl id={"nome"} isInvalid={errors.nome} isRequired>
+                <FormControl id={"nome"} isInvalid={errors.nome} >
                     <FormLabel htmlFor="nome">Nome</FormLabel>
                     <Input type="text" placeholder="Mario" {...register("nome", {
                         required: "Il nome è obbligatorio",
+                        minLength: { value: 1, message: "Il nome è troppo corto" },
                         maxLength: { value: 50, message: "Il nome è troppo lungo" },
                         pattern: {
                             value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
@@ -120,7 +121,7 @@ export default function SignupForm() {
                 </FormControl>
             </GridItem>
             <GridItem colSpan={colSpan}>
-                <FormControl id={"cognome"} isInvalid={errors.cognome} isRequired>
+                <FormControl id={"cognome"} isInvalid={errors.cognome}>
                     <FormLabel>Cognome</FormLabel>
                     <Input type="text" placeholder="Rossi" {...register("cognome", {
                         required: "Il cognome è obbligatorio",
@@ -134,7 +135,7 @@ export default function SignupForm() {
                 </FormControl>
             </GridItem>
             <GridItem colSpan={colSpan}>
-                <FormControl id={"dataNascita"} isInvalid={errors.dataNascita} isRequired>
+                <FormControl id={"dataNascita"} isInvalid={errors.dataNascita} >
                     <FormLabel>Data di Nascita</FormLabel>
                     <Input type="date" placeholder="2001-01-05" {...register("dataNascita", {
                         required: "La data di nascita è obbligatoria", validate: value => {
@@ -145,7 +146,7 @@ export default function SignupForm() {
                 </FormControl>
             </GridItem>
             <GridItem colSpan={colSpan}>
-                <FormControl id={"sesso"} isInvalid={errors.sesso} isRequired>
+                <FormControl id={"sesso"} isInvalid={errors.sesso} >
                     <FormLabel>Sesso</FormLabel>
                     <RadioGroup>
                         <Stack direction="row">
@@ -159,7 +160,7 @@ export default function SignupForm() {
                 </FormControl>
             </GridItem>
             <GridItem colSpan={2}>
-                <FormControl id={"email"} isInvalid={errors.email} isRequired>
+                <FormControl id={"email"} isInvalid={errors.email} >
                     <FormLabel>Email</FormLabel>
                     <InputGroup>
                         <InputLeftElement
@@ -183,6 +184,7 @@ export default function SignupForm() {
                         <InputGroup>
                             <Input type={showP ? 'text' : 'password'} placeholder="Password" {...register("password", {
                                 required: "Il campo password è obbligatorio",
+                                minLength: { value: 8, message: "Password troppo corta" },
                                 maxLength: { value: 255, message: "Password troppo lunga" },
                                 pattern: {
                                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?^#()<>+&.])[A-Za-z\d@$!%*?^#()<>+&.]{8,}$/i,
@@ -201,7 +203,7 @@ export default function SignupForm() {
                 </FormControl>
             </GridItem>
             <GridItem colSpan={colSpan}>
-                <FormControl id={"confermaPassword"} isInvalid={errors.confermaPassword} isRequired>
+                <FormControl id={"confermaPassword"} isInvalid={errors.confermaPassword}>
                     <FormLabel>Conferma Password</FormLabel>
                     <InputGroup>
                         <Input type={showCP ? 'text' : 'password'}
