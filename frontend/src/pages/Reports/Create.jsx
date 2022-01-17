@@ -72,6 +72,7 @@ const Create = () => {
     }
 
     useEffect(() => {
+        console.log("pages/reports/create")
         var arrayImages= []
         for(let i=0;i<acceptedFileImages.length;i++){
             arrayImages.push(acceptedFileImages[i]);

@@ -15,6 +15,7 @@ export default function View() {
     const { id } = useParams();
 
     useEffect(() => {
+        console.log("pages/users/customers/view");
         console.log(id)
         const getInfoUtente = async () => {
             try {

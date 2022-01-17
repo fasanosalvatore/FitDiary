@@ -78,6 +78,7 @@ function StoricoProgressi() {
     });
 
     useEffect(() => {
+        console.log("pages/protocols/storicoprogressi");
         const getReports = async () => {
             try {
                 let params = (new URL(document.location)).searchParams;

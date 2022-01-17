@@ -84,10 +84,12 @@ const Create = () => {
   }
 
   useEffect(() => {
+    console.log("pages/protocols/create");
     setselectedSchedaAllenamento(acceptedSchedaAllenamento[0]);
   }, [acceptedSchedaAllenamento]);
 
   useEffect(() => {
+    console.log("pages/protocols/create2");
     setisLoading(true);
     const getUsers = async () => {
       try {

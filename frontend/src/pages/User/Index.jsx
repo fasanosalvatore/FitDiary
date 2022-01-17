@@ -11,18 +11,17 @@ export default function Index() {
     const [customers, setCustomers] = useState([]);
     
     useEffect(() => {
+        console.log("pages/users/index");
         const getData = async () => {
             try {
                 const { data } = await fetchContext.authAxios("utenti");
-                console.log(data.data.clienti);
                 setCustomers(data.data.clienti);
-                console.log(customers);
             } catch (error) {
                 console.log(error.message);
             }
         }
         getData();
-    },[customers,fetchContext])
+    },[fetchContext, setCustomers])
 
     return (
       <Flex wrap={"wrap"} p={5}>

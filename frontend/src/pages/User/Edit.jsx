@@ -46,6 +46,7 @@ export default function Edit() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log("pages/users/edit");
         const getInfoUtente = async () => {
             try {
                 const {data} = await fetchContext.authAxios.get(urlGetInfo)

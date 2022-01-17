@@ -13,6 +13,7 @@ export default function Profile() {
     const fetchContext = useContext(FetchContext);
 
     useEffect(() => {
+        console.log("pages/users/profile");
         const getInfoUtente = async () => {
             try {
                 const { data } = await fetchContext.authAxios.get(urlGetInfo)

@@ -10,6 +10,7 @@ export default function Logout() {
         },
     })
     useEffect(() => {
+        console.log("pages/home/logout");
         toast({
             title: 'Logout eseguito!',
             description: "Verrai riderizionato a breve!",
