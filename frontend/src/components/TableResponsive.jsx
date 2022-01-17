@@ -7,7 +7,7 @@ function TableResponsive(props) {
     return (
         <Box width={"full"} overflowX={"auto"}>
             <Table variant={"striped"} colorScheme={"whiteAlpha.500"} size={"md"}>
-                <TableCaption>{props.name}</TableCaption>
+                {props.name ? <TableCaption>{props.name}</TableCaption> : ""}
                 <Thead bg={"fitdiary.100"}>
                     <Tr>
                         {
@@ -52,7 +52,7 @@ function TableResponsive(props) {
 }
 
 TableResponsive.propTypes = {
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     head: PropTypes.array.isRequired,
     body: PropTypes.array.isRequired,
     obj: PropTypes.array.isRequired
