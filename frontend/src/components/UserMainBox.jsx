@@ -1,9 +1,8 @@
 import {Avatar, Box, Button, ButtonGroup, Flex, Heading, HStack, Text, VStack} from "@chakra-ui/react";
 import {GradientBar} from "./GradientBar";
 import React, {useContext} from "react";
-import {ButtonsUserActions} from "./ButtonsUserActions";
 import {AuthContext} from "../context/AuthContext";
-import {Link as ReactLink, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 export function UserMainBox(props) {
     const authContext = useContext(AuthContext);

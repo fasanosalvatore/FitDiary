@@ -3,7 +3,6 @@ import {GradientBar} from "../../components/GradientBar";
 import {AuthContext} from "../../context/AuthContext";
 import {FetchContext} from "../../context/FetchContext";
 import React, {useContext, useEffect, useState} from "react"
-import {ButtonsUserActions} from "../../components/ButtonsUserActions";
 import {Link} from "react-router-dom";
 
 export default function Index() {
@@ -23,7 +22,7 @@ export default function Index() {
             }
         }
         getData();
-    },[])
+    },[customers,fetchContext])
 
     return (
       <Flex wrap={"wrap"} p={5}>

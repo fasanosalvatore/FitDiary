@@ -5,7 +5,6 @@ import {UserDataBox} from "../../../components/UserDataBox";
 import React, {useContext, useEffect, useState} from "react";
 import {FetchContext} from "../../../context/FetchContext";
 import {useParams} from "react-router";
-import {AuthContext} from "../../../context/AuthContext";
 
 const urlGetInfo = `utenti`;
 
@@ -13,7 +12,6 @@ export default function View() {
     const [utente, setUtente] = useState({ nome: "pippo" });
     const [isLoading, setLoading] = useState(true);
     const fetchContext = useContext(FetchContext);
-    const authContext = useContext(AuthContext);
     const { id } = useParams();
 
     useEffect(() => {
@@ -29,7 +27,7 @@ export default function View() {
             }
         };
         getInfoUtente();
-    }, [fetchContext]);
+    }, [fetchContext,id]);
 
     return (
         <>

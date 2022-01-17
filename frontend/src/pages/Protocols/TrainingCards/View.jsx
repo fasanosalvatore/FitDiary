@@ -5,7 +5,7 @@ import {useDropzone} from 'react-dropzone';
 import {
     Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Flex, Heading,
     HStack, IconButton, Table, Tbody, Td, Text, Th, Thead, Tooltip, Tr, useToast, VStack,Modal, ModalOverlay,
-    ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure,FormControl,FormLabel,Input
+    ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure,FormControl,Input
 } from '@chakra-ui/react';
 import { EditIcon,CloseIcon } from '@chakra-ui/icons';
 import { RiArrowGoBackLine, } from 'react-icons/ri';
@@ -27,7 +27,7 @@ export default function View() {
     const [isLoading, setLoading] = useState(true);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
-    const {handleSubmit, register, setValue} = useForm();
+    const {handleSubmit, setValue} = useForm();
 
     const toast = useToast({
         duration: 9000,
@@ -96,7 +96,7 @@ export default function View() {
             }
         }
         listaProtocolli();
-    }, [fetchContext])
+    }, [fetchContext,id,toast])
     return (
         <>
             {!isLoading && (

@@ -1,7 +1,6 @@
 import {
     Box,
     ButtonGroup,
-    color,
     Flex,
     IconButton,
     Link,
