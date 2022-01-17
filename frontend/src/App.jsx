@@ -16,10 +16,10 @@ import UsersIndex from "./pages/User/Index";
 import UsersProfile from "./pages/User/Profile";
 import UsersEdit from "./pages/User/Edit";
 
-import CustomersIndex from "./pages/User/Customer/Index";
-import CustomersCreate from "./pages/User/Customer/Create";
+import CustomersIndex from "./pages/User/Customers/Index";
+import CustomersCreate from "./pages/User/Customers/Create";
 
-import TrainersIndex from "./pages/User/Trainer/Index";
+import TrainersIndex from "./pages/User/Trainers/Index";
 import StoricoProgressi from "./pages/Protocols/StoricoProgressi";
 import ProtocolsIndex from "./pages/Protocols/Index"
 import ProtocolsCreate from "./pages/Protocols/Create"
@@ -27,7 +27,7 @@ import ReportsCreate from "./pages/Reports/Create"
 import ProtocolsView from "./pages/Protocols/View";
 import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
 import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
-import CustomersView from "./pages/User/Customer/View";
+import CustomersView from "./pages/User/Customers/View";
 
 
 const AuthenticatedRoute = () => {
