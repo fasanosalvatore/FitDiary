@@ -248,7 +248,7 @@ public class GestioneProtocolloController {
                 return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                         (Object) e.getMessage());
             }
-            if (user.getRuolo().equals(
+            if (user.getRuolo().getNome().equals(
                     Ruolo.RUOLOCLIENTE)) {
                 return visualizzaStoricoProtocolliClienti();
             } else {
@@ -316,7 +316,6 @@ public class GestioneProtocolloController {
         Utente cliente = null;
         try {
             cliente = gestioneUtenzaService.getById(idCliente);
-
             return ResponseHandler.generateResponse(HttpStatus.OK,
                     "protocollo",
                     gestioneProtocolloService
