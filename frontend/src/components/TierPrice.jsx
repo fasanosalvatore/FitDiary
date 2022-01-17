@@ -12,8 +12,8 @@ import {
     useColorModeValue,
     VStack,
 } from "@chakra-ui/react";
-import { FaCheckCircle } from 'react-icons/fa';
-import { createBreakpoints } from '@chakra-ui/theme-tools';
+import {FaCheckCircle} from 'react-icons/fa';
+import {createBreakpoints} from '@chakra-ui/theme-tools';
 import {Link as ReactLink} from "react-router-dom";
 
 function PriceWrapper({ children }) {

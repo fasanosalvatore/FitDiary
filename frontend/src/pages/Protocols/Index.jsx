@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Box,
     Button,
@@ -7,11 +7,11 @@ import {
     Input,
     InputGroup,
     InputLeftElement,
-    Text,
     Table,
     TableCaption,
     Tbody,
     Td,
+    Text,
     Th,
     Thead,
     Tr,
@@ -19,11 +19,11 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import moment from "moment";
-import { InfoIcon, SearchIcon } from '@chakra-ui/icons'
-import { FetchContext } from "../../context/FetchContext";
-import { AuthContext } from "../../context/AuthContext";
-import { GradientBar } from "../../components/GradientBar";
-import { Link as ReactLink } from "react-router-dom"
+import {InfoIcon, SearchIcon} from '@chakra-ui/icons'
+import {FetchContext} from "../../context/FetchContext";
+import {AuthContext} from "../../context/AuthContext";
+import {GradientBar} from "../../components/GradientBar";
+import {Link as ReactLink} from "react-router-dom"
 
 const urlProtocollo = "/protocols"
 

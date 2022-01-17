@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Box, Table, TableCaption, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react'
+import {Box, Table, TableCaption, Tbody, Td, Th, Thead, Tr} from '@chakra-ui/react'
 import moment from "moment";
-import { Link as ReactLink } from "react-router-dom";
+import {Link as ReactLink} from "react-router-dom";
+
 function TableResponsive(props) {
     return (
         <Box width={"full"} overflowX={"auto"}>

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box, Button, Flex, Heading, Link, Text, VStack } from "@chakra-ui/react";
+import {Box, Button, Flex, Heading, Link, Text, VStack} from "@chakra-ui/react";
 import SignupForm from "../../components/SignupForm";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import {Elements} from "@stripe/react-stripe-js";
+import {loadStripe} from "@stripe/stripe-js";
 import Logo from "../../components/Logo";
-import { Link as ReactLink } from "react-router-dom";
-import { GradientBar } from "../../components/GradientBar";
+import {Link as ReactLink} from "react-router-dom";
+import {GradientBar} from "../../components/GradientBar";
 
 export default function Signup() {
 

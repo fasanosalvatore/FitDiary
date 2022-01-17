@@ -1,13 +1,5 @@
-import {
-    Box,
-    ButtonGroup,
-    Flex,
-    IconButton,
-    Link,
-    Stack,
-    Text,
-} from "@chakra-ui/react";
-import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter, FaWhatsapp } from "react-icons/fa";
+import {Box, ButtonGroup, Flex, IconButton, Link, Stack, Text,} from "@chakra-ui/react";
+import {FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter, FaWhatsapp} from "react-icons/fa";
 import React from "react";
 import Logo from "./Logo";
 

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useForm} from 'react-hook-form';
+import {Link, useNavigate} from "react-router-dom";
 import {
     Box,
     Button,
@@ -22,10 +22,10 @@ import {
     useBreakpointValue,
     useToast
 } from "@chakra-ui/react";
-import { CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import {CardCvcElement, CardExpiryElement, CardNumberElement, useElements, useStripe} from "@stripe/react-stripe-js";
 import TierPrice from "./TierPrice";
-import { publicFetch } from "../util/fetch";
-import { AtSignIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import {publicFetch} from "../util/fetch";
+import {AtSignIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 
 export default function SignupForm() {
     const urlSignup = 'utenti/preparatore';

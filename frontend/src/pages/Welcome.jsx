@@ -1,9 +1,10 @@
-import { Box, Button, Flex, Heading, Link, VStack, HStack, Text, Image } from "@chakra-ui/react";
-import { Link as ReactLink } from "react-router-dom";
+import {Box, Button, Flex, Heading, HStack, Image, Link, Text, VStack} from "@chakra-ui/react";
+import {Link as ReactLink} from "react-router-dom";
 import Logo from "../components/Logo";
 import TierPrice from "../components/TierPrice";
 import imbBg from "../images/fitness2.jpg"
 import Footer from "../components/Footer"
+
 export default function Welcome() {
     return (
         <>

@@ -1,10 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
-    Box, Button, Flex, Heading, HStack, Icon, Image, Table, TableCaption, Tbody,
-    Td, Text, Th, Thead, Tr, useToast, VStack, Modal, ModalOverlay, ModalContent,
-    ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure,Divider
+    Box,
+    Button,
+    Divider,
+    Flex,
+    Heading,
+    HStack,
+    Icon,
+    Image,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Table,
+    TableCaption,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+    useDisclosure,
+    useToast,
+    VStack
 } from '@chakra-ui/react';
-import{ArrowRightIcon,ArrowLeftIcon} from '@chakra-ui/icons';
+import {ArrowLeftIcon, ArrowRightIcon} from '@chakra-ui/icons';
 import {RiArrowGoBackLine} from 'react-icons/ri';
 import moment from "moment";
 import {BsGraphDown, BsGraphUp} from "react-icons/bs";

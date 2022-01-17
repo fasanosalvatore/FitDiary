@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { Box, ChakraProvider, extendTheme } from "@chakra-ui/react";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { AuthContext, AuthProvider } from "./context/AuthContext";
-import { FetchProvider } from "./context/FetchContext";
-import { Navigate } from "react-router";
+import React, {useContext} from "react";
+import {Box, ChakraProvider, extendTheme} from "@chakra-ui/react";
+import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
+import {AuthContext, AuthProvider} from "./context/AuthContext";
+import {FetchProvider} from "./context/FetchContext";
+import {Navigate} from "react-router";
 
 import AppShell from "./AppShell";
 import Welcome from "./pages/Welcome";

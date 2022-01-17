@@ -12,13 +12,13 @@ import {
   useToast,
   VStack
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form"
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useDropzone } from 'react-dropzone';
-import { FetchContext } from "../../context/FetchContext";
-import { CloseIcon } from "@chakra-ui/icons";
+import {useForm} from "react-hook-form"
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import {useDropzone} from 'react-dropzone';
+import {FetchContext} from "../../context/FetchContext";
+import {CloseIcon} from "@chakra-ui/icons";
 import Select from "react-select";
-import { GradientBar } from "../../components/GradientBar";
+import {GradientBar} from "../../components/GradientBar";
 
 const urlProtocolli = "protocolli";
 const urlUtenti = "utenti";
