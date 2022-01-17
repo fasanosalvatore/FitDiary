@@ -259,6 +259,23 @@ class GestioneUtenzaControllerIntegrationTest {
     }
 
     @Test
+    public void registrazioneSuccess() {
+        var parts = new HashMap<String, String>();
+        parts.put("nome", "Davide");
+        parts.put("cognome", "Rossi");
+        parts.put("dataNascita", "2000-03-03");
+        parts.put("sesso", "M");
+        parts.put("email", "fabrizio@gmail.com");
+        parts.put("password", "Daniele123*");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cookie", tokenPreparatore2);
+        HttpEntity<?> entity = new HttpEntity<>(parts,headers);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        var c = restTemplate.exchange(
+                String.format("http://localhost:%d/api/v1/utenti/preparatore",
+                        port), HttpMethod.POST, entity, String.class);
+        assertEquals(HttpStatus.SC_CREATED, c.getStatusCodeValue());
+    }
     public void modificaDatiPersonaliSuccess()
             throws Exception {
         var parts = new HashMap<String, String>();
