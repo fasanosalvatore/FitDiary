@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -9,15 +9,12 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import {Line} from 'react-chartjs-2';
-
-import {useEffect, useState} from "react";
-import {Flex, Heading, Table, TableCaption, Tbody, Td, Text, Th, Thead, Tr, useToast, VStack} from "@chakra-ui/react";
-import moment from "moment";
-import {Link as ReactLink} from "react-router-dom";
-import {InfoIcon} from "@chakra-ui/icons";
-import {AuthContext} from "../../context/AuthContext";
-import {FetchContext} from "../../context/FetchContext";
+import { Line } from 'react-chartjs-2';
+import { useEffect, useState } from "react";
+import {Heading, Text, useToast, VStack } from "@chakra-ui/react";
+import { InfoIcon } from "@chakra-ui/icons";
+import { FetchContext } from "../../context/FetchContext";
+import TableResponsive from "../../components/TableResponsive";
 
 const urlReport = "/progress"
 ChartJS.register(
@@ -32,7 +29,16 @@ ChartJS.register(
 
 export const options = {
     responsive: true,
-    maintainAspectRatio:false,
+    elements: {
+        point: {
+            radius: 5,
+            backgroundColor: 'rgb(4, 153, 242)',
+            borderColor: 'rgb(0,0,0)'
+        },
+        line: {
+            borderColor: 'rgb(4, 153, 242)',
+        }
+    },
     plugins: {
         legend: {
             position: 'top',
@@ -49,10 +55,6 @@ export const options = {
 
 function StoricoProgressi() {
     const [isLoading, setLoading] = useState(true);
-    const [search, setSearch] = useState("");
-    const onChange = (e) => {
-        setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
-    }
     const fetchContext = useContext(FetchContext);
     const [listaReport, setReport] = useState();
     const toast = useToast({
@@ -66,28 +68,22 @@ function StoricoProgressi() {
         datasets: [
             {
                 label: "peso", //nome cliente,
-                borderColor: 'rgb(0,21,255)',
-                backgroundColor: 'rgb(0,4,255)',
-                clip: {left: 5, top: false, right: -2, bottom: 0},
                 "data": []
             },
             {
-                label: "pesoStimato", //nome cliente,
-                borderColor: 'rgb(0,21,255)',
-                backgroundColor: 'rgb(0,21,255)',
+                label: "peso stimato", //nome cliente,
                 borderDash: [5, 5],
-                // clip: {left: 5, top: false, right: -2, bottom: 0},
                 "data": []
             },
         ]
     });
 
-    useEffect(async () => {
+    useEffect(() => {
         const getReports = async () => {
             try {
                 let params = (new URL(document.location)).searchParams;
                 const idCliente = params.get("idCliente") || "";
-                const {data} = await fetchContext.authAxios("reports"+ (idCliente !== "" ? "?clienteId=" + idCliente : ""));
+                const { data } = await fetchContext.authAxios("reports" + (idCliente !== "" ? "?clienteId=" + idCliente : ""));
                 setReport(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
@@ -98,20 +94,22 @@ function StoricoProgressi() {
             }
         }
 
+        getReports();
+
+    }, [fetchContext,toast]);
+
+    useEffect(() => {
         function extractData() {
             const newData = {
                 labels: [0],  // ci sta almeno una riga in tabella
                 datasets: [
                     {
                         label: "peso", //nome cliente,
-                        borderColor: 'rgb(0,21,255)',
-                        backgroundColor: 'rgb(0,110,229)',
                         "data": []
                     },
                     {
-                        label: "pesoStimato", //nome cliente,
-                        borderColor: 'rgb(0,21,255)',
-                        backgroundColor: 'rgb(0,110,229)',
+                        label: "peso stimato", //nome cliente,
+                        borderDash: [5, 5],
                         "data": [null] // per far partire il peso stimato dal peso stimato
                     },
                 ]
@@ -121,81 +119,63 @@ function StoricoProgressi() {
                     newData.labels.push(m + 1);
                     newData.datasets[0].data.push(report.peso);
                     newData.datasets[1].data.push(report.pesoStimato);
-
+                    return newData;
                 });
             }
             setData(newData);
         }
-
-        await getReports();
         extractData();
-    }, [data]);
+    }, [listaReport])
 
     return (
         <>
             {!isLoading && listaReport && (
-                <VStack width={"full"}>
+                <VStack m={[0, 5, 10, 20]} bgColor={"whiteAlpha.700"}>
                     <Heading textAlign={"center"}>Storico Progressi</Heading>
                     {listaReport.report.length > 0 ? (
                         <>
-                            <VStack height={"60vh"} width={"80vw"}  >
-                                <Line  options={options} data={data}/>
+                            <VStack width={"60vw"}  >
+                                <Line options={options} data={data} />
                             </VStack>
                             <Text fontSize="xl" my={5}>
                                 Report di {listaReport.report[0].cliente.nome}{" "}
                                 {listaReport.report[0].cliente.cognome}
                             </Text>
-                            <Table className={"responsiveTable"} variant="striped" colorScheme="whiteAlpha.500" size="md">
-                                <TableCaption>Lista Report</TableCaption>
-                                <Thead bg="fitdiary.100">
-                                    <Tr>
-                                        <Th>ID</Th>
-                                        <Th>Peso</Th>
-                                        <Th>Peso Stimato</Th>
-                                        <Th>Circoferenza Addome</Th>
-                                        <Th>Circoferenza Bicipite</Th>
-                                        <Th>Circoferenza Quadricipite</Th>
-                                        <Th>Data Creazione</Th>
-                                        <Th>Azione</Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {listaReport.report.map(
-                                        (rep) =>
-                                            (rep.id === parseInt(search) ||
-                                                search === "") && (
-                                                <Tr key={rep.id}>
-                                                    <Td>{rep.id}</Td>
-                                                    <Td>
-                                                        {rep.peso}
-                                                    </Td>
-                                                    <Td>
-                                                        {rep.pesoStimato}
-                                                    </Td>
-                                                    <Td>
-                                                        {rep.crfAddome}
-                                                    </Td>
-                                                    <Td>
-                                                        {rep.crfBicipite}
-                                                    </Td>
-                                                    <Td>
-                                                        {rep.crfQuadricipite}
-                                                    </Td>
-                                                    <Td>
-                                                        {moment(rep.dataCreazione).format(
-                                                            "DD/MM/yyyy"
-                                                        )}
-                                                    </Td>
-                                                    <Td>
-                                                        <ReactLink to={urlReport + "/" + rep.id}>
-                                                            <InfoIcon/>
-                                                        </ReactLink>
-                                                    </Td>
-                                                </Tr>
-                                            )
-                                    )}
-                                </Tbody>
-                            </Table>
+                            <TableResponsive
+                                name='Lista Report'
+                                head={
+                                    [
+                                        "Id",
+                                        "Peso",
+                                        "Peso Stimato",
+                                        "Circoferenza Addome",
+                                        "Circoferenza Bicipite",
+                                        "Circoferenza Quadricipite",
+                                        "Data Creazione",
+                                        "Azione"
+                                    ]
+                                }
+                                body={listaReport.report}
+                                obj={
+                                    [
+                                        "id",
+                                        "peso",
+                                        "pesoStimato",
+                                        "crfAddome",
+                                        "crfBicipite",
+                                        "crfQuadricipite",
+                                        {
+                                            isData:true,
+                                            name:"dataCreazione"
+                                        },
+                                        {
+                                            link: urlReport,
+                                            element:<InfoIcon />,
+                                            name: "id"
+                                        }
+                                    ]
+                                }
+                            />
                         </>
                     ) : (
                         <Heading py={5} textAlign={"center"}>
