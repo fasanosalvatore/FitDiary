@@ -79,7 +79,7 @@ public class GestioneProtocolloController {
         }
         if ((schedaAllenamentoMultipartFile == null
                 || schedaAllenamentoMultipartFile.isEmpty())
-                && (schedaAlimentareMultipartFile == null
+                || (schedaAlimentareMultipartFile == null
                 || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "Almeno uno dei due file deve essere presente");

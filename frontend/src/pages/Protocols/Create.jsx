@@ -1,7 +1,7 @@
 import {
   Box,
   Button,
-  FormControl,
+  FormControl, FormErrorMessage,
   FormLabel,
   GridItem,
   Heading,
@@ -29,9 +29,9 @@ const Create = () => {
   const [isLoading, setisLoading] = useState(false);
   const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
   const [selectedSchedaAlimentare, setselectedSchedaAlimentare] = useState(null);
-  const { handleSubmit, register, setValue } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm();
   const toast = useToast({
-    duration: 9000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+    duration: 90000, isClosable: true, variant: "solid", position: "top", containerStyle: {
       width: '100%', maxWidth: '100%',
     },
   })
@@ -77,8 +77,12 @@ const Create = () => {
       console.log(data);
       toast(toastParam("Creato!", "Protocollo creato correttamente", data.status))
     } catch (error) {
-      console.log(error.response);
-      toast(toastParam("Errore", error.response.data.data, "error"))
+      console.log(error.response)
+      toast({
+        title: 'Errore',
+        description: error.response.data.data,
+        status: 'error',
+      })
     }
 
   }
@@ -103,6 +107,11 @@ const Create = () => {
         setisLoading(false);
       } catch (error) {
         console.log(error)
+        toast({
+          title: 'Errore',
+          description: error.response.data.data,
+          status: 'error',
+        })
       }
     }
     getUsers();
@@ -115,7 +124,7 @@ const Create = () => {
   //Verifica se una data inserita è precedenta alla odierna
   function isValidDate(value) {
     var date = new Date();
-    date.setHours(0, 0, 0, 0);
+    date.setHours(23, 59, 59, 59);
     return (!isNaN(Date.parse(value)) && (new Date(value) > date) ? true : "Inserisci una data valida");
   }
 
@@ -139,13 +148,15 @@ const Create = () => {
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={2}>
-                  <FormControl id={"dataScadenza"}>
+                  <FormControl id={"dataScadenza"} isInvalid={errors.dataScadenza}>
                     <FormLabel>Data Scadenza</FormLabel>
                     <Input type="date" {...register("dataScadenza", {
-                      required: "La data di scadenza è obbligatoria", validate: value => {
+                      required: "La data di scadenza è obbligatoria",
+                      validate: value => {
                         return isValidDate(value)
                       }
                     })} />
+                    <FormErrorMessage>{errors.dataScadenza && errors.dataScadenza.message}</FormErrorMessage>
                   </FormControl>
                 </GridItem>
                 <GridItem colSpan={2}>
