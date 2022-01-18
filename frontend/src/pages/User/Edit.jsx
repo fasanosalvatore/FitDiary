@@ -165,11 +165,11 @@ export default function Edit() {
                                                 <Input type="text" placeholder="3332957615"{...register("telefono", {
                                                     minLenght: {
                                                         value: 4,
-                                                        message: "Formato del numero di telefono non valido"
+                                                        message: "lunghezza numero telefono troppo corta"
                                                     },
                                                     maxLenght: {
                                                         value: 15,
-                                                        message: "Formato del numero di telefono non valido"
+                                                        message: "lunghezza numero telefono troppo corta"
                                                     },
                                                     pattern: {
                                                         value: /^[+03][0-9]{3,14}$/i,
