@@ -44,10 +44,18 @@ jobs:
         if: always()
         run: mv ./backend/target/site/badges/checkstyle-result.svg ./.github/badges/
 
-      - name: Commit and push the badge (if it changed)
+      - name: Generate JavaDoc
+        if: always()
+        run: rm -rf docs && mvn javadoc:javadoc
+
+      - name: Take JaCoCo report
+        if: always()
+        run: mv ./backend/target/site/jacoco-merged-test-coverage-report/ JaCoCo-Coverage-Report/
+
+      - name: Commit and push generated files
         if: always()
         uses: EndBug/add-and-commit@v7
         with:
           default_author: github_actions
-          message: 'commit badge'
-          add: '*.svg'
+          message: 'docs: add generated docs files'
+          add: '["*.svg", "docs", "JaCoCo-Coverage-Report"]'
