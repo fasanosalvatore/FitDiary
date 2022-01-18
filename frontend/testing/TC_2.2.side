@@ -1,0 +1,517 @@
+{
+  "id": "51cca2fd-ee5f-4c54-8bd2-b44d621b6a30",
+  "version": "2.0",
+  "name": "TC_2.2",
+  "url": "http://localhost:3000/trainingcard/1",
+  "tests": [{
+    "id": "3147a430-7819-4e16-853c-fc9457f1bb8b",
+    "name": "TC_2.2.1",
+    "commands": [{
+      "id": "76c1503d-f857-4d36-9325-b5b1a93e4359",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/trainingcard/1",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "bd4274e7-0c36-4b0a-8530-d61a3cbc578a",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "655x675",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0f123f0c-a7f0-4e43-b048-8e2b7c146317",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "eaac9427-43e6-4311-9dbc-776d44dae3ea",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cfb0eaa5-ed10-4c39-b108-0f62e07ce776",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "aaf77ece-dd1c-4258-857c-007082f6df4a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1yijhex",
+      "targets": [
+        ["css=.css-1yijhex", "css:finder"],
+        ["xpath=//div[@id='chakra-modal--body-11']/div/div/div/div/div", "xpath:idRelative"],
+        ["xpath=//form/div/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c7b316db-17bd-4a21-9e6b-1de8984156a3",
+      "comment": "",
+      "command": "type",
+      "target": "id=schedaAllenamento",
+      "targets": [
+        ["id=schedaAllenamento", "id"],
+        ["css=#schedaAllenamento", "css:finder"],
+        ["xpath=//input[@id='schedaAllenamento']", "xpath:attributes"],
+        ["xpath=//div[@id='chakra-modal--body-11']/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAllenamento.pdf"
+    }, {
+      "id": "483467ab-789a-498f-965f-950cc7210641",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-yhl1nt",
+      "targets": [
+        ["css=.css-yhl1nt", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//section[@id='chakra-modal-11']/form/footer/button", "xpath:idRelative"],
+        ["xpath=//footer/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Carica')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5275dc41-5321-4fcc-bec5-7857b063ca13",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-yhl1nt",
+      "targets": [
+        ["css=.css-yhl1nt", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//section[@id='chakra-modal-11']/form/footer/button", "xpath:idRelative"],
+        ["xpath=//footer/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Carica')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "84b94c24-9966-44e9-a26b-075772942e45",
+      "comment": "",
+      "command": "click",
+      "target": "css=.chakra-modal__close-btn > .chakra-icon",
+      "targets": [
+        ["css=.chakra-modal__close-btn > .chakra-icon", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "2df68399-84ef-4fda-84fd-810dbabbbc98",
+      "comment": "Errore",
+      "command": "assertText",
+      "target": "id=toast-2-title",
+      "targets": [
+        ["id=toast-2-title", "id"],
+        ["xpath=//div[@id='toast-2-title']", "xpath:attributes"],
+        ["xpath=//div[@id='2']/div/div", "xpath:idRelative"],
+        ["xpath=//li[2]/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Errore"
+    }]
+  }, {
+    "id": "6552d30d-5046-4672-97d8-3b7df14528c5",
+    "name": "TC_2.2.2",
+    "commands": [{
+      "id": "350f770f-b719-4f51-b181-ca08966ad9c9",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/trainingcard/1",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "dbdca9c3-156c-4479-86bf-a438a5a547cc",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "655x675",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "850f6995-275a-40aa-944f-ac2756468f9e",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f599acc3-7ddd-495e-8c1d-a339138db7ff",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "21df17cf-bbab-4394-b94e-ab7967be872a",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "48397ca6-15af-4648-b5e3-ab2df6fa591b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1yijhex",
+      "targets": [
+        ["css=.css-1yijhex", "css:finder"],
+        ["xpath=//div[@id='chakra-modal--body-11']/div/div/div/div/div", "xpath:idRelative"],
+        ["xpath=//form/div/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8d280608-e912-48cb-8f68-0212250832d4",
+      "comment": "",
+      "command": "type",
+      "target": "id=schedaAllenamento",
+      "targets": [
+        ["id=schedaAllenamento", "id"],
+        ["css=#schedaAllenamento", "css:finder"],
+        ["xpath=//input[@id='schedaAllenamento']", "xpath:attributes"],
+        ["xpath=//div[@id='chakra-modal--body-11']/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAllenamento_0.csv"
+    }, {
+      "id": "e62e73f7-58da-4609-bf13-f6697d751dea",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-yhl1nt",
+      "targets": [
+        ["css=.css-yhl1nt", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//section[@id='chakra-modal-11']/form/footer/button", "xpath:idRelative"],
+        ["xpath=//footer/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Carica')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c39be0c5-417f-4d43-a28f-c32692cdacaa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-yhl1nt",
+      "targets": [
+        ["css=.css-yhl1nt", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//section[@id='chakra-modal-11']/form/footer/button", "xpath:idRelative"],
+        ["xpath=//footer/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Carica')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "781f1a47-8dda-41fb-95ad-85021688e2f6",
+      "comment": "",
+      "command": "click",
+      "target": "css=.chakra-modal__close-btn > .chakra-icon",
+      "targets": [
+        ["css=.chakra-modal__close-btn > .chakra-icon", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "173b09ef-75e6-478f-a8fd-69bae11d4a8a",
+      "comment": "Errore",
+      "command": "assertText",
+      "target": "id=toast-2-title",
+      "targets": [
+        ["id=toast-2-title", "id"],
+        ["xpath=//div[@id='toast-2-title']", "xpath:attributes"],
+        ["xpath=//div[@id='2']/div/div", "xpath:idRelative"],
+        ["xpath=//li[2]/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Errore"
+    }]
+  }, {
+    "id": "5edb1dc1-97bb-4cb8-879b-433df0330591",
+    "name": "TC_2.2.3",
+    "commands": [{
+      "id": "9a06f14a-e4e2-4db5-a6a0-dba44df8b8fb",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/trainingcard/1",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b2882f0d-2bdf-4055-a8b7-bc4b69213ada",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "655x675",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "89722cb5-bf39-4e8c-87f9-f64407ec07eb",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4c99e31e-d891-4fe8-a22a-8dfb568dd1e8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "50ba723d-256f-435d-9b8a-776533b180ba",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "08bee613-098b-4b4b-904b-bd73367b335c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1yijhex",
+      "targets": [
+        ["css=.css-1yijhex", "css:finder"],
+        ["xpath=//div[@id='chakra-modal--body-11']/div/div/div/div/div", "xpath:idRelative"],
+        ["xpath=//form/div/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9e45c443-fde5-4d21-95e2-28b4b1957b5b",
+      "comment": "",
+      "command": "type",
+      "target": "id=schedaAllenamento",
+      "targets": [
+        ["id=schedaAllenamento", "id"],
+        ["css=#schedaAllenamento", "css:finder"],
+        ["xpath=//input[@id='schedaAllenamento']", "xpath:attributes"],
+        ["xpath=//div[@id='chakra-modal--body-11']/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAllenamento_BIG.csv"
+    }, {
+      "id": "32a35986-ec1c-40eb-82d0-411bda96f2a0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-yhl1nt",
+      "targets": [
+        ["css=.css-yhl1nt", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//section[@id='chakra-modal-11']/form/footer/button", "xpath:idRelative"],
+        ["xpath=//footer/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Carica')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "085e6386-eb31-4c4d-879b-c90e6726f462",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-yhl1nt",
+      "targets": [
+        ["css=.css-yhl1nt", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//section[@id='chakra-modal-11']/form/footer/button", "xpath:idRelative"],
+        ["xpath=//footer/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Carica')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "3388d564-1287-4cfb-a2cb-885aad3ac3f1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.chakra-modal__close-btn > .chakra-icon",
+      "targets": [
+        ["css=.chakra-modal__close-btn > .chakra-icon", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "eae7d184-cdbd-48f5-869b-0991d872477e",
+      "comment": "Errore",
+      "command": "assertText",
+      "target": "id=toast-2-title",
+      "targets": [
+        ["id=toast-2-title", "id"],
+        ["xpath=//div[@id='toast-2-title']", "xpath:attributes"],
+        ["xpath=//div[@id='2']/div/div", "xpath:idRelative"],
+        ["xpath=//li[2]/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Errore"
+    }]
+  }, {
+    "id": "b7df7cf5-3c44-4033-8c86-0f2a2438f874",
+    "name": "TC_2.2.4",
+    "commands": [{
+      "id": "41dfa010-5a2c-4f3d-9429-bd9017e80e8c",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/trainingcard/1",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "366d33bf-c44c-40af-8c9c-213eed5af466",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "655x675",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4ff01147-501a-4b6c-9d91-af33bf93ac68",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "17c8b6ad-f79a-4c88-b488-cdc8db0292eb",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "60107310-1988-4548-adfa-e3c3b1984b90",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.css-1osu960",
+      "targets": [
+        ["css=.css-1osu960", "css:finder"],
+        ["xpath=(//button[@type='button'])[8]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div/div/div[2]/div/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a6df0708-2be0-4487-9af3-9361071cc599",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1yijhex",
+      "targets": [
+        ["css=.css-1yijhex", "css:finder"],
+        ["xpath=//div[@id='chakra-modal--body-11']/div/div/div/div/div", "xpath:idRelative"],
+        ["xpath=//form/div/div/div/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3230e3d9-5a0a-405f-adc1-9fca25acd054",
+      "comment": "",
+      "command": "type",
+      "target": "id=schedaAllenamento",
+      "targets": [
+        ["id=schedaAllenamento", "id"],
+        ["css=#schedaAllenamento", "css:finder"],
+        ["xpath=//input[@id='schedaAllenamento']", "xpath:attributes"],
+        ["xpath=//div[@id='chakra-modal--body-11']/div/div/div/div/div/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAllenamento.csv"
+    }, {
+      "id": "8517cacd-fb3f-4fae-9e83-7a16441fda92",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-yhl1nt",
+      "targets": [
+        ["css=.css-yhl1nt", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//section[@id='chakra-modal-11']/form/footer/button", "xpath:idRelative"],
+        ["xpath=//footer/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Carica')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b0f0c142-7a71-4bf5-ad4a-60f45e826d81",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-yhl1nt",
+      "targets": [
+        ["css=.css-yhl1nt", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//section[@id='chakra-modal-11']/form/footer/button", "xpath:idRelative"],
+        ["xpath=//footer/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Carica')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "10ff2296-66b2-489c-9c1a-63213d9c7ad1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.chakra-modal__close-btn > .chakra-icon",
+      "targets": [
+        ["css=.chakra-modal__close-btn > .chakra-icon", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "220a09d3-deac-4254-9071-fc2fd133ca8c",
+      "comment": "Completato!",
+      "command": "assertText",
+      "target": "id=toast-1-title",
+      "targets": [
+        ["id=toast-1-title", "id"],
+        ["xpath=//div[@id='toast-1-title']", "xpath:attributes"],
+        ["xpath=//div[@id='1']/div/div", "xpath:idRelative"],
+        ["xpath=//li[3]/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Completato!"
+    }]
+  }],
+  "suites": [{
+    "id": "9d6c2487-986c-4c55-9a84-0c2d012f494b",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["3147a430-7819-4e16-853c-fc9457f1bb8b"]
+  }],
+  "urls": ["http://localhost:3000/trainingcard/1"],
+  "plugins": []
+}
