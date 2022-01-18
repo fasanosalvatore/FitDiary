@@ -1,6 +1,5 @@
-package it.fitdiary.backend.unit.utility;
+package it.fitdiary.backend.utility;
 
-import it.fitdiary.backend.utility.ResponseHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
