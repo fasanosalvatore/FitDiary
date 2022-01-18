@@ -47,43 +47,43 @@ const navItems = [
     name: 'Profilo',
     icon: FiUser,
     to: "/profile",
-    allowedRoles: ['admin', 'cliente', 'preparatore']
+    allowedRoles: ['cliente', 'preparatore']
   },
   {
     name: 'Aggiungi Cliente',
     icon: FiUserPlus,
     to: "/customers/create",
-    allowedRoles: ['admin', 'preparatore']
+    allowedRoles: ['preparatore']
   },
   {
     name: 'Protocolli',
     icon: FiBook,
     to: "/protocols",
-    allowedRoles: ['admin', 'cliente', 'preparatore']
+    allowedRoles: ['cliente', 'preparatore']
   },
   {
     name: 'Progressi',
     icon: FiTrendingUp,
     to: "/progress",
-    allowedRoles: ['admin', 'cliente']
+    allowedRoles: ['cliente']
   },
   {
     name: 'Clienti',
     icon: FiUsers,
     to: "/customers",
-    allowedRoles: ['admin', 'preparatore']
+    allowedRoles: ['preparatore']
+  },
+  {
+      name: 'Utenti',
+      icon: FiUsers,
+      to: "/users",
+      allowedRoles: ['admin']
   },
   {
     name: 'Impostazioni',
     icon: FiSettings,
     to: "/account",
     allowedRoles: ['admin', 'cliente', 'preparatore']
-  },
-  {
-    name: 'Utenti',
-    icon: FiUsers,
-    to: "/users",
-    allowedRoles: ['admin']
   }
 ];
 
