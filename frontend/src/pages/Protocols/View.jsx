@@ -91,10 +91,12 @@ export default function View() {
     useEffect(() => {
         const report = async () => {
             try {
-                const {data} = await fetchContext.authAxios("report/search?data=" + protocollo.protocollo.dataScadenza + "&clienteId=" + protocollo.protocollo.cliente.id);// path da aggiungere quando il backend sarà pronto
-                console.log(data);
-                setReport(data.data);
-                setLoading(false);
+                if(protocollo){
+                    const {data} = await fetchContext.authAxios("reports/search?data=" + protocollo.protocollo.dataScadenza + "&clienteId=" + protocollo.protocollo.cliente.id);// path da aggiungere quando il backend sarà pronto
+                    console.log(data);
+                    setReport(data.data);
+                    setLoading(false);
+                }
             } catch (error) {
                 console.log(error);
                 toast({
@@ -105,7 +107,7 @@ export default function View() {
             }
         }
         report();
-    },[fetchContext,protocollo.protocollo.id]);
+    },[fetchContext,protocollo]);
 
     moment.locale("it-IT");
     const navigate = useNavigate();
@@ -148,28 +150,30 @@ export default function View() {
                                                             <Th></Th>
                                                         </Tr>
                                                     </Thead>
+                                                    {report ?
                                                     <Tbody>
                                                         <Tr>
                                                             <Td>Peso</Td>
-                                                            <Td>{report.peso}Kg<Icon as={BsGraphUp} color='green.500'
+                                                            <Td>{report.report.peso}Kg<Icon as={BsGraphUp} color='green.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Bicipite{ }</Td>
-                                                            <Td>{report.crfBicipite}cm<Icon as={BsGraphDown} color='red.500'
+                                                            <Td>{report.report.crfBicipite}cm<Icon as={BsGraphDown} color='red.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Addome</Td>
-                                                            <Td>{report.crfAddome}cm<Icon as={BsGraphDown} color='red.500'
+                                                            <Td>{report.report.crfAddome}cm<Icon as={BsGraphDown} color='red.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Quadricipite</Td>
-                                                            <Td>{report.crfQuadricipite}cm<Icon as={BsGraphUp} color='green.500'
+                                                            <Td>{report.report.crfQuadricipite}cm<Icon as={BsGraphUp} color='green.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                     </Tbody>
+                                                        : <Text>il report non e' stato creato</Text>}
                                                 </Table>
                                             </Box>
                                         </HStack>
@@ -226,8 +230,12 @@ export default function View() {
                                                                 <ModalBody align={"center"}>
                                                                     <Flex justify="center">
                                                                         <HStack align="center">
+
                                                                             <Button variant='ghost' textAlign="center" align="start" leftIcon={<ArrowLeftIcon/>}></Button>
-                                                                            <Image boxSize={550} src='https://res.cloudinary.com/hdjxm4zyg/image/upload/s--J9CYotxd--/v1641863408/evssjeyaofzzdrf8yywq.jpg' alt='Dan Abramov' />
+                                                                            {report ? report.report.immaginiReports.map((img,i)=> {
+                                                                                <Image boxSize={550} src={img.url}
+                                                                                       alt='Dan Abramov'/>
+                                                                            }): " "}
                                                                             <Button variant='ghost' textAlign="center" align="end" leftIcon={<ArrowRightIcon/>}></Button>
                                                                         </HStack>
                                                                     </Flex>
