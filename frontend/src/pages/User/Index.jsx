@@ -4,12 +4,23 @@ import {AuthContext} from "../../context/AuthContext";
 import {FetchContext} from "../../context/FetchContext";
 import React, {useContext, useEffect, useState} from "react"
 import {Link} from "react-router-dom";
+import * as PropTypes from "prop-types";
+import {Alert} from "../../components/AlertDialog";
 
+Alert.propTypes = {
+    open: PropTypes.bool,
+    leastDestructiveRef: PropTypes.any,
+    onClose: PropTypes.func,
+    onClick: PropTypes.func
+};
 export default function Index() {
+    const [isAlertOpen, setIsAlertOpen] = React.useState(false)
+    const onAlertClose = () => setIsAlertOpen(false)
     const authContext = useContext(AuthContext);
     const fetchContext = useContext(FetchContext);
     const [customers, setCustomers] = useState([]);
     const [toastMessage, setToastMessage] = useState(undefined);
+    const cancelRef = React.useRef();
     const toast = useToast({
         duration: 1000,
         isClosable: true,
@@ -41,7 +52,10 @@ export default function Index() {
         const getData = async () => {
             try {
                 const { data } = await fetchContext.authAxios("utenti");
-                setCustomers(data.data.clienti);
+                if(data.data.clienti)
+                    setCustomers(data.data.clienti);
+                else
+                    setCustomers(data.data.utenti);
             } catch (error) {
                 setToastMessage({title: "Errore!", body: error.message, stat: "error"});
             }
@@ -50,6 +64,7 @@ export default function Index() {
     },[fetchContext, setCustomers])
 
     function disableUser(id) {
+        console.log(id);
         const disableUser = async () => {
             try {
                 const { data } = await fetchContext.authAxios.put("utenti/" + id);
@@ -62,12 +77,36 @@ export default function Index() {
                 setCustomers(updatedCustomers);
                 console.log(data.data.cliente.attivo)
                 setToastMessage({title: "Completato!", body: `Cliente ${data.data.cliente.attivo ? "attivato" : "disattivato"}`, stat: "success"});
+                onAlertClose();
             } catch (error) {
                 setToastMessage({title: "Errore!", body: error.message, stat: "error"});
                 console.log(error.message);
             }
         }
         disableUser();
+    }
+
+    function deleteUser(id) {
+        console.log(id);
+        const deleteuser = async () => {
+            try {
+                const { data } = await fetchContext.authAxios.delete("utenti/" + id);
+                let updatedCustomers = customers.filter(c => {
+                    if(c.id === id) {
+                        return false
+                    }
+                    return true;
+                }).map(c => { return c });
+                setCustomers(updatedCustomers);
+                console.log(data)
+                setToastMessage({title: "Completato!", body: `${data.data}`, stat: "success"});
+                onAlertClose();
+            } catch (error) {
+                setToastMessage({title: "Errore!", body: error.message, stat: "error"});
+                console.log(error.message);
+            }
+        }
+        deleteuser();
     }
 
     return (
@@ -82,7 +121,9 @@ export default function Index() {
               <Text>Caricamento in corso...</Text>
             ) : (
               customers.map((c) => (
+
                 <Box key={c.id} rounded={10} p={1} bg="gray.100" w="full" mb={5}>
+                    {console.log(c)}
                     <Flex alignItems="center" justifyContent="space-between">
                         <Link to={`/customers/${c.id}`}>
                         <Text>
@@ -97,12 +138,21 @@ export default function Index() {
                             <Link to={`/progress?idCliente=${c.id}`}>
                                 <Button bg={"green.400"} color={"white"}>Progressi</Button>
                             </Link>
+
                             {authContext.isAdmin() ? (
-                                <Button colorScheme="red">Elimina</Button>
+                                <Alert open={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}
+                                       title={`Elimina ${c.nome}`}
+                                       body={`Sei sicuro di voler eliminare l'utente ${c.nome} ${c.cognome}?`}
+                                       buttonCancel={"Annulla"} buttonColor="red" buttonOk="Elimina"
+                                       onClick={() => deleteUser(c.id)}
+                                />
                             ) : (
-                                <Button onClick={() => disableUser(c.id)} colorScheme={c.attivo ? "red" : "green"}>
-                                    {c.attivo ? "Disattiva" : "Attiva"}
-                                </Button>
+                                <Alert open={isAlertOpen} leastDestructiveRef={cancelRef} onClose={onAlertClose}
+                                       title={`${c.attivo ? `Disattiva ${c.nome}` : `Attiva ${c.nome}`}`}
+                                       body={`Sei sicuro di voler ${c.attivo ? "disattivare" : "attivare"} il cliente ${c.nome} ${c.cognome}?`}
+                                       buttonCancel={"Annulla"} buttonColor={`${c.attivo ? "red" : "green"}`} buttonOk={`${c.attivo ? "Disattiva" : "Attiva"}`}
+                                       onClick={() => disableUser(c.id)}
+                                />
                             )}
                         </ButtonGroup>
                     </Flex>
