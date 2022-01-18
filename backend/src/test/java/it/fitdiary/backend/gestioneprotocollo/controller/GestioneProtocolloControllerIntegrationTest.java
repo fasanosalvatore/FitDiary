@@ -173,7 +173,7 @@ public class GestioneProtocolloControllerIntegrationTest {
         var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/protocolli", HttpMethod.POST, entity, String.class);
-        assertEquals(HttpStatus.SC_CREATED, c.getStatusCodeValue());
+        assertEquals(HttpStatus.SC_BAD_REQUEST, c.getStatusCodeValue());
     }
 
     @Test
