@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SchedaAllenamentoAdapterImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">it.fitdiary.backend.gestioneprotocollo.adapter</a> &gt; <span class="el_source">SchedaAllenamentoAdapterImpl.java</span></div><h1>SchedaAllenamentoAdapterImpl.java</h1><pre class="source lang-java linenums">package it.fitdiary.backend.gestioneprotocollo.adapter;
+
+import it.fitdiary.backend.entity.Esercizio;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="fc" id="L13">public class SchedaAllenamentoAdapterImpl implements SchedaAllenamentoAdapter {</span>
+
+    /**
+     * Indica il valore della posizione del campo Nome.
+     */
+    public static final int COLUMN_NOME = 0;
+    /**
+     * Indica il valore della posizione del campo Serie.
+     */
+    public static final int COLUMN_SERIE = 1;
+    /**
+     * Indica il valore della posizione del campo Ripetizioni.
+     */
+    public static final int COLUMN_RIPETIZIONI = 2;
+    /**
+     * Indica il valore della posizione del campo Recupero.
+     */
+    public static final int COLUMN_RECUPERO = 3;
+    /**
+     * Indica il valore della posizione del campo Numero allenamento.
+     */
+    public static final int COLUMN_NUMALLENAMENTO = 4;
+    /**
+     * Indica il valore della posizione del campo Categoria.
+     */
+    public static final int COLUMN_CATEGORIA = 5;
+
+    /**
+     * @param file file della scheda allenamento
+     * @return lista di esercizi
+     * @throws IOException
+     */
+    @Override
+    public List&lt;Esercizio&gt; parse(final File file)
+            throws IOException, IllegalArgumentException {
+<span class="fc" id="L48">        List&lt;Esercizio&gt; esercizi = new ArrayList&lt;Esercizio&gt;();</span>
+        CSVFormat csvFormat =
+<span class="fc" id="L50">                CSVFormat.Builder.create().setHeader(</span>
+                                &quot;Nome&quot;, &quot;Serie&quot;, &quot;Ripetizioni&quot;, &quot;Recupero&quot;,
+                                &quot;Numero Allenamento&quot;, &quot;Categoria&quot;)
+<span class="fc" id="L53">                        .setDelimiter(';').build();</span>
+<span class="fc" id="L54">        Iterable&lt;CSVRecord&gt; records =</span>
+<span class="fc" id="L55">                csvFormat.parse(new FileReader(file));</span>
+<span class="fc" id="L56">        int riga = 1;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (CSVRecord record : records) {</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if (!record.isConsistent()) {</span>
+<span class="fc" id="L59">                throw new IllegalArgumentException(&quot;errore nella compilazione &quot;</span>
+                        + &quot;della scheda allenamento&quot;);
+            }
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (riga == 1) {</span>
+<span class="fc" id="L63">                riga++;</span>
+<span class="fc" id="L64">                continue;</span>
+            }
+<span class="fc" id="L66">            Esercizio esercizio = new Esercizio();</span>
+<span class="fc" id="L67">            esercizio.setNome(record.get(COLUMN_NOME));</span>
+<span class="fc" id="L68">            esercizio.setSerie(record.get(COLUMN_SERIE));</span>
+<span class="fc" id="L69">            esercizio.setRipetizioni(record.get(COLUMN_RIPETIZIONI));</span>
+<span class="fc" id="L70">            esercizio.setRecupero(record.get(COLUMN_RECUPERO));</span>
+<span class="fc" id="L71">            esercizio.setNumeroAllenamento(record.get(COLUMN_NUMALLENAMENTO));</span>
+<span class="fc" id="L72">            esercizio.setCategoria(record.get(COLUMN_CATEGORIA));</span>
+<span class="fc" id="L73">            esercizi.add(esercizio);</span>
+<span class="fc" id="L74">        }</span>
+<span class="fc" id="L75">        return esercizi;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
