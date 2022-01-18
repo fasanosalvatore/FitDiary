@@ -98,7 +98,7 @@ class GestioneReportControllerTest {
     }
 
     @Test
-    void inserisciReportWithoutFoto() throws Exception {
+    void inserisciReportWithFotoMoreSmall_Error() throws Exception {
         var reportNotSave = new Report(null, 80f, 100f, 40f, 40f, 40f, cliente,
                 null, null,
                 null);
@@ -126,7 +126,7 @@ class GestioneReportControllerTest {
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().is2xxSuccessful());
+                MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
