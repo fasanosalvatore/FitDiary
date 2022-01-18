@@ -130,7 +130,9 @@ public class GestioneReportController {
         var listaLinkFoto = new ArrayList<String>();
         for (MultipartFile immagine : immagini) {
             if (immagine.isEmpty()) {
-                continue;
+                return ResponseHandler.generateResponse(
+                        HttpStatus.BAD_REQUEST,
+                        (Object) "dimensione file troppo piccole");
             }
             try {
                 var file = FileUtility.getFile(immagine);
