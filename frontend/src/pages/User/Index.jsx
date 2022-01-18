@@ -123,7 +123,6 @@ export default function Index() {
               customers.map((c) => (
 
                 <Box key={c.id} rounded={10} p={1} bg="gray.100" w="full" mb={5}>
-                    {console.log(c)}
                     <Flex alignItems="center" justifyContent="space-between">
                         <Link to={`/customers/${c.id}`}>
                         <Text>

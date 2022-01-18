@@ -26,7 +26,7 @@ const Create = () => {
     const [selectedFileImages, setselectedFileImages] = useState([]);
     const {register, handleSubmit,setValue, formState: {errors}} = useForm();
     const toast = useToast({
-        duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+        duration: 30000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })
@@ -46,7 +46,7 @@ const Create = () => {
         getRootProps: getRootPropsImages,
         getInputProps: getInputPropsImages,
         isDragActive: isDragActiveImages
-    } = useDropzone({onDrop: onDropImages, maxFiles: 10})
+    } = useDropzone({onDrop: onDropImages, maxFiles: 20})
 
     const onSubmit = async (values) => {
         const formData = new FormData();
@@ -92,10 +92,10 @@ const Create = () => {
                                 <GridItem colSpan={2}>
                                     <FormControl id={"peso"} isInvalid={errors.peso} pt={5}>
                                         <FormLabel htmlFor="peso">Peso</FormLabel>
-                                        <Input type="text" placeholder="70,50" {...register("peso", {
+                                        <Input type="text" placeholder="70.50" {...register("peso", {
                                             required: "Il peso è obbligatorio",
                                             maxLength: {value: 8, message: "valore troppo lungo"},
-                                            pattern: {value: /^[0-9]+(,[0-9]+)*$/i, message: "Formato peso non valido"}
+                                            pattern: {value: /^[0-9]+(\.[0-9]+)*$/i, message: "Formato peso non valido"}
                                         })} />
                                         <FormErrorMessage>{errors.peso && errors.peso.message}</FormErrorMessage>
                                     </FormControl>
@@ -106,7 +106,7 @@ const Create = () => {
                                         <Input type="text" placeholder="123" {...register("crfBicipite", {
                                             required: "La Circonferenza Bicipite è obbligatoria",
                                             maxLength: {value: 8, message: "valore troppo lungo"},
-                                            pattern: {value: /^[0-9]+(,[0-9]+)*$/i, message: "Formato Circonferenza Bicipite non valida"}
+                                            pattern: {value: /^[0-9]+(\.[0-9]+)*$/i, message: "Formato Circonferenza Bicipite non valida"}
                                         })} />
                                         <FormErrorMessage>{errors.crfBicipite && errors.crfBicipite.message}</FormErrorMessage>
                                     </FormControl>
@@ -117,7 +117,7 @@ const Create = () => {
                                         <Input type="text" placeholder="123" {...register("crfAddome", {
                                             required: "La Circonferenza Addome è obbligatoria",
                                             maxLength: {value: 8, message: "valore troppo lungo"},
-                                            pattern: {value: /^[0-9]+(,[0-9]+)*$/i, message: "Formato Circonferenza Addome non valida"}
+                                            pattern: {value: /^[0-9]+(\.[0-9]+)*$/i, message: "Formato Circonferenza Addome non valida"}
                                         })} />
                                         <FormErrorMessage>{errors.crfAddome && errors.crfAddome.message}</FormErrorMessage>
                                     </FormControl>
@@ -128,7 +128,7 @@ const Create = () => {
                                         <Input type="text" placeholder="123" {...register("crfQuadricipite", {
                                             required: "La Circonferenza Quadricipite è obbligatoria",
                                             maxLength: {value: 8, message: "valore troppo lungo"},
-                                            pattern: {value: /^[0-9]+(,[0-9]+)*$/i, message: "Formato Circonferenza Quadricipite non valida"}
+                                            pattern: {value: /^[0-9]+(\.[0-9]+)*$/i, message: "Formato Circonferenza Quadricipite non valida"}
                                         })} />
                                         <FormErrorMessage>{errors.crfQuadricipite && errors.crfQuadricipite.message}</FormErrorMessage>
                                     </FormControl>
@@ -136,7 +136,6 @@ const Create = () => {
                                 <GridItem colSpan={2}>
                                     <FormControl id={"images"}>
                                         <FormLabel>Immagini</FormLabel>
-
                                         {selectedFileImages.length > 0 && (
                                             <VStack>
                                             <HStack pb={3}>
@@ -147,14 +146,14 @@ const Create = () => {
                                                 }}>
                                                 Rimuovi immagini</Button>
                                             </HStack>
-                                            <SimpleGrid columns={[1,1,1,2,2,3]} columnGap={2} rowGap={4} pl={[0,0,0,2,2,5]} pr={[0,0,0,2,2,5]} w="full">
+                                            <SimpleGrid columns={[1,1,1,2,2,4]} columnGap={2} rowGap={4} pl={[0,0,0,2,2,5]} pr={[0,0,0,2,2,5]} w="full">
 
                                                 {
                                                     selectedFileImages.map((f, i) => {
                                                         return (
                                                     <HStack key={i} justifyContent={"center"}>
                                                         <GridItem  >
-                                                            <Image src={URL.createObjectURL(f)} h={200} w={300} ></Image>
+                                                            <Image src={URL.createObjectURL(f)} h={"auto"} w={200} ></Image>
                                                         </GridItem>
                                                     </HStack>
                                                 )})}
@@ -191,6 +190,9 @@ const Create = () => {
             </VStack>
         </>
     )
+    var d= new Date();
+    var m=d.getFullYear().toString()+"-"+((d.getMonth()+1)<10)?'0'+(d.getMonth()+1).toString():(d.getMonth()+1)+"-"+d.getDate().toString();
+    return m;
 }
 
 export default Create;

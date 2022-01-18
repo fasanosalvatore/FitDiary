@@ -60,7 +60,7 @@ export default function Create() {
                             <FormLabel htmlFor="cognome">Cognome</FormLabel>
                             <Input type="text" placeholder="Rossi" {...register("cognome", {
                                 required: "Il cognome è obbligatorio",
-                                maxLenght: {value: 50, message: "Il cognome è troppo lungo"},
+                                maxLength: {value: 50, message: "Il cognome è troppo lungo"},
                                 pattern: {value: /^[a-z ,.'-]+$/i, message: "Formato cognome non valido"}
                             })} />
                             <FormErrorMessage>{errors.cognome && errors.cognome.message}</FormErrorMessage>
