@@ -1,4 +1,4 @@
-package it.fitdiary.backend.unit.gestionereport.service;
+package it.fitdiary.backend.gestionereport.service;
 
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.ImmaginiReport;
@@ -7,14 +7,12 @@ import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestionereport.repository.ImmaginiReportRepository;
 import it.fitdiary.backend.gestionereport.repository.ReportRepository;
-import it.fitdiary.backend.gestionereport.service.GestioneReportServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 

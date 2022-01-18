@@ -1,13 +1,7 @@
-package it.fitdiary.backend.unit.gestioneprotocollo.adapter;
+package it.fitdiary.backend.gestioneprotocollo.adapter;
 
 import it.fitdiary.backend.entity.Alimento;
-import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapterImpl;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +9,6 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class SchedaAlimentareAdapterImplTest {
 

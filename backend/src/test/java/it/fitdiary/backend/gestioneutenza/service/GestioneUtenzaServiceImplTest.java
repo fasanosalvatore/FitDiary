@@ -1,11 +1,10 @@
-package it.fitdiary.backend.unit.gestioneutenza.service;
+package it.fitdiary.backend.gestioneutenza.service;
 
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
-import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.PasswordGenerator;
 import it.fitdiary.backend.utility.service.EmailServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
