@@ -129,6 +129,10 @@ public class GestioneUtenzaServiceImpl
             log.error("Utente non trovato nel database");
             throw new UsernameNotFoundException(
                     "Utente non trovato nel database");
+        } else if (!utente.getAttivo()) {
+            log.error("Utente non trovato nel database");
+            throw new UsernameNotFoundException(
+                    "Utente non attivo");
         } else {
             log.info("Utente trovato nel database: {}", email);
         }
