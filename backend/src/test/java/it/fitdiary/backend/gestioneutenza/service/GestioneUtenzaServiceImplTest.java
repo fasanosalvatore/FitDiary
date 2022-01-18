@@ -145,40 +145,6 @@ public class GestioneUtenzaServiceImplTest {
                                 null, null, null, null, null, null)));
     }
 
-
-    @Test
-    @Disabled
-    public void inserisciCliente_Success() {
-        String nome = "Rebecca";
-        String cognome = "Melenchi";
-        String email = "rebmel@gmail.com";
-        String password = "Melenchi123*";
-        Utente newUtentePre =
-                new Utente(null, nome, cognome, email, password, true,
-                        LocalDate.parse("1990-01-01"), null, null, null,
-                        null, null, preparatore, ruoloCliente, null, null, null,
-                        null, null);
-        Utente newUtentePost =
-                new Utente(2L, nome, cognome, email, password, true,
-                        LocalDate.parse("1990-01-01"), null, null, null,
-                        null, null, preparatore, ruoloCliente, null, null, null,
-                        null, null);
-        when(utenteRepository.getById(preparatore.getId())).thenReturn(
-                preparatore);
-        when(utenteRepository.findByEmail(email)).thenReturn(null);
-        when(utenteRepository.save(newUtentePre)).thenReturn(newUtentePost);
-        when(ruoloRepository.findByNome("CLIENTE")).thenReturn(ruoloCliente);
-        when(pwGen.generate()).thenReturn("Melenchi123*");
-        doNothing().when(emailService)
-                .sendSimpleMessage(newUtentePre.getEmail(),
-                        "Benvenuto in FitDiary!",
-                        "Ecco la tua password per accedere: \n" + password);
-        when(passwordEncoder.encode(password)).thenReturn(password);
-        assertEquals(newUtentePost,
-                gestioneUtenzaService.inserisciCliente(preparatore.getId(),
-                        nome, cognome, email));
-    }
-
     @Test
     public void inserisciClientethrowsIllegalPrep() {
         String nome = "Rebecca";
