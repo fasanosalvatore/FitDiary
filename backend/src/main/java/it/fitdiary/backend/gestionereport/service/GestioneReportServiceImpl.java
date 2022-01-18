@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,5 +79,19 @@ public class GestioneReportServiceImpl implements GestioneReportService {
         }
 
         return report;
+    }
+
+    /**
+     * cerca report per data.
+     * @param idCliente id cliente
+     * @param data data scadenza report
+     * @return report
+     */
+    @Override
+    public Report search(Long idCliente, LocalDateTime data) {
+        return reportRepository
+        .findFirstByCliente_IdAndDataCreazioneIsBeforeOrderByDataCreazioneDesc(
+                idCliente,data
+        );
     }
 }
