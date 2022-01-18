@@ -27,6 +27,7 @@ import ProtocolsView from "./pages/Protocols/View";
 import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
 import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
 import CustomersView from "./pages/User/Customers/View";
+import CustomerInsertInfo from "./pages/User/Customers/CustomerInsertInfo";
 
 const Signup = lazy(() => import("./pages/Home/Signup"));
 
@@ -58,6 +59,7 @@ const AppRoutes = () => {
                 <Route path="trainingcard/:id" element={<ProtocolsTrainingCardsView />} />
                 <Route path="users" element={<UsersIndex/>}/>
                 <Route path="customers" element={<UsersIndex/>}/>
+                <Route path="insertInfo" element={<CustomerInsertInfo/>}/>
                 <Route path="customers/:id" element={<CustomersView/>}/>
                 <Route path="customers" element={<CustomersIndex />}>
                     <Route path="create" element={<CustomersCreate />} />
