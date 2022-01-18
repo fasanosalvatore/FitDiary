@@ -84,7 +84,9 @@ export default function Edit() {
     }
 
     function isValidDate(value) {
-        return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
+        var date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return (!isNaN(Date.parse(value)) && (new Date(value) <= date) ? true : "Inserisci una data valida");
     }
 
     //nome,cognome,email,password,dataNascita
@@ -225,7 +227,7 @@ export default function Edit() {
                                                     value: 50,
                                                     message: "Il nome della via è troppo lungo"
                                                 },pattern: {
-                                                    value: /[a-z][A-Z][.,' -]/i,
+                                                    value: /^[#.0-9a-zA-Z\s,-]+$/i,
                                                     message: "Formato via non valido"
                                                 }
                                             })} />

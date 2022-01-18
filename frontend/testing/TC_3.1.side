@@ -75,7 +75,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
-      "value": "50,2"
+      "value": "50.2"
     }, {
       "id": "05d6ee33-1e88-4be5-8f82-fd7c821ff719",
       "comment": "",
@@ -131,7 +131,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/input", "xpath:position"]
       ],
-      "value": "50,10"
+      "value": "50.10"
     }, {
       "id": "77ee37ed-b121-499c-bcea-468ca98d0d50",
       "comment": "",
@@ -156,7 +156,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\Io.jpg"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\IoOK.jpg"
     }, {
       "id": "4bc3d601-dcab-4050-8882-3821d014bfed",
       "comment": "",
@@ -347,7 +347,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/input", "xpath:position"]
       ],
-      "value": "50,10"
+      "value": "50.10"
     }, {
       "id": "093cd7d0-ca15-4bdf-9654-568bab5730f6",
       "comment": "",
@@ -372,7 +372,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\Io.jpg"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\IoOK.jpg"
     }, {
       "id": "8686ea4a-f354-4149-a6a1-8d21544c13d8",
       "comment": "",
@@ -507,7 +507,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
-      "value": "50,2"
+      "value": "50.2"
     }, {
       "id": "7b3c3daa-5dd5-4814-8706-267a31d8a469",
       "comment": "",
@@ -563,7 +563,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/input", "xpath:position"]
       ],
-      "value": "50,10"
+      "value": "50.10"
     }, {
       "id": "f552f9f2-017a-42b7-a7f1-3c3378948d2d",
       "comment": "",
@@ -588,7 +588,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\Io.jpg"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\IoOK.jpg"
     }, {
       "id": "2609b2b0-8c70-46fb-b7f5-027cf1e327a1",
       "comment": "",
@@ -723,7 +723,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
-      "value": "50,2"
+      "value": "50.2"
     }, {
       "id": "af666597-91b4-4cb9-bd40-15e9b98f1f50",
       "comment": "",
@@ -779,7 +779,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/input", "xpath:position"]
       ],
-      "value": "50,10r"
+      "value": "50.10r"
     }, {
       "id": "6e567c08-4dd4-4215-9f03-1614dcae0837",
       "comment": "",
@@ -804,7 +804,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\Io.jpg"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\IoOK.jpg"
     }, {
       "id": "3a96b230-78ba-44ea-bd0b-6bd2e8b19445",
       "comment": "",
@@ -950,7 +950,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
-      "value": "50,2"
+      "value": "50.2"
     }, {
       "id": "31170136-33d1-4dda-8df5-9ac2e0530429",
       "comment": "",
@@ -1006,7 +1006,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/input", "xpath:position"]
       ],
-      "value": "50,10"
+      "value": "50.10"
     }, {
       "id": "c838d171-b027-42d7-b3c9-6f5f105f14fb",
       "comment": "",
@@ -1030,7 +1030,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\Io.pdf"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\Io.pdf"
     }, {
       "id": "04856bb9-2495-4e70-9ab2-af00fe0d73fb",
       "comment": "",
@@ -1166,7 +1166,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
-      "value": "50,2"
+      "value": "50.2"
     }, {
       "id": "f1d6136e-f6d5-4614-b7c1-143eb755c3f3",
       "comment": "",
@@ -1222,7 +1222,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/input", "xpath:position"]
       ],
-      "value": "50,10"
+      "value": "50.10"
     }, {
       "id": "691c09a9-5b54-46a0-a4ae-416ad24fe54f",
       "comment": "",
@@ -1247,7 +1247,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\Io_0.jpg"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\Io_0.jpg"
     }, {
       "id": "08f96f07-0a0e-4ec7-ad0b-c38cee33782c",
       "comment": "",
@@ -1372,7 +1372,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
-      "value": "50,2"
+      "value": "50.2"
     }, {
       "id": "74246618-4d8a-4218-9ac3-d5a9f87872a5",
       "comment": "",
@@ -1428,7 +1428,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/input", "xpath:position"]
       ],
-      "value": "50,10"
+      "value": "50.10"
     }, {
       "id": "3123e521-39b1-45ca-ad00-78efc9900e40",
       "comment": "",
@@ -1452,7 +1452,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\Io (2).jpg"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\Io_BIG.jpg"
     }, {
       "id": "6e07e753-1ed7-4e63-b505-fbbe1f00eae9",
       "comment": "",
@@ -1562,7 +1562,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/input", "xpath:position"]
       ],
-      "value": "50,2"
+      "value": "50.2"
     }, {
       "id": "efdc184f-48c9-408d-82cd-6c7ad969cebe",
       "comment": "",
@@ -1629,7 +1629,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/input", "xpath:idRelative"],
         ["xpath=//div[4]/div/input", "xpath:position"]
       ],
-      "value": "50,10"
+      "value": "50.10"
     }, {
       "id": "b0cbd6f5-9751-42f5-a7ca-99b6ba1efb1f",
       "comment": "",
@@ -1653,7 +1653,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[5]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\fakepath\\IoOK.jpg"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\IoOK.jpg"
     }, {
       "id": "504cf1c1-faa2-4096-939c-9e8ec580a813",
       "comment": "",

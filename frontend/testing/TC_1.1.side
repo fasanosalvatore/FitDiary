@@ -3496,6 +3496,13 @@
     "id": "2d66d9c6-882a-4859-9849-c720e3c09012",
     "name": "TC_1.1.10",
     "commands": [{
+      "id": "022c3283-6550-4aa1-b3c7-a3a51a827627",
+      "comment": "",
+      "command": "executeScript",
+      "target": "var d= new Date(); return d.getFullYear()+\"-\"+(((d.getMonth()+1)<10)?'0'+(d.getMonth()+1):(d.getMonth()+1))+\"-\"+d.getUTCDate();",
+      "targets": [],
+      "value": "d"
+    }, {
       "id": "d2dc8748-ab4b-4b87-b78d-850159056453",
       "comment": "",
       "command": "open",
@@ -3696,7 +3703,7 @@
         ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[3]/div/input", "xpath:idRelative"],
         ["xpath=//div[3]/div/input", "xpath:position"]
       ],
-      "value": "2022-01-17"
+      "value": "${d}"
     }, {
       "id": "af20171a-d6e4-4514-8742-c0821ac79346",
       "comment": "",

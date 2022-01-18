@@ -15,7 +15,12 @@ export default function Index() {
         const getData = async () => {
             try {
                 const { data } = await fetchContext.authAxios("utenti");
-                setCustomers(data.data.clienti);
+
+                //Admin
+                setCustomers(data.data.utenti);
+
+                //Preparatore
+                //setCustomers(data.data.clienti);
             } catch (error) {
                 console.log(error.message);
             }
