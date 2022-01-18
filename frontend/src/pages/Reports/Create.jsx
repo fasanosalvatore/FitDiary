@@ -190,9 +190,6 @@ const Create = () => {
             </VStack>
         </>
     )
-    var d= new Date();
-    var m=d.getFullYear().toString()+"-"+((d.getMonth()+1)<10)?'0'+(d.getMonth()+1).toString():(d.getMonth()+1)+"-"+d.getDate().toString();
-    return m;
 }
 
 export default Create;

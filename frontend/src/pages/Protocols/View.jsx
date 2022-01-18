@@ -39,6 +39,14 @@ import photo from "../../images/photos.png";
 
 export default function View() {
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
+    const fetchContext = useContext(FetchContext);
+    const [protocollo, setProtocolli] = useState();
+    const [report,setReport]=useState();
+    const { id } = useParams();
+
+    let history = useNavigate();
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
         duration: 3000,
         isClosable: true,
@@ -47,18 +55,7 @@ export default function View() {
             width: '100%',
             maxWidth: '100%',
         },
-
     })
-    const [toastMessage, setToastMessage] = useState(undefined);
-    const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
-    const fetchContext = useContext(FetchContext);
-    const [protocollo, setProtocolli] = useState();
-    const [idCliente,setIdCliente]= useState();
-    const [report,setReport]=useState();
-    const { id } = useParams();
-
-    let history = useNavigate();
-
     useEffect(() => {
         if (toastMessage) {
             const { title, body, stat } = toastMessage;
@@ -67,9 +64,12 @@ export default function View() {
                 title,
                 description: body,
                 status: stat,
-                duration: 9000,
-                isClosable: true
             });
+        }
+        return () => {
+            setTimeout(() => {
+                setToastMessage(undefined);
+            },1000);
         }
     }, [toastMessage, toast]);
 
@@ -98,12 +98,7 @@ export default function View() {
                     setLoading(false);
                 }
             } catch (error) {
-                console.log(error);
-                toast({
-                    title: "FAIL",
-                    description: "fail data loading",
-                    status: "fail"
-                })
+                setToastMessage({title: "Error", body: error.message, stat: "error"});
             }
         }
         report();
@@ -230,11 +225,9 @@ export default function View() {
                                                                 <ModalBody align={"center"}>
                                                                     <Flex justify="center">
                                                                         <HStack align="center">
-
                                                                             <Button variant='ghost' textAlign="center" align="start" leftIcon={<ArrowLeftIcon/>}></Button>
                                                                             {report ? report.report.immaginiReports.map((img,i)=> {
-                                                                                <Image boxSize={550} src={img.url}
-                                                                                       alt='Dan Abramov'/>
+                                                                                return <Image boxSize={550} src={img.url} alt='Dan Abramov'/>
                                                                             }): " "}
                                                                             <Button variant='ghost' textAlign="center" align="end" leftIcon={<ArrowRightIcon/>}></Button>
                                                                         </HStack>

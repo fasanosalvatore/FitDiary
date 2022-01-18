@@ -1,4 +1,4 @@
-import React, {lazy, useContext, Suspense} from "react";
+import React, {lazy, Suspense, useContext} from "react";
 import {Box, ChakraProvider, extendTheme} from "@chakra-ui/react";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import {AuthContext, AuthProvider} from "./context/AuthContext";
@@ -27,6 +27,7 @@ import ProtocolsView from "./pages/Protocols/View";
 import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
 import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
 import CustomersView from "./pages/User/Customers/View";
+
 const Signup = lazy(() => import("./pages/Home/Signup"));
 
 

@@ -5,13 +5,12 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogOverlay,
-    Button, useDisclosure
+    Button,
 } from "@chakra-ui/react";
 import React from "react";
 
 export function Alert(props) {
     const [isAlertOpen, setIsAlertOpen] = React.useState(false)
-    const { isOpen, onOpen, onClose } = useDisclosure()
     const onAlertClose = () => setIsAlertOpen(false)
     const wrapperFunction = () => {
         props.onClick();
