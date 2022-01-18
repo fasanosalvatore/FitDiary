@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 export function UserMainBox(props) {
     const authContext = useContext(AuthContext);
 
-    return <Box bg={"white"} rounded={20} minW={{base: "100%", xl: "47%"}}>
+    return <Box bg={"white"} rounded={20} minW={{base: "100%", xl: "100%"}}>
         <GradientBar/>
         <Flex pb={10}>
             <VStack w={"full"}>

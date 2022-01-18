@@ -4,9 +4,9 @@ import moment from "moment";
 import React from "react";
 
 export function UserInfoBox(props) {
-    return <Box bg={"white"} rounded={20} pb={10} minW={{base: "100%", xl: "45%"}}
-                marginLeft={[0, 0, 0, 0, 5]}
-                marginTop={[5, 5, 5, 5, 0]}>
+    return <Box bg={"white"} rounded={20} pb={10} minW={{base: "100%", xl: "100%"}}
+                marginLeft={0}
+                marginTop={5}>
         <GradientBar inverse/>
         <Flex>
             <VStack w={"full"} alignItems={"flex-start"}>

@@ -47,9 +47,9 @@ export default function Create() {
 
     return (
         <VStack w="full" h="full" px={[0, 5, 10, 20]} py={10}>
+            <Heading size="2xl" textAlign={"center"} pt={5}>Invita Cliente</Heading>
             <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
                 <GradientBar/>
-                <Heading size="2xl" textAlign={"center"} pt={5}>Invita Cliente</Heading>
                 <Box pl={[0, 5, 20]} pr={[0, 5, 20]} pb={5} pt={5}>
                     <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                         <FormControl id={"nome"} isInvalid={errors.nome} pt={5}>

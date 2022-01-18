@@ -10,7 +10,7 @@ import {
     Tooltip,
 } from 'chart.js';
 import {Line} from 'react-chartjs-2';
-import {Heading, Text, useToast, VStack} from "@chakra-ui/react";
+import {Heading, Text, useToast, VStack,Box} from "@chakra-ui/react";
 import {InfoIcon} from "@chakra-ui/icons";
 import {FetchContext} from "../../context/FetchContext";
 import TableResponsive from "../../components/TableResponsive";
@@ -130,8 +130,9 @@ function StoricoProgressi() {
     return (
         <>
             {!isLoading && listaReport && (
-                <VStack m={[0, 5, 10, 20]} bgColor={"whiteAlpha.700"}>
+                <VStack m={[0, 5, 10, 20]} >
                     <Heading textAlign={"center"}>Storico Progressi</Heading>
+                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
                     {listaReport.report.length > 0 ? (
                         <>
                             <VStack width={"60vw"}  >
@@ -182,7 +183,7 @@ function StoricoProgressi() {
                             Non c'è niente qui...
                         </Heading>
                     )}
-
+                    </Box>
                 </VStack>
             )}
         </>
