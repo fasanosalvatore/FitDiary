@@ -28,6 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 @RestController
@@ -192,5 +195,42 @@ public class GestioneReportController {
 
     }
 
+    /**
+     * cerca report per data.
+     * @param idCliente id cliente
+     * @param data data creazione report
+     * @return report
+     */
+    @GetMapping("search")
+    public ResponseEntity<Object> cercaReportPerData(
+            @RequestParam(name =
+                    "clienteId", required = false) final Long idCliente,
+            @RequestParam("data") final String data) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+
+        Long idUtente = Long.parseLong(request.getUserPrincipal().getName());
+        Utente utente = gestioneUtenzaService.getById(idUtente!=null
+                ? idUtente
+                : idCliente);
+        Report report = null;
+        if (utente.getRuolo().getNome().equals(Ruolo.RUOLOPREPARATORE)) {
+            if (!gestioneUtenzaService.existsByPreparatoreAndId(
+                    utente, idCliente)) {
+                return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                        (Object)
+                                "Il preparatore non può accedere "
+                                + "al report di questo cliente");
+            } else {
+                report = gestioneReportService.search(idCliente,
+                        LocalDateTime.parse(data+"T18:11:16.776"));
+            }
+        } else {
+            report = gestioneReportService.search(idCliente,
+                    LocalDateTime.parse(data+"T18:11:16.776"));
+        }
+        return ResponseHandler.generateResponse(HttpStatus.OK, "report",
+                report);
+    }
 
 }

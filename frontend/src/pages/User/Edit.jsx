@@ -152,28 +152,7 @@ export default function Edit() {
                                             <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                                         </FormControl>
                                     </GridItem>
-                                    <GridItem colSpan={colSpan} w="100%">
-                                        <FormControl id={"altezza"} isInvalid={errors.altezza}>
-                                            <FormLabel htmlFor="altezza">Altezza</FormLabel>
-                                            <Tooltip
-                                                label={"Altezza in centimeri"}
-                                                aria-label='A tooltip'>
-                                                <Input type="number" placeholder={"178"} min="50"
-                                                       max="300" {...register("altezza", {
-                                                    maxLength: {
-                                                        value: 3,
-                                                        message: "valore altezza troppo grande"
-                                                    },
-                                                    pattern: {
-                                                        value: /^[0-9]{1,3}$/i,
-                                                        message: "Formato altezza non valido"
-                                                    }
-                                                })} />
-                                            </Tooltip>
-                                            <FormErrorMessage>{errors.altezza && errors.altezza.message}</FormErrorMessage>
-                                        </FormControl>
-                                    </GridItem>
-                                    <GridItem colSpan={colSpan} w="100%">
+                                    <GridItem colSpan={2} w="100%">
                                         <FormControl id={"telefono"} isInvalid={errors.telefono}>
                                             <FormLabel>Numero di telefono</FormLabel>
                                             <InputGroup>
