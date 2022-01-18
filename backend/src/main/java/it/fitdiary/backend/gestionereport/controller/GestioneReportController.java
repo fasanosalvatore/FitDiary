@@ -26,6 +26,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -132,12 +133,23 @@ public class GestioneReportController {
                 continue;
             }
             try {
-                var img = cloudinary.uploader()
-                        .upload(FileUtility.getFile(immagine),
-                                ObjectUtils.asMap("access_mode",
-                                        "authenticated",
-                                        "access_type", "token"));
-                listaLinkFoto.add((String) img.get("secure_url"));
+                var file = FileUtility.getFile(immagine);
+                String mimetype =
+                        new MimetypesFileTypeMap().getContentType(file);
+                String type = mimetype.split("/")[0];
+                if (type.equals("image")) {
+                    var img = cloudinary.uploader()
+                            .upload(file,
+                                    ObjectUtils.asMap("access_mode",
+                                            "authenticated",
+                                            "access_type", "token"));
+                    listaLinkFoto.add((String) img.get("secure_url"));
+                } else {
+                    return ResponseHandler.generateResponse(
+                            HttpStatus.BAD_REQUEST,
+                            (Object) "il file "+file.getName()+" non è "
+                                    +" un immagine");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 return ResponseHandler.generateResponse(
