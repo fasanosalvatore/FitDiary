@@ -42,7 +42,7 @@ export default function TierPrice(props) {
     return (
         <Box py={12}>
             <VStack spacing={2} textAlign="center">
-                <Heading color="gray.800" as="h3" fontSize="4xl">
+                <Heading fontSize={["0.1em", "1.5em", "3em", "5em"]} color="gray.800" as="h3">
                     Scegli l'abbonamento più adatto a te
                 </Heading>
             </VStack>

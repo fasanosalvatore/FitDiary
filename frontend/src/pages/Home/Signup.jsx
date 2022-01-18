@@ -1,12 +1,13 @@
 import React from 'react';
 
-import {Box, Button, Flex, Heading, Link, Text, VStack} from "@chakra-ui/react";
+import {Box, Button, Flex, Heading, HStack, Link, Text, VStack} from "@chakra-ui/react";
 import SignupForm from "../../components/SignupForm";
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
 import Logo from "../../components/Logo";
 import {Link as ReactLink} from "react-router-dom";
 import {GradientBar} from "../../components/GradientBar";
+import Footer from "../../components/Footer";
 
 export default function Signup() {
 
@@ -14,12 +15,23 @@ export default function Signup() {
 
     return (
         <>
-            <ReactLink to="/">
-                <Button colorScheme="fitdiary" mt="5" mx="10">
-                    Torna alla home
-                </Button>
-            </ReactLink>
-            <VStack w="full" h="full" my="10">
+            <VStack >
+                <Flex width={"full"} justify={"space-between"} align={"center"} bg={"white"} mb={5}>
+                    <HStack pl={[0, 5, 10, 20]}>
+                        <Link as={ReactLink} to={"/"}>
+                            <Logo penColor="black" viewBox={"0 0 250 200"} boxSize={"5em"} />
+                        </Link>
+                        <Heading>FitDiary</Heading>
+                    </HStack>
+                    <Box pr={[0, 5, 10, 20]}>
+                        <Link as={ReactLink} to={"/login"}>
+                            <Button colorScheme='fitdiary' mr='4'>
+                                Login
+                            </Button>
+                        </Link>
+                    </Box>
+                </Flex>
+            <VStack w="full" h="full">
                 <Box bg={"white"} borderRadius="md" pb="5">
                     <GradientBar />
                     <Flex justifyContent={"center"} wrap={"wrap"}>
@@ -48,6 +60,8 @@ export default function Signup() {
                     </VStack>
                 </Box>
           }
+            </VStack>
+                <Footer width={"full"} />
             </VStack>
         </>
     );

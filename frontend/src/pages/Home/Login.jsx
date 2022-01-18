@@ -3,12 +3,12 @@ import {useForm} from 'react-hook-form';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {
     Box,
-    Button,
+    Button, Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
     GridItem,
-    Heading,
+    Heading, HStack,
     Input,
     InputGroup,
     InputRightElement,
@@ -22,6 +22,8 @@ import {AuthContext} from "../../context/AuthContext";
 import {publicFetch} from "../../util/fetch";
 import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 import {GradientBar} from "../../components/GradientBar";
+import Footer from "../../components/Footer";
+import Logo from "../../components/Logo";
 
 export default function Login() {
     const authContext = useContext(AuthContext);
@@ -65,8 +67,24 @@ export default function Login() {
     }
 
     return (
-
+        <VStack >
+            <Flex width={"full"} justify={"space-between"} align={"center"} bg={"white"}>
+                <HStack pl={[0, 5, 10, 20]}>
+                    <Link as={ReactLink} to={"/"}>
+                    <Logo penColor="black" viewBox={"0 0 250 200"} boxSize={"5em"} />
+                    </Link>
+                    <Heading>FitDiary</Heading>
+                </HStack>
+                <Box pr={[0, 5, 10, 20]}>
+                    <Link as={ReactLink} to={"/signup"}>
+                        <Button colorScheme='fitdiary' mr='4'>
+                            Registrati
+                        </Button>
+                    </Link>
+                </Box>
+            </Flex>
         <VStack w="full" h="full" p={[5, 10, 20]}>
+
             <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
                 <GradientBar />
                 <VStack spacing={3} alignItems="center" pb={5} mt={5}>
@@ -117,6 +135,9 @@ export default function Login() {
                     </form>
                 </Box>
             </Box>
+
+        </VStack>
+            <Footer width={"full"} />
         </VStack>
     );
 
