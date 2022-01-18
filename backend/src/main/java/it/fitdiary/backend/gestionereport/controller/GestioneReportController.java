@@ -149,8 +149,8 @@ public class GestioneReportController {
                 } else {
                     return ResponseHandler.generateResponse(
                             HttpStatus.BAD_REQUEST,
-                            (Object) "il file "+file.getName()+" non è "
-                                    +" un immagine");
+                            (Object) "il file " + file.getName()
+                                    + " non è  un immagine");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
