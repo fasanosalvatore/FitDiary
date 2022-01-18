@@ -44,13 +44,15 @@ jobs:
         if: always()
         run: mv ./backend/target/site/badges/checkstyle-result.svg ./.github/badges/
 
+      - name: Delete old JavaDoc
+        run: rm -rf docs
+
       - name: Generate JavaDoc
-        if: always()
-        run: rm -rf docs && mvn javadoc:javadoc
+        working-directory: ./backend
+        run: mvn javadoc:javadoc
 
       - name: Take JaCoCo report
-        if: always()
-        run: mv ./backend/target/site/jacoco-merged-test-coverage-report/ JaCoCo-Coverage-Report/
+        run: rm -rf JaCoCo-Coverage-Report && mv ./backend/target/site/jacoco-merged-test-coverage-report/ JaCoCo-Coverage-Report/
 
       - name: Commit and push generated files
         if: always()
