@@ -187,7 +187,7 @@ public class GestioneUtenzaController {
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    (Object) "Errore nei parametri della richiesta");
+                    (Object) "Email già associata ad un account");
         } catch (MailException e) {
             log.error(e.getMessage());
             return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY,
