@@ -21,19 +21,34 @@ import {GradientBar} from "../../../components/GradientBar";
 
 export default function CustomerInsertInfo() {
     const urlEditInfo = `utenti`;
-    const urlGetInfo = `utenti/profilo`;
-    const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm();
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
     const colSpan = useBreakpointValue({ base: 2, md: 1 })
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
         variant: "solid",
-        position: "top",
         containerStyle: {
             width: '100%',
             maxWidth: '100%',
         },
     })
+    useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
+
+            toast({
+                title,
+                description: body,
+                status: stat,
+            });
+        }
+        return () => {
+            setTimeout(() => {
+                setToastMessage(undefined);
+            },1000);
+        }
+    }, [toastMessage, toast]);
 
     const fetchContext = useContext(FetchContext);
 
@@ -52,11 +67,7 @@ export default function CustomerInsertInfo() {
             })
         } catch (error) {
             console.log(error.response)
-            toast({
-                title: 'Errore',
-                description: error.response.data.message,
-                status: 'error',
-            })
+            setToastMessage({title:"Errore",body:error.response.data.message,stat:"error"})
         }
     }
 

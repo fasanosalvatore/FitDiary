@@ -29,18 +29,33 @@ const Create = () => {
   const [isLoading, setisLoading] = useState(false);
   const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
   const [selectedSchedaAlimentare, setselectedSchedaAlimentare] = useState(null);
-  const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, setValue, formState: { errors} } = useForm();
+  const [toastMessage, setToastMessage] = useState(undefined);
   const toast = useToast({
-    duration: 90000, isClosable: true, variant: "solid", position: "top", containerStyle: {
-      width: '100%', maxWidth: '100%',
+    duration: 3000,
+    isClosable: true,
+    variant: "solid",
+    containerStyle: {
+      width: '100%',
+      maxWidth: '100%',
     },
   })
+  useEffect(() => {
+    if (toastMessage) {
+      const { title, body, stat } = toastMessage;
 
-  function toastParam(title, description, status) {
-    return {
-      title: title, description: description, status: status
-    };
-  }
+      toast({
+        title,
+        description: body,
+        status: stat,
+      });
+    }
+    return () => {
+      setTimeout(() => {
+        setToastMessage(undefined);
+      },1000);
+    }
+  }, [toastMessage, toast]);
 
   const onDropAllenamento = useCallback(acceptedSchedaAllenamento => {
     console.log(acceptedSchedaAllenamento)
@@ -75,14 +90,10 @@ const Create = () => {
     try {
       const { data } = await fetchContext.authAxios.post(urlProtocolli, formData)
       console.log(data);
-      toast(toastParam("Creato!", "Protocollo creato correttamente", data.status))
+      setToastMessage({title:"Creato!",body:"Protocollo creato correttamente",stat:"success"})
     } catch (error) {
       console.log(error.response)
-      toast({
-        title: 'Errore',
-        description: error.response.data.data,
-        status: 'error',
-      })
+      setToastMessage({title:"Errore",body:error.response.data.data,stat:"error"})
     }
 
   }
@@ -107,11 +118,7 @@ const Create = () => {
         setisLoading(false);
       } catch (error) {
         console.log(error)
-        toast({
-          title: 'Errore',
-          description: error.response.data.data,
-          status: 'error',
-        })
+        setToastMessage({title:"Error",body:error.message,stat:"error"})
       }
     }
     getUsers();
