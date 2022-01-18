@@ -28,9 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 @RestController
@@ -197,8 +195,9 @@ public class GestioneReportController {
 
     /**
      * cerca report per data.
+     *
      * @param idCliente id cliente
-     * @param data data creazione report
+     * @param data      data creazione report
      * @return report
      */
     @GetMapping("search")
@@ -210,7 +209,7 @@ public class GestioneReportController {
                 RequestContextHolder.getRequestAttributes()).getRequest();
 
         Long idUtente = Long.parseLong(request.getUserPrincipal().getName());
-        Utente utente = gestioneUtenzaService.getById(idUtente!=null
+        Utente utente = gestioneUtenzaService.getById(idUtente != null
                 ? idUtente
                 : idCliente);
         Report report = null;
@@ -223,11 +222,11 @@ public class GestioneReportController {
                                 + "al report di questo cliente");
             } else {
                 report = gestioneReportService.search(idCliente,
-                        LocalDateTime.parse(data+"T18:11:16.776"));
+                        LocalDateTime.parse(data + "T18:11:16.776"));
             }
         } else {
             report = gestioneReportService.search(idCliente,
-                    LocalDateTime.parse(data+"T18:11:16.776"));
+                    LocalDateTime.parse(data + "T18:11:16.776"));
         }
         return ResponseHandler.generateResponse(HttpStatus.OK, "report",
                 report);

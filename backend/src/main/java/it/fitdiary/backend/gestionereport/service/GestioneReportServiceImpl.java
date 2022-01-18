@@ -83,15 +83,16 @@ public class GestioneReportServiceImpl implements GestioneReportService {
 
     /**
      * cerca report per data.
+     *
      * @param idCliente id cliente
-     * @param data data scadenza report
+     * @param data      data scadenza report
      * @return report
      */
     @Override
-    public Report search(Long idCliente, LocalDateTime data) {
+    public Report search(final Long idCliente, final LocalDateTime data) {
         return reportRepository
-        .findFirstByCliente_IdAndDataCreazioneIsBeforeOrderByDataCreazioneDesc(
-                idCliente,data
+        .findFirstByClienteIdAndDataCreazioneIsBeforeOrderByDataCreazioneDesc(
+                        idCliente, data
         );
     }
 }
