@@ -1,4 +1,4 @@
-import {Box, Button, ButtonGroup, Flex, Heading, Text} from "@chakra-ui/react"
+import {Box, Button, ButtonGroup, Flex, Heading, Text, useToast} from "@chakra-ui/react"
 import {GradientBar} from "../../components/GradientBar";
 import {AuthContext} from "../../context/AuthContext";
 import {FetchContext} from "../../context/FetchContext";
@@ -9,6 +9,32 @@ export default function Index() {
     const authContext = useContext(AuthContext);
     const fetchContext = useContext(FetchContext);
     const [customers, setCustomers] = useState([]);
+    const [toastMessage, setToastMessage] = useState(undefined);
+    const toast = useToast({
+        duration: 1000,
+        isClosable: true,
+        variant: "solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+    })
+    useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
+
+            toast({
+                title,
+                description: body,
+                status: stat,
+            });
+        }
+        return () => {
+            setTimeout(() => {
+                setToastMessage(undefined);
+            },1000);
+        }
+    }, [toastMessage, toast]);
     
     useEffect(() => {
         console.log("pages/users/index");
@@ -22,11 +48,32 @@ export default function Index() {
                 //Preparatore
                 //setCustomers(data.data.clienti);
             } catch (error) {
-                console.log(error.message);
+                setToastMessage({title: "Errore!", body: error.message, stat: "error"});
             }
         }
         getData();
     },[fetchContext, setCustomers])
+
+    function disableUser(id) {
+        const disableUser = async () => {
+            try {
+                const { data } = await fetchContext.authAxios.put("utenti/" + id);
+                let updatedCustomers = customers.map(c => {
+                    if(c.id === id) {
+                        c.attivo = data.data.cliente.attivo
+                    }
+                    return c;
+                });
+                setCustomers(updatedCustomers);
+                console.log(data.data.cliente.attivo)
+                setToastMessage({title: "Completato!", body: `Cliente ${data.data.cliente.attivo ? "attivato" : "disattivato"}`, stat: "success"});
+            } catch (error) {
+                setToastMessage({title: "Errore!", body: error.message, stat: "error"});
+                console.log(error.message);
+            }
+        }
+        disableUser();
+    }
 
     return (
       <Flex wrap={"wrap"} p={5}>
@@ -58,7 +105,7 @@ export default function Index() {
                             {authContext.isAdmin() ? (
                                 <Button colorScheme="red">Elimina</Button>
                             ) : (
-                                <Button colorScheme={c.attivo ? "red" : "green"}>
+                                <Button onClick={() => disableUser(c.id)} colorScheme={c.attivo ? "red" : "green"}>
                                     {c.attivo ? "Disattiva" : "Attiva"}
                                 </Button>
                             )}

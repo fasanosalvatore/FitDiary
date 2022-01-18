@@ -1,4 +1,4 @@
-package it.fitdiary.backend.unit.gestioneprotocollo.service;
+package it.fitdiary.backend.gestioneprotocollo.service;
 
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.Alimento;
@@ -15,15 +15,12 @@ import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
-import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;

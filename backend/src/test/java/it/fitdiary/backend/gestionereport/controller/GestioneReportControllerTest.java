@@ -1,18 +1,14 @@
-package it.fitdiary.backend.unit.gestionereport.controller;
+package it.fitdiary.backend.gestionereport.controller;
 
 import it.fitdiary.backend.entity.ImmaginiReport;
 import it.fitdiary.backend.entity.Report;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
-import it.fitdiary.backend.gestioneprotocollo.controller.GestioneProtocolloController;
-import it.fitdiary.backend.gestionereport.controller.GestioneReportController;
 import it.fitdiary.backend.gestionereport.service.GestioneReportServiceImpl;
-import it.fitdiary.backend.gestionestimaprogressi.service.GestioneStimaProgressiService;
 import it.fitdiary.backend.gestionestimaprogressi.service.GestioneStimaProgressiServiceImpl;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.FileUtility;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;

@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Ruolo Admin.
      */
-    public static final String ADMIN = "Preparatore";
+    public static final String ADMIN = "Admin";
     /**
      * Ruolo Preparatore.
      */

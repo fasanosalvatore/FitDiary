@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {lazy, useContext, Suspense} from "react";
 import {Box, ChakraProvider, extendTheme} from "@chakra-ui/react";
 import {BrowserRouter, Outlet, Route, Routes} from "react-router-dom";
 import {AuthContext, AuthProvider} from "./context/AuthContext";
@@ -9,7 +9,6 @@ import AppShell from "./AppShell";
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Home/Login";
 import Logout from "./pages/Home/Logout";
-import Signup from "./pages/Home/Signup";
 import Dashboard from "./pages/Dashboard";
 
 import UsersIndex from "./pages/User/Index";
@@ -28,6 +27,7 @@ import ProtocolsView from "./pages/Protocols/View";
 import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
 import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
 import CustomersView from "./pages/User/Customers/View";
+const Signup = lazy(() => import("./pages/Home/Signup"));
 
 
 const AuthenticatedRoute = () => {
@@ -40,6 +40,7 @@ const AuthenticatedRoute = () => {
 
 const AppRoutes = () => {
     return (
+        <Suspense fallback={<div>Loading...</div>}>
         <Routes>
             <Route path="/" element={<Welcome />} />
             <Route path="signup" element={<Signup />} />
@@ -69,6 +70,7 @@ const AppRoutes = () => {
                 <Route path="edit" element={<AppShell><UsersEdit /></AppShell>} />
             </Route>
         </Routes>
+        </Suspense>
     )
 }
 

@@ -53,6 +53,8 @@ export default function View() {
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
     const [protocollo, setProtocolli] = useState();
+    const [idCliente,setIdCliente]= useState();
+    const [report,setReport]=useState();
     const { id } = useParams();
 
     let history = useNavigate();
@@ -83,11 +85,13 @@ export default function View() {
             }
         }
         listaProtocolli();
-        /*
-        Quando sarà pronto il report dal backend lo utilizzeremo per prendere i dati
+
+    }, [fetchContext,id]);
+
+    useEffect(() => {
         const report = async () => {
             try {
-                const {data} = await fetchContext.authAxios("");// path da aggiungere quando il backend sarà pronto
+                const {data} = await fetchContext.authAxios("report/search?data=" + protocollo.protocollo.dataScadenza + "&clienteId=" + protocollo.protocollo.cliente.id);// path da aggiungere quando il backend sarà pronto
                 console.log(data);
                 setReport(data.data);
                 setLoading(false);
@@ -101,8 +105,7 @@ export default function View() {
             }
         }
         report();
-        */
-    }, [fetchContext,id]);
+    },[fetchContext,protocollo.protocollo.id]);
 
     moment.locale("it-IT");
     const navigate = useNavigate();
@@ -148,22 +151,22 @@ export default function View() {
                                                     <Tbody>
                                                         <Tr>
                                                             <Td>Peso</Td>
-                                                            <Td>{/*report. */}Kg<Icon as={BsGraphUp} color='green.500'
+                                                            <Td>{report.peso}Kg<Icon as={BsGraphUp} color='green.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Bicipite{ }</Td>
-                                                            <Td>{/*report. */}cm<Icon as={BsGraphDown} color='red.500'
+                                                            <Td>{report.crfBicipite}cm<Icon as={BsGraphDown} color='red.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Addome</Td>
-                                                            <Td>{/*report. */}cm<Icon as={BsGraphDown} color='red.500'
+                                                            <Td>{report.crfAddome}cm<Icon as={BsGraphDown} color='red.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td>Circonferenza Quadricipite</Td>
-                                                            <Td>{/*report. */}cm<Icon as={BsGraphUp} color='green.500'
+                                                            <Td>{report.crfQuadricipite}cm<Icon as={BsGraphUp} color='green.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                     </Tbody>
