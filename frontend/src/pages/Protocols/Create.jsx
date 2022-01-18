@@ -31,7 +31,7 @@ const Create = () => {
   const [selectedSchedaAlimentare, setselectedSchedaAlimentare] = useState(null);
   const { handleSubmit, register, setValue } = useForm();
   const toast = useToast({
-    duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+    duration: 9000, isClosable: true, variant: "solid", position: "top", containerStyle: {
       width: '100%', maxWidth: '100%',
     },
   })
@@ -114,7 +114,7 @@ const Create = () => {
 
   //Verifica se una data inserita è precedenta alla odierna
   function isValidDate(value) {
-    return (!isNaN(Date.parse(value)) && (new Date(value) > Date.now()) ? true : "Inserisci una data valida");
+    return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
   }
 
   return (
