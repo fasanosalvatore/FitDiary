@@ -36,7 +36,12 @@ export default function Create() {
             console.log(data);
             toast(toastParam("Cliente creato con successo", "Credenziali inviate via mail", "success"));
         } catch (error) {
-            console.log(error);
+            console.log(error.response)
+            toast({
+                title: 'Errore',
+                description: error.response.data.data,
+                status: 'error',
+            })
         }
     }
 
