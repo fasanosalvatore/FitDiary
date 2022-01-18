@@ -29,7 +29,6 @@ public class GestioneAbbonamentoController {
      * @param customerId richista http del frontend contente customer
      *                   id di stripe.
      * @return clientsecret codice con cui stripe identifica il cliente.
-     * @throws StripeException exception gestita da stripe.
      */
     @PostMapping("/acquista")
     public ResponseEntity<Object> acquistaAbbonamento(
