@@ -11,7 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,8 +64,10 @@ public class GestioneProtocolloController {
     private ResponseEntity<Object> creazioneProtocollo(
             @RequestParam("dataScadenza") final String dataScadenza,
             @RequestParam("idCliente") final Long idCliente,
-            @RequestParam(value = "schedaAlimentare", required = false) final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam(value = "schedaAllenamento", required = false) final MultipartFile schedaAllenamentoMultipartFile) {
+            @RequestParam(value = "schedaAlimentare", required = false)
+            final MultipartFile schedaAlimentareMultipartFile,
+            @RequestParam(value = "schedaAllenamento", required = false)
+            final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
 
@@ -132,8 +141,10 @@ public class GestioneProtocolloController {
     @PutMapping("{idProtocollo}")
     private ResponseEntity<Object> modificaProtocollo(
             @PathVariable("idProtocollo") final Long idProtocollo,
-            @RequestParam(value = "schedaAlimentare", required = false) final MultipartFile schedaAlimentareMultipartFile,
-            @RequestParam(value = "schedaAllenamento", required = false) final MultipartFile schedaAllenamentoMultipartFile) {
+            @RequestParam(value = "schedaAlimentare", required = false)
+            final MultipartFile schedaAlimentareMultipartFile,
+            @RequestParam(value = "schedaAllenamento", required = false)
+            final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
 
