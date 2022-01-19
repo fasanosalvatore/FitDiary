@@ -7,13 +7,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.StandardEnvironment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +20,18 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.stream;
 public class UtilityToken {
 
-    private String httponly = System.getenv("COOKIE_HTTPONLY") != null ? System.getenv("COOKIE_HTTPONLY") : "false";
-    private String secure = System.getenv("COOKIE_SECURE") != null ? System.getenv("COOKIE_SECURE") : "false";
+    /**
+     * httponly for cookie.
+     */
+    private String httponly = System.getenv("COOKIE_HTTPONLY") != null
+                              ? System.getenv("COOKIE_HTTPONLY")
+                              : "false";
+    /**
+     * secure for cookie.
+     */
+    private String secure = System.getenv("COOKIE_SECURE") != null
+                            ? System.getenv("COOKIE_SECURE")
+                            : "false";
 
     /**
      * Access Token expiring time in ms.

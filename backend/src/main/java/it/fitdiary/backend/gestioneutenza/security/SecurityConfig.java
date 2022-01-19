@@ -185,8 +185,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 + "per questa funzionalità\", " + "\"status\": \"error\"}");
     }
 
+    /**
+     * Configura i path esclusi dai filtri
+     * @param web webSecurity
+     * @throws Exception
+     */
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(final WebSecurity web) throws Exception {
         web.ignoring().antMatchers(POST,
                 "/api/v1/utenti/preparatore",
                 "/api/v1/abbonamento/acquista"
