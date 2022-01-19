@@ -46,7 +46,7 @@ export default function Login() {
             const formData = new FormData();
             formData.append("email", values.email);
             formData.append("password", values.password);
-            const { data } = await publicFetch.post('utenti/login', formData);
+            const { data } = await publicFetch.post('utenti/login', formData, {withCredentials: true});
             console.log(data);
             setIsSuccessfullySubmitted(true);
             authContext.setAuthState(data.data);
