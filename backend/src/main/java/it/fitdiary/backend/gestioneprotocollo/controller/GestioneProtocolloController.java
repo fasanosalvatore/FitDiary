@@ -83,7 +83,7 @@ public class GestioneProtocolloController {
         }
         if ((schedaAllenamentoMultipartFile == null
                 && schedaAlimentareMultipartFile == null)
-                && (schedaAllenamentoMultipartFile.isEmpty()
+                || (schedaAllenamentoMultipartFile.isEmpty()
                 || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
@@ -168,7 +168,7 @@ public class GestioneProtocolloController {
         }
         if ((schedaAllenamentoMultipartFile == null
                 && schedaAlimentareMultipartFile == null)
-                && (schedaAllenamentoMultipartFile.isEmpty()
+                || (schedaAllenamentoMultipartFile.isEmpty()
                 || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
