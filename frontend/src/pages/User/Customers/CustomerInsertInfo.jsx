@@ -21,8 +21,8 @@ import {GradientBar} from "../../../components/GradientBar";
 
 export default function CustomerInsertInfo() {
     const urlEditInfo = `utenti`;
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
-    const colSpan = useBreakpointValue({ base: 2, md: 1 })
+    const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
+    const colSpan = useBreakpointValue({base: 2, md: 1})
     const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
         duration: 3000,
@@ -35,7 +35,7 @@ export default function CustomerInsertInfo() {
     })
     useEffect(() => {
         if (toastMessage) {
-            const { title, body, stat } = toastMessage;
+            const {title, body, stat} = toastMessage;
 
             toast({
                 title,
@@ -46,7 +46,7 @@ export default function CustomerInsertInfo() {
         return () => {
             setTimeout(() => {
                 setToastMessage(undefined);
-            },1000);
+            }, 1000);
         }
     }, [toastMessage, toast]);
 
@@ -67,7 +67,7 @@ export default function CustomerInsertInfo() {
             })
         } catch (error) {
             console.log(error.response)
-            setToastMessage({title:"Errore",body:error.response.data.message,stat:"error"})
+            setToastMessage({title: "Errore", body: error.response.data.message, stat: "error"})
         }
     }
 
@@ -79,12 +79,11 @@ export default function CustomerInsertInfo() {
 
     return (
         <>
-                <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
-                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
-                        <GradientBar/>
-                        <Heading size="lg" textAlign={"center"}>Inserimento Dati Personali </Heading>
-                        <Box pl={10} pr={10} pb={5} pt={5}>
-                    <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+            <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
+                <GradientBar/>
+                <Heading size="lg" textAlign={"center"}>Inserimento Dati Personali </Heading>
+                <Box pl={10} pr={10} pb={5} pt={5}>
+                    <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                         <SimpleGrid vcolumns={2} columnGap={5} rowGap={5} w="full">
                             <GridItem colSpan={2} w="100%">
                                 <FormControl id={"dataNascita"} isInvalid={errors.dataNascita}>
@@ -129,7 +128,7 @@ export default function CustomerInsertInfo() {
                                 <FormControl id={"citta"} isInvalid={errors.citta}>
                                     <FormLabel htmlFor="citta"> Città</FormLabel>
                                     <Input type="text" placeholder="Roma"{...register("citta", {
-                                        required:  "E' richiesto il nome della Città",
+                                        required: "E' richiesto il nome della Città",
                                         maxLength: {
                                             value: 20,
                                             message: "Il nome della città è troppo lungo"
@@ -147,11 +146,11 @@ export default function CustomerInsertInfo() {
                                 <FormControl id={"via"} isInvalid={errors.via}>
                                     <FormLabel htmlFor="via">Via</FormLabel>
                                     <Input type="text" placeholder=" Via Roma"{...register("via", {
-                                        required:"la via è richiesta",
+                                        required: "la via è richiesta",
                                         maxLength: {
                                             value: 50,
                                             message: "Il nome della via è troppo lungo"
-                                        },pattern: {
+                                        }, pattern: {
                                             value: /^[#.0-9a-zA-Z\s,-]+$/i,
                                             message: "Formato via non valido"
                                         }
@@ -174,15 +173,14 @@ export default function CustomerInsertInfo() {
                             </GridItem>
                             <GridItem colSpan={2} w="100%">
                                 <Button size="lg" w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting}
-                                    type='submit'>
+                                        type='submit'>
                                     Inserimento dati Personali
                                 </Button>
                             </GridItem>
                         </SimpleGrid>
                     </form>
-                    </Box>
-                    </Box>
-                </VStack>
+                </Box>
+            </VStack>
         </>
     );
 }

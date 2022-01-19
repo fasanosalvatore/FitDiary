@@ -2983,6 +2983,18 @@
       "target": "window.scrollTo(0,132.26666259765625)",
       "targets": [],
       "value": ""
+    }, {
+      "id": "57e54806-fb1a-4e00-a5ce-89cd1cda062d",
+      "comment": "Effettuato",
+      "command": "assertText",
+      "target": "id=toast-1-title",
+      "targets": [
+        ["id=toast-2-title", "id"],
+        ["xpath=//div[@id='toast-2-title']", "xpath:attributes"],
+        ["xpath=//div[@id='2']/div/div", "xpath:idRelative"],
+        ["xpath=//li/div/div/div/div", "xpath:position"]
+      ],
+      "value": "Effettuato"
     }]
   }],
   "suites": [{

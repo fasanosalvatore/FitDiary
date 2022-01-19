@@ -13,10 +13,10 @@ spring:
     username: sa
     driver-class-name: org.h2.Driver
   mail:
-    host: email-smtp.us-east-1.amazonaws.com
-    port: 587
-    username: AKIAS7TER7NVMI5UBKZB
-    password: BGQ5081F5jcvoamPWpChDK87vLFL9C6lR44dB4rzqSQb
+    host: smtp.mailtrap.io
+    port: 2525
+    username: 0ca10b58484f3a
+    password: c4e490e41f544c
     properties:
       mail:
         smtp:
