@@ -5,7 +5,7 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogOverlay,
-    Button,
+    Button, Tooltip,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -16,10 +16,11 @@ export function Alert(props) {
         props.onClick();
         onAlertClose();
     }
-    console.log(props);
     return (
         <>
-            <Button onClick={() => setIsAlertOpen(true)} colorScheme={props.buttonCancel ? props.buttonColor : "red"}>{props.buttonOk ? props.buttonOk : "Delete"}</Button>
+            <Tooltip hasArrow label={props.buttonLabel ? props.buttonLabel : ""} bg={`${props.buttonColor ? props.buttonColor : "red" }.600`}>
+                <Button onClick={() => setIsAlertOpen(true)} colorScheme={props.buttonCancel ? props.buttonColor : "red"}>{props.buttonOk ? props.buttonOk : "Delete"}</Button>
+            </Tooltip>
             <AlertDialog
                 isOpen={isAlertOpen}
                 leastDestructiveRef={props.leastDestructiveRef}
@@ -41,7 +42,7 @@ export function Alert(props) {
                             </Button>
                             <Button colorScheme={props.buttonCancel ? props.buttonColor : "red"} onClick={wrapperFunction}
                                     ml={3}>
-                                {props.buttonOk ? props.buttonOk : "Delete"}
+                                {props.buttonOk ? props.buttonOkText : "Delete"}
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
