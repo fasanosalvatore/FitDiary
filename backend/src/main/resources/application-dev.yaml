@@ -26,6 +26,7 @@ spring:
             enable: true
   servlet:
     multipart:
-      max-file-size: 30MB
+      max-file-size: 50MB
+      max-request-size: -1
 cloudinary:
   url: cloudinary://988346186838798:HkCMSqB99uwY8VaPv5a3y7h6Eiw@hdjxm4zyg
