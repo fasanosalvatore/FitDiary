@@ -7,48 +7,50 @@ import {
     FormLabel,
     GridItem,
     Heading,
-    Input,
+    Input, InputGroup, InputLeftElement,
     SimpleGrid,
     useBreakpointValue,
     useToast,
+    Box,
     VStack
 } from "@chakra-ui/react";
 import {FetchContext} from "../../../context/FetchContext";
+import {PhoneIcon} from "@chakra-ui/icons";
+import {GradientBar} from "../../../components/GradientBar";
 
 
 export default function CustomerInsertInfo() {
-    const urlEditInfo = `utenti/cliente`;
-    const urlGetInfo = `utenti/profilo`;
-    const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm();
+    const urlEditInfo = `utenti`;
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
     const colSpan = useBreakpointValue({ base: 2, md: 1 })
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
         variant: "solid",
-        position: "top",
         containerStyle: {
             width: '100%',
             maxWidth: '100%',
         },
     })
-
-    const [isLoading, setLoading] = useState(true);
-    const fetchContext = useContext(FetchContext);
-
     useEffect(() => {
-        console.log("pages/users/customers/customerinsertinfo");
-        const getInfoUtente = async () => {
-            try {
-                const { data } = await fetchContext.authAxios.get(urlGetInfo)
-                const fields = ['nome', 'cognome', 'email', 'dataNascita', 'telefono', 'via', 'cap', 'citta'];
-                fields.forEach(field => setValue(field, data.data.utente[field]));
-                setLoading(false);
-            } catch (error) {
-                console.log("error", error);
-            }
-        };
-        getInfoUtente();
-    }, [])
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
+
+            toast({
+                title,
+                description: body,
+                status: stat,
+            });
+        }
+        return () => {
+            setTimeout(() => {
+                setToastMessage(undefined);
+            },1000);
+        }
+    }, [toastMessage, toast]);
+
+    const fetchContext = useContext(FetchContext);
 
 
     //Chiamata API inserimento dati personali utente
@@ -56,36 +58,38 @@ export default function CustomerInsertInfo() {
         console.log("submitting values");
         console.log(values);
         try {
-            const { data } = await fetchContext.authAxios.post(urlEditInfo, values)
+            const {data} = await fetchContext.authAxios.put(urlEditInfo, values)
             console.log(data);
+            toast({
+                title: "Effettuato",
+                description: "Dati inseriti correttamente",
+                status: data.status
+            })
         } catch (error) {
             console.log(error.response)
-            toast({
-                title: 'Errore',
-                description: error.response.data.message,
-                status: 'error',
-            })
+            setToastMessage({title:"Errore",body:error.response.data.message,stat:"error"})
         }
     }
 
     function isValidDate(value) {
-        return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
+        var date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return (!isNaN(Date.parse(value)) && (new Date(value) <= date) ? true : "Inserisci una data valida");
     }
 
     return (
         <>
-            {!isLoading && (
-                <VStack w="full" h="full" p={[5, 10, 20]}>
-                    <VStack spacing={3} alignItems="flex-start" pb={5}>
-                        <Heading size="lg">Inserimento Dati Personali </Heading>
-                    </VStack>
+                <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
+                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
+                        <GradientBar/>
+                        <Heading size="lg" textAlign={"center"}>Inserimento Dati Personali </Heading>
+                        <Box pl={10} pr={10} pb={5} pt={5}>
                     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-                        <SimpleGrid>
-                            <GridItem colSpan={colSpan} w="100%">
+                        <SimpleGrid vcolumns={2} columnGap={5} rowGap={5} w="full">
+                            <GridItem colSpan={2} w="100%">
                                 <FormControl id={"dataNascita"} isInvalid={errors.dataNascita}>
                                     <FormLabel>Data di Nascita</FormLabel>
                                     <Input type="date" placeholder="2001-01-05" {...register("dataNascita", {
-                                        required: "La data di nascita è obbligatoria",
                                         validate: value => {
                                             return isValidDate(value)
                                         }
@@ -94,31 +98,38 @@ export default function CustomerInsertInfo() {
                                 </FormControl>
                             </GridItem>
 
-                            <GridItem colSpan={colSpan} w="100%">
+                            <GridItem colSpan={2} w="100%">
                                 <FormControl id={"telefono"} isInvalid={errors.telefono}>
                                     <FormLabel>Numero di telefono</FormLabel>
-                                    <Input type="text" placeholder="3332957615"{...register("telefono", {
-                                        minLenght: {
-                                            value: 4,
-                                            message: "Formato del numero di telefono non valido"
-                                        },
-                                        maxLenght: {
-                                            value: 15,
-                                            message: "Formato del numero di telefono non valido"
-                                        },
-                                        pattern: {
-                                            value: /^[+03][0-9]{3,14}$/i,
-                                            message: "Formato numero di telefono non valido"
-                                        }
-                                    })} />
+                                    <InputGroup>
+                                        <InputLeftElement
+                                            pointerEvents='none'
+                                            children={<PhoneIcon color='gray.300'/>}
+                                        />
+                                        <Input type="text" placeholder="3332957615"{...register("telefono", {
+                                            minLenght: {
+                                                value: 4,
+                                                message: "lunghezza numero telefono troppo corta"
+                                            },
+                                            maxLenght: {
+                                                value: 15,
+                                                message: "lunghezza numero telefono troppo corta"
+                                            },
+                                            pattern: {
+                                                value: /^[+03][0-9]{3,14}$/i,
+                                                message: "Formato numero di telefono non valido"
+                                            }
+                                        })}/>
+                                    </InputGroup>
                                     <FormErrorMessage>{errors.telefono && errors.telefono.message}</FormErrorMessage>
                                 </FormControl>
                             </GridItem>
 
-                            <GridItem colSpan={colSpan} w="100%">
+                            <GridItem colSpan={2} w="100%">
                                 <FormControl id={"citta"} isInvalid={errors.citta}>
                                     <FormLabel htmlFor="citta"> Città</FormLabel>
                                     <Input type="text" placeholder="Roma"{...register("citta", {
+                                        required:  "E' richiesto il nome della Città",
                                         maxLength: {
                                             value: 20,
                                             message: "Il nome della città è troppo lungo"
@@ -136,18 +147,19 @@ export default function CustomerInsertInfo() {
                                 <FormControl id={"via"} isInvalid={errors.via}>
                                     <FormLabel htmlFor="via">Via</FormLabel>
                                     <Input type="text" placeholder=" Via Roma"{...register("via", {
+                                        required:"la via è richiesta",
                                         maxLength: {
                                             value: 50,
                                             message: "Il nome della via è troppo lungo"
-                                        },
-                                        pattern: {
-                                            value: /^([a-zA-Z\u0080-\u024F]+(?:. |-| |'))*[a-zA-Z\u0080-\u024F]*$/i,
-                                            message: "Formato nome non valido"
+                                        },pattern: {
+                                            value: /^[#.0-9a-zA-Z\s,-]+$/i,
+                                            message: "Formato via non valido"
                                         }
                                     })} />
                                     <FormErrorMessage>{errors.via && errors.via.message}</FormErrorMessage>
                                 </FormControl>
                             </GridItem>
+
                             <GridItem colSpan={colSpan} w="100%">
                                 <FormControl id={"cap"} isInvalid={errors.cap}>
                                     <FormLabel htmlFor="cap">CAP</FormLabel>
@@ -155,20 +167,22 @@ export default function CustomerInsertInfo() {
                                         maxLength: {
                                             value: 5,
                                             message: "Formato del CAP non valido"
-                                        }, pattern: { value: /^[0-9]{5}$/i, message: "Formato nome non valido" }
+                                        }, pattern: {value: /^[0-9]{5}$/i, message: "Formato nome non valido"}
                                     })} />
                                     <FormErrorMessage>{errors.cap && errors.cap.message}</FormErrorMessage>
                                 </FormControl>
                             </GridItem>
-                            <GridItem colSpan={colSpan} w="100%">
+                            <GridItem colSpan={2} w="100%">
                                 <Button size="lg" w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting}
                                     type='submit'>
-                                    Modifica dati Personali
+                                    Inserimento dati Personali
                                 </Button>
                             </GridItem>
                         </SimpleGrid>
                     </form>
-                </VStack>)}
+                    </Box>
+                    </Box>
+                </VStack>
         </>
     );
 }

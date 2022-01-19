@@ -15,7 +15,7 @@ import {
     Td,
     Text,
     Th,
-    Thead,
+    Thead, Tooltip,
     Tr,
     useMediaQuery,
     useToast
@@ -27,6 +27,8 @@ import React, {useContext, useEffect, useState} from "react"
 import {Link} from "react-router-dom";
 import * as PropTypes from "prop-types";
 import {Alert} from "../../components/AlertDialog";
+import {FiUser} from "react-icons/fi";
+import {CalendarIcon, DeleteIcon, LockIcon, TimeIcon, UnlockIcon} from "@chakra-ui/icons";
 
 Alert.propTypes = {
     open: PropTypes.bool,
@@ -86,7 +88,6 @@ export default function Index() {
     }, [fetchContext, setCustomers])
 
     function disableUser(id) {
-        console.log(id);
         const disableUser = async () => {
             try {
                 const {data} = await fetchContext.authAxios.put("utenti/" + id);
@@ -97,7 +98,6 @@ export default function Index() {
                     return c;
                 });
                 setCustomers(updatedCustomers);
-                console.log(data.data.cliente.attivo)
                 setToastMessage({
                     title: "Completato!",
                     body: `Cliente ${data.data.cliente.attivo ? "attivato" : "disattivato"}`,
@@ -113,7 +113,6 @@ export default function Index() {
     }
 
     function deleteUser(id) {
-        console.log(id);
         const deleteuser = async () => {
             try {
                 const {data} = await fetchContext.authAxios.delete("utenti/" + id);
@@ -126,7 +125,6 @@ export default function Index() {
                     return c
                 });
                 setCustomers(updatedCustomers);
-                console.log(data)
                 setToastMessage({title: "Completato!", body: `${data.data}`, stat: "success"});
                 onAlertClose();
             } catch (error) {
@@ -171,12 +169,17 @@ export default function Index() {
                                             <Flex alignItems={"center"}>
                                                 <Text color={"gray.500"} fontWeight={"bold"} mx={2}>Azioni:</Text>
                                                 <ButtonGroup size={"sm"}>
-                                                    <Link to={`/protocols?idCliente=${c.id}`}>
-                                                        <Button colorScheme="fitdiary">Protocolli</Button>
-                                                    </Link>
-                                                    <Link to={`/progress?idCliente=${c.id}`}>
-                                                        <Button bg={"green.400"} color={"white"}>Progressi</Button>
-                                                    </Link>
+                                                    {!authContext.isAdmin() &&
+                                                        <>
+                                                            <Link to={`/protocols?idCliente=${c.id}`}>
+                                                                <Button colorScheme="fitdiary">Protocolli</Button>
+                                                            </Link>
+                                                            <Link to={`/progress?idCliente=${c.id}`}>
+                                                                <Button bg={"green.400"}
+                                                                        color={"white"}>Progressi</Button>
+                                                            </Link>
+                                                        </>
+                                                    }
 
                                                     {authContext.isAdmin() ? (
                                                         <Alert open={isAlertOpen} leastDestructiveRef={cancelRef}
@@ -216,16 +219,31 @@ export default function Index() {
                                 <Tbody>
                                     {customers.map((c) => (
                                         <Tr>
-                                            <Td>{c.nome} {c.cognome}</Td>
+                                            <Td><Flex alignItems={"center"}>{c.nome} {c.cognome}</Flex></Td>
                                             <Td>{c.ruolo.nome}</Td>
                                             <Td textAlign={"right"}>
                                                 <ButtonGroup>
-                                                    <Link to={`/protocols?idCliente=${c.id}`}>
-                                                        <Button colorScheme="fitdiary">Protocolli</Button>
-                                                    </Link>
-                                                    <Link to={`/progress?idCliente=${c.id}`}>
-                                                        <Button bg={"green.400"} color={"white"}>Progressi</Button>
-                                                    </Link>
+                                                    {!authContext.isAdmin() &&
+                                                        <>
+                                                            <Link to={`/protocols?idCliente=${c.id}`}>
+                                                                <Tooltip hasArrow label="Protocolli" bg="fitdiary.600">
+                                                                    <Button colorScheme="fitdiary"><CalendarIcon/></Button>
+                                                                </Tooltip>
+                                                            </Link>
+                                                            <Link to={`/progress?idCliente=${c.id}`}>
+                                                                <Tooltip hasArrow label="Progressi" bg="green.400">
+                                                                <Button bg={"green.400"}
+                                                                        color={"white"}><TimeIcon/></Button>
+                                                                </Tooltip>
+                                                            </Link>
+                                                            <Link to={`/progress?idCliente=${c.id}`}>
+                                                                <Tooltip hasArrow label="Profilo" bg="fitdiary.400">
+                                                                    <Button bg={"fitdiary.400"}
+                                                                            color={"white"}><FiUser/></Button>
+                                                                </Tooltip>
+                                                            </Link>
+                                                        </>
+                                                    }
 
                                                     {authContext.isAdmin() ? (
                                                         <Alert open={isAlertOpen} leastDestructiveRef={cancelRef}
@@ -233,7 +251,8 @@ export default function Index() {
                                                                title={`Elimina ${c.nome}`}
                                                                body={`Sei sicuro di voler eliminare l'utente ${c.nome} ${c.cognome}?`}
                                                                buttonCancel={"Annulla"} buttonColor="red"
-                                                               buttonOk="Elimina"
+                                                               buttonLabel="Elimina Utente"
+                                                               buttonOk={<DeleteIcon/>}
                                                                onClick={() => deleteUser(c.id)}
                                                         />
                                                     ) : (
@@ -243,7 +262,9 @@ export default function Index() {
                                                                body={`Sei sicuro di voler ${c.attivo ? "disattivare" : "attivare"} il cliente ${c.nome} ${c.cognome}?`}
                                                                buttonCancel={"Annulla"}
                                                                buttonColor={`${c.attivo ? "red" : "green"}`}
-                                                               buttonOk={`${c.attivo ? "Disattiva" : "Attiva"}`}
+                                                               buttonLabel={c.attivo ? "Disattiva Utente" : "Attiva Utente"}
+                                                               buttonOk={c.attivo ? <LockIcon/> : <UnlockIcon/>}
+                                                               buttonOkText={`${c.attivo ? "Disattiva" : "Attiva"}`}
                                                                onClick={() => disableUser(c.id)}
                                                         />
                                                     )}

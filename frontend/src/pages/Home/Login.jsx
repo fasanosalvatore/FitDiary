@@ -3,12 +3,12 @@ import {useForm} from 'react-hook-form';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {
     Box,
-    Button,
+    Button, Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
     GridItem,
-    Heading,
+    Heading, HStack,
     Input,
     InputGroup,
     InputRightElement,
@@ -22,9 +22,13 @@ import {AuthContext} from "../../context/AuthContext";
 import {publicFetch} from "../../util/fetch";
 import {ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 import {GradientBar} from "../../components/GradientBar";
+import Footer from "../../components/Footer";
+import Logo from "../../components/Logo";
+import {FetchContext} from "../../context/FetchContext";
 
 export default function Login() {
     const authContext = useContext(AuthContext);
+    const fetchContext = useContext(FetchContext);
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
     const [isSuccessfullySubmitted, setIsSuccessfullySubmitted] = React.useState(false);
     const toast = useToast({
@@ -42,7 +46,7 @@ export default function Login() {
             const formData = new FormData();
             formData.append("email", values.email);
             formData.append("password", values.password);
-            const { data} = await publicFetch.post('utenti/login', formData);
+            const { data } = await publicFetch.post('utenti/login', formData);
             console.log(data);
             setIsSuccessfullySubmitted(true);
             authContext.setAuthState(data.data);
@@ -51,8 +55,15 @@ export default function Login() {
                 description: "Verrai riderizionato a breve!",
                 status: 'success',
             })
-            setTimeout(() => {
-                navigate("/dashboard");
+            setTimeout(async () => {
+                const { data } = await fetchContext.authAxios("utenti/profilo");
+                console.log(data.data.utente.ruolo)
+                if(data.data.utente.dataAggiornamento === data.data.utente.dataCreazione
+                    && data.data.utente.ruolo.nome.toLowerCase() === "cliente"
+                )
+                    navigate("/insertinfo");
+                else
+                    navigate("/dashboard");
             }, 2000)
         } catch (error) {
             console.log(error.response);
@@ -65,8 +76,24 @@ export default function Login() {
     }
 
     return (
-
+        <VStack >
+            <Flex width={"full"} justify={"space-between"} align={"center"} bg={"white"}>
+                <HStack pl={[0, 5, 10, 20]}>
+                    <Link as={ReactLink} to={"/"}>
+                    <Logo penColor="black" viewBox={"0 0 250 200"} boxSize={"5em"} />
+                    </Link>
+                    <Heading>FitDiary</Heading>
+                </HStack>
+                <Box pr={[0, 5, 10, 20]}>
+                    <Link as={ReactLink} to={"/signup"}>
+                        <Button colorScheme='fitdiary' mr='4'>
+                            Registrati
+                        </Button>
+                    </Link>
+                </Box>
+            </Flex>
         <VStack w="full" h="full" p={[5, 10, 20]}>
+
             <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
                 <GradientBar />
                 <VStack spacing={3} alignItems="center" pb={5} mt={5}>
@@ -117,6 +144,9 @@ export default function Login() {
                     </form>
                 </Box>
             </Box>
+
+        </VStack>
+            <Footer width={"full"} />
         </VStack>
     );
 

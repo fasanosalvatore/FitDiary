@@ -16,12 +16,12 @@ export default function Welcome() {
                     </HStack>
                     <Box pr={[0, 5, 10, 20]}>
                         <Link as={ReactLink} to={"/signup"}>
-                            <Button colorScheme='blue' mr='4'>
+                            <Button colorScheme='fitdiary' mr='4'>
                                 Registrati
                             </Button>
                         </Link>
                         <Link as={ReactLink} to={"/login"}>
-                            <Button colorScheme='blue'>
+                            <Button colorScheme='fitdiary'>
                                 Login
                             </Button>
                         </Link>
@@ -30,10 +30,14 @@ export default function Welcome() {
                 <Flex width={"full"} justify={"center"} align={"center"}>
                     <Image w={"full"} src={imbBg} filter={"grayscale(100%)"} />
                     <VStack pos={"absolute"} textAlign={"center"}>
-                        <Text fontSize={["1em", "2em", "3em", "5em"]} color={"whiteAlpha.900"}>
-                            un nuovo modo di interagire con i tuoi clienti
+                        <Text fontSize={["0.1em", "1.5em", "3em", "5em"]} color={"whiteAlpha.900"}>
+                            Un nuovo modo di interagire con i tuoi clienti
                         </Text>
-                        <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"whiteAlpha.900"}>FitDiary</Heading>
+                        <Flex>
+                            <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"whiteAlpha.900"}>FitD</Heading>
+                            <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"fitdiary.600"}>ia</Heading>
+                            <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"whiteAlpha.900"}>ry</Heading>
+                        </Flex>
                     </VStack>
                 </Flex>
                 <Flex backgroundColor={"whiteAlpha.700"} width={"full"} justify={"center"}>

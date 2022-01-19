@@ -94,9 +94,9 @@ export default function Edit() {
         <>
             {!isLoading && (
                 <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
+                    <Heading size="lg" textAlign={"center"} pt={5}>Modifica Dati Personali</Heading>
                     <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
                         <GradientBar/>
-                        <Heading size="lg" textAlign={"center"} pt={5}>Modifica Dati Personali</Heading>
                         <Box pl={10} pr={10} pb={5} pt={5}>
                             <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                                 <SimpleGrid vcolumns={2} columnGap={5} rowGap={5} w="full">
@@ -165,11 +165,11 @@ export default function Edit() {
                                                 <Input type="text" placeholder="3332957615"{...register("telefono", {
                                                     minLenght: {
                                                         value: 4,
-                                                        message: "Formato del numero di telefono non valido"
+                                                        message: "lunghezza numero telefono troppo corta"
                                                     },
                                                     maxLenght: {
                                                         value: 15,
-                                                        message: "Formato del numero di telefono non valido"
+                                                        message: "lunghezza numero telefono troppo corta"
                                                     },
                                                     pattern: {
                                                         value: /^[+03][0-9]{3,14}$/i,
