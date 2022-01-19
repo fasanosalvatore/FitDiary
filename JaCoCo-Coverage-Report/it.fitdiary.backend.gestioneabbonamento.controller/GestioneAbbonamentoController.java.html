@@ -29,47 +29,46 @@ import java.util.Map;
      * @param customerId richista http del frontend contente customer
      *                   id di stripe.
      * @return clientsecret codice con cui stripe identifica il cliente.
-     * @throws StripeException exception gestita da stripe.
      */
     @PostMapping(&quot;/acquista&quot;)
     public ResponseEntity&lt;Object&gt; acquistaAbbonamento(
             @RequestBody final JsonNode customerId) {
-<span class="nc" id="L37">        Stripe.apiKey = &quot;sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz&quot;;</span>
-<span class="nc bnc" id="L38" title="All 4 branches missed.">        if (customerId == null || customerId.get(&quot;customerId&quot;) == null) {</span>
-<span class="nc" id="L39">            return ResponseHandler.generateResponse(</span>
+<span class="nc" id="L36">        Stripe.apiKey = &quot;sk_test_Cp8braM9kf167P3ya1gaFSbZ00aZ3YfXjz&quot;;</span>
+<span class="nc bnc" id="L37" title="All 4 branches missed.">        if (customerId == null || customerId.get(&quot;customerId&quot;) == null) {</span>
+<span class="nc" id="L38">            return ResponseHandler.generateResponse(</span>
                     HttpStatus.BAD_REQUEST, &quot;Errore generale nella richiesta&quot;
             );
         }
         SubscriptionCreateParams subCreateParams = SubscriptionCreateParams
-<span class="nc" id="L44">                .builder()</span>
-<span class="nc" id="L45">                .setCustomer(customerId.get(&quot;customerId&quot;).asText())</span>
-<span class="nc" id="L46">                .addItem(</span>
+<span class="nc" id="L43">                .builder()</span>
+<span class="nc" id="L44">                .setCustomer(customerId.get(&quot;customerId&quot;).asText())</span>
+<span class="nc" id="L45">                .addItem(</span>
                         SubscriptionCreateParams
-<span class="nc" id="L48">                                .Item.builder()</span>
-<span class="nc" id="L49">                                .setPrice(&quot;price_1KC0kYLzIIf1tAqOLpInZTKn&quot;)</span>
-<span class="nc" id="L50">                                .build()</span>
+<span class="nc" id="L47">                                .Item.builder()</span>
+<span class="nc" id="L48">                                .setPrice(&quot;price_1KC0kYLzIIf1tAqOLpInZTKn&quot;)</span>
+<span class="nc" id="L49">                                .build()</span>
                 )
-<span class="nc" id="L52">                .setPaymentBehavior(</span>
+<span class="nc" id="L51">                .setPaymentBehavior(</span>
                         SubscriptionCreateParams
                                 .PaymentBehavior.DEFAULT_INCOMPLETE)
-<span class="nc" id="L55">                .setCollectionMethod(SubscriptionCreateParams</span>
+<span class="nc" id="L54">                .setCollectionMethod(SubscriptionCreateParams</span>
                         .CollectionMethod.CHARGE_AUTOMATICALLY)
-<span class="nc" id="L57">                .addAllExpand(List.of(&quot;latest_invoice.payment_intent&quot;))</span>
-<span class="nc" id="L58">                .build();</span>
+<span class="nc" id="L56">                .addAllExpand(List.of(&quot;latest_invoice.payment_intent&quot;))</span>
+<span class="nc" id="L57">                .build();</span>
         try {
-<span class="nc" id="L60">            Subscription subscription = Subscription.create(subCreateParams);</span>
-<span class="nc" id="L61">            Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L62">            response.put(&quot;subscriptionId&quot;, subscription.getId());</span>
-<span class="nc" id="L63">            response.put(&quot;clientSecret&quot;,</span>
-<span class="nc" id="L64">                    subscription.getLatestInvoiceObject()</span>
-<span class="nc" id="L65">                            .getPaymentIntentObject()</span>
-<span class="nc" id="L66">                            .getClientSecret());</span>
-<span class="nc" id="L67">            return ResponseHandler.generateResponse(</span>
+<span class="nc" id="L59">            Subscription subscription = Subscription.create(subCreateParams);</span>
+<span class="nc" id="L60">            Map&lt;String, Object&gt; response = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L61">            response.put(&quot;subscriptionId&quot;, subscription.getId());</span>
+<span class="nc" id="L62">            response.put(&quot;clientSecret&quot;,</span>
+<span class="nc" id="L63">                    subscription.getLatestInvoiceObject()</span>
+<span class="nc" id="L64">                            .getPaymentIntentObject()</span>
+<span class="nc" id="L65">                            .getClientSecret());</span>
+<span class="nc" id="L66">            return ResponseHandler.generateResponse(</span>
                     HttpStatus.CREATED, &quot;Utente&quot;, response
             );
-<span class="nc" id="L70">        } catch (StripeException e) {</span>
-<span class="nc" id="L71">            log.error(customerId + &quot; stripe error &quot; + e.getMessage());</span>
-<span class="nc" id="L72">            return ResponseHandler.generateResponse(</span>
+<span class="nc" id="L69">        } catch (StripeException e) {</span>
+<span class="nc" id="L70">            log.error(customerId + &quot; stripe error &quot; + e.getMessage());</span>
+<span class="nc" id="L71">            return ResponseHandler.generateResponse(</span>
                     HttpStatus.BAD_REQUEST, &quot;Errore generale nella richiesta&quot;
             );
         }

@@ -55,9 +55,9 @@ public final class ResponseHandler {
 <span class="fc" id="L55">            objectMap.put(objectName, responseObj);</span>
 <span class="fc" id="L56">            map.put(&quot;data&quot;, objectMap);</span>
 <span class="fc" id="L57">            statusMessage = &quot;success&quot;;</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        } else if (status.is4xxClientError()) {</span>
-<span class="fc" id="L59">            map.put(&quot;data&quot;, responseObj);</span>
-<span class="fc" id="L60">            statusMessage = &quot;fail&quot;;</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        } else if (status.is4xxClientError()) {</span>
+<span class="nc" id="L59">            map.put(&quot;data&quot;, responseObj);</span>
+<span class="nc" id="L60">            statusMessage = &quot;fail&quot;;</span>
         }
 <span class="fc" id="L62">        map.put(&quot;status&quot;, statusMessage);</span>
 <span class="fc" id="L63">        return new ResponseEntity&lt;&gt;(map, status);</span>

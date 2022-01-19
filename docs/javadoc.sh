@@ -1,1 +1,0 @@
-/usr/lib/jvm/adoptopenjdk-11-hotspot-amd64/bin/javadoc @options @packages @argfile

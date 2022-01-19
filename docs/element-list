@@ -1,13 +1,10 @@
 it.fitdiary.backend
 it.fitdiary.backend.entity
-it.fitdiary.backend.gestioneabbonamento
 it.fitdiary.backend.gestioneabbonamento.controller
-it.fitdiary.backend.gestioneprotocollo
 it.fitdiary.backend.gestioneprotocollo.adapter
 it.fitdiary.backend.gestioneprotocollo.controller
 it.fitdiary.backend.gestioneprotocollo.repository
 it.fitdiary.backend.gestioneprotocollo.service
-it.fitdiary.backend.gestionereport
 it.fitdiary.backend.gestionereport.controller
 it.fitdiary.backend.gestionereport.repository
 it.fitdiary.backend.gestionereport.service

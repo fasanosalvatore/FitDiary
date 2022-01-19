@@ -129,27 +129,31 @@ public class GestioneUtenzaServiceImpl
 <span class="nc" id="L129">            log.error(&quot;Utente non trovato nel database&quot;);</span>
 <span class="nc" id="L130">            throw new UsernameNotFoundException(</span>
                     &quot;Utente non trovato nel database&quot;);
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        } else if (!utente.getAttivo()) {</span>
+<span class="nc" id="L133">            log.error(&quot;Utente non trovato nel database&quot;);</span>
+<span class="nc" id="L134">            throw new UsernameNotFoundException(</span>
+                    &quot;Utente non attivo&quot;);
         } else {
-<span class="fc" id="L133">            log.info(&quot;Utente trovato nel database: {}&quot;, email);</span>
+<span class="fc" id="L137">            log.info(&quot;Utente trovato nel database: {}&quot;, email);</span>
         }
-<span class="fc" id="L135">        Collection&lt;SimpleGrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L139">        Collection&lt;SimpleGrantedAuthority&gt; authorities = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L137">        log.info(&quot;Ruolo: {}&quot;, utente.getRuolo().getNome());</span>
-<span class="fc" id="L138">        authorities.add(</span>
-<span class="fc" id="L139">                new SimpleGrantedAuthority(utente.getRuolo().getNome()));</span>
-<span class="fc" id="L140">        var fitDiaryUser = new FitDiaryUserDetails(</span>
-<span class="fc" id="L141">                utente.getEmail(),</span>
-<span class="fc" id="L142">                utente.getPassword(),</span>
+<span class="fc" id="L141">        log.info(&quot;Ruolo: {}&quot;, utente.getRuolo().getNome());</span>
+<span class="fc" id="L142">        authorities.add(</span>
+<span class="fc" id="L143">                new SimpleGrantedAuthority(utente.getRuolo().getNome()));</span>
+<span class="fc" id="L144">        var fitDiaryUser = new FitDiaryUserDetails(</span>
+<span class="fc" id="L145">                utente.getEmail(),</span>
+<span class="fc" id="L146">                utente.getPassword(),</span>
                 authorities);
-<span class="fc" id="L144">        fitDiaryUser.setId(utente.getId());</span>
-<span class="fc" id="L145">        fitDiaryUser.setName(utente.getNome());</span>
-<span class="fc" id="L146">        fitDiaryUser.setSurname(utente.getCognome());</span>
-<span class="fc" id="L147">        fitDiaryUser.setPhoneNumber(utente.getTelefono());</span>
-<span class="fc" id="L148">        fitDiaryUser.setGender(utente.getSesso());</span>
-<span class="fc" id="L149">        fitDiaryUser.setTrainerId(</span>
-<span class="fc bfc" id="L150" title="All 2 branches covered.">                utente.getPreparatore() != null</span>
-<span class="fc" id="L151">                        ? utente.getPreparatore().getId() : -1);</span>
-<span class="fc" id="L152">        return fitDiaryUser;</span>
+<span class="fc" id="L148">        fitDiaryUser.setId(utente.getId());</span>
+<span class="fc" id="L149">        fitDiaryUser.setName(utente.getNome());</span>
+<span class="fc" id="L150">        fitDiaryUser.setSurname(utente.getCognome());</span>
+<span class="fc" id="L151">        fitDiaryUser.setPhoneNumber(utente.getTelefono());</span>
+<span class="fc" id="L152">        fitDiaryUser.setGender(utente.getSesso());</span>
+<span class="fc" id="L153">        fitDiaryUser.setTrainerId(</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">                utente.getPreparatore() != null</span>
+<span class="fc" id="L155">                        ? utente.getPreparatore().getId() : -1);</span>
+<span class="fc" id="L156">        return fitDiaryUser;</span>
     }
 
     /**
@@ -169,42 +173,42 @@ public class GestioneUtenzaServiceImpl
             final Long id,
             final Utente utente
     ) throws IllegalArgumentException {
-<span class="fc bfc" id="L172" title="All 2 branches covered.">        if (utente == null) {</span>
-<span class="fc" id="L173">            throw new IllegalArgumentException(&quot;Utente non valido&quot;);</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (utente == null) {</span>
+<span class="fc" id="L177">            throw new IllegalArgumentException(&quot;Utente non valido&quot;);</span>
         }
-<span class="fc" id="L175">        Utente newUtente = utenteRepository.getById(id);</span>
-<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (newUtente == null) {</span>
-<span class="fc" id="L177">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L179">        Utente newUtente = utenteRepository.getById(id);</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (newUtente == null) {</span>
+<span class="fc" id="L181">            throw new IllegalArgumentException(</span>
                     &quot;Utente non presente del Database&quot;);
         }
-<span class="fc bfc" id="L180" title="All 4 branches covered.">        if (utente.getNome() != null &amp;&amp; !utente.getNome().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L181">            newUtente.setNome(utente.getNome());</span>
+<span class="fc bfc" id="L184" title="All 4 branches covered.">        if (utente.getNome() != null &amp;&amp; !utente.getNome().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L185">            newUtente.setNome(utente.getNome());</span>
         }
-<span class="fc bfc" id="L183" title="All 4 branches covered.">        if (utente.getCognome() != null &amp;&amp; !utente.getCognome().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L184">            newUtente.setCognome(utente.getCognome());</span>
+<span class="fc bfc" id="L187" title="All 4 branches covered.">        if (utente.getCognome() != null &amp;&amp; !utente.getCognome().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L188">            newUtente.setCognome(utente.getCognome());</span>
         }
-<span class="fc bfc" id="L186" title="All 4 branches covered.">        if (utente.getEmail() != null &amp;&amp; !utente.getEmail().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L187">            newUtente.setEmail(utente.getEmail());</span>
+<span class="fc bfc" id="L190" title="All 4 branches covered.">        if (utente.getEmail() != null &amp;&amp; !utente.getEmail().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L191">            newUtente.setEmail(utente.getEmail());</span>
         }
-<span class="fc bfc" id="L189" title="All 4 branches covered.">        if (utente.getPassword() != null &amp;&amp; !utente.getPassword().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L190">            newUtente.setPassword(passwordEncoder.encode(utente.getPassword()));</span>
+<span class="fc bfc" id="L193" title="All 4 branches covered.">        if (utente.getPassword() != null &amp;&amp; !utente.getPassword().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L194">            newUtente.setPassword(passwordEncoder.encode(utente.getPassword()));</span>
         }
-<span class="fc bfc" id="L192" title="All 2 branches covered.">        if (utente.getDataNascita() != null) {</span>
-<span class="fc" id="L193">            newUtente.setDataNascita(utente.getDataNascita());</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">        if (utente.getDataNascita() != null) {</span>
+<span class="fc" id="L197">            newUtente.setDataNascita(utente.getDataNascita());</span>
         }
-<span class="fc bfc" id="L195" title="All 4 branches covered.">        if (utente.getTelefono() != null &amp;&amp; !utente.getTelefono().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L196">            newUtente.setTelefono(utente.getTelefono());</span>
+<span class="fc bfc" id="L199" title="All 4 branches covered.">        if (utente.getTelefono() != null &amp;&amp; !utente.getTelefono().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L200">            newUtente.setTelefono(utente.getTelefono());</span>
         }
-<span class="fc bfc" id="L198" title="All 4 branches covered.">        if (utente.getCitta() != null &amp;&amp; !utente.getCitta().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L199">            newUtente.setCitta(utente.getCitta());</span>
+<span class="fc bfc" id="L202" title="All 4 branches covered.">        if (utente.getCitta() != null &amp;&amp; !utente.getCitta().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L203">            newUtente.setCitta(utente.getCitta());</span>
         }
-<span class="fc bfc" id="L201" title="All 4 branches covered.">        if (utente.getVia() != null &amp;&amp; !utente.getVia().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L202">            newUtente.setVia(utente.getVia());</span>
+<span class="fc bfc" id="L205" title="All 4 branches covered.">        if (utente.getVia() != null &amp;&amp; !utente.getVia().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L206">            newUtente.setVia(utente.getVia());</span>
         }
-<span class="fc bfc" id="L204" title="All 4 branches covered.">        if (utente.getCap() != null &amp;&amp; !utente.getCap().equals(&quot;&quot;)) {</span>
-<span class="fc" id="L205">            newUtente.setCap(utente.getCap());</span>
+<span class="fc bfc" id="L208" title="All 4 branches covered.">        if (utente.getCap() != null &amp;&amp; !utente.getCap().equals(&quot;&quot;)) {</span>
+<span class="fc" id="L209">            newUtente.setCap(utente.getCap());</span>
         }
-<span class="fc" id="L207">        return utenteRepository.save(newUtente);</span>
+<span class="fc" id="L211">        return utenteRepository.save(newUtente);</span>
     }
 
     /**
@@ -215,14 +219,14 @@ public class GestioneUtenzaServiceImpl
      */
     @Override
     public Utente getById(final Long idUtente) {
-<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (idUtente == null) {</span>
-<span class="fc" id="L219">            throw new IllegalArgumentException(&quot;Id non valido&quot;);</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (idUtente == null) {</span>
+<span class="fc" id="L223">            throw new IllegalArgumentException(&quot;Id non valido&quot;);</span>
         }
-<span class="fc" id="L221">        Utente utente = utenteRepository.getById(idUtente);</span>
-<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (utente == null) {</span>
-<span class="fc" id="L223">            throw new IllegalArgumentException(&quot;Utente non trovato&quot;);</span>
+<span class="fc" id="L225">        Utente utente = utenteRepository.getById(idUtente);</span>
+<span class="fc bfc" id="L226" title="All 2 branches covered.">        if (utente == null) {</span>
+<span class="fc" id="L227">            throw new IllegalArgumentException(&quot;Utente non trovato&quot;);</span>
         }
-<span class="fc" id="L225">        return utente;</span>
+<span class="fc" id="L229">        return utente;</span>
     }
 
     /**
@@ -233,13 +237,13 @@ public class GestioneUtenzaServiceImpl
     @Override
     public Boolean existsByPreparatoreAndId(final Utente preparatore,
                                             final Long idCliente) {
-<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (idCliente == null) {</span>
-<span class="fc" id="L237">            throw new IllegalArgumentException(&quot;Id cliente non valido&quot;);</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (idCliente == null) {</span>
+<span class="fc" id="L241">            throw new IllegalArgumentException(&quot;Id cliente non valido&quot;);</span>
         }
-<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (preparatore == null) {</span>
-<span class="fc" id="L240">            throw new IllegalArgumentException(&quot;Preparatore non valido&quot;);</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (preparatore == null) {</span>
+<span class="fc" id="L244">            throw new IllegalArgumentException(&quot;Preparatore non valido&quot;);</span>
         }
-<span class="fc" id="L242">        return utenteRepository.existsByPreparatoreAndId(preparatore,</span>
+<span class="fc" id="L246">        return utenteRepository.existsByPreparatoreAndId(preparatore,</span>
                 idCliente);
     }
 
@@ -250,19 +254,19 @@ public class GestioneUtenzaServiceImpl
      */
     @Override
     public void deleteUtenteById(final Long idUtente) {
-<span class="pc bpc" id="L253" title="1 of 2 branches missed.">        if (idUtente == null) {</span>
-<span class="nc" id="L254">            throw new IllegalArgumentException(&quot;Id utente non valido&quot;);</span>
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">        if (idUtente == null) {</span>
+<span class="nc" id="L258">            throw new IllegalArgumentException(&quot;Id utente non valido&quot;);</span>
 
         }
-<span class="fc" id="L257">        utenteRepository.deleteById(idUtente);</span>
-<span class="fc" id="L258">    }</span>
+<span class="fc" id="L261">        utenteRepository.deleteById(idUtente);</span>
+<span class="fc" id="L262">    }</span>
 
     /**
      * @return lista utenti del sistema
      */
     @Override
     public List&lt;Utente&gt; visualizzaListaUtenti() {
-<span class="nc" id="L265">        return utenteRepository.findAll();</span>
+<span class="nc" id="L269">        return utenteRepository.findAll();</span>
     }
 
     /**
@@ -272,13 +276,13 @@ public class GestioneUtenzaServiceImpl
      */
     @Override
     public Utente disattivaOrAttivaUtente(final long id) {
-<span class="fc" id="L275">        Utente utente = utenteRepository.getById(id);</span>
-<span class="pc bpc" id="L276" title="1 of 2 branches missed.">        if (utente == null) {</span>
-<span class="nc" id="L277">            throw new IllegalArgumentException(</span>
+<span class="fc" id="L279">        Utente utente = utenteRepository.getById(id);</span>
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">        if (utente == null) {</span>
+<span class="nc" id="L281">            throw new IllegalArgumentException(</span>
                     &quot;Utente non presente del Database&quot;);
         }
-<span class="fc bfc" id="L280" title="All 2 branches covered.">        utente.setAttivo(!utente.getAttivo());</span>
-<span class="fc" id="L281">        return utenteRepository.save(utente);</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        utente.setAttivo(!utente.getAttivo());</span>
+<span class="fc" id="L285">        return utenteRepository.save(utente);</span>
     }
 }
 
