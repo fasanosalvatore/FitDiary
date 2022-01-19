@@ -3,7 +3,6 @@ import React, {useContext, useEffect, useState} from "react";
 import {FetchContext} from "../../context/FetchContext";
 import {UserMainBox} from "../../components/UserMainBox";
 import {UserInfoBox} from "../../components/UserInfoBox";
-import {UserDataBox} from "../../components/UserDataBox";
 
 const urlGetInfo = `utenti/profilo`;
 

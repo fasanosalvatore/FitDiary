@@ -55,8 +55,8 @@ const AppRoutes = () => {
                 <Route path="protocols" element={<ProtocolsIndex />} />
                 <Route path="protocols/:id" element={<ProtocolsView />} />
                 <Route path="protocols/create" element={<ProtocolsCreate />} />
-                <Route path="dietcard/:id" element={<ProtocolsDietCardsView />} />
-                <Route path="trainingcard/:id" element={<ProtocolsTrainingCardsView />} />
+                <Route path="dietcards/:id" element={<ProtocolsDietCardsView />} />
+                <Route path="trainingcards/:id" element={<ProtocolsTrainingCardsView />} />
                 <Route path="users" element={<UsersIndex/>}/>
                 <Route path="customers" element={<UsersIndex/>}/>
                 <Route path="insertInfo" element={<CustomerInsertInfo/>}/>

@@ -55,17 +55,29 @@ export default function View() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
     const {handleSubmit, setValue} = useForm();
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 30000, isClosable: true, variant: "solid", position: "top", containerStyle: {
-            width: '100%', maxWidth: '100%',
+        duration: 3000,
+        isClosable: true,
+        variant: "solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
         },
     })
+    useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
 
-    function toastParam(title, description, status) {
-        return {
-            title: title, description: description, status: status
-        };
-    }
+            toast({
+                title,
+                description: body,
+                status: stat,
+                duration: 9000,
+                isClosable: true
+            });
+        }
+    }, [toastMessage, toast]);
 
 
     const onDropAllenamento = useCallback(acceptedSchedaAllenamento => {
@@ -86,17 +98,9 @@ export default function View() {
         try {
             const {data} = await fetchContext.authAxios.put(urlProtocolli+"/"+id, formData)
             setProtocolli(data.data);
-            toast(toastParam(
-                "Completato!",
-                "Scheda Allenamento modificata correttamente",
-                "success",
-            ))
+            setToastMessage({title:"Completato!",body:"Scheda Allenamento modificata correttamente",stat:"success"})
         } catch (error) {
-            toast(toastParam(
-                "Errore",
-                error.response.data.data,
-                "error",
-            ))
+            setToastMessage({title:"Errore",body:error.response.data.data,stat:"error"})
         }
 
     }
@@ -114,11 +118,7 @@ export default function View() {
                 setProtocolli(data.data);
                 setLoading(false);
             } catch (error) {
-                toast(toastParam(
-                   "Errore",
-                    error.message,
-                    "error",
-                ))
+                setToastMessage({title:"Errore", body:error.message, stat:"error"});
             }
         }
         listaProtocolli();
