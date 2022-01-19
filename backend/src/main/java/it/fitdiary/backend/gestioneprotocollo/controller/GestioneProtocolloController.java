@@ -85,7 +85,7 @@ public class GestioneProtocolloController {
                 && schedaAlimentareMultipartFile == null)
                 || (schedaAllenamentoMultipartFile == null
                 || schedaAllenamentoMultipartFile.isEmpty())
-                && (schedaAlimentareMultipartFile == null
+                || (schedaAlimentareMultipartFile == null
                 || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
@@ -172,7 +172,7 @@ public class GestioneProtocolloController {
                 && schedaAlimentareMultipartFile == null)
                 || (schedaAllenamentoMultipartFile == null
                 || schedaAllenamentoMultipartFile.isEmpty())
-                && (schedaAlimentareMultipartFile == null
+                || (schedaAlimentareMultipartFile == null
                 || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
