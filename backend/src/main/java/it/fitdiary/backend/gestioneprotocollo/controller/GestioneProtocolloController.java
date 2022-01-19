@@ -332,7 +332,7 @@ public class GestioneProtocolloController {
      * cattura dell'errore MissingServletRequestPartException.
      *
      * @param ex errore
-     * @return
+     * @return messaggio di errore formato jsend
      */
     @ExceptionHandler(MissingServletRequestPartException.class)
     public ResponseEntity<Object> handleMissingRequestBody(
