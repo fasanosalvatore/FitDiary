@@ -83,10 +83,10 @@ public class GestioneProtocolloController {
         }
         if ((schedaAllenamentoMultipartFile == null
                 && schedaAlimentareMultipartFile == null)
-                || (schedaAllenamentoMultipartFile == null
-                || schedaAllenamentoMultipartFile.isEmpty())
-                || (schedaAlimentareMultipartFile == null
-                || schedaAlimentareMultipartFile.isEmpty())) {
+                || ((schedaAllenamentoMultipartFile != null
+                && schedaAllenamentoMultipartFile.isEmpty())
+                || (schedaAlimentareMultipartFile != null
+                && schedaAlimentareMultipartFile.isEmpty()))) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
         }
@@ -170,10 +170,10 @@ public class GestioneProtocolloController {
         }
         if ((schedaAllenamentoMultipartFile == null
                 && schedaAlimentareMultipartFile == null)
-                || (schedaAllenamentoMultipartFile == null
-                || schedaAllenamentoMultipartFile.isEmpty())
-                || (schedaAlimentareMultipartFile == null
-                || schedaAlimentareMultipartFile.isEmpty())) {
+                || ((schedaAllenamentoMultipartFile != null
+                && schedaAllenamentoMultipartFile.isEmpty())
+                || (schedaAlimentareMultipartFile != null
+                && schedaAlimentareMultipartFile.isEmpty()))) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
         }
