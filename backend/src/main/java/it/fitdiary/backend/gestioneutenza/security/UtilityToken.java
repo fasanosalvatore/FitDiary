@@ -154,11 +154,13 @@ public class UtilityToken {
                         createToken(request, true)
                 );
         accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setSecure(true);
         var refreshTokenCookie =
                 new Cookie("refreshToken",
                         createToken(request, false)
                 );
         refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
         accessTokenCookie.setPath("/");
         refreshTokenCookie.setPath("/");
         response.addCookie(accessTokenCookie);
