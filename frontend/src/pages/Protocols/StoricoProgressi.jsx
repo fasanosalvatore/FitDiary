@@ -15,7 +15,6 @@ import {InfoIcon} from "@chakra-ui/icons";
 import {FetchContext} from "../../context/FetchContext";
 import TableResponsive from "../../components/TableResponsive";
 
-const urlReport = "/progress"
 const urlReports = "/reports"
 
 ChartJS.register(

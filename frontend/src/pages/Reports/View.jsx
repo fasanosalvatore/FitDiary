@@ -2,19 +2,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import {
     Box,
     Button,
-    Divider,
     Flex,
     Heading,
     HStack,
     Icon,
     Image,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
     Table,
     TableCaption,
     Tbody,
@@ -23,22 +15,18 @@ import {
     Th,
     Thead,
     Tr,
-    useDisclosure,
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {ArrowLeftIcon, ArrowRightIcon} from '@chakra-ui/icons';
 import {RiArrowGoBackLine} from 'react-icons/ri';
 import moment from "moment";
 import {BsGraphDown, BsGraphUp} from "react-icons/bs";
 import {useNavigate, useParams} from "react-router";
 import {FetchContext} from "../../context/FetchContext";
-import photo from "../../images/photos.png";
 import {Carousel} from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 export default function View() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
     const [report,setReport]=useState();
@@ -88,7 +76,6 @@ export default function View() {
     }, [fetchContext,id]);
 
     moment.locale("it-IT");
-    const navigate = useNavigate();
     return (
         <>
             {!isLoading && (

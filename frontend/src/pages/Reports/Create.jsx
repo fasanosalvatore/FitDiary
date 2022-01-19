@@ -18,8 +18,10 @@ import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useDropzone} from 'react-dropzone';
 import {FetchContext} from "../../context/FetchContext";
 import {GradientBar} from "../../components/GradientBar";
+import {useNavigate} from "react-router-dom";
 
 const urlReports = "reports";
+
 
 const Create = () => {
     const fetchContext = useContext(FetchContext);
@@ -30,6 +32,7 @@ const Create = () => {
             width: '100%', maxWidth: '100%',
         },
     })
+    const navigate = useNavigate();
 
     function toastParam(title, description, status) {
         return {
@@ -64,6 +67,9 @@ const Create = () => {
             const {data} = await fetchContext.authAxios.post(urlReports, formData)
             console.log(data);
             toast(toastParam("Creato!", "Report inserito correttamente", data.status))
+            setTimeout(() => {
+                navigate("/progress");
+            }, 1000);
         } catch (error) {
             console.log(error.response.message);
             toast(toastParam("Errore", error.response.data.data, "error"))
