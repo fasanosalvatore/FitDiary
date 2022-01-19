@@ -43,8 +43,8 @@ export default function Index() {
     const authContext = useContext(AuthContext);
     const fetchContext = useContext(FetchContext);
     const [customers, setCustomers] = useState([]);
-    const [toastMessage, setToastMessage] = useState(undefined);
     const cancelRef = React.useRef();
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
         duration: 1000,
         isClosable: true,
@@ -236,7 +236,7 @@ export default function Index() {
                                                                         color={"white"}><TimeIcon/></Button>
                                                                 </Tooltip>
                                                             </Link>
-                                                            <Link to={`/progress?idCliente=${c.id}`}>
+                                                            <Link to={`${c.id}`}>
                                                                 <Tooltip hasArrow label="Profilo" bg="fitdiary.400">
                                                                     <Button bg={"fitdiary.400"}
                                                                             color={"white"}><FiUser/></Button>

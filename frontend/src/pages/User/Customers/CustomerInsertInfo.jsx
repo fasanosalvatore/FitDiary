@@ -80,11 +80,12 @@ export default function CustomerInsertInfo() {
     return (
         <>
             <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
-                <GradientBar/>
+                <Box pb={5} w={"full"} backgroundColor={"white"} borderRadius={5}>
+                    <GradientBar/>
+                    <VStack spacing={3} alignItems="center" pb={5} mt={5}>
                 <Heading size="lg" textAlign={"center"}>Inserimento Dati Personali </Heading>
-                <Box pl={10} pr={10} pb={5} pt={5}>
                     <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
-                        <SimpleGrid vcolumns={2} columnGap={5} rowGap={5} w="full">
+                        <SimpleGrid vcolumns={2} columnGap={5} rowGap={5} pl={[0, 5, 10]} pr={[0, 5, 10]} w="full">
                             <GridItem colSpan={2} w="100%">
                                 <FormControl id={"dataNascita"} isInvalid={errors.dataNascita}>
                                     <FormLabel>Data di Nascita</FormLabel>
@@ -179,6 +180,7 @@ export default function CustomerInsertInfo() {
                             </GridItem>
                         </SimpleGrid>
                     </form>
+                    </VStack>
                 </Box>
             </VStack>
         </>

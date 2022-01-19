@@ -23,11 +23,13 @@ import StoricoProgressi from "./pages/Protocols/StoricoProgressi";
 import ProtocolsIndex from "./pages/Protocols/Index"
 import ProtocolsCreate from "./pages/Protocols/Create"
 import ReportsCreate from "./pages/Reports/Create"
+import ReportsView from "./pages/Reports/View"
 import ProtocolsView from "./pages/Protocols/View";
 import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
 import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
 import CustomersView from "./pages/User/Customers/View";
 import CustomerInsertInfo from "./pages/User/Customers/CustomerInsertInfo";
+
 
 const Signup = lazy(() => import("./pages/Home/Signup"));
 
@@ -65,7 +67,8 @@ const AppRoutes = () => {
                     <Route path="create" element={<CustomersCreate />} />
                 </Route>
                 <Route path="progress" element={<StoricoProgressi/>} />
-                <Route path="reports/" element={<ReportsCreate />}>
+                <Route path="reports/:id" element={<ReportsView/>}/>
+                <Route path="reports" element={<ReportsCreate />}>
                     <Route path="create" element={<CustomersCreate />} />
                 </Route>
             </Route>

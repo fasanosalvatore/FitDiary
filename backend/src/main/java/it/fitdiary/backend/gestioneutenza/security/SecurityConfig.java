@@ -1,7 +1,9 @@
 package it.fitdiary.backend.gestioneutenza.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,6 +32,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private Environment env;
     /**
      * Ruolo Admin.
      */
@@ -168,7 +173,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CorsConfiguration corsConfigurer(final HttpServletRequest request) {
         var corsConfig = new CorsConfiguration();
         corsConfig.setAllowedHeaders(List.of("*"));
-        corsConfig.setAllowedOrigins(List.of("*"));
+        if (env.getActiveProfiles()[0] != "dev")
+            corsConfig.setAllowedOrigins(List.of("https://fitdiary.it"));
+        else
+            corsConfig.setAllowedOrigins(List.of("*"));
         corsConfig.setAllowedMethods(List.of("*"));
         return corsConfig;
     }

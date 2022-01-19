@@ -40,6 +40,7 @@ export function UserMainBox(props) {
                         {authContext.isAdmin() ? (
                             <Button colorScheme="red">Elimina</Button>
                         ) : (
+
                             <Button colorScheme={props.utente.attivo ? "red" : "green"}>
                                 {props.utente.attivo ? "Disattiva" : "Attiva"}
                             </Button>
