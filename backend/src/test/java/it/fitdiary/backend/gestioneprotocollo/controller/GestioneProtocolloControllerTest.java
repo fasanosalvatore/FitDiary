@@ -10,6 +10,8 @@ import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloServiceImpl;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.FileUtility;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +33,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -76,9 +81,20 @@ class GestioneProtocolloControllerTest {
     private File fileSchedaAlimentareError;
     private File fileNotCsv;
 
+    private static MockedStatic<FileUtility> fileUtility;
+
+    @BeforeAll
+    public static void init() {
+        fileUtility = Mockito.mockStatic(FileUtility.class);
+    }
+
+    @AfterAll
+    public static void close() {
+        fileUtility.close();
+    }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
         ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
         ruoloPreparatore = new Ruolo(2L, "PREPARATORE", null, null);
         cliente = new Utente(1L, "Rebecca", "Di Matteo",
@@ -140,21 +156,71 @@ class GestioneProtocolloControllerTest {
                 null);
         schedaAlimentare = new SchedaAlimentare(1L, 2000f, null, protocollo);
         schedaAllenamento = new SchedaAllenamento(1L, "3", null, protocollo);
-        fileSchedaAllenamento = new File(
-                getClass().getClassLoader().getResource("schedaAllenamento.csv")
-                        .getFile());
-        fileSchedaAllenamentoError = new File(
-                getClass().getClassLoader().getResource("schedaAllenamentoError.csv")
-                        .getFile());
-        fileSchedaAlimentare = new File(
-                getClass().getClassLoader().getResource("schedaAlimentare.csv")
-                        .getFile());
-        fileSchedaAlimentareError = new File(
-                getClass().getClassLoader().getResource("schedaAlimentareError.csv")
-                        .getFile());
-        fileNotCsv = new File(
-                getClass().getClassLoader().getResource("notCsvFile.txt")
-                        .getFile());
+        fileSchedaAllenamento = Files.writeString(Path.of("schedaAllenamento.csv"),
+                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto").toFile();
+        fileSchedaAlimentare = Files.writeString(Path.of("schedaAlimentare.csv"),
+                "Nome;Pasto;Giorno;kcal;grammi\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n").toFile();
+        fileSchedaAllenamentoError = Files.writeString(Path.of("schedaAllenamento.csv"),
+                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento\n" +
+                        "pushup;3;10;1;1\n" +
+                        "pushup;3;10;1;1\n" +
+                        "pushup;3;10;1;1\n" +
+                        "pushup;3;10;1;1\n" +
+                        "pushup;3;10;1;2\n" +
+                        "pushup;3;10;1;2\n" +
+                        "pushup;3;10;1;2\n" +
+                        "pushup;3;10;1;2\n" +
+                        "pushup;3;10;1;3\n" +
+                        "pushup;3;10;1;3\n" +
+                        "pushup;3;10;1;3").toFile();
+        fileSchedaAlimentareError = Files.writeString(Path.of("schedaAlimentare.csv"),
+                "Nome;Pasto;Giorno;kcal\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n").toFile();
+        fileNotCsv = Files.writeString(Path.of("schedaAllenamento.txt"),
+                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto").toFile();
     }
 
     @Test
@@ -333,7 +399,6 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
         when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
 
-        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
         Protocollo protocolloPre = new Protocollo();
@@ -353,7 +418,6 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().is2xxSuccessful());
-        fileUtility.close();
     }
 
     @Test
@@ -393,7 +457,6 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
         when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
 
-        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
         MockHttpServletRequestBuilder requestBuilder =
@@ -408,7 +471,6 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().isBadRequest());
-        fileUtility.close();
     }
 
    @Test
@@ -423,7 +485,6 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
-        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
 
@@ -441,7 +502,6 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().is2xxSuccessful());
-        fileUtility.close();
     }
 
     @Test
@@ -456,7 +516,6 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(false);
 
-        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
 
@@ -475,7 +534,6 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().isUnauthorized());
-        fileUtility.close();
     }
 
     @Test
@@ -490,7 +548,7 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
-        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
+
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(null);
 
@@ -506,9 +564,8 @@ class GestioneProtocolloControllerTest {
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
                         .build()
                         .perform(requestBuilder);
-        actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().is2xxSuccessful());
-        fileUtility.close();
+        actualPerformResult.andDo(print()).andExpect(
+                MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
@@ -523,7 +580,6 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
-        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(null);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
 
@@ -540,8 +596,7 @@ class GestioneProtocolloControllerTest {
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().is2xxSuccessful());
-        fileUtility.close();
+                MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
@@ -556,7 +611,6 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
-        MockedStatic<FileUtility> fileUtility = Mockito.mockStatic(FileUtility.class);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(null);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(null);
 
@@ -573,6 +627,5 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().isBadRequest());
-        fileUtility.close();
     }
 }

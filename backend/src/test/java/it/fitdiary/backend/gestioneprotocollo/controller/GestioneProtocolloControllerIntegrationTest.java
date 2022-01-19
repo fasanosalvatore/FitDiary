@@ -21,6 +21,9 @@ import org.springframework.util.MultiValueMap;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,7 +55,7 @@ public class GestioneProtocolloControllerIntegrationTest {
     private File fileSchedaAlimentare;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         preparatore = utenteRepository.findByEmail("preparatore@fitdiary.it");
         preparatore2 = utenteRepository.findByEmail("giaqui@gmail.com");
         cliente = utenteRepository.findByEmail("cliente@fitdiary.it");
@@ -63,12 +66,32 @@ public class GestioneProtocolloControllerIntegrationTest {
         tokenCliente = setUpToken(cliente.getEmail(), "Password123!");
         tokenCliente2 = setUpToken(cliente2.getEmail(), "Password123!");
         tokenAdmin = setUpToken(admin.getEmail(), "Password123!");
-        fileSchedaAllenamento = new File(
-                getClass().getClassLoader().getResource("schedaAllenamento.csv")
-                        .getFile());
-        fileSchedaAlimentare = new File(
-                getClass().getClassLoader().getResource("schedaAlimentare.csv")
-                        .getFile());
+        fileSchedaAllenamento = Files.writeString(Path.of("schedaAllenamento.csv"),
+                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto").toFile();
+        fileSchedaAlimentare = Files.writeString(Path.of("schedaAlimentare.csv"),
+                "Nome;Pasto;Giorno;kcal;grammi\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n").toFile();
     }
 
     private String setUpToken(String email, String password) {
@@ -146,15 +169,6 @@ public class GestioneProtocolloControllerIntegrationTest {
         var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
         byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
         schedaAllenamento.read(bSchedaAllenamento);
-        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
-        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
-        schedaAlimentare.read(bSchedaAlimentare);
-        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAlimentare.getPath();
-            }
-        };
 
         ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
             @Override
@@ -165,7 +179,6 @@ public class GestioneProtocolloControllerIntegrationTest {
         multipartRequest.add("dataScadenza","2022-12-12");
         multipartRequest.add("idCliente", 4);
         multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
-        multipartRequest.add("schedaAlimentare", schedaAlimentarebytes);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenPreparatore2);
@@ -255,16 +268,6 @@ public class GestioneProtocolloControllerIntegrationTest {
         var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
         byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
         schedaAllenamento.read(bSchedaAllenamento);
-        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
-        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
-        schedaAlimentare.read(bSchedaAlimentare);
-        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAlimentare.getPath();
-            }
-        };
-
         ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
             @Override
             public String getFilename() {
@@ -272,7 +275,6 @@ public class GestioneProtocolloControllerIntegrationTest {
             }
         };
         multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
-        multipartRequest.add("schedaAlimentare", schedaAlimentarebytes);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenPreparatore2);
