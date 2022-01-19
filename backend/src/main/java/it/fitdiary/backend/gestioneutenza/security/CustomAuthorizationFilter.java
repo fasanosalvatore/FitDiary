@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.FilterChain;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -72,6 +74,19 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(token);
                 filterChain.doFilter(request, response);
+            } catch (NestedServletException e) {
+                Map<String, String> error = new HashMap<>();
+                error.put("error_message", e.getMessage());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper()
+                        .writeValue(response.getOutputStream(),
+                                ResponseHandler
+                                        .generateResponse(BAD_REQUEST,
+                                                (Object) "file di "
+                                                        + "dimensioni "
+                                                        + "elevate")
+                                        .getBody()
+                        );
             } catch (Exception e) {
                 e.printStackTrace();
                 response.setHeader("error", e.getMessage());
@@ -81,9 +96,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper()
                         .writeValue(response.getOutputStream(),
-                        ResponseHandler
-                                .generateResponse(UNAUTHORIZED, e.getMessage())
-                                .getBody()
+                                ResponseHandler
+                                        .generateResponse(UNAUTHORIZED,
+                                                e.getMessage())
+                                        .getBody()
                         );
             }
         }

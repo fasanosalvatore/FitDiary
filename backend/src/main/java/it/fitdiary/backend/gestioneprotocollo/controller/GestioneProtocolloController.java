@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
@@ -339,17 +338,5 @@ public class GestioneProtocolloController {
             final MissingServletRequestPartException ex) {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                 (Object) "errore file richiesto");
-    }
-
-    /**
-     * cattura dell'errore MaxUploadSizeExceededException.
-     * @param ex errore
-     * @return  messaggio di errore formato jsend
-     */
-    @ExceptionHandler(MissingServletRequestPartException.class)
-    public ResponseEntity<Object> handleMissingRequestBody(
-            final MaxUploadSizeExceededException ex) {
-        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                (Object) "errore dimensioni troppo grandi");
     }
 }
