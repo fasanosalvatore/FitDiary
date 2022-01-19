@@ -55,29 +55,17 @@ export default function View() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
     const {handleSubmit, setValue} = useForm();
-    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 3000,
-        isClosable: true,
-        variant: "solid",
-        containerStyle: {
-            width: '100%',
-            maxWidth: '100%',
+        duration: 30000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+            width: '100%', maxWidth: '100%',
         },
     })
-    useEffect(() => {
-        if (toastMessage) {
-            const { title, body, stat } = toastMessage;
 
-            toast({
-                title,
-                description: body,
-                status: stat,
-                duration: 9000,
-                isClosable: true
-            });
-        }
-    }, [toastMessage, toast]);
+    function toastParam(title, description, status) {
+        return {
+            title: title, description: description, status: status
+        };
+    }
 
 
     const onDropAllenamento = useCallback(acceptedSchedaAllenamento => {
@@ -98,9 +86,17 @@ export default function View() {
         try {
             const {data} = await fetchContext.authAxios.put(urlProtocolli+"/"+id, formData)
             setProtocolli(data.data);
-            setToastMessage({title:"Completato!", body:"Scheda Allenamento modificata correttamente", stat:"success"})
+            toast(toastParam(
+                "Completato!",
+                "Scheda Allenamento modificata correttamente",
+                "success",
+            ))
         } catch (error) {
-            setToastMessage({title:"Errore", body:error.response.data.data, stat:"error"})
+            toast(toastParam(
+                "Errore",
+                error.response.data.data,
+                "error",
+            ))
         }
 
     }
@@ -118,7 +114,11 @@ export default function View() {
                 setProtocolli(data.data);
                 setLoading(false);
             } catch (error) {
-                setToastMessage({title:"Errore", body:error.message, stat:"error"})
+                toast(toastParam(
+                   "Errore",
+                    error.message,
+                    "error",
+                ))
             }
         }
         listaProtocolli();

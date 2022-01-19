@@ -19,7 +19,7 @@ export default function Create() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const urlCreateCustomer = "utenti";
     const toast = useToast({
-        duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+        duration: 30000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })
@@ -36,10 +36,10 @@ export default function Create() {
             console.log(data);
             toast(toastParam("Cliente creato con successo", "Credenziali inviate via mail", "success"));
         } catch (error) {
-            console.log(error.response)
+            console.log(error.response.data.message)
             toast({
                 title: 'Errore',
-                description: error.response.data.data,
+                description: error.response.data.message,
                 status: 'error',
             })
         }

@@ -1922,20 +1922,6 @@
       ],
       "value": ""
     }, {
-      "id": "ec5bad03-00f6-40c4-9016-ba3130ec8164",
-      "comment": "",
-      "command": "click",
-      "target": "id=altezza",
-      "targets": [
-        ["id=altezza", "id"],
-        ["name=altezza", "name"],
-        ["css=#altezza", "css:finder"],
-        ["xpath=//input[@id='altezza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[5]/div/input", "xpath:idRelative"],
-        ["xpath=//div[5]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "7f34ea0f-3271-4c35-b127-9207633b96f1",
       "comment": "",
       "command": "click",

@@ -75,7 +75,7 @@
         ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[2]/div/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/input", "xpath:position"]
       ],
-      "value": "Marioross123* "
+      "value": "Mariorossi123* "
     }, {
       "id": "eee56e16-2016-4b50-87b7-a2fc5e9867cf",
       "comment": "",
@@ -147,7 +147,7 @@
         ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "mariorossigmail.com"
+      "value": "mariorossi@gmail.com"
     }, {
       "id": "77ba0c26-3f89-4876-a89f-24c8b7b24964",
       "comment": "",
@@ -203,7 +203,7 @@
         ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[2]/div/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/input", "xpath:position"]
       ],
-      "value": "marioross123 "
+      "value": "mariorossi123 "
     }, {
       "id": "fe838a32-6e13-4552-a363-d679336b83d8",
       "comment": "",
@@ -219,17 +219,16 @@
       "value": ""
     }, {
       "id": "037e86e8-763e-42ea-a696-4bb8ca7a336b",
-      "comment": "",
+      "comment": "Errore",
       "command": "assertText",
-      "target": "id=password-feedback",
+      "target": "id=toast-1-title",
       "targets": [
-        ["id=password-feedback", "id"],
-        ["css=#password-feedback", "css:finder"],
-        ["xpath=//div[@id='password-feedback']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[2]/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
+        ["id=toast-1-title", "id"],
+        ["xpath=//div[@id='toast-1-title']", "xpath:attributes"],
+        ["xpath=//div[@id='1']/div/div", "xpath:idRelative"],
+        ["xpath=//li/div/div/div/div", "xpath:position"]
       ],
-      "value": "Formato password non valido"
+      "value": "Errore"
     }]
   }, {
     "id": "61bcbb48-9315-4cdb-8e6b-1758f54953c1",
@@ -275,7 +274,7 @@
         ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "marcorossigmail.com"
+      "value": "mariorossi@gmail.com"
     }, {
       "id": "6950f61b-3d6d-4bb8-8eeb-487ef72ed14e",
       "comment": "",
@@ -303,7 +302,7 @@
         ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
         ["xpath=//input", "xpath:position"]
       ],
-      "value": "marcorossi@gmail.com"
+      "value": "mariorossi@gmail.com"
     }, {
       "id": "c16fda97-378f-422e-a4bc-c535b75bee2c",
       "comment": "",
@@ -331,7 +330,7 @@
         ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[2]/div/div/input", "xpath:idRelative"],
         ["xpath=//div[2]/div/div/input", "xpath:position"]
       ],
-      "value": "Marioross123*"
+      "value": "Mariorossi123*"
     }, {
       "id": "8401522b-7ab9-44e0-b322-d103df7ca967",
       "comment": "",
@@ -360,14 +359,16 @@
       "value": ""
     }, {
       "id": "bf23d4a9-7b5f-4d54-826c-7b6890a47898",
-      "comment": "",
+      "comment": "Accesso eseguito!",
       "command": "assertText",
-      "target": "xpath=//div[@id='1']/div/div[2]",
+      "target": "id=toast-1-title",
       "targets": [
-        ["xpath=//div[@id='1']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//li/div/div/div/div[2]", "xpath:position"]
+        ["id=toast-2-title", "id"],
+        ["xpath=//div[@id='toast-2-title']", "xpath:attributes"],
+        ["xpath=//div[@id='2']/div/div", "xpath:idRelative"],
+        ["xpath=//li/div/div/div/div", "xpath:position"]
       ],
-      "value": "Verrai riderizionato a breve!"
+      "value": "Accesso eseguito!"
     }]
   }],
   "suites": [{

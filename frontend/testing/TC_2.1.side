@@ -1150,7 +1150,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare_BIG.pdf"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare_BIG.csv"
     }, {
       "id": "389c1d7b-9d67-45cc-9710-4006019de70f",
       "comment": "",
@@ -1320,7 +1320,7 @@
         ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/input", "xpath:idRelative"],
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
-      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare_0.pdf"
+      "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare_0.csv"
     }, {
       "id": "ca3891a8-092a-41d5-9c7b-5e98f5a31e16",
       "comment": "",

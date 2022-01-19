@@ -26,7 +26,7 @@ const Create = () => {
     const [selectedFileImages, setselectedFileImages] = useState([]);
     const {register, handleSubmit,setValue, formState: {errors}} = useForm();
     const toast = useToast({
-        duration: 30000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+        duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })
@@ -65,7 +65,7 @@ const Create = () => {
             console.log(data);
             toast(toastParam("Creato!", "Report inserito correttamente", data.status))
         } catch (error) {
-            console.log(error.response);
+            console.log(error.response.message);
             toast(toastParam("Errore", error.response.data.data, "error"))
         }
 
