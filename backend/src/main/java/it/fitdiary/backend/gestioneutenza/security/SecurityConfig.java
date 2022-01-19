@@ -186,7 +186,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * Configura i path esclusi dai filtri
+     * Configura i path esclusi dai filtri.
      * @param web webSecurity
      * @throws Exception
      */

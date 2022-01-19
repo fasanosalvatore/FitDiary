@@ -21,19 +21,6 @@ import static java.util.Arrays.stream;
 public class UtilityToken {
 
     /**
-     * httponly for cookie.
-     */
-    private String httponly = System.getenv("COOKIE_HTTPONLY") != null
-                              ? System.getenv("COOKIE_HTTPONLY")
-                              : "false";
-    /**
-     * secure for cookie.
-     */
-    private String secure = System.getenv("COOKIE_SECURE") != null
-                            ? System.getenv("COOKIE_SECURE")
-                            : "false";
-
-    /**
      * Access Token expiring time in ms.
      */
     public static final int ACCESS_TOKEN_MS = 1000 * 60 * 30;
@@ -166,14 +153,15 @@ public class UtilityToken {
                 new Cookie("accessToken",
                         createToken(request, true)
                 );
-        accessTokenCookie.setHttpOnly(Boolean.parseBoolean(httponly));
-        accessTokenCookie.setSecure(Boolean.parseBoolean(secure));
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setSecure(true);
+
         var refreshTokenCookie =
                 new Cookie("refreshToken",
                         createToken(request, false)
                 );
-        refreshTokenCookie.setHttpOnly(Boolean.parseBoolean(httponly));
-        refreshTokenCookie.setSecure(Boolean.parseBoolean(secure));
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
         accessTokenCookie.setPath("/");
         refreshTokenCookie.setPath("/");
         response.addCookie(accessTokenCookie);
