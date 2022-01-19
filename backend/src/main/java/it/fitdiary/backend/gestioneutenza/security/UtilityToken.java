@@ -7,8 +7,11 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -153,14 +156,17 @@ public class UtilityToken {
                 new Cookie("accessToken",
                         createToken(request, true)
                 );
+
         accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setSecure(true);
+        accessTokenCookie.setDomain("fitdiary.it");
         var refreshTokenCookie =
                 new Cookie("refreshToken",
                         createToken(request, false)
                 );
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setDomain("fitdiary.it");
         accessTokenCookie.setPath("/");
         refreshTokenCookie.setPath("/");
         response.addCookie(accessTokenCookie);
