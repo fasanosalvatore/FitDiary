@@ -11,14 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,11 +82,11 @@ public class GestioneProtocolloController {
                             + "un protocollo per questo cliente");
         }
         if ((schedaAllenamentoMultipartFile == null
-                || schedaAllenamentoMultipartFile.isEmpty())
-                || (schedaAlimentareMultipartFile == null
+                && schedaAlimentareMultipartFile == null)
+                && (schedaAllenamentoMultipartFile.isEmpty()
                 || schedaAlimentareMultipartFile.isEmpty())) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
-                    "Almeno uno dei due file deve essere presente");
+                    "file assenti o corrotti ");
         }
 
         Protocollo protocollo = new Protocollo();
@@ -100,13 +100,15 @@ public class GestioneProtocolloController {
                     FileUtility.getFile(schedaAlimentareMultipartFile);
             schedaAllenamentoFile =
                     FileUtility.getFile(schedaAllenamentoMultipartFile);
-            if (schedaAlimentareFile.length() > MAX_FILE_UPLOAD) {
+            if ((schedaAlimentareFile != null)
+                    && (schedaAlimentareFile.length() > MAX_FILE_UPLOAD)) {
                 return ResponseHandler.generateResponse(
                         HttpStatus.BAD_REQUEST,
                         (Object) "il file " + schedaAlimentareFile
                                 .getName()
                                 + " ha dimensioni elevate");
-            } else if (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD) {
+            } else if ((schedaAllenamentoFile != null)
+                    && (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD)) {
                 return ResponseHandler.generateResponse(
                         HttpStatus.BAD_REQUEST,
                         (Object) "il file " + schedaAllenamentoFile
@@ -165,12 +167,11 @@ public class GestioneProtocolloController {
                             + "un protocollo per questo cliente");
         }
         if ((schedaAllenamentoMultipartFile == null
-                || schedaAllenamentoMultipartFile.isEmpty())
-                && (schedaAlimentareMultipartFile == null
+                && schedaAlimentareMultipartFile == null)
+                && (schedaAllenamentoMultipartFile.isEmpty()
                 || schedaAlimentareMultipartFile.isEmpty())) {
-            return ResponseHandler.generateResponse(BAD_REQUEST,
-                    (Object)
-                            "Almeno uno dei due file deve essere presente");
+            return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
+                    "file assenti o corrotti ");
         }
 
         File schedaAlimentareFile;
@@ -180,13 +181,15 @@ public class GestioneProtocolloController {
                     FileUtility.getFile(schedaAlimentareMultipartFile);
             schedaAllenamentoFile =
                     FileUtility.getFile(schedaAllenamentoMultipartFile);
-            if (schedaAlimentareFile.length() > MAX_FILE_UPLOAD) {
+            if ((schedaAlimentareFile != null)
+                    && (schedaAlimentareFile.length() > MAX_FILE_UPLOAD)) {
                 return ResponseHandler.generateResponse(
                         HttpStatus.BAD_REQUEST,
                         (Object) "il file " + schedaAlimentareFile
                                 .getName()
                                 + " ha dimensioni elevate");
-            } else if (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD) {
+            } else if ((schedaAllenamentoFile != null)
+                    && (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD)) {
                 return ResponseHandler.generateResponse(
                         HttpStatus.BAD_REQUEST,
                         (Object) "il file " + schedaAllenamentoFile
