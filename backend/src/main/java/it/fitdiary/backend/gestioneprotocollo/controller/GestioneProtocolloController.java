@@ -36,6 +36,10 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @RequestMapping(path = "api/v1/protocolli")
 public class GestioneProtocolloController {
     /**
+     * max byte per la dimensione dei file.
+     */
+    public static final int MAX_FILE_UPLOAD = 52428800;
+    /**
      * Service di gestione protocollo.
      */
     private final GestioneProtocolloService gestioneProtocolloService;
@@ -96,6 +100,19 @@ public class GestioneProtocolloController {
                     FileUtility.getFile(schedaAlimentareMultipartFile);
             schedaAllenamentoFile =
                     FileUtility.getFile(schedaAllenamentoMultipartFile);
+            if (schedaAlimentareFile.length() > MAX_FILE_UPLOAD) {
+                return ResponseHandler.generateResponse(
+                        HttpStatus.BAD_REQUEST,
+                        (Object) "il file " + schedaAlimentareFile
+                                .getName()
+                                + " ha dimensioni elevate");
+            } else if (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD) {
+                return ResponseHandler.generateResponse(
+                        HttpStatus.BAD_REQUEST,
+                        (Object) "il file " + schedaAllenamentoFile
+                                .getName()
+                                + " ha dimensioni elevate");
+            }
         } catch (Exception e) {
             return ResponseHandler.generateResponse(
                     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -163,6 +180,19 @@ public class GestioneProtocolloController {
                     FileUtility.getFile(schedaAlimentareMultipartFile);
             schedaAllenamentoFile =
                     FileUtility.getFile(schedaAllenamentoMultipartFile);
+            if (schedaAlimentareFile.length() > MAX_FILE_UPLOAD) {
+                return ResponseHandler.generateResponse(
+                        HttpStatus.BAD_REQUEST,
+                        (Object) "il file " + schedaAlimentareFile
+                                .getName()
+                                + " ha dimensioni elevate");
+            } else if (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD) {
+                return ResponseHandler.generateResponse(
+                        HttpStatus.BAD_REQUEST,
+                        (Object) "il file " + schedaAllenamentoFile
+                                .getName()
+                                + " ha dimensioni elevate");
+            }
         } catch (Exception e) {
             return ResponseHandler.generateResponse(
                     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -337,6 +367,7 @@ public class GestioneProtocolloController {
     public ResponseEntity<Object> handleMissingRequestBody(
             final MissingServletRequestPartException ex) {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                (Object) "errore file richiesto");
+                (Object) "file richiesto");
     }
+
 }

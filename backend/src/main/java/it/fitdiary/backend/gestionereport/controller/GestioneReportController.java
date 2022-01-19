@@ -38,6 +38,10 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class GestioneReportController {
     /**
+     * max byte per la dimensione dei file.
+     */
+    public static final int MAX_FILE_UPLOAD = 52428800;
+    /**
      * Service di stima progressi.
      */
     private final GestioneStimaProgressiService gestioneStimaProgressiService;
@@ -139,6 +143,13 @@ public class GestioneReportController {
                 String mimetype =
                         new MimetypesFileTypeMap().getContentType(file);
                 String type = mimetype.split("/")[0];
+                Long bytes = file.length();
+                if (bytes > MAX_FILE_UPLOAD) {
+                    return ResponseHandler.generateResponse(
+                            HttpStatus.BAD_REQUEST,
+                            (Object) "il file " + file.getName()
+                                    + " ha dimensioni elevate");
+                }
                 if (type.equals("image")) {
                     var img = cloudinary.uploader()
                             .upload(file,
@@ -230,7 +241,7 @@ public class GestioneReportController {
         if (utente.getRuolo().getNome().equals(Ruolo.RUOLOPREPARATORE)) {
             if (!gestioneUtenzaService.existsByPreparatoreAndId(
                     utente, idCliente)) {
-                return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                         (Object)
                                 "Il preparatore non può accedere "
                                 + "al report di questo cliente");
