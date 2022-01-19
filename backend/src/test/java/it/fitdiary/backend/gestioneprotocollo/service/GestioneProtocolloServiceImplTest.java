@@ -15,8 +15,9 @@ import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,6 +29,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +75,9 @@ class GestioneProtocolloServiceImplTest {
     private SchedaAlimentareRepository schedaAlimentareRepository;
 
 
+
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IOException {
         ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
         ruoloPreparatore = new Ruolo(2L, "PREPARATORE", null, null);
         cliente = new Utente(1L, "Rebecca", "Di Matteo",
@@ -105,12 +109,32 @@ class GestioneProtocolloServiceImplTest {
                 null);
         schedaAlimentare = new SchedaAlimentare(1L, 2000f, null, protocollo);
         schedaAllenamento = new SchedaAllenamento(1L, "3", null, protocollo);
-        fileSchedaAllenamento = new File(
-                getClass().getClassLoader().getResource("schedaAllenamento.csv")
-                        .getFile());
-        fileSchedaAllenamentoError = new File(
-                getClass().getClassLoader().getResource("schedaAllenamentoError.csv")
-                        .getFile());
+        fileSchedaAllenamento = Files.writeString(Path.of("schedaAllenamento.csv"),
+                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto").toFile();
+        fileSchedaAlimentare = Files.writeString(Path.of("schedaAlimentare.csv"),
+                "Nome;Pasto;Giorno;Kcal;Grammi\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n").toFile();
         fileSchedaAlimentare = new File(
                 getClass().getClassLoader().getResource("schedaAlimentare.csv")
                         .getFile());

@@ -54,7 +54,7 @@ public class SchedaAlimentareAdapterImpl implements SchedaAlimentareAdapter {
         int riga = 1;
         for (CSVRecord record : records) {
             if (!record.isConsistent()) {
-                throw new IllegalArgumentException("errore nella compilazione"
+                throw new IllegalArgumentException("errore nella compilazione "
                         + "nella scheda alimentare");
             }
             if (riga == 1) {

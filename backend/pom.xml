@@ -140,10 +140,30 @@
 			<version>1.0.0</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+			<version>1.29.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.pmml4s</groupId>
+			<artifactId>pmml4s_2.12</artifactId>
+			<version>0.9.12</version>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+					<outputDirectory>./../</outputDirectory>
+					<reportOutputDirectory>./../</reportOutputDirectory>
+					<destDir>docs</destDir>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -159,7 +179,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.4</version>
+				<version>0.8.6</version>
 				<executions>
 					<execution>
 						<id>before-unit-test-execution</id>

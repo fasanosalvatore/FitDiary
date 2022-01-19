@@ -7,46 +7,58 @@ const {Provider} = AuthContext;
 const AuthProvider = ({children}) => {
     const navigate = useNavigate()
 
-    const accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
+    const accessTokenExpireAt = localStorage.getItem('accessTokenExpireAt');
+    const refreshTokenExpireAt = localStorage.getItem('refreshTokenExpireAt');
     const userInfo = localStorage.getItem('userInfo');
 
     const [authState, setAuthState] = useState({
-        accessToken: accessToken ? JSON.parse(accessToken) : {},
-        refreshToken: refreshToken ? JSON.parse(refreshToken) : {},
-        userInfo: userInfo ? JSON.parse(userInfo) : {}
+      accessTokenExpireAt: accessTokenExpireAt
+        ? JSON.parse(accessTokenExpireAt)
+        : 0,
+      refreshTokenExpireAt: refreshTokenExpireAt
+        ? JSON.parse(refreshTokenExpireAt)
+        : 0,
+      userInfo: userInfo ? JSON.parse(userInfo) : {},
     });
 
-    const setAuthInfo = ({accessToken, refreshToken, userInfo}) => {
-        localStorage.setItem('accessToken', JSON.stringify(accessToken));
-        localStorage.setItem('refreshToken', JSON.stringify(refreshToken));
+    const setAuthInfo = ({accessTokenExpireAt, refreshTokenExpireAt, userInfo}) => {
+        localStorage.setItem('accessTokenExpireAt', accessTokenExpireAt);
+        localStorage.setItem('refreshTokenExpireAt', refreshTokenExpireAt);
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
         setAuthState({
-            accessToken,
-            refreshToken,
+            accessTokenExpireAt,
+            refreshTokenExpireAt,
             userInfo,
         })
     };
 
     const logout = () => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('accessTokenExpireAt');
+        localStorage.removeItem('refreshTokenExpireAt');
         localStorage.removeItem('userInfo');
         setAuthState({});
         navigate("/login");
     }
 
     const isAuthenticated = () => {
-        if (!authState.accessToken || !authState.accessToken.expiresAt) {
+        if (!authState.accessTokenExpireAt ) {
             return false;
         }
         return (
-            new Date().getTime() < authState.accessToken.expiresAt
+            new Date().getTime() < authState.accessTokenExpireAt
         );
     };
 
     const isAdmin = () => {
-        return authState.userInfo?.roles[0] === 'admin';
+        return authState.userInfo?.roles[0].toLowerCase() === 'admin';
+    }
+
+    const isCustomer = () => {
+        return authState.userInfo?.roles[0].toLowerCase()  === 'cliente';
+    }
+
+    const isTrainer = () => {
+        return authState.userInfo?.roles[0].toLowerCase()  === 'preparatore';
     }
 
     return (
@@ -56,7 +68,9 @@ const AuthProvider = ({children}) => {
                 setAuthState: authInfo => setAuthInfo(authInfo),
                 logout,
                 isAuthenticated,
-                isAdmin
+                isAdmin,
+                isTrainer,
+                isCustomer
             }}
         >
             {children}

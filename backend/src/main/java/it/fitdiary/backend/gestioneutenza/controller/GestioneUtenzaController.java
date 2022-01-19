@@ -1,12 +1,9 @@
 package it.fitdiary.backend.gestioneutenza.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.Stripe;
 import com.stripe.model.Customer;
+import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.ResponseHandler;
@@ -19,8 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.mail.MailException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,17 +28,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static it.fitdiary.backend.utility.service.FitDiaryUserDetails.createTokensMap;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static it.fitdiary.backend.utility.service.FitDiaryUserDetails.createUserMap;
 
 
 @RestController
@@ -47,26 +45,6 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequestMapping(path = "api/v1/utenti")
 public class GestioneUtenzaController {
 
-    /**
-     * Costante per valore intero di 10.
-     */
-    public static final int INT10 = 10;
-    /**
-     * Costante per valore intero di 60.
-     */
-    public static final int INT60 = 60;
-    /**
-     * Costante per valore intero di 1000.
-     */
-    public static final int INT1000 = 1000;
-    /**
-     * Access Token expiring time in ms.
-     */
-    public static final int ACCESS_TOKEN_MS = 1000 * 60 * 30;
-    /**
-     * Refresh Token expiring time in ms.
-     */
-    public static final int REFRESH_TOKEN_MS = 1000 * 60 * 60 * 24 * 7;
     /**
      * GestioneUtenzaService che si occupa della logica di business.
      */
@@ -92,8 +70,8 @@ public class GestioneUtenzaController {
                 + "(?=.*[@$!%*?^#()<>+&.])"
                 + "[A-Za-z\\d@$!%*?^#()<>+&.]{8,}$")) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    "password",
-                    "password non valida");
+                    (Object)
+                            "password non valida");
         }
         Utente newUtente;
         try {
@@ -149,59 +127,9 @@ public class GestioneUtenzaController {
                     newUtente);
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
+                    (Object) e.getMessage());
         }
     }
-
-    /**
-     * Questo metodo permette di effettuare il refresh del token per un utente.
-     *
-     * @param request  richiesta Http
-     * @param response risposta Http
-     * @throws IOException eccezione
-     */
-    @GetMapping("token/refresh")
-    public void refreshToken(final HttpServletRequest
-                                     request,
-                             final HttpServletResponse
-                                     response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (authorizationHeader != null
-                && authorizationHeader.startsWith("Bearer ")) {
-            try {
-                String refreshToken =
-                        authorizationHeader.substring("Bearer ".length());
-                Algorithm alg = Algorithm.HMAC256("secret".getBytes());
-                JWTVerifier verifier = JWT.require(alg).build();
-                DecodedJWT decodedJWT = verifier.verify(refreshToken);
-                FitDiaryUserDetails user = service.loadUserByUsername(
-                        decodedJWT.getClaim("email").asString());
-                var tokens = createTokensMap(
-                        request, alg, user, ACCESS_TOKEN_MS,
-                        REFRESH_TOKEN_MS, null);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(),
-                        ResponseHandler.generateResponse(HttpStatus.OK, tokens)
-                                .getBody());
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                new ObjectMapper().writeValue(response.getOutputStream(),
-                        ResponseHandler.generateResponse(
-                                        HttpStatus.BAD_REQUEST,
-                                        (Object) "Refresh del token fallito")
-                                .getBody());
-            }
-        } else {
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            new ObjectMapper().writeValue(response.getOutputStream(),
-                    ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                            (Object) "Refresh token mancante").getBody());
-        }
-    }
-
 
     /**
      * Questo metodo permette di effettuare
@@ -211,44 +139,24 @@ public class GestioneUtenzaController {
      * @param response risposta Http
      * @throws IOException eccezione
      */
-    @GetMapping("token/expire")
+    @GetMapping("token/expires")
     public void expireToken(final HttpServletRequest
                                     request,
                             final HttpServletResponse
                                     response) throws IOException {
-        String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (authorizationHeader != null
-                && authorizationHeader.startsWith("Bearer ")) {
-            try {
-                String refreshToken =
-                        authorizationHeader.substring("Bearer ".length());
-                Algorithm alg = Algorithm.HMAC256("secret".getBytes());
-                JWTVerifier verifier = JWT.require(alg).build();
-                DecodedJWT decodedJWT = verifier.verify(refreshToken);
-                FitDiaryUserDetails user = service.loadUserByUsername(
-                        decodedJWT.getClaim("email").asString());
-                var tokens = createTokensMap(request, alg, user, INT1000,
-                        INT1000, null);
-
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(),
-                        ResponseHandler.generateResponse(HttpStatus.OK, tokens)
-                                .getBody());
-            } catch (Exception e) {
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                new ObjectMapper().writeValue(response.getOutputStream(),
-                        ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                                        (Object) "Refresh del token fallito")
-                                .getBody());
-            }
-        } else {
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            new ObjectMapper().writeValue(response.getOutputStream(),
-                    ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                            (Object) "Refresh token mancante").getBody());
-        }
+        response.addCookie(new Cookie("accessToken", null));
+        response.addCookie(new Cookie("refreshToken", null));
+        var respMap = Map.of(
+                "userInfo", createUserMap(
+                        new FitDiaryUserDetails("", "", null)
+                ),
+                "accessTokenExpireAt", 0,
+                "refreshTokenExpireAt", 0
+        );
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(),
+                ResponseHandler.generateResponse(HttpStatus.OK, respMap)
+                        .getBody());
     }
 
     /**
@@ -279,7 +187,7 @@ public class GestioneUtenzaController {
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    "Errore nei parametri della richiesta");
+                    (Object) "Email già associata ad un account");
         } catch (MailException e) {
             log.error(e.getMessage());
             return ResponseHandler.generateResponse(HttpStatus.BAD_GATEWAY,
@@ -300,7 +208,7 @@ public class GestioneUtenzaController {
                 constraintViolation.getPropertyPath().toString(),
                 constraintViolation.getMessage()));
 
-        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST, "fail",
+        return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                 errors);
     }
 
@@ -322,9 +230,37 @@ public class GestioneUtenzaController {
             );
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                    e.getMessage());
+                    (Object) e.getMessage());
         }
     }
+
+    /**
+     * @param idCliente id utente di cui visualizzare profilo
+     * @return Utente di cui voglio visualizzare il profilo
+     */
+    @GetMapping("{id}")
+    public ResponseEntity<Object> visualizzaProfiloUtente(
+            @PathVariable("id") final Long idCliente) {
+        HashMap<String, Object> map = new HashMap<>();
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        Long idPreparatore = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente preparatore = service.getById(idPreparatore);
+        if (!service.existsByPreparatoreAndId(
+                preparatore, idCliente)) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    (Object)
+                            "Il preparatore non può accedere "
+                            + "al profilo di questo cliente");
+        }
+        Utente cliente = service.getById(idCliente);
+        map.put("cliente", cliente);
+        map.put("protocollo", cliente.getListaProtocolli());
+        map.put("report", cliente.getListaReport());
+        return ResponseHandler.generateResponse(HttpStatus.OK, map);
+    }
+
 
     /**
      * metodo per catturare l'errore HttpMessageNotReadableException.
@@ -336,23 +272,75 @@ public class GestioneUtenzaController {
     public ResponseEntity<Object> handleMissingRequestBody(
             final HttpMessageNotReadableException ex) {
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
-                "Errore durante la lettura del body");
+                (Object) "Errore durante la lettura del body");
     }
 
     /**
-     * restituisce la lista di clienti di un preparatore.
+     * restituisce la lista di clienti di un preparatore o admin.
      *
      * @param request richiesta http
-     * @return lista clienti di un preparatore
+     * @return lista clienti
      */
     @GetMapping
-    public ResponseEntity<Object> listaClientiPreparatore(
+    public ResponseEntity<Object> visualizzaListaUtenti(
             final HttpServletRequest
                     request) {
-        var idUtente = Long.parseLong(request.getUserPrincipal().getName());
-        List<Utente> listaClienti = service.getById(idUtente).getListaClienti();
-        return ResponseHandler.generateResponse(HttpStatus.OK, "listaClienti",
-                listaClienti);
+        var idUtente = Long.parseLong(request.getUserPrincipal()
+                .getName());
+        Utente utente = service.getById(idUtente);
+        if (utente.getRuolo().getNome().equals(Ruolo.RUOLOADMIN)) {
+            return ResponseHandler.generateResponse(HttpStatus.OK,
+                    "utenti",
+                    service.visualizzaListaUtenti());
+        }
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                "clienti",
+                utente.getListaClienti());
 
+    }
+
+    /**
+     * permette di eliminare un cliente dal sistema.
+     *
+     * @param idUtente identificativo del cliente da eliminare
+     * @return risposta di conferma di eliminazione
+     */
+    @DeleteMapping("{id}")
+    public ResponseEntity<Object> eliminaCliente(
+            @PathVariable("id") final Long idUtente) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        Long idAdmin = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente admin = service.getById(idAdmin);
+        service.deleteUtenteById(idUtente);
+        return ResponseHandler.generateResponse(HttpStatus.OK,
+                (Object) "Eliminazione andata a buon fine");
+    }
+
+    /**
+     * permette di disattivare un cliente dalla piattaforma.
+     *
+     * @param idCliente identificativo del cliente da eliminare
+     * @return il nuovo cliente
+     */
+    @PutMapping("{id}")
+    public ResponseEntity<Object> disattivaOrAttivaCliente(
+            @PathVariable("id") final Long idCliente) {
+        HttpServletRequest request = ((ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes()).getRequest();
+        Long idPreparatore = Long.parseLong(
+                request.getUserPrincipal().getName());
+        Utente preparatore = service.getById(idPreparatore);
+        if (!service.existsByPreparatoreAndId(
+                preparatore, idCliente)) {
+            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+                    (Object)
+                            "Il preparatore non può accedere "
+                            + "al profilo di questo cliente");
+        }
+        var cliente = service.disattivaOrAttivaUtente(idCliente);
+        return ResponseHandler.generateResponse(HttpStatus.OK, "cliente",
+                cliente);
     }
 }

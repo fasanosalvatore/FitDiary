@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.4">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.6.34"/>
+		<Timestamp>2022-01-15T22:20:46Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension name="repr">PMMLPipeline(steps=[('Regression', LinearRegression())])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="pesoPerso" optype="continuous" dataType="double"/>
+		<DataField name="kcal" optype="continuous" dataType="double"/>
+		<DataField name="sesso" optype="continuous" dataType="double"/>
+		<DataField name="peso" optype="continuous" dataType="double"/>
+		<DataField name="eta" optype="continuous" dataType="double"/>
+	</DataDictionary>
+	<RegressionModel functionName="regression" algorithmName="sklearn.linear_model._base.LinearRegression">
+		<MiningSchema>
+			<MiningField name="pesoPerso" usageType="target"/>
+			<MiningField name="kcal"/>
+			<MiningField name="sesso"/>
+			<MiningField name="peso"/>
+			<MiningField name="eta"/>
+		</MiningSchema>
+		<RegressionTable intercept="1.7653201958573017">
+			<NumericPredictor name="kcal" coefficient="-0.001150430807893662"/>
+			<NumericPredictor name="sesso" coefficient="0.2453999639007302"/>
+			<NumericPredictor name="peso" coefficient="0.02172492598894346"/>
+			<NumericPredictor name="eta" coefficient="-0.0073789492137843055"/>
+		</RegressionTable>
+	</RegressionModel>
+</PMML>

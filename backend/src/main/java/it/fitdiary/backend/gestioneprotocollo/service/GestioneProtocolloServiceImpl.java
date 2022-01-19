@@ -15,9 +15,10 @@ import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,8 +31,13 @@ import java.util.Set;
 @Service
 @Slf4j
 @Transactional
+@RequiredArgsConstructor
 public class GestioneProtocolloServiceImpl
         implements GestioneProtocolloService {
+    /**
+     * numero di protocolli in una pagina.
+     */
+    public static final int PAGE_SIZE = 50;
     /**
      * Repository del protocollo.
      */
@@ -62,27 +68,6 @@ public class GestioneProtocolloServiceImpl
      * Repository dell'esercizio.
      */
     private final EsercizioRepository esercizioRepository;
-
-    /**
-     * @param protocolloRep        repository del protocollo
-     * @param alimentoRep          repository degli alimenti
-     * @param schedaAlimentareRep  repository della scheda alimentare
-     * @param schedaAllenamentoRep repository della scheda allenamento
-     * @param esercizioRep         repository degli esercizi
-     */
-    @Autowired
-    public GestioneProtocolloServiceImpl(
-            final ProtocolloRepository protocolloRep,
-            final AlimentoRepository alimentoRep,
-            final SchedaAlimentareRepository schedaAlimentareRep,
-            final SchedaAllenamentoRepository schedaAllenamentoRep,
-            final EsercizioRepository esercizioRep) {
-        this.protocolloRepository = protocolloRep;
-        this.alimentoRepository = alimentoRep;
-        this.schedaAlimentareRepository = schedaAlimentareRep;
-        this.schedaAllenamentoRepository = schedaAllenamentoRep;
-        this.esercizioRepository = esercizioRep;
-    }
 
     /**
      * @param protocollo            nuovo protocollo
@@ -232,4 +217,18 @@ public class GestioneProtocolloServiceImpl
 
     }
 
+    /**
+     * @param preparatore preparatore
+     * @param page        numero pagine
+     * @return lista protocolli creati dal preparatore
+     */
+    @Override
+    public List<Protocollo> getAllProtocolliPreparatore(
+            final Utente preparatore, final int page) {
+        var pageProtocolli =
+                protocolloRepository.findByPreparatoreOrderByDataScadenzaDesc(
+                        preparatore,
+                        Pageable.ofSize(PAGE_SIZE).withPage(page - 1));
+        return pageProtocolli.toList();
+    }
 }

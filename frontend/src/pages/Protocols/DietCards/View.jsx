@@ -1,4 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {useDropzone} from 'react-dropzone';
+
 import {
     Accordion,
     AccordionButton,
@@ -8,9 +10,18 @@ import {
     Box,
     Button,
     Flex,
+    FormControl,
     Heading,
     HStack,
     IconButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Table,
     Tbody,
     Td,
@@ -19,26 +30,33 @@ import {
     Thead,
     Tooltip,
     Tr,
+    useDisclosure,
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {EditIcon} from '@chakra-ui/icons';
+import {CloseIcon, EditIcon} from '@chakra-ui/icons';
 import {RiArrowGoBackLine,} from 'react-icons/ri';
 import {AuthContext} from "../../../context/AuthContext";
 import moment from "moment";
 import {FetchContext} from "../../../context/FetchContext";
 import {useNavigate, useParams} from "react-router";
+import {useForm} from "react-hook-form"
 
 export default function View() {
     const authContext = useContext(AuthContext);
-    const {authState} = authContext;
-    const {id} = useParams();
+    const { authState } = authContext;
+    const { id } = useParams();
     const navigate = useNavigate();
     const [protocollo, setProtocolli] = useState();
     const fetchContext = useContext(FetchContext);
     const [isLoading, setLoading] = useState(true);
+    const urlProtocolli = "protocolli";
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [selectedSchedaAlimentare, setselectedSchedaAlimentare] = useState(null);
+    const { handleSubmit, setValue } = useForm();
 
     const days = ["Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato", "Domenica"];
+
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -49,11 +67,50 @@ export default function View() {
         },
 
     })
+    function toastParam(title, description, status) {
+        return {
+            title: title, description: description, status: status
+        };
+    }
+
+    const onDropAlimentare = useCallback(acceptedSchedaAlimentare => {
+        console.log(acceptedSchedaAlimentare)
+        setValue("schedaAlimentare", acceptedSchedaAlimentare);
+    }, [setValue])
+
+    const {
+        acceptedFiles: acceptedSchedaAlimentare,
+        getRootProps: getRootPropsAlimentare,
+        getInputProps: getInputPropsAlimentare,
+        isDragActive: isDragActiveAlimentare
+    } = useDropzone({ onDrop: onDropAlimentare, maxFiles: 1 })
+
+    const onSubmit = async (values) => {
+        const formData = new FormData();
+        console.log(values)
+        if (values.schedaAlimentare)
+            formData.append("schedaAlimentare", values.schedaAlimentare[0])
+        try {
+            const { data } = await fetchContext.authAxios.put(urlProtocolli + "/" + id, formData)
+            console.log(data);
+            setProtocolli(data.data);
+            toast(toastParam("Modifica effettuata con successo!", "Scheda Alimentare modificata correttamente", data.status))
+        } catch (error) {
+            console.log(error.response);
+            toast(toastParam("Errore", error.response.data.data, "error"))
+        }
+
+    }
+
+    useEffect(() => {
+        console.log("pages/protocols/dietcard/view");
+        setselectedSchedaAlimentare(acceptedSchedaAlimentare[0]);
+    }, [acceptedSchedaAlimentare]);
 
     useEffect(() => {
         const listaProtocolli = async () => {
             try {
-                const {data} = await fetchContext.authAxios("protocolli/" + id);
+                const { data } = await fetchContext.authAxios("protocolli/" + id);
                 setProtocolli(data.data);
                 setLoading(false);
             } catch (error) {
@@ -74,7 +131,7 @@ export default function View() {
                 <Flex wrap={"wrap"}>
                     <Button onClick={() => {
                         navigate(-1)
-                    }} ml={5} mt={5} colorScheme={"blue"} leftIcon={<RiArrowGoBackLine/>}>Torna al protocollo</Button>
+                    }} ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}>Torna al protocollo</Button>
                     <Heading w={"full"} mb={5} textAlign={"center"}>Scheda Alimentare</Heading>
                     <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
@@ -105,10 +162,60 @@ export default function View() {
                                                 <HStack>
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
                                                         <IconButton
-                                                            colorScheme='blue'
-                                                            icon={<EditIcon/>}
+                                                            onClick={onOpen}
+                                                            colorScheme='fitdiary'
+                                                            icon={<EditIcon />}
                                                         />
                                                     </Tooltip>
+                                                    <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl"}>
+                                                        <ModalOverlay />
+                                                        <ModalContent>
+                                                            <form onSubmit={handleSubmit(onSubmit)}>
+                                                                <ModalHeader textAlign={"center"}>Carica la nuova scheda modificata</ModalHeader>
+                                                                <ModalCloseButton />
+                                                                <ModalBody align={"center"}>
+                                                                    <Flex justify="center">
+                                                                        <HStack align="center">
+                                                                            <FormControl id={"schedaAlimentare"}>
+                                                                                {selectedSchedaAlimentare != null && (
+                                                                                    <HStack>
+                                                                                        <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
+                                                                                            setselectedSchedaAlimentare(null);
+                                                                                            setValue("schedaAlimentare", null);
+                                                                                        }} />
+                                                                                        <Text>
+                                                                                            {selectedSchedaAlimentare.path}
+                                                                                        </Text>
+                                                                                    </HStack>
+                                                                                )}
+                                                                                {!selectedSchedaAlimentare && (
+                                                                                    <div {...getRootPropsAlimentare()}>
+                                                                                        <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
+                                                                                            borderColor={"gray.200"}>
+                                                                                            <Input {...getInputPropsAlimentare()} />
+                                                                                            {
+                                                                                                isDragActiveAlimentare ?
+                                                                                                    <p style={{ color: "gray", textAlign: "center" }}>
+                                                                                                        Lascia il file qui ...
+                                                                                                    </p> :
+                                                                                                    <p style={{ color: "gray", textAlign: "center" }}>
+                                                                                                        Clicca e trascina un file qui, oppure clicca per
+                                                                                                        selezionare un file
+                                                                                                    </p>
+                                                                                            }
+                                                                                        </Box>
+                                                                                    </div>
+                                                                                )}
+                                                                            </FormControl>
+                                                                        </HStack>
+                                                                    </Flex>
+                                                                </ModalBody>
+                                                                <ModalFooter>
+                                                                    <Button colorScheme='fitdiary' type={"submit"}>Carica</Button>
+                                                                </ModalFooter>
+                                                            </form>
+                                                        </ModalContent>
+                                                    </Modal>
                                                 </HStack>
                                             )}
                                     </Flex>
@@ -125,7 +232,7 @@ export default function View() {
                                                             <Box flex='1' textAlign='left'>
                                                                 {d}
                                                             </Box>
-                                                            <AccordionIcon/>
+                                                            <AccordionIcon />
                                                         </AccordionButton>
                                                     </h2>
                                                     <AccordionPanel pb={4}>
@@ -135,8 +242,8 @@ export default function View() {
 
                                                                 return (
                                                                     <Table borderBottom={"solid 1px "}
-                                                                           borderColor={"blue.200"} key={key}
-                                                                           variant="unstyled" size="md">
+                                                                        borderColor={"blue.200"} key={key}
+                                                                        variant="unstyled" size="md">
                                                                         <Thead>
                                                                             <Tr>
                                                                                 <Th textAlign="center"

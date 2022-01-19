@@ -46,6 +46,7 @@ export default function Edit() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log("pages/users/edit");
         const getInfoUtente = async () => {
             try {
                 const {data} = await fetchContext.authAxios.get(urlGetInfo)
@@ -83,7 +84,9 @@ export default function Edit() {
     }
 
     function isValidDate(value) {
-        return (!isNaN(Date.parse(value)) && (new Date(value) < Date.now()) ? true : "Inserisci una data valida");
+        var date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return (!isNaN(Date.parse(value)) && (new Date(value) <= date) ? true : "Inserisci una data valida");
     }
 
     //nome,cognome,email,password,dataNascita
@@ -91,9 +94,9 @@ export default function Edit() {
         <>
             {!isLoading && (
                 <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
+                    <Heading size="lg" textAlign={"center"} pt={5}>Modifica Dati Personali</Heading>
                     <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
                         <GradientBar/>
-                        <Heading size="lg" textAlign={"center"} pt={5}>Modifica Dati Personali</Heading>
                         <Box pl={10} pr={10} pb={5} pt={5}>
                             <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                                 <SimpleGrid vcolumns={2} columnGap={5} rowGap={5} w="full">
@@ -151,28 +154,7 @@ export default function Edit() {
                                             <FormErrorMessage>{errors.email && errors.email.message}</FormErrorMessage>
                                         </FormControl>
                                     </GridItem>
-                                    <GridItem colSpan={colSpan} w="100%">
-                                        <FormControl id={"altezza"} isInvalid={errors.altezza}>
-                                            <FormLabel htmlFor="altezza">Altezza</FormLabel>
-                                            <Tooltip
-                                                label={"Altezza in centimeri"}
-                                                aria-label='A tooltip'>
-                                                <Input type="number" placeholder={"178"} min="50"
-                                                       max="300" {...register("altezza", {
-                                                    maxLength: {
-                                                        value: 3,
-                                                        message: "valore altezza troppo grande"
-                                                    },
-                                                    pattern: {
-                                                        value: /^[0-9]{1,3}$/i,
-                                                        message: "Formato altezza non valido"
-                                                    }
-                                                })} />
-                                            </Tooltip>
-                                            <FormErrorMessage>{errors.altezza && errors.altezza.message}</FormErrorMessage>
-                                        </FormControl>
-                                    </GridItem>
-                                    <GridItem colSpan={colSpan} w="100%">
+                                    <GridItem colSpan={2} w="100%">
                                         <FormControl id={"telefono"} isInvalid={errors.telefono}>
                                             <FormLabel>Numero di telefono</FormLabel>
                                             <InputGroup>
@@ -183,11 +165,11 @@ export default function Edit() {
                                                 <Input type="text" placeholder="3332957615"{...register("telefono", {
                                                     minLenght: {
                                                         value: 4,
-                                                        message: "Formato del numero di telefono non valido"
+                                                        message: "lunghezza numero telefono troppo corta"
                                                     },
                                                     maxLenght: {
                                                         value: 15,
-                                                        message: "Formato del numero di telefono non valido"
+                                                        message: "lunghezza numero telefono troppo corta"
                                                     },
                                                     pattern: {
                                                         value: /^[+03][0-9]{3,14}$/i,
@@ -202,6 +184,7 @@ export default function Edit() {
                                         <FormControl id={"citta"} isInvalid={errors.citta}>
                                             <FormLabel htmlFor="citta"> Città</FormLabel>
                                             <Input type="text" placeholder="Roma"{...register("citta", {
+                                               required:  "E' richiesto il nome della Città",
                                                 maxLength: {
                                                     value: 20,
                                                     message: "Il nome della città è troppo lungo"
@@ -218,9 +201,13 @@ export default function Edit() {
                                         <FormControl id={"via"} isInvalid={errors.via}>
                                             <FormLabel htmlFor="via">Via</FormLabel>
                                             <Input type="text" placeholder=" Via Roma"{...register("via", {
+                                                required:"la via è richiesta",
                                                 maxLength: {
                                                     value: 50,
                                                     message: "Il nome della via è troppo lungo"
+                                                },pattern: {
+                                                    value: /^[#.0-9a-zA-Z\s,-]+$/i,
+                                                    message: "Formato via non valido"
                                                 }
                                             })} />
                                             <FormErrorMessage>{errors.via && errors.via.message}</FormErrorMessage>
@@ -296,7 +283,7 @@ export default function Edit() {
                                         </FormControl>
                                     </GridItem>
                                     <GridItem colSpan={2} w="100%">
-                                        <Button size="lg" w="full" mt={4} colorScheme='teal' isLoading={isSubmitting}
+                                        <Button size="lg" w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting}
                                                 type='submit'>
                                             Modifica dati Personali
                                         </Button>

@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3000/",
+  "proxy": "http://localhost:8080/",
   "dependencies": {
     "@chakra-ui/icon": "^2.0.0",
     "@chakra-ui/icons": "^1.1.1",
@@ -15,20 +15,23 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.24.0",
+    "chart.js": "^3.7.0",
     "framer-motion": "^5.5.5",
     "http-proxy-middleware": "^2.0.1",
+    "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "next": "^12.0.7",
     "react": "^17.0.2",
+    "react-chartjs-2": "^4.0.0",
     "react-dom": "^17.0.2",
+    "react-dropzone": "^11.4.2",
     "react-hook-form": "^7.22.5",
     "react-icons": "^4.3.1",
     "react-router": "^6.2.1",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
-    "web-vitals": "^2.1.2",
-    "react-dropzone": "^11.4.2",
-    "react-select": "^5.2.1"
+    "react-select": "^5.2.1",
+    "web-vitals": "^2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -55,6 +58,5 @@
     ]
   },
   "devDependencies": {
-    "react-dropzone": "^11.4.2"
   }
 }

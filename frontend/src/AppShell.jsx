@@ -4,13 +4,13 @@ import Footer from "./components/Footer";
 
 const AppShell = ({children}) => {
     return (
-        <>
-            <SidebarWithHeader>
-                {children}
-                <Footer/>
-            </SidebarWithHeader>
-        </>
-    )
+      <>
+        <SidebarWithHeader>
+            {children}
+        </SidebarWithHeader>
+        <Footer />
+      </>
+    );
 }
 
 export default AppShell;

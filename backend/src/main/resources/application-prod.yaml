@@ -14,13 +14,19 @@ spring:
           lob:
             non_contextual_creation: true
   mail:
-    host: email-smtp.us-east-1.amazonaws.com
-    port: 587
-    username: AKIAS7TER7NVMI5UBKZB
-    password: BGQ5081F5jcvoamPWpChDK87vLFL9C6lR44dB4rzqSQb
+    host: smtp.mailtrap.io
+    port: 2525
+    username: 0ca10b58484f3a
+    password: c4e490e41f544c
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+cloudinary:
+  url: ${CLOUDINARY_URL}

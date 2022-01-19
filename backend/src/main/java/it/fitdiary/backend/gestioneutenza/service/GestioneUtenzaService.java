@@ -6,6 +6,8 @@ import org.springframework.mail.MailException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
+
 
 /**
  *
@@ -19,12 +21,12 @@ public interface GestioneUtenzaService extends UserDetailsService {
     Utente registrazione(Utente preparatore);
 
     /**
-     * @param id         id dell'utente
+     * @param id     id dell'utente
      * @param utente dati dell'utente da modificare
      * @return utente modificato
      */
     Utente modificaDatiPersonali(Long id,
-                                        Utente utente);
+                                 Utente utente);
 
     /**
      * @param id id utente
@@ -34,9 +36,9 @@ public interface GestioneUtenzaService extends UserDetailsService {
 
     /**
      * @param idPreparatore id preparatore
-     * @param nome nome cliente
-     * @param cognome cognome cliente
-     * @param email email cliente
+     * @param nome          nome cliente
+     * @param cognome       cognome cliente
+     * @param email         email cliente
      * @return utente
      */
     Utente inserisciCliente(Long idPreparatore,
@@ -49,7 +51,7 @@ public interface GestioneUtenzaService extends UserDetailsService {
      * @param email email dell'utente
      * @return dettagli dell' utente
      * @throws UsernameNotFoundException lancia un eccezione se l'utente non
-     * è stato trovato
+     *                                   è stato trovato
      */
     FitDiaryUserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException;
@@ -62,4 +64,22 @@ public interface GestioneUtenzaService extends UserDetailsService {
      */
     Boolean existsByPreparatoreAndId(Utente preparatore,
                                      Long idCliente);
+
+    /**
+     * @return lista degli utenti del sistema
+     */
+    List<Utente> visualizzaListaUtenti();
+
+
+    /**
+     * @param idUtente l'id del utente da eliminare.
+     */
+    void deleteUtenteById(Long idUtente);
+
+    /**
+     * disattiva un utente.
+     * @param id id dell'utente
+     * @return utente disattivato
+     */
+    Utente disattivaOrAttivaUtente(long id);
 }

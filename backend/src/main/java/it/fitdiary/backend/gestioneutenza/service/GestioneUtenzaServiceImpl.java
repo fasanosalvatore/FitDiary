@@ -1,5 +1,6 @@
 package it.fitdiary.backend.gestioneutenza.service;
 
+import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneutenza.repository.RuoloRepository;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +68,8 @@ public class GestioneUtenzaServiceImpl
             throw new IllegalArgumentException(
                     "email già presente nel " + "database");
         }
-        preparatore.setRuolo(ruoloRepository.findByNome("Preparatore"));
+        preparatore.setRuolo(ruoloRepository.findByNome(
+                Ruolo.RUOLOPREPARATORE));
         preparatore.setAttivo(true);
         preparatore.setPassword(
                 passwordEncoder.encode(preparatore.getPassword()));
@@ -102,7 +105,7 @@ public class GestioneUtenzaServiceImpl
         newUtente.setNome(nome);
         newUtente.setCognome(cognome);
         newUtente.setEmail(emailCliente);
-        newUtente.setRuolo(ruoloRepository.findByNome("CLIENTE"));
+        newUtente.setRuolo(ruoloRepository.findByNome(Ruolo.RUOLOCLIENTE));
         newUtente.setAttivo(true);
         newUtente.setPreparatore(preparatore);
         String password = passwordGenerator.generate();
@@ -126,6 +129,10 @@ public class GestioneUtenzaServiceImpl
             log.error("Utente non trovato nel database");
             throw new UsernameNotFoundException(
                     "Utente non trovato nel database");
+        } else if (!utente.getAttivo()) {
+            log.error("Utente non trovato nel database");
+            throw new UsernameNotFoundException(
+                    "Utente non attivo");
         } else {
             log.info("Utente trovato nel database: {}", email);
         }
@@ -159,7 +166,7 @@ public class GestioneUtenzaServiceImpl
      * @return utente rappresenta l'utente
      * con i nuovi dati inserito nel database.
      * @throws IllegalArgumentException lancia l'errore generato
-     * da un input errato.
+     *                                  da un input errato.
      */
     @Override
     public Utente modificaDatiPersonali(
@@ -238,6 +245,44 @@ public class GestioneUtenzaServiceImpl
         }
         return utenteRepository.existsByPreparatoreAndId(preparatore,
                 idCliente);
+    }
+
+    /**
+     * elimina un utente dal database.
+     *
+     * @param idUtente l'id del utente da eliminare.
+     */
+    @Override
+    public void deleteUtenteById(final Long idUtente) {
+        if (idUtente == null) {
+            throw new IllegalArgumentException("Id utente non valido");
+
+        }
+        utenteRepository.deleteById(idUtente);
+    }
+
+    /**
+     * @return lista utenti del sistema
+     */
+    @Override
+    public List<Utente> visualizzaListaUtenti() {
+        return utenteRepository.findAll();
+    }
+
+    /**
+     * disattiva un utente.
+     * @param id id dell'utente da disattivare.
+     * @return utente disattivato.
+     */
+    @Override
+    public Utente disattivaOrAttivaUtente(final long id) {
+        Utente utente = utenteRepository.getById(id);
+        if (utente == null) {
+            throw new IllegalArgumentException(
+                    "Utente non presente del Database");
+        }
+        utente.setAttivo(!utente.getAttivo());
+        return utenteRepository.save(utente);
     }
 }
 

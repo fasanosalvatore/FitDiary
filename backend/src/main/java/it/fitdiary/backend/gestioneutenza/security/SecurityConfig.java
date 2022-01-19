@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
@@ -31,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * Ruolo Admin.
      */
-    public static final String ADMIN = "Preparatore";
+    public static final String ADMIN = "Admin";
     /**
      * Ruolo Preparatore.
      */
@@ -111,7 +112,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //Routes per qualsiasi Utente Autenticato
                 .and().authorizeRequests()
                 .antMatchers(GET,
-                        "/api/v1/utenti/token/refresh",
                         "/api/v1/utenti/token/expires",
                         "/api/v1/utenti/profilo"
                 ).authenticated()
@@ -123,15 +123,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAuthority(CLIENTE)
                 .antMatchers(PUT, "/api/v1/utenti/cliente")
                 .hasAuthority(CLIENTE)
+                .antMatchers(POST, "/api/v1/utenti/reports")
+                .hasAuthority(CLIENTE)
 
                 //Routes Preparatore e Admin con Ruolo
                 .antMatchers(GET, "/api/v1/utenti")
                 .hasAnyAuthority(PREPARATORE, ADMIN)
 
+                //Routes Admin con Ruolo
+                .antMatchers(DELETE, "/api/v1/utenti/**")
+                .hasAuthority(ADMIN)
+
+
                 //Routes Preparatore e Cliente con Ruolo
                 .antMatchers(GET, "/api/v1/protocolli/**")
                 .hasAnyAuthority(PREPARATORE, CLIENTE)
                 .antMatchers(GET, "/api/v1/protocolli")
+                .hasAnyAuthority(PREPARATORE, CLIENTE)
+                .antMatchers(GET, "/api/v1/reports")
+                .hasAnyAuthority(PREPARATORE, CLIENTE)
+                .antMatchers(GET, "/api/v1/reports/**")
+                .hasAnyAuthority(PREPARATORE, CLIENTE)
+                .antMatchers(GET, "/api/v1/reports/search")
                 .hasAnyAuthority(PREPARATORE, CLIENTE)
 
                 //Routes Preparatore con Ruolo
@@ -143,6 +156,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(PUT, "/api/v1/protocolli/**")
                 .hasAuthority(PREPARATORE)
                 .antMatchers(POST, "/api/v1/utenti")
+                .hasAuthority(PREPARATORE)
+                .antMatchers(GET, "/api/v1/utenti/**")
+                .hasAuthority(PREPARATORE)
+                .antMatchers(PUT, "/api/v1/utenti/**")
                 .hasAuthority(PREPARATORE)
                 .anyRequest().authenticated();
     }

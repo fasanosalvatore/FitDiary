@@ -1,4 +1,6 @@
-import React, {useContext, useEffect, useState,} from 'react';
+import React, {useCallback, useContext, useEffect, useState,} from 'react';
+import {useDropzone} from 'react-dropzone';
+
 import {
     Accordion,
     AccordionButton,
@@ -8,9 +10,18 @@ import {
     Box,
     Button,
     Flex,
+    FormControl,
     Heading,
     HStack,
     IconButton,
+    Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Table,
     Tbody,
     Td,
@@ -19,61 +30,106 @@ import {
     Thead,
     Tooltip,
     Tr,
+    useDisclosure,
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {EditIcon} from '@chakra-ui/icons';
+import {CloseIcon, EditIcon} from '@chakra-ui/icons';
 import {RiArrowGoBackLine,} from 'react-icons/ri';
 import {AuthContext} from "../../../context/AuthContext";
 import moment from "moment";
 import {useNavigate, useParams} from "react-router";
 import {FetchContext} from "../../../context/FetchContext";
+import {useForm} from "react-hook-form"
 
 export default function View() {
+    const urlProtocolli = "protocolli";
     const days = [1, 2, 3, 4, 5, 6, 7];
     const authContext = useContext(AuthContext);
-    const {authState} = authContext;
-    const {id} = useParams();
+    const { authState } = authContext;
+    const { id } = useParams();
     const navigate = useNavigate();
     const [protocollo, setProtocolli] = useState();
     const fetchContext = useContext(FetchContext);
     const [isLoading, setLoading] = useState(true);
-
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
+    const {handleSubmit, setValue} = useForm();
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
         variant: "solid",
         containerStyle: {
             width: '100%',
             maxWidth: '100%',
         },
-
     })
+    useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
+
+            toast({
+                title,
+                description: body,
+                status: stat,
+                duration: 9000,
+                isClosable: true
+            });
+        }
+    }, [toastMessage, toast]);
+
+
+    const onDropAllenamento = useCallback(acceptedSchedaAllenamento => {
+        setValue("schedaAllenamento", acceptedSchedaAllenamento);
+    }, [setValue])
+
+    const {
+        acceptedFiles: acceptedSchedaAllenamento,
+        getRootProps: getRootPropsAllenamento,
+        getInputProps: getInputPropsAllenamento,
+        isDragActive: isDragActiveAllenamento
+    } = useDropzone({onDrop: onDropAllenamento, maxFiles: 1})
+
+    const onSubmit = async (values) => {
+        const formData = new FormData();
+        if (values.schedaAllenamento)
+            formData.append("schedaAllenamento", values.schedaAllenamento[0])
+        try {
+            const {data} = await fetchContext.authAxios.put(urlProtocolli+"/"+id, formData)
+            setProtocolli(data.data);
+            setToastMessage({title:"Completato!",body:"Scheda Allenamento modificata correttamente",stat:"success"})
+        } catch (error) {
+            setToastMessage({title:"Errore",body:error.response.data.data,stat:"error"})
+        }
+
+    }
 
     useEffect(() => {
+        setselectedSchedaAllenamento(acceptedSchedaAllenamento[0]);
+    }, [acceptedSchedaAllenamento]);
+
+
+    useEffect(() => {
+        console.log("pages/protocols/trainingcards/view");
         const listaProtocolli = async () => {
             try {
-                const {data} = await fetchContext.authAxios("protocolli/" + id);
+                const { data } = await fetchContext.authAxios("protocolli/" + id);
                 setProtocolli(data.data);
                 setLoading(false);
             } catch (error) {
-                console.log(error);
-                toast({
-                    title: "ERROR",
-                    description: "NOT AUTHORIZED",
-                    status: "error"
-                })
+                setToastMessage({title:"Errore", body:error.message, stat:"error"});
             }
         }
         listaProtocolli();
-    }, [fetchContext, toast, id])
+    }, [fetchContext,id])
     return (
         <>
             {!isLoading && (
                 <Flex wrap={"wrap"}>
                     <Button onClick={() => {
                         navigate(-1)
-                    }} ml={5} mt={5} colorScheme={"blue"} leftIcon={<RiArrowGoBackLine/>}>Torna al protocollo</Button>
+                    }} ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}>Torna al protocollo</Button>
                     <Heading w={"full"} mb={5} textAlign={"center"}>Scheda Allenamento</Heading>
                     <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
@@ -102,10 +158,60 @@ export default function View() {
                                                 <HStack>
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
                                                         <IconButton
-                                                            colorScheme='blue'
+                                                            colorScheme='fitdiary'
+                                                            onClick={onOpen}
                                                             icon={<EditIcon/>}
                                                         />
                                                     </Tooltip>
+                                                    <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
+                                                        <ModalOverlay />
+                                                        <ModalContent>
+                                                            <form onSubmit={handleSubmit(onSubmit)}>
+                                                            <ModalHeader textAlign={"center"}>Carica la nuova scheda modificata</ModalHeader>
+                                                            <ModalCloseButton />
+                                                            <ModalBody align={"center"}>
+                                                                <Flex justify="center">
+                                                                    <HStack align="center">
+                                                                        <FormControl id={"schedaAllenamento"}>
+                                                                            {selectedSchedaAllenamento != null && (
+                                                                                <HStack>
+                                                                                    <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
+                                                                                        setselectedSchedaAllenamento(null);
+                                                                                        setValue("schedaAllenamento", null);
+                                                                                    }}/>
+                                                                                    <Text>
+                                                                                        {selectedSchedaAllenamento.path}
+                                                                                    </Text>
+                                                                                </HStack>
+                                                                            )}
+                                                                            {!selectedSchedaAllenamento && (
+                                                                                <div {...getRootPropsAllenamento()}>
+                                                                                    <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
+                                                                                         borderColor={"gray.200"}>
+                                                                                        <Input {...getInputPropsAllenamento()}/>
+                                                                                        {
+                                                                                            isDragActiveAllenamento ?
+                                                                                                <p style={{color: "gray", textAlign: "center"}}>
+                                                                                                    Lascia il file qui ...
+                                                                                                </p> :
+                                                                                                <p style={{color: "gray", textAlign: "center"}}>
+                                                                                                    Clicca e trascina un file qui, oppure clicca per
+                                                                                                    selezionare un file
+                                                                                                </p>
+                                                                                        }
+                                                                                    </Box>
+                                                                                </div>
+                                                                            )}
+                                                                        </FormControl>
+                                                                    </HStack>
+                                                                </Flex>
+                                                            </ModalBody>
+                                                            <ModalFooter>
+                                                                <Button colorScheme='fitdiary' type={"submit"}>Carica</Button>
+                                                            </ModalFooter>
+                                                            </form>
+                                                        </ModalContent>
+                                                    </Modal>
                                                 </HStack>
                                             )}
                                     </Flex>
@@ -121,7 +227,7 @@ export default function View() {
                                                             <Box flex='1' textAlign='left'>
                                                                 {d}° Allenamento
                                                             </Box>
-                                                            <AccordionIcon/>
+                                                            <AccordionIcon />
                                                         </AccordionButton>
                                                     </h2>
                                                     <AccordionPanel pb={4}>
@@ -130,8 +236,8 @@ export default function View() {
                                                             .map((c, key) => {
                                                                 return (
                                                                     <Table borderBottom={"solid 1px "}
-                                                                           borderColor={"blue.200"} key={key}
-                                                                           variant="unstyled" size="md">
+                                                                        borderColor={"blue.200"} key={key}
+                                                                        variant="unstyled" size="md">
                                                                         <Thead>
                                                                             <Tr>
                                                                                 <Th textAlign="center"

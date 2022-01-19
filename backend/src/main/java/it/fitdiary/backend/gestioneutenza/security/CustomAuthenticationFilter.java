@@ -1,6 +1,5 @@
 package it.fitdiary.backend.gestioneutenza.security;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.fitdiary.backend.utility.ResponseHandler;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
@@ -17,20 +16,14 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
-import static it.fitdiary.backend.utility.service.FitDiaryUserDetails.createTokensMap;
+import static it.fitdiary.backend.utility.service.FitDiaryUserDetails.createUserMap;
 
 @Slf4j
 public class CustomAuthenticationFilter
         extends UsernamePasswordAuthenticationFilter {
-    /**
-     * Access Token expiring time in ms.
-     */
-    public static final int ACCESS_TOKEN_MS = 1000 * 60 * 30;
-    /**
-     * Refresh Token expiring time in ms.
-     */
-    public static final int REFRESH_TOKEN_MS = 1000 * 60 * 60 * 24 * 7;
+
     /**
      * AuthenticationManager usato per l'autenticazione.
      */
@@ -86,15 +79,17 @@ public class CustomAuthenticationFilter
                                             final Authentication authentication)
             throws IOException {
         var user = (FitDiaryUserDetails) authentication.getPrincipal();
-        var alg = Algorithm.HMAC256("secret".getBytes());
-        var tokens = createTokensMap(request, alg, user,
-                ACCESS_TOKEN_MS, REFRESH_TOKEN_MS, null);
-
+        var utilityToken = new UtilityToken(user);
+        utilityToken.generateNewToken(request, response);
+        var respMap = Map.of(
+                "userInfo", createUserMap(user),
+                "accessTokenExpireAt", utilityToken.getAccessTokenExpire(),
+                "refreshTokenExpireAt", utilityToken.getRefreshTokenExpire()
+        );
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(),
-                ResponseHandler.generateResponse(HttpStatus.OK, tokens)
+                ResponseHandler.generateResponse(HttpStatus.OK, respMap)
                         .getBody());
-
     }
 
 

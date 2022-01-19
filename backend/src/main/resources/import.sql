@@ -128,3 +128,15 @@ INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recup
 INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (15, 'spalle', 'Alzate laterali', '4', '15\'\' + 90\'', '8 MAX', '5', 1);
 INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (16, 'spalle', 'Alzate 90°', '4', '15\'\' + 60\'', '8 MAX', '4', 1);
 INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (17, 'braccio', 'Curl manubri seduto', '4', '90\'\'', '6 - 12 -50% MAX-20%', '6', 1);
+
+/* report*/
+INSERT INTO `report` (`id`, `crf_addome`, `crf_bicipite`, `crf_quadricipite`, `data_aggiornamento`, `data_creazione`, `peso`, `peso_stimato`, `cliente_id`) VALUES (1, 30, 30, 30, '2022-01-10 22:36:03', '2022-01-10 22:36:03', 100, 100, 4);
+
+/*immaginiReport*/
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (1, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--J9CYotxd--/v1641863408/evssjeyaofzzdrf8yywq.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (2, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--XeZpEzAu--/v1641863409/xi8pg8u9y5prdvf69ild.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (3, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--9GWTvtks--/v1641863410/qwih8qpvc39lyuw8l0m5.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (4, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--FvFZllyI--/v1641863411/ylrrm8gkcvvp2uvu5ujo.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (5, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--SGmo-p_X--/v1641863413/pdimpx91p5cyz86hppee.png', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (6, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--a8dfKwK9--/v1641863414/zoveedipdtfcz9zazdgz.jpg', 2);
+INSERT INTO `immagini_report` (`id`, `url`, `report_id`) VALUES (7, 'https://res.cloudinary.com/hdjxm4zyg/image/upload/s--DuJJQu8E--/v1641863415/fpugynqoqg2nbwbkfjwp.jpg', 2);
