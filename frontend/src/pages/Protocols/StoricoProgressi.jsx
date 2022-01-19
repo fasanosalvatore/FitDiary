@@ -16,6 +16,8 @@ import {FetchContext} from "../../context/FetchContext";
 import TableResponsive from "../../components/TableResponsive";
 
 const urlReport = "/progress"
+const urlReports = "/reports"
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -56,12 +58,30 @@ function StoricoProgressi() {
     const [isLoading, setLoading] = useState(true);
     const fetchContext = useContext(FetchContext);
     const [listaReport, setReport] = useState();
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 9000, isClosable: true, variant: "solid", containerStyle: {
-            width: '100%', maxWidth: '100%',
+        duration: 3000,
+        isClosable: true,
+        variant: "solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
         },
-
     })
+    useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
+
+            toast({
+                title,
+                description: body,
+                status: stat,
+                duration: 9000,
+                isClosable: true
+            });
+        }
+    }, [toastMessage, toast]);
+
     const [data, setData] = useState({
         labels: [],
         datasets: [
@@ -88,15 +108,12 @@ function StoricoProgressi() {
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
                 console.log(error);
-                toast({
-                    title: "ERROR", description: "NOT AUTHORIZED", status: "error"
-                })
+                setToastMessage({title:'ERROR',body:'NOT AUTHORIZED',stat:'error'})
             }
         }
-
         getReports();
 
-    }, [fetchContext,toast]);
+    }, [fetchContext]);
 
     useEffect(() => {
         function extractData() {
@@ -132,13 +149,13 @@ function StoricoProgressi() {
             {!isLoading && listaReport && (
                 <VStack m={[0, 5, 10, 20]} >
                     <Heading textAlign={"center"}>Storico Progressi</Heading>
-                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
+                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"} >
                     {listaReport.report.length > 0 ? (
                         <>
-                            <VStack width={"60vw"}  >
+                            <VStack width={"full"} p={5}>
                                 <Line options={options} data={data} />
                             </VStack>
-                            <Text fontSize="xl" my={5}>
+                            <Text fontSize="xl" my={5} textAlign={"center"}>
                                 Report di {listaReport.report[0].cliente.nome}{" "}
                                 {listaReport.report[0].cliente.cognome}
                             </Text>
@@ -170,7 +187,7 @@ function StoricoProgressi() {
                                             name:"dataCreazione"
                                         },
                                         {
-                                            link: urlReport,
+                                            link: urlReports+"/",
                                             element:<InfoIcon />,
                                             name: "id"
                                         }

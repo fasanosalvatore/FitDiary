@@ -41,17 +41,29 @@ export default function SignupForm() {
     const handleClickP = () => setShowP(!showP)
     const [showCP, setShowCP] = React.useState(false)
     const handleClickCP = () => setShowCP(!showCP)
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
-        duration: 9000, isClosable: true, variant: "solid", position: "top", containerStyle: {
-            width: '100%', maxWidth: '100%',
+        duration: 3000,
+        isClosable: true,
+        variant: "solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
         },
     })
+    useEffect(() => {
+        if (toastMessage) {
+            const { title, body, stat } = toastMessage;
 
-    function toastParam(title, description, status) {
-        return {
-            title: title, description: description, status: status
-        };
-    }
+            toast({
+                title,
+                description: body,
+                status: stat,
+                duration: 9000,
+                isClosable: true
+            });
+        }
+    }, [toastMessage, toast]);
 
     const navigate = useNavigate();
 
@@ -80,14 +92,14 @@ export default function SignupForm() {
                 },
             });
             if (stripePayment.error) {
-                toast(toastParam('Pagamento Fallito', 'Pagamento non riuscito', 'error'))
+                setToastMessage({title:'Pagamento Fallito',body:'Pagamento non riuscito',stat:'error'})
             } else if (stripePayment.paymentIntent) {
-                toast(toastParam('Pagamento Completato', "Verrai ridirezionato al login", 'success'))
+                setToastMessage({title:'Pagamento Completato',body:'Verrai ridirezionato al login',stat:'success'})
                 setTimeout(() => {
                     navigate("/login");
-                }, 1500);
+                }, 1000);
             } else {
-                toast(toastParam('Pagamento Sospeso', 'Contattare gli amministratori', 'warning'))
+                setToastMessage({title:'Pagamento Sospeso',body:'Contattare gli amministratori',stat:'warning'})
             }
         } catch (error) {
             setSignupIsLoading(false);

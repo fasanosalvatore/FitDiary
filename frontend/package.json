@@ -31,7 +31,8 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-select": "^5.2.1",
-    "web-vitals": "^2.1.2"
+    "web-vitals": "^2.1.2",
+    "react-responsive-carousel": "^3.2.22"
   },
   "scripts": {
     "start": "react-scripts start",
