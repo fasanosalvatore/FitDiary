@@ -26,7 +26,7 @@ public class StimaProgressiAdapterImpl implements StimaProgressiAdapter {
                         + ".org/jpmml-model/InlineTable\" version=\"4.4\">\n"
                         + "\t<Header>\n"
                         + "\t\t<Application name=\"JPMML-SkLearn\" version=\"1"
-                        +".6.34\"/>\n"
+                        + ".6.34\"/>\n"
                         + "\t\t<Timestamp>2022-01-15T22:20:46Z</Timestamp>\n"
                         + "\t</Header>\n"
                         + "\t<MiningBuildTask>\n"
@@ -68,7 +68,7 @@ public class StimaProgressiAdapterImpl implements StimaProgressiAdapter {
                         + "coefficient=\"-0.0073789492137843055\"/>\n"
                         + "\t\t</RegressionTable>\n"
                         + "\t</RegressionModel>\n"
-                        +"</PMML>");
+                        + "</PMML>");
     }
 
     /**

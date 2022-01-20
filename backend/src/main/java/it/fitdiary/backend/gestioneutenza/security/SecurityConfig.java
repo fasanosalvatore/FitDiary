@@ -33,6 +33,9 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * Environment.
+     */
     @Autowired
     private Environment env;
     /**
@@ -92,14 +95,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         //Creazione dei filtri per le richieste
         var loginFilter =
-                new CustomAuthenticationFilter(authenticationManagerBean());
+                new CustomAuthenticationFilter(authenticationManagerBean(),
+                        env);
         loginFilter.setFilterProcessesUrl("/api/v1/utenti/login");
         //Applicazione dei filtri alle richieste
         http
                 //filtro Login
                 .addFilter(loginFilter)
                 //filtro JWT
-                .addFilterBefore(new CustomAuthorizationFilter(),
+                .addFilterBefore(new CustomAuthorizationFilter(env),
                         UsernamePasswordAuthenticationFilter.class)
                 //handling accesso negato/JWT Token
                 .exceptionHandling(e ->
@@ -195,12 +199,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setHeader("error", "Autorizzazione fallita");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.getWriter().write("{\"message\": " + "\"Non sei autorizzato "
-                + "per questa funzionalità\", " + "\"status\": \"error\"}");
+        response.getWriter().write("{\"message\": " + "\"Non sei autorizzato"
+                + " per questa funzionalità\", " + "\"status\": \"error\"}");
     }
 
+    /**
+     *
+     * @param web WebSecurity
+     * @throws Exception
+     */
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(final WebSecurity web) throws Exception {
         web.ignoring().antMatchers(POST,
                 "/api/v1/utenti/preparatore",
                 "/api/v1/abbonamento/acquista"

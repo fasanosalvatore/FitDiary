@@ -4,6 +4,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.fitdiary.backend.utility.ResponseHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,20 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
+    /**
+     * Enviroment.
+     */
+    private Environment env;
+
+    /**
+     * constructor.
+     *
+     * @param environment Environment
+     */
+    public CustomAuthorizationFilter(final Environment environment) {
+        this.env = environment;
+    }
 
     /**
      * Questo metodo si occupa di controllare l'autorizzazione di un utente per
@@ -60,6 +75,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 var utilityToken = new UtilityToken(accessToken);
                 if (utilityToken.isExpired()) {
                     utilityToken = new UtilityToken(refreshToken);
+                    utilityToken.setEnviroment(env);
                     if (utilityToken.isValid()) {
                         utilityToken.generateNewToken(request, response);
                     } else {

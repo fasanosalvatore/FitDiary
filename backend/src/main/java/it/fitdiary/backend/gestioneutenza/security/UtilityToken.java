@@ -7,11 +7,9 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +51,10 @@ public class UtilityToken {
     private boolean valid;
     /** indica se il token è espirato. */
     private boolean expired;
+    /**
+     * Environment.
+     */
+    private Environment environment;
 
     /**
      * @return il tempo in millisecondi dopo il quale il token sara scaduto.
@@ -158,17 +160,20 @@ public class UtilityToken {
                 );
 
         accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setSecure(true);
-        accessTokenCookie.setDomain("fitdiary.it");
         var refreshTokenCookie =
                 new Cookie("refreshToken",
                         createToken(request, false)
                 );
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(true);
-        refreshTokenCookie.setDomain("fitdiary.it");
         accessTokenCookie.setPath("/");
         refreshTokenCookie.setPath("/");
+        if (!environment.getActiveProfiles()[0].equals("dev")) {
+            System.out.println("non sono in development");
+            accessTokenCookie.setSecure(true);
+            refreshTokenCookie.setSecure(true);
+            accessTokenCookie.setDomain("fitdiary.it");
+            refreshTokenCookie.setDomain("fitdiary.it");
+        }
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
         valid = true;
@@ -205,4 +210,13 @@ public class UtilityToken {
         return System.currentTimeMillis()
                 + (isAccessToken ? ACCESS_TOKEN_MS : REFRESH_TOKEN_MS);
     }
+
+    /**
+     * setter enviroment.
+     * @param env enviroment
+     */
+    public void setEnviroment(final Environment env) {
+        this.environment = env;
+    }
+
 }

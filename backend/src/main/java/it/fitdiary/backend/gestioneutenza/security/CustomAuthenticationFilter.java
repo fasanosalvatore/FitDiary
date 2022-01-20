@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.fitdiary.backend.utility.ResponseHandler;
 import it.fitdiary.backend.utility.service.FitDiaryUserDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,16 +26,23 @@ public class CustomAuthenticationFilter
         extends UsernamePasswordAuthenticationFilter {
 
     /**
+     * enviroment.
+     */
+    private Environment environment;
+    /**
      * AuthenticationManager usato per l'autenticazione.
      */
     private final AuthenticationManager authenticationManager;
 
     /**
      * @param authManager AuthenticationManager
+     * @param env Environment
      */
     public CustomAuthenticationFilter(
-            final AuthenticationManager authManager) {
+            final AuthenticationManager authManager,
+            final Environment env) {
         this.authenticationManager = authManager;
+        this.environment = env;
     }
 
 
@@ -80,6 +88,7 @@ public class CustomAuthenticationFilter
             throws IOException {
         var user = (FitDiaryUserDetails) authentication.getPrincipal();
         var utilityToken = new UtilityToken(user);
+        utilityToken.setEnviroment(environment);
         utilityToken.generateNewToken(request, response);
         var respMap = Map.of(
                 "userInfo", createUserMap(user),
