@@ -49,10 +49,10 @@
 
 ## Tecnologie Utilizzate
 
-[Java 11](https://jdk.java.net/11/)
-[React](https://it.reactjs.org/)
-[Maven](https://maven.apache.org/)
-[ChakraUI](https://chakra-ui.com/)
+* [Java 11](https://jdk.java.net/11/)
+* [React](https://it.reactjs.org/)
+* [Maven](https://maven.apache.org/)
+* [ChakraUI](https://chakra-ui.com/)
 
 ## Contributors
 
