@@ -176,9 +176,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         if (env.getActiveProfiles()[0] != "dev") {
             System.out.println("Setting allowed origin on prod");
             corsConfig.setAllowedOrigins(
-                    List.of("https://fitdiary.it", 
+                    List.of("https://fitdiary.it",
                             "https://api.fitdiary.it",
                             "https://www.fitdiary.it"));
+            corsConfig.setAllowCredentials(true);
         } else {
             corsConfig.setAllowedOrigins(List.of("*"));
         }
