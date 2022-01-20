@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final AuthenticationManagerBuilder auth)
             throws Exception {
         auth.userDetailsService(userDetailsService)
-                .passwordEncoder(bCryptPasswordEncoder);
+            .passwordEncoder(bCryptPasswordEncoder);
     }
 
     /**
@@ -173,10 +173,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CorsConfiguration corsConfigurer(final HttpServletRequest request) {
         var corsConfig = new CorsConfiguration();
         corsConfig.setAllowedHeaders(List.of("*"));
-        if (env.getActiveProfiles()[0] != "dev")
-            corsConfig.setAllowedOrigins(List.of("https://fitdiary.it"));
-        else
+        if (env.getActiveProfiles()[0] != "dev") {
+            System.out.println("Setting allowed origin on prod");
+            corsConfig.setAllowedOrigins(
+                    List.of("https://fitdiary.it", 
+                            "https://api.fitdiary.it",
+                            "https://www.fitdiary.it"));
+        } else {
             corsConfig.setAllowedOrigins(List.of("*"));
+        }
         corsConfig.setAllowedMethods(List.of("*"));
         return corsConfig;
     }
