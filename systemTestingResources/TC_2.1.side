@@ -21,18 +21,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "691e7ff2-dd2c-43d9-9ddf-0e7c6f3d1a36",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "d09fa663-6747-4a3c-99bf-787e68da3427",
+      "id": "91bfb93e-550c-42d0-803f-5233cb81a155",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -43,44 +32,16 @@
       ],
       "value": ""
     }, {
-      "id": "c38dc0ec-3274-4a9a-960f-1c5d49b40148",
+      "id": "35d480b5-bdfb-48f9-a942-85dbdd8ca5a6",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "311fac30-d655-47c3-8fee-a8956e231d98",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "d05cf740-66b9-4b7b-8d9f-23672a7a4804",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -98,18 +59,6 @@
       ],
       "value": "2021-12-31"
     }, {
-      "id": "0b4e44dc-69af-44c2-9f65-f483c813e5e0",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "6ade2584-4e5d-4ec8-9ae8-13ce2fb38f1f",
       "comment": "",
       "command": "type",
@@ -122,18 +71,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\\\schedaAlimentare.csv"
-    }, {
-      "id": "1a641914-7b60-4330-acd4-d6f00822667e",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "86a5f9a6-282d-4d12-88a8-eb542270bb49",
       "comment": "",
@@ -199,18 +136,7 @@
       "targets": [],
       "value": "d"
     }, {
-      "id": "b505d94e-1fc8-446e-b353-8d093fc7fbae",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "8217d584-8eff-494a-bdb3-9ab54cff6b7e",
+      "id": "2f9b0845-da3d-4b85-b711-5205b924c585",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -221,44 +147,16 @@
       ],
       "value": ""
     }, {
-      "id": "992fad83-cfe7-49bf-aff4-41bdb98e9070",
+      "id": "90e97298-5a8e-46da-8d44-eedf92b03d36",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "cd87d5ee-e698-4e69-8c94-91476ea93861",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "19c786c7-82cf-4176-899d-200899f7a692",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -276,18 +174,6 @@
       ],
       "value": "${d}"
     }, {
-      "id": "a984d565-0d49-4d2c-b066-62adc98e61c6",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "57778b4d-01ce-4b99-88d7-233c6dc16293",
       "comment": "",
       "command": "type",
@@ -300,18 +186,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\\\schedaAlimentare.csv"
-    }, {
-      "id": "ce807886-b3ec-436f-b896-25b5fadf0f6a",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "8741f86e-ac7f-4cdf-9436-381788c696dd",
       "comment": "",
@@ -370,18 +244,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "ce4b4351-19fc-4254-aab6-9b1a377d805f",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "1ade0033-1e20-4728-89d8-b36a1e3fbe23",
+      "id": "81944969-5ce1-4834-990f-000b54742093",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -392,44 +255,16 @@
       ],
       "value": ""
     }, {
-      "id": "09ad4012-2065-4d24-bc1d-e2112de2c679",
+      "id": "c5ba7fd6-8abf-45d6-831b-6c018977a4f5",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "3ce1b18a-9635-4346-b190-c1a23b449376",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "aa3b7df6-4670-4411-a577-0d743465ad25",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -447,18 +282,6 @@
       ],
       "value": "2025-12-31"
     }, {
-      "id": "337a098c-b255-444f-81fd-2d41dd740165",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "0cc0ab83-e79b-40fd-9ed6-f003427f215c",
       "comment": "",
       "command": "type",
@@ -471,18 +294,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare.csv"
-    }, {
-      "id": "da0c6aae-ff03-49e2-b38d-2a8c4063d608",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "98eaa5c0-3891-48e4-90f5-f5c55f5a8ae9",
       "comment": "",
@@ -540,18 +351,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "ef6fe17a-23ef-419c-b3a5-40e98b3822e2",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "8d9bf39b-40e6-4bb2-bb0f-5ec92ab2b59f",
+      "id": "9f036138-b802-4133-83cb-c3809eae20fb",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -562,44 +362,16 @@
       ],
       "value": ""
     }, {
-      "id": "ceaa7d68-4c15-4805-8aff-baa353b0172e",
+      "id": "30cb3317-190c-4502-a5db-0c5fcf587634",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "b551bdf7-6247-40a9-aba4-d6399dd201e6",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "fef36de7-ccf3-4a42-8ee5-46fa0238761d",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -617,18 +389,6 @@
       ],
       "value": "2025-12-31"
     }, {
-      "id": "6279fe70-0544-49f1-8bd2-87e1d740af2e",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "0bc8020c-25fe-43f7-a049-583ae17462ae",
       "comment": "",
       "command": "type",
@@ -641,18 +401,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare.csv"
-    }, {
-      "id": "13adb38e-2273-4131-9090-527c15cd3dbc",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "b789384a-257d-4f9b-a3f3-e39312511dfc",
       "comment": "",
@@ -710,18 +458,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "d9f729dd-cf97-4464-8733-3bd81c58ca79",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "17eaaf3e-faae-4ace-b6b0-11207140a473",
+      "id": "be56f2fa-9c32-4fe7-8213-60bb947b4e90",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -732,44 +469,16 @@
       ],
       "value": ""
     }, {
-      "id": "0e97d7fd-f193-4356-b4b9-9d44a1efc25a",
+      "id": "fc04ccd1-7a1e-486b-b3e8-57693ffedca9",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "5f82ce85-4885-4438-8c31-d4d7ab9a6f2d",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "32e21c78-cfc2-4aae-a4c0-1b34d20972b1",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -787,18 +496,6 @@
       ],
       "value": "2025-12-31"
     }, {
-      "id": "4cb69a35-5471-42f6-9aec-10956d08276e",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "8ba53de2-6c6f-4949-9f93-ea4a72b8f3fc",
       "comment": "",
       "command": "type",
@@ -811,18 +508,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare.csv"
-    }, {
-      "id": "ed98cd23-3d00-4aee-8bb1-18bc72a04fae",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "5217d760-088c-4fab-b129-b0dc453345dc",
       "comment": "",
@@ -880,18 +565,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "4642d2e0-da60-4fc9-b35b-d4297d8bed3d",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "b06107d8-2abc-449f-80ad-5dac397d6928",
+      "id": "1c6ddc89-4371-4198-8342-4f211628a4e0",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -902,44 +576,16 @@
       ],
       "value": ""
     }, {
-      "id": "39b8a112-f5b0-4621-a2b4-7812fa514b75",
+      "id": "6b3deb69-ceb9-432a-a314-7c8414c6aff1",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "5c38ac59-c8b1-4ff0-a4aa-dd01542a5277",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "620740ca-7994-4805-b81b-e2f83bf419c2",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -957,18 +603,6 @@
       ],
       "value": "2025-12-31"
     }, {
-      "id": "e0370575-0424-4b5f-b5ee-e51d734f6997",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "c582ef2e-6e08-4720-a486-9228ff3c7338",
       "comment": "",
       "command": "type",
@@ -981,18 +615,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare.pdf"
-    }, {
-      "id": "d2292997-d72d-4987-915f-ce26a49a7ed4",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "6085fe77-5fc5-4159-8267-8dbec017ec66",
       "comment": "",
@@ -1050,18 +672,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "ad61f390-4696-4fe3-abf8-8b90b4df3d98",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "931a9444-0be9-4183-8b27-a56f942ccc5f",
+      "id": "9f1083de-0841-4b28-b3aa-0932ecf3db7d",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -1072,44 +683,16 @@
       ],
       "value": ""
     }, {
-      "id": "519044e5-c61c-413b-be11-28e01774e9c0",
+      "id": "2f29e322-1058-4d73-a719-dc89862f1b66",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "e1819199-7a0a-44cd-989d-289d42ad28c5",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "d7d8d249-2fbe-49ca-a4f7-114aed70a838",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1127,18 +710,6 @@
       ],
       "value": "2025-12-31"
     }, {
-      "id": "85a14e80-0900-4250-a9dd-fa4c5fe26cf0",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "25e4ca59-32b4-4257-9cf0-5f457fe8d32c",
       "comment": "",
       "command": "type",
@@ -1151,18 +722,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare_BIG.csv"
-    }, {
-      "id": "389c1d7b-9d67-45cc-9710-4006019de70f",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "6aad088b-d4da-4c33-8662-20f1e8bac4b1",
       "comment": "",
@@ -1220,18 +779,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "b4402785-8120-477c-b74e-4c10130723e7",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "fdcf6aad-43d0-4368-bbfb-f293f8092a6b",
+      "id": "65610320-7f27-4690-8b12-b09a9fc19e08",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -1242,44 +790,16 @@
       ],
       "value": ""
     }, {
-      "id": "7b05e33b-dd8a-47e4-926f-d18e7bf008c5",
+      "id": "8f923344-5c4b-4bc3-acb8-f72a67901736",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "937096a2-d1da-4be5-bf5e-0f9327bae13b",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "fc7ea38d-a905-4ae9-87bf-cfa3f3e765f9",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1297,18 +817,6 @@
       ],
       "value": "2025-12-31"
     }, {
-      "id": "8be098fa-c45f-494e-af06-1c26dc527ae0",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "aef7066b-6b14-476d-b1a7-5afca7a843a1",
       "comment": "",
       "command": "type",
@@ -1321,18 +829,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare_0.csv"
-    }, {
-      "id": "ca3891a8-092a-41d5-9c7b-5e98f5a31e16",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "20aa06df-777f-4b1e-a418-bd72ef74a385",
       "comment": "",
@@ -1390,18 +886,7 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "3fe8f47c-81ab-436b-a8e0-babaad8e2f83",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(1) > .chakra-form-control",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(1) > .chakra-form-control", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div/div", "xpath:idRelative"],
-        ["xpath=//form/div/div/div", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "fe9b1ca4-76a4-4d2c-994f-89d85a3dca05",
+      "id": "0140f75f-34e9-46f3-a129-953c87ca9b10",
       "comment": "",
       "command": "click",
       "target": "css=.css-6j8wv5-Input",
@@ -1412,44 +897,16 @@
       ],
       "value": ""
     }, {
-      "id": "9df38440-96a2-40b2-88fc-770a5f00de77",
+      "id": "02f6bb13-049e-492b-b82f-f050f3d9d16b",
       "comment": "",
       "command": "click",
       "target": "id=react-select-2-option-0",
       "targets": [
-        ["id=react-select-2-option-1", "id"],
-        ["css=#react-select-2-option-1", "css:finder"],
-        ["xpath=//div[@id='react-select-2-option-1']", "xpath:attributes"],
-        ["xpath=//div[@id='react-select-2-listbox']/div/div[2]", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div[2]", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "34e7763a-7a76-4030-8e83-aa4c0c3a4758",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "3f90448b-36ff-45c3-a00c-f350035bcce0",
-      "comment": "",
-      "command": "click",
-      "target": "id=dataScadenza",
-      "targets": [
-        ["id=dataScadenza", "id"],
-        ["name=dataScadenza", "name"],
-        ["css=#dataScadenza", "css:finder"],
-        ["xpath=//input[@id='dataScadenza']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[2]/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/input", "xpath:position"]
+        ["id=react-select-2-option-0", "id"],
+        ["css=#react-select-2-option-0", "css:finder"],
+        ["xpath=//div[@id='react-select-2-option-0']", "xpath:attributes"],
+        ["xpath=//div[@id='react-select-2-listbox']/div/div", "xpath:idRelative"],
+        ["xpath=//div/div/div/div/div[2]/div/div", "xpath:position"]
       ],
       "value": ""
     }, {
@@ -1467,18 +924,6 @@
       ],
       "value": "2025-12-31"
     }, {
-      "id": "153c66bb-e55e-4892-9722-e4e1d6c553ec",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-tuh9u2:nth-child(3) p",
-      "targets": [
-        ["css=.css-tuh9u2:nth-child(3) p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[3]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[3]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
       "id": "7b5bd697-b7bb-4cd1-9075-690e59933b2c",
       "comment": "",
       "command": "type",
@@ -1491,18 +936,6 @@
         ["xpath=//div[3]/div/div/div/input", "xpath:position"]
       ],
       "value": "C:\\Users\\Everysimo\\Desktop\\testingFitDiary\\schedaAlimentare.csv"
-    }, {
-      "id": "f03790dd-c96d-49a4-89eb-336739ce8afe",
-      "comment": "",
-      "command": "click",
-      "target": "css=.css-1yijhex > p",
-      "targets": [
-        ["css=.css-1yijhex > p", "css:finder"],
-        ["xpath=//div[@id='root']/div/div/div[3]/div/div/div[2]/form/div/div[4]/div/div/div/p", "xpath:idRelative"],
-        ["xpath=//div[4]/div/div/div/p", "xpath:position"],
-        ["xpath=//p[contains(.,'Clicca e trascina un file qui, oppure clicca per selezionare un file')]", "xpath:innerText"]
-      ],
-      "value": ""
     }, {
       "id": "7f60dff7-7237-4922-955e-4575b270ed9c",
       "comment": "",

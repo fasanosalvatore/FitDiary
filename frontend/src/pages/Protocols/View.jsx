@@ -188,7 +188,7 @@ export default function View() {
                                                             src={training}>
                                                         </Image>
                                                         <Button colorScheme='fitdiary' onClick={() => {
-                                                            navigate("/trainingcard/" + protocollo.protocollo.id)
+                                                            navigate("/trainingcards/" + protocollo.protocollo.id)
                                                         }}>Vedi Allenamento
                                                         </Button>
                                                     </VStack>
@@ -199,7 +199,7 @@ export default function View() {
                                                             src={dish}>
                                                         </Image>
                                                         <Button colorScheme='fitdiary' onClick={() => {
-                                                            navigate("/dietcard/" + protocollo.protocollo.id)
+                                                            navigate("/dietcards/" + protocollo.protocollo.id)
                                                         }}>Vedi Alimentazione</Button>
                                                     </VStack>
                                                 </HStack>
