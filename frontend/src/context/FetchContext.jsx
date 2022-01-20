@@ -5,11 +5,14 @@ const FetchContext = createContext({});
 const {Provider} = FetchContext;
 
 const FetchProvider = ({children}) => {
-
-    const authAxios = axios.create({
-        baseURL: process.env.REACT_APP_SERVER_URL,
-        withCredentials: true
-    });
+    const authAxios = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
+        ? axios.create({
+            baseURL: process.env.REACT_APP_SERVER_URL
+        })
+        : axios.create({
+            baseURL: process.env.REACT_APP_SERVER_URL,
+            withCredentials: true
+        });
 
     authAxios.interceptors.response.use(
         response => {

@@ -177,7 +177,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private CorsConfiguration corsConfigurer(final HttpServletRequest request) {
         var corsConfig = new CorsConfiguration();
         corsConfig.setAllowedHeaders(List.of("*"));
-        if (env.getActiveProfiles()[0] != "dev") {
+        if (!env.getActiveProfiles()[0].equals("dev")) {
             System.out.println("Setting allowed origin on prod");
             corsConfig.setAllowedOrigins(
                     List.of("https://fitdiary.it",
