@@ -7,7 +7,8 @@ const {Provider} = FetchContext;
 const FetchProvider = ({children}) => {
 
     const authAxios = axios.create({
-        baseURL: process.env.REACT_APP_SERVER_URL
+        baseURL: process.env.REACT_APP_SERVER_URL,
+        withCredentials: true
     });
 
     authAxios.interceptors.response.use(
