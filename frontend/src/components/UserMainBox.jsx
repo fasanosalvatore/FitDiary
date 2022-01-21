@@ -1,11 +1,67 @@
-import {Avatar, Box, Button, ButtonGroup, Flex, Heading, HStack, Text, VStack} from "@chakra-ui/react";
+import {Avatar, Box, Button, ButtonGroup, Flex, Heading, HStack, Text, useToast, VStack} from "@chakra-ui/react";
 import {GradientBar} from "./GradientBar";
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../context/AuthContext";
 import {Link} from "react-router-dom";
+import {LockIcon, UnlockIcon} from "@chakra-ui/icons";
+import {Alert} from "./AlertDialog";
+import {FetchContext} from "../context/FetchContext";
+
 
 export function UserMainBox(props) {
     const authContext = useContext(AuthContext);
+    const [isAlertOpen, setIsAlertOpen] = React.useState(false)
+    const [toastMessage, setToastMessage] = useState(undefined);
+    const onAlertClose = () => setIsAlertOpen(false)
+    const fetchContext = useContext(FetchContext);
+    const cancelRef = React.useRef();
+    const [customer, setCustomer] = useState(props.utente);
+    const toast = useToast({
+        duration: 1000,
+        isClosable: true,
+        variant: "solid",
+        containerStyle: {
+            width: '100%',
+            maxWidth: '100%',
+        },
+    })
+    useEffect(() => {
+        if (toastMessage) {
+            const {title, body, stat} = toastMessage;
+
+            toast({
+                title,
+                description: body,
+                status: stat,
+            });
+        }
+        return () => {
+            setTimeout(() => {
+                setToastMessage(undefined);
+            }, 1000);
+        }
+    }, [toastMessage, toast]);
+
+    function disableUser(id) {
+        const disableUser = async () => {
+            try {
+                const {data} = await fetchContext.authAxios.put("utenti/" + id);
+                let updatedCustomer = customer;
+                updatedCustomer.attivo = data.data.cliente.attivo;
+                setCustomer(updatedCustomer);
+                setToastMessage({
+                    title: "Completato!",
+                    body: `Cliente ${data.data.cliente.attivo ? "attivato" : "disattivato"}`,
+                    stat: "success"
+                });
+                onAlertClose();
+            } catch (error) {
+                setToastMessage({title: "Errore!", body: error.message, stat: "error"});
+                console.log(error.message);
+            }
+        }
+        disableUser();
+    }
 
     return <Box bg={"white"} rounded={20} minW={{base: "100%", xl: "100%"}}>
         <GradientBar/>
@@ -37,13 +93,18 @@ export function UserMainBox(props) {
                             <Button colorScheme={"fitdiary"} color={"white"}>Crea Protocollo</Button>
                         </Link>
                         )}
-                        {authContext.isAdmin() ? (
-                            <Button colorScheme="red">Elimina</Button>
-                        ) : (
-
-                            <Button colorScheme={props.utente.attivo ? "red" : "green"}>
-                                {props.utente.attivo ? "Disattiva" : "Attiva"}
-                            </Button>
+                        {authContext.isTrainer() && (
+                            <Alert open={isAlertOpen} leastDestructiveRef={cancelRef}
+                                   onClose={onAlertClose}
+                                   title={`${props.utente.attivo ? `Disattiva ${props.utente.nome}` : `Attiva ${props.utente.nome}`}`}
+                                   body={`Sei sicuro di voler ${props.utente.attivo ? "disattivare" : "attivare"} il cliente ${props.utente.nome} ${props.utente.cognome}?`}
+                                   buttonCancel={"Annulla"}
+                                   buttonColor={`${props.utente.attivo ? "red" : "green"}`}
+                                   buttonLabel={props.utente.attivo ? "Disattiva Utente" : "Attiva Utente"}
+                                   buttonOk={props.utente.attivo ? "Disattiva" : "Attiva"}
+                                   buttonOkText={`${props.utente.attivo ? "Disattiva" : "Attiva"}`}
+                                   onClick={() => disableUser(props.utente.id)}
+                            />
                         )}
                     </ButtonGroup>;
                 </HStack>
