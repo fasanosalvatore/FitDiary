@@ -97,36 +97,37 @@ export default function View() {
 
                                 <HStack w="full" h="full" align="start">
                                     <Flex width="full" justify="center">
-                                        <HStack alignItems="center" p={20}>
-                                            <Box backgroundColor={"white"} p={3} borderRadius={15}>
-                                                <Table variant={"unstyled"} colorScheme={"gray"} size="md">
-                                                    <TableCaption>PROGRESSI</TableCaption>
-                                                    <Thead color>
-                                                        <Tr>
-                                                            <Th></Th>
-                                                            <Th></Th>
+                                        <HStack alignItems="center" p={{base:1,md:20}} w={"full"}>
+                                            <Box backgroundColor={"white"} p={3} borderRadius={15} w={"full"}>
+                                                <Table variant={"striped"} colorScheme={"gray"}  size="md" w={"full"}>
+                                                    <Thead>
+                                                        <Tr >
+                                                            <Th textAlign={"start"} fontSize={20} fontWeight={800}>Caratteristiche</Th>
+                                                            <Th textAlign={"start"} fontSize={20} fontWeight={800}>Valori</Th>
                                                         </Tr>
+
                                                     </Thead>
+
                                                     {report ?
                                                     <Tbody>
-                                                        <Tr>
-                                                            <Td>Peso</Td>
-                                                            <Td>{report.report.peso}Kg<Icon as={BsGraphUp} color='green.500'
+                                                        <Tr w={"full"}>
+                                                            <Td fontSize={25} fontWeight={500} >Peso</Td>
+                                                            <Td fontSize={25} fontWeight={400} >{report.report.peso}Kg<Icon as={BsGraphUp} color='green.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
-                                                            <Td>Circonferenza Bicipite{ }</Td>
-                                                            <Td>{report.report.crfBicipite}cm<Icon as={BsGraphDown} color='red.500'
+                                                            <Td fontSize={25} fontWeight={500} >Circonferenza Bicipite{ }</Td>
+                                                            <Td fontSize={25} fontWeight={400}  >{report.report.crfBicipite}cm<Icon as={BsGraphDown} color='red.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
-                                                            <Td>Circonferenza Addome</Td>
-                                                            <Td>{report.report.crfAddome}cm<Icon as={BsGraphDown} color='red.500'
+                                                            <Td fontSize={25} fontWeight={500} >Circonferenza Addome</Td>
+                                                            <Td fontSize={25} fontWeight={400} >{report.report.crfAddome}cm<Icon as={BsGraphDown} color='red.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                         <Tr>
-                                                            <Td>Circonferenza Quadricipite</Td>
-                                                            <Td>{report.report.crfQuadricipite}cm<Icon as={BsGraphUp} color='green.500'
+                                                            <Td fontSize={25} fontWeight={500} >Circonferenza Quadricipite</Td>
+                                                            <Td fontSize={25} fontWeight={400} >{report.report.crfQuadricipite}cm<Icon as={BsGraphUp} color='green.500'
                                                                 marginLeft={4} /></Td>
                                                         </Tr>
                                                     </Tbody>
@@ -136,18 +137,25 @@ export default function View() {
                                         </HStack>
                                     </Flex>
                                 </HStack>
-                                <Heading w={"full"} mb={5} textAlign={"center"}>Foto</Heading>
-                                <Flex justify="center">
-                                    <VStack>
-                                        <HStack alignItems={"center"} width={{base:"80%",sm:"60%",md:"50%"}}>
-                                            <Carousel infiniteLoop={true} emulateTouch={true}>
+                                <>
+                                <Flex justify="center" w={"full"}>
+                                    {report.report.immaginiReports.length > 0 && (
+                                    <VStack alignContent={"center"}>
+                                        <Heading w={"full"} mb={5} textAlign={"center"}>Foto</Heading>
+                                        <HStack width={{base:"80%",sm:"60%",md:"50%"}}>
+                                            <Carousel infiniteLoop={true} emulateTouch={true} dynamicHeight={true} >
                                                 {report ? report.report.immaginiReports.map((img,i)=> {
-                                                    return <Image boxSize={550} h={"auto"} w={200} src={img.url} alt='Foto non disponibile'/>
+                                                    return(
+                                                    <Box>
+                                                        <Image boxSize={550} h={"auto"} w={200} src={img.url} alt='Foto non disponibile'/>
+                                                    </Box>)
                                                 }): " "}
                                             </Carousel>
                                         </HStack>
                                     </VStack>
+                                        )}
                                 </Flex>
+                                </>
                             </VStack>
                         </Flex>
                     </Box>
