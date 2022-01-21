@@ -3,7 +3,6 @@ import {GradientBar} from "./GradientBar";
 import React, {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../context/AuthContext";
 import {Link} from "react-router-dom";
-import {LockIcon, UnlockIcon} from "@chakra-ui/icons";
 import {Alert} from "./AlertDialog";
 import {FetchContext} from "../context/FetchContext";
 

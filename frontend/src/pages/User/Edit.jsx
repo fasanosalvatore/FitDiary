@@ -4,7 +4,8 @@ import {useForm} from 'react-hook-form';
 import {
     Box,
     Button,
-    Divider, Flex,
+    Divider,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -17,8 +18,7 @@ import {
     SimpleGrid,
     Tooltip,
     useBreakpointValue,
-    useToast,
-    VStack
+    useToast
 } from "@chakra-ui/react";
 import {AtSignIcon, PhoneIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 import {FetchContext} from "../../context/FetchContext";

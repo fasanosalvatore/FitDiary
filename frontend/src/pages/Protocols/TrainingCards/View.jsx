@@ -35,7 +35,6 @@ import {
     VStack
 } from '@chakra-ui/react';
 import {CloseIcon, EditIcon} from '@chakra-ui/icons';
-import {RiArrowGoBackLine,} from 'react-icons/ri';
 import {AuthContext} from "../../../context/AuthContext";
 import moment from "moment";
 import {useNavigate, useParams} from "react-router";

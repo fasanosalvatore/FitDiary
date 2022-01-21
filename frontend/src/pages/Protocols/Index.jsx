@@ -1,7 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
     Box,
-    Button, Flex,
+    Button,
+    Flex,
     Heading,
     HStack,
     Input,
@@ -16,7 +17,6 @@ import {
     Thead,
     Tr,
     useToast,
-    VStack,
 } from '@chakra-ui/react';
 import moment from "moment";
 import {InfoIcon, SearchIcon} from '@chakra-ui/icons'

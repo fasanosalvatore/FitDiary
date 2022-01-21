@@ -1,14 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
     Box,
-    Button,
     Flex,
     Heading,
     HStack,
     Icon,
     Image,
     Table,
-    TableCaption,
     Tbody,
     Td,
     Text,
@@ -18,7 +16,6 @@ import {
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {RiArrowGoBackLine} from 'react-icons/ri';
 import moment from "moment";
 import {BsGraphDown, BsGraphUp} from "react-icons/bs";
 import {useNavigate, useParams} from "react-router";

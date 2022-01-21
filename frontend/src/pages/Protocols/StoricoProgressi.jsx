@@ -10,7 +10,7 @@ import {
     Tooltip,
 } from 'chart.js';
 import {Line} from 'react-chartjs-2';
-import {Heading, Text, useToast, VStack,Box} from "@chakra-ui/react";
+import {Box, Heading, Text, useToast, VStack} from "@chakra-ui/react";
 import {InfoIcon} from "@chakra-ui/icons";
 import {FetchContext} from "../../context/FetchContext";
 import TableResponsive from "../../components/TableResponsive";

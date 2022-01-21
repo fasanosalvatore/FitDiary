@@ -1,5 +1,3 @@
-import {Box, Flex, Heading, Text} from "@chakra-ui/react";
-import {GradientBar} from "../components/GradientBar";
 import React, {useContext} from "react";
 import {FetchContext} from "../context/FetchContext";
 import {AuthContext} from "../context/AuthContext";

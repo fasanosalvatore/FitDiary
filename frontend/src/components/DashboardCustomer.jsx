@@ -2,12 +2,17 @@ import WrapperBox from "./WrapperBox";
 import {
     Accordion,
     AccordionButton,
-    AccordionItem, Box, Flex,
+    AccordionItem,
+    Box,
+    Flex,
     GridItem,
-    Heading, HStack,
+    Heading,
+    HStack,
     Image,
     Text,
-    useBreakpointValue, useToast, VStack
+    useBreakpointValue,
+    useToast,
+    VStack
 } from "@chakra-ui/react";
 import {AccordionMeal} from "./AccordionMeal";
 import meal from "../images/dish.png";
@@ -18,7 +23,7 @@ import {useNavigate} from "react-router-dom";
 import _ from "lodash";
 import {AccordionTraining} from "./AccordionTraining";
 import training from "../images/dumbbell.png";
-import {FaBook, FaUser, FaUsers} from "react-icons/fa";
+import {FaBook, FaUser} from "react-icons/fa";
 import {GiMeal} from "react-icons/gi";
 import {CgGym} from "react-icons/cg";
 

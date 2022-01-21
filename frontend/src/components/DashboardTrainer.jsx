@@ -1,6 +1,6 @@
 import WrapperBox from "./WrapperBox";
 import {Box, Flex, Heading, HStack, Text, VStack} from "@chakra-ui/react";
-import {FaApple, FaApplePay, FaBook, FaDice, FaUsers} from "react-icons/fa";
+import {FaBook, FaUsers} from "react-icons/fa";
 import {GiMeal} from "react-icons/gi";
 import {CgGym} from "react-icons/cg";
 

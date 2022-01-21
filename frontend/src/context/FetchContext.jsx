@@ -1,7 +1,6 @@
 import React, {createContext} from 'react';
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
-import {toast, useToast} from "@chakra-ui/react";
 
 const FetchContext = createContext({});
 const {Provider} = FetchContext;

@@ -15,7 +15,8 @@ import {
     Td,
     Text,
     Th,
-    Thead, Tooltip,
+    Thead,
+    Tooltip,
     Tr,
     useMediaQuery,
     useToast

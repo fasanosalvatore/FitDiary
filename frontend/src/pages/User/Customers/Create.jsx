@@ -1,16 +1,6 @@
 import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
-import {
-    Box,
-    Button, Flex,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Heading,
-    Input,
-    useToast,
-    VStack
-} from "@chakra-ui/react";
+import {Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, useToast} from "@chakra-ui/react";
 import {FetchContext} from "../../../context/FetchContext";
 import {GradientBar} from "../../../components/GradientBar";
 
