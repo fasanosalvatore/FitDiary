@@ -261,6 +261,7 @@
 						</goals>
 						<configuration>
 							<excludes>
+								<exclude>it/fitdiary/backend/gestioneutenza/security/*</exclude>
 								<exclude>it/fitdiary/backend/entity/*</exclude>
 								<exclude>*Test</exclude>
 								<exclude>*IT</exclude>
