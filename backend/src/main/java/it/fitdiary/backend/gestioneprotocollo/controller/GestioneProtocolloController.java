@@ -156,7 +156,7 @@ public class GestioneProtocolloController {
             protocollo =
                     gestioneProtocolloService.getByIdProtocollo(idProtocollo);
         } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     (Object)
                             "Il protocollo da modificare non esiste");
         }
@@ -250,7 +250,7 @@ public class GestioneProtocolloController {
             protocollo =
                     gestioneProtocolloService.getByIdProtocollo(id);
         } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     (Object)
                             "Il protocollo non esiste");
         }
