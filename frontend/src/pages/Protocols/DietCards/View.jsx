@@ -38,15 +38,14 @@ import {CloseIcon, EditIcon} from '@chakra-ui/icons';
 import {AuthContext} from "../../../context/AuthContext";
 import moment from "moment";
 import {FetchContext} from "../../../context/FetchContext";
-import {useNavigate, useParams} from "react-router";
 import {useForm} from "react-hook-form"
 import {GradientBar} from "../../../components/GradientBar";
+import {useParams} from "react-router";
 
 export default function View() {
     const authContext = useContext(AuthContext);
     const { authState } = authContext;
     const { id } = useParams();
-    const navigate = useNavigate();
     const [protocollo, setProtocolli] = useState();
     const fetchContext = useContext(FetchContext);
     const [isLoading, setLoading] = useState(true);

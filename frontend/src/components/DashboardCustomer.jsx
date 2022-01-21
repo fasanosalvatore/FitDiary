@@ -31,7 +31,6 @@ export default function DashboardCustomer() {
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
     const [protocollo, setProtocollo] = useState();
-    const [report, setReport] = useState();
     const { id } = useParams();
     const colSpan = useBreakpointValue({ base: 2, xl: 1 })
     const navigate = useNavigate();

@@ -37,7 +37,7 @@ import {
 import {CloseIcon, EditIcon} from '@chakra-ui/icons';
 import {AuthContext} from "../../../context/AuthContext";
 import moment from "moment";
-import {useNavigate, useParams} from "react-router";
+import {useParams} from "react-router";
 import {FetchContext} from "../../../context/FetchContext";
 import {useForm} from "react-hook-form"
 import {GradientBar} from "../../../components/GradientBar";
@@ -48,7 +48,6 @@ export default function View() {
     const authContext = useContext(AuthContext);
     const { authState } = authContext;
     const { id } = useParams();
-    const navigate = useNavigate();
     const [protocollo, setProtocolli] = useState();
     const fetchContext = useContext(FetchContext);
     const [isLoading, setLoading] = useState(true);
@@ -220,7 +219,7 @@ export default function View() {
                                 <Accordion allowToggle defaultIndex={[0]} w="full" mt={"60px"}>
                                     {
                                         days.map((d, i) => {
-                                            if(i + 1 > protocollo.protocollo.schedaAllenamento.frequenza) return;
+                                            if(i + 1 > protocollo.protocollo.schedaAllenamento.frequenza) return <></>;
                                             return (
                                                 <AccordionItem key={i}>
                                                     <h2>

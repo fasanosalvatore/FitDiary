@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import moment from "moment";
 import {BsGraphDown, BsGraphUp} from "react-icons/bs";
-import {useNavigate, useParams} from "react-router";
+import {useParams} from "react-router";
 import {FetchContext} from "../../context/FetchContext";
 import {Carousel} from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -30,7 +30,6 @@ export default function View() {
     const [report,setReport]=useState();
     const { id } = useParams();
 
-    let history = useNavigate();
     const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
         duration: 3000,
@@ -105,7 +104,7 @@ export default function View() {
                                                         <Tr >
                                                             <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Caratteristiche</Th>
                                                             <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Valori</Th>
-                                                            <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800} textAlign={"center"}>Andamento</Th>
+                                                            <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Andamento</Th>
                                                         </Tr>
                                                     </Thead>
                                                     {report ?
