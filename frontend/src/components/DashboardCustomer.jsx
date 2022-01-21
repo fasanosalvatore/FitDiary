@@ -26,12 +26,18 @@ import training from "../images/dumbbell.png";
 import {FaBook, FaUser} from "react-icons/fa";
 import {GiMeal} from "react-icons/gi";
 import {CgGym} from "react-icons/cg";
+import moment from "moment";
+
+const urlGetInfo = `utenti/profilo`;
 
 export default function DashboardCustomer() {
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
+    const [user, setUser] = useState();
     const [protocollo, setProtocollo] = useState();
-    const { id } = useParams();
+    const [report, setReport] = useState();
+    const [protocolliList, setProtocolliList] = useState([]);
+    const [reportList, setReportList] = useState([]);
     const colSpan = useBreakpointValue({ base: 2, xl: 1 })
     const navigate = useNavigate();
 
@@ -64,25 +70,42 @@ export default function DashboardCustomer() {
 
     useEffect(() => {
         console.log("pages/protocols/view");
-        const listaProtocolli = async () => {
+        const getInfo = async () => {
             try {
-                const { data } = await fetchContext.authAxios("protocolli");
-                setProtocollo(data.data.protocollo[data.data.protocollo.length-1]);
+                const { data: dataProt } = await fetchContext.authAxios("protocolli");
+                const { data: dataReport } = await fetchContext.authAxios("reports");
+                const { data: dataUser } = await fetchContext.authAxios(urlGetInfo);
+
+                console.log()
+
+                setReportList(dataReport.data.report)
+                setReport(dataReport.data.report[dataReport.data.report.length-1]);
+
+                console.log(dataReport.data.report[dataReport.data.report.length-1])
+
+                setProtocolliList(dataProt.data.protocollo)
+                setProtocollo(dataProt.data.protocollo[dataProt.data.protocollo.length-1]);
+
+                console.log(dataUser.data.utente)
+                setUser(dataUser.data.utente)
+
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
                 setToastMessage({ title: "Error", body: error.message, stat: "error" });
             }
         }
-        listaProtocolli();
+        getInfo();
 
-    }, [fetchContext, id]);
+    }, [fetchContext,setReport,setReportList,setReport,setProtocollo,setUser]);
     return (
-        <WrapperBox>
-            <Flex>
-                <Flex m={5} rounded={10} wrap={"wrap"} bg={"fitdiary.800"} boxShadow={"2xl"}>
-                    <Heading w={"full"} ml={"5"} color={"white"} >Statistiche</Heading>
-                    <Box m={5} rounded={5} p={5} bg={"white"} w={"200px"}>
-                        <VStack alignItems={"start"}>
+
+        <WrapperBox >
+            {!isLoading &&(
+            <Flex >
+                <Flex w={"full"} m={5} rounded={10} wrap={"wrap"} bg={"fitdiary.800"} boxShadow={"2xl"} alignContent={"center"} justifyContent={"center"}>
+                    <Heading w={"full"} ml={"5"} color={"white"} textAlign={"center"} >Statistiche</Heading>
+                    <Box m={5} rounded={5} p={5} bg={"white"} w={"200px"} >
+                        <VStack alignItems={"center"}>
                             <HStack fontSize={"2xl"}>
                                 <HStack>
                                     <FaUser/>
@@ -90,79 +113,44 @@ export default function DashboardCustomer() {
                                 </HStack>
                             </HStack>
                             <HStack>
-                                <Text fontSize={"xs"}>Scolpito Nella Roccia</Text>
+                                <Text fontSize={"xs"}>{user.preparatore.nome} {user.preparatore.cognome}</Text>
                             </HStack>
                         </VStack>
                     </Box>
                     <Box m={5} rounded={5} p={5} bg={"white"} w={"200px"}>
-                        <VStack alignItems={"start"}>
+                        <VStack alignItems={"center"}>
                             <HStack fontSize={"2xl"}>
                                 <HStack>
                                     <FaBook/>
                                     <Text>Protocolli</Text>
                                 </HStack>
-                                <Text>3</Text>
+                                <Text>{protocolliList.length}</Text>
                             </HStack>
                             <HStack>
-                                <Text fontSize={"xs"}>Attivi</Text>
-                                <Text fontSize={"xs"}>2</Text>
-                                <Text fontSize={"xs"}>Scaduti</Text>
-                                <Text fontSize={"xs"}>1</Text>
+                                <Text fontSize={"xs"}>Scadenza</Text>
+                                <Text fontSize={"xs"}>{protocollo && moment(protocollo.dataScadenza).format("DD/MM/YYYY")}</Text>
                             </HStack>
                         </VStack>
                     </Box>
                     <Box m={5} rounded={5} p={5} bg={"white"} w={"200px"}>
-                        <VStack alignItems={"start"}>
-                            <HStack fontSize={"2xl"}>
-                                <HStack>
-                                    <GiMeal/>
-                                    <Text>Diete</Text>
-                                </HStack>
-                                <Text>3</Text>
-                            </HStack>
-                            <HStack>
-                                <Text fontSize={"xs"}>Attivi</Text>
-                                <Text fontSize={"xs"}>2</Text>
-                                <Text fontSize={"xs"}>Scaduti</Text>
-                                <Text fontSize={"xs"}>1</Text>
-                            </HStack>
-                        </VStack>
-                    </Box>
-                    <Box m={5} rounded={5} p={5} bg={"white"} w={"200px"}>
-                        <VStack alignItems={"start"}>
-                            <HStack fontSize={"2xl"}>
-                                <HStack>
-                                    <CgGym/>
-                                    <Text>Schede</Text>
-                                </HStack>
-                                <Text>3</Text>
-                            </HStack>
-                            <HStack>
-                                <Text fontSize={"xs"}>Attivi</Text>
-                                <Text fontSize={"xs"}>2</Text>
-                                <Text fontSize={"xs"}>Scaduti</Text>
-                                <Text fontSize={"xs"}>1</Text>
-                            </HStack>
-                        </VStack>
-                    </Box>
-                    <Box m={5} rounded={5} p={5} bg={"white"} w={"200px"}>
-                        <VStack alignItems={"start"}>
+                        <VStack alignItems={"center"}>
                             <HStack fontSize={"2xl"}>
                                 <HStack>
                                     <CgGym/>
                                     <Text>Reports</Text>
                                 </HStack>
-                                <Text>3</Text>
+                                <Text>{reportList.length}</Text>
                             </HStack>
                             <HStack>
                                 <Text fontSize={"xs"}>Ultimo report</Text>
-                                <Text fontSize={"xs"}>21/02/2021</Text>
+                                <Text fontSize={"xs"}>{report && moment(report.dataCreazione).format("DD/MM/YYYY")}</Text>
                             </HStack>
                         </VStack>
                     </Box>
                 </Flex>
             </Flex>
-            {!isLoading && protocollo.schedaAlimentare ? (
+            )}
+            {!isLoading && protocollo && protocollo.schedaAlimentare ? (
                 <GridItem p={5} colSpan={colSpan}>
                     <Heading size={"md"} mb={2} textAlign={"center"}>Il pasto del giorno</Heading>
                     <AccordionMeal schedaAlimentare={protocollo.schedaAlimentare} nome="Spuntino" />
@@ -178,8 +166,8 @@ export default function DashboardCustomer() {
                         </AccordionItem>
                     </Accordion>
                 </GridItem>
-            ) : (<Text>Niente da mangiare oggi....</Text>)}
-            {!isLoading && protocollo.schedaAllenamento ? (
+            ) : (<Text p={5}>Niente da mangiare oggi....</Text>)}
+            {!isLoading && protocollo && protocollo.schedaAllenamento ? (
                 <GridItem p={5} colSpan={colSpan}>
                     <Heading size={"md"} mb={2} textAlign={"center"}>L'allenamento</Heading>
                     {_(protocollo.schedaAllenamento.frequenza).times(i => {
@@ -194,7 +182,7 @@ export default function DashboardCustomer() {
                         </AccordionItem>
                     </Accordion>
                 </GridItem>
-            ) : (<Text>Non hai allenamenti oggi....</Text>)}
+            ) : (<Text p={5}>Non hai allenamenti oggi....</Text>)}
         </WrapperBox>
     )
 }
