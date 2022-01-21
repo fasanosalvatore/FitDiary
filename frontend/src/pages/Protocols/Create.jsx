@@ -1,6 +1,6 @@
 import {
   Box,
-  Button,
+  Button, Flex,
   FormControl, FormErrorMessage,
   FormLabel,
   GridItem,
@@ -139,11 +139,13 @@ const Create = () => {
 
   return (
     <>
-      <VStack w="full" h="full" p={[5, 10, 20]}>
-        <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
+      <Flex wrap={"wrap"} p={5}>
+        <Flex alignItems={"center"} mb={5}>
+          <Heading w={"full"}>Crea Protocollo</Heading>
+        </Flex>
+        <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
           <GradientBar />
           <VStack spacing={3} alignItems="center" pb={5} mt={5}>
-            <Heading size="2xl">Crea Protocollo</Heading>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
               <SimpleGrid columns={2} columnGap={5} rowGap={5} pl={[0, 5, 10]} pr={[0, 5, 10]} w="full">
                 <GridItem colSpan={2}>
@@ -240,7 +242,7 @@ const Create = () => {
             </form>
           </VStack>
         </Box>
-      </VStack>
+      </Flex>
     </>
   )
 }

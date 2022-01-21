@@ -25,6 +25,7 @@ import {useNavigate, useParams} from "react-router";
 import {FetchContext} from "../../context/FetchContext";
 import {Carousel} from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import {GradientBar} from "../../components/GradientBar";
 
 export default function View() {
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
@@ -79,10 +80,13 @@ export default function View() {
     return (
         <>
             {!isLoading && (
-                <Flex wrap={"wrap"}>
-                    <Button ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}
-                        onClick={() => history(-1)}>Torna ai Progressi</Button>
-                    <Heading w={"full"} mb={5} textAlign={"center"}>Report n.{report.report.id}</Heading>
+                <Flex wrap={"wrap"} p={5}>
+                    <Flex alignItems={"center"} mb={5}>
+                        <Heading w={"full"}>Report n.{report.report.id}</Heading>
+                    </Flex>
+                    <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+                        <GradientBar />
+
                     <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={{base:0,md:10}} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
                             <VStack w="full" h="full" align="start">
@@ -97,7 +101,7 @@ export default function View() {
 
                                 <HStack w="full" h="full" align="start">
                                     <Flex width="full" justify="center">
-                                        <HStack alignItems="center" p={{base:0,lg:20}} w={"full"}>
+                                        <HStack alignItems="center"  px={{base:0,lg:20}} py={{base:0,lg:10}} w={"full"}>
                                             <Box backgroundColor={"white"} borderRadius={15} w={"full"}>
                                                 <Table variant={"striped"} colorScheme={"gray"}  size="md" w={"full"}>
                                                     <Thead>
@@ -106,9 +110,7 @@ export default function View() {
                                                             <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Valori</Th>
                                                             <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800} textAlign={"center"}>Andamento</Th>
                                                         </Tr>
-
                                                     </Thead>
-
                                                     {report ?
                                                     <Tbody>
                                                         <Tr w={"full"}>
@@ -147,8 +149,8 @@ export default function View() {
                                             <Carousel infiniteLoop={true} emulateTouch={true} dynamicHeight={true} >
                                                 {report ? report.report.immaginiReports.map((img,i)=> {
                                                     return(
-                                                    <Box>
-                                                        <Image boxSize={550} h={"auto"} w={200} src={img.url} alt='Foto non disponibile'/>
+                                                    <Box bg={"fitdiary.50"} borderRadius={"md"}>
+                                                        <Image objectFit='contain'  boxSize={550} src={img.url} alt='Foto non disponibile'/>
                                                     </Box>)
                                                 }): " "}
                                             </Carousel>
@@ -159,6 +161,7 @@ export default function View() {
                                 </>
                             </VStack>
                         </Flex>
+                    </Box>
                     </Box>
                 </Flex>
             )}

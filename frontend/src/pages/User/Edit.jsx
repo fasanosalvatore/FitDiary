@@ -4,7 +4,7 @@ import {useForm} from 'react-hook-form';
 import {
     Box,
     Button,
-    Divider,
+    Divider, Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
@@ -93,10 +93,12 @@ export default function Edit() {
     return (
         <>
             {!isLoading && (
-                <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
-                    <Heading size="lg" textAlign={"center"} pt={5}>Modifica Dati Personali</Heading>
-                    <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
-                        <GradientBar/>
+                <Flex wrap={"wrap"} p={5}>
+                    <Flex alignItems={"center"} mb={5}>
+                        <Heading w={"full"}>Modifica Dati Personali</Heading>
+                    </Flex>
+                    <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+                        <GradientBar />
                         <Box pl={10} pr={10} pb={5} pt={5}>
                             <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                                 <SimpleGrid vcolumns={2} columnGap={5} rowGap={5} w="full">
@@ -292,7 +294,7 @@ export default function Edit() {
                             </form>
                         </Box>
                     </Box>
-                </VStack>)}
+                </Flex>)}
 
         </>
     );

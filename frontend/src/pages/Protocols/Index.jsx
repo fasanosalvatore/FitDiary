@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
     Box,
-    Button,
+    Button, Flex,
     Heading,
     HStack,
     Input,
@@ -62,9 +62,6 @@ function Index() {
     const fetchContext = useContext(FetchContext);
     const [listProtocolli, setProtocolli] = useState();
 
-
-
-
     useEffect(() => {
         console.log("pages/protocols/index")
         const listaProtocolli = async () => {
@@ -85,25 +82,24 @@ function Index() {
 
     return (
       <>
-        {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
-          <ReactLink to="/protocols/create">
-            <Button
-              colorScheme={"fitdiary"}
-              color={"white"}
-              mx={[0, 5, 10, 20]}
-              my={5}
-            >
-              Crea Protocollo
-            </Button>
-          </ReactLink>
-        )}
+
         {!isLoading && listProtocolli && (
-          <VStack w="full" h="full" py={5} px={[0, 5, 10, 20]}>
-            <Heading size="lg" w="full" pt={5}>
-              Visualizzazione Protocolli
-            </Heading>
-            <Box bg={"white"} borderRadius="xl" pb={5} w={"full"}>
-              <GradientBar />
+            <Flex wrap={"wrap"} p={5}>
+                <Flex w={"full"} alignItems={"center"} mb={5} justifyContent={"space-between"}>
+                    <Heading w={"full"}>Visualizzazione Protocolli</Heading>
+                    {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
+                        <ReactLink to="/protocols/create">
+                            <Button
+                                colorScheme={"fitdiary"}
+                                color={"white"}
+                            >
+                                Crea Protocollo
+                            </Button>
+                        </ReactLink>
+                    )}
+                </Flex>
+                <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+                    <GradientBar />
 
               <Box pl={10} pr={10} pb={5} pt={5}>
                 <HStack>
@@ -124,8 +120,7 @@ function Index() {
                 {listProtocolli.protocollo.length > 0 ? (
                   <>
                     <Text fontSize="xl" my={5}>
-                      Protocolli di {listProtocolli.protocollo[0].cliente.nome}{" "}
-                      {listProtocolli.protocollo[0].cliente.cognome}
+                      Lista dei protocolli
                     </Text>
                     <Table variant={"striped"} colorScheme={"gray"} size="md">
                       <TableCaption>Lista Protocolli</TableCaption>
@@ -172,7 +167,7 @@ function Index() {
                 )}
               </Box>
             </Box>
-          </VStack>
+            </Flex>
         )}
       </>
     );

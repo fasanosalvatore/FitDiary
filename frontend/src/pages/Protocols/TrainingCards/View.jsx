@@ -41,6 +41,7 @@ import moment from "moment";
 import {useNavigate, useParams} from "react-router";
 import {FetchContext} from "../../../context/FetchContext";
 import {useForm} from "react-hook-form"
+import {GradientBar} from "../../../components/GradientBar";
 
 export default function View() {
     const urlProtocolli = "protocolli";
@@ -126,11 +127,12 @@ export default function View() {
     return (
         <>
             {!isLoading && (
-                <Flex wrap={"wrap"}>
-                    <Button onClick={() => {
-                        navigate(-1)
-                    }} ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}>Torna al protocollo</Button>
-                    <Heading w={"full"} mb={5} textAlign={"center"}>Scheda Allenamento</Heading>
+                <Flex wrap={"wrap"} p={5}>
+                    <Flex alignItems={"center"} mb={5}>
+                        <Heading w={"full"}>Allenamento</Heading>
+                    </Flex>
+                    <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+                        <GradientBar />
                     <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
                             <VStack w="full" h="full" align="start">
@@ -216,11 +218,11 @@ export default function View() {
                                             )}
                                     </Flex>
                                 </HStack>
-                                <Accordion defaultIndex={[0]} w="full" mt={"60px"}>
+                                <Accordion allowToggle defaultIndex={[0]} w="full" mt={"60px"}>
                                     {
                                         days.map((d, i) => {
+                                            if(i + 1 > protocollo.protocollo.schedaAllenamento.frequenza) return;
                                             return (
-
                                                 <AccordionItem key={i}>
                                                     <h2>
                                                         <AccordionButton>
@@ -272,6 +274,7 @@ export default function View() {
                                 </Accordion>
                             </VStack>
                         </Flex>
+                    </Box>
                     </Box>
                 </Flex>
 

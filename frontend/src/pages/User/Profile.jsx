@@ -29,7 +29,7 @@ export default function Profile() {
         <>
             {!isLoading && (
                 <Flex wrap={"wrap"} p={5}>
-                    <Heading w={"full"} textAlign={"center"} mb={5}>Profilo Utente</Heading>
+                    <Heading w={"full"} mb={5}>Profilo Utente</Heading>
                     <UserMainBox utente={utente} showMoreBtns={false}/>
                     <UserInfoBox utente={utente}/>
                 </Flex>
