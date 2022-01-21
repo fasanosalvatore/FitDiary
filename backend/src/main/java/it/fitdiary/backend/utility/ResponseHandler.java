@@ -31,6 +31,8 @@ public final class ResponseHandler {
         } else if (status.is4xxClientError()) {
             map.put("data", responseObj);
             statusMessage = "fail";
+        } else if (status.is5xxServerError()) {
+            generateResponse(status, responseObj.toString());
         }
         map.put("status", statusMessage);
         return new ResponseEntity<>(map, status);
@@ -64,11 +66,11 @@ public final class ResponseHandler {
     }
 
     /**
-     * @param status status
+     * @param status  status
      * @param message message
      * @return ResponseEntity
      */
-    public static ResponseEntity<Object> generateResponse(
+    private static ResponseEntity<Object> generateResponse(
             final HttpStatus status,
             final String message) {
         Map<String, Object> map = new HashMap<>();
