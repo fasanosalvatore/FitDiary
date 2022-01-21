@@ -30,7 +30,7 @@ export default function Welcome() {
                 <Flex width={"full"} justify={"center"} align={"center"}>
                     <Image w={"full"} src={imbBg} filter={"grayscale(100%)"} />
                     <VStack pos={"absolute"} textAlign={"center"}>
-                        <Text fontSize={["0.1em", "1.5em", "3em", "5em"]} color={"whiteAlpha.900"}>
+                        <Text fontSize={["0.1em", "1.5em", "3em", "4em"]} color={"whiteAlpha.900"}>
                             Un nuovo modo di interagire con i tuoi clienti
                         </Text>
                         <Flex>
