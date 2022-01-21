@@ -18,13 +18,11 @@ import {AccordionMeal} from "./AccordionMeal";
 import meal from "../images/dish.png";
 import React, {useContext, useEffect, useState} from "react";
 import {FetchContext} from "../context/FetchContext";
-import {useParams} from "react-router";
 import {useNavigate} from "react-router-dom";
 import _ from "lodash";
 import {AccordionTraining} from "./AccordionTraining";
 import training from "../images/dumbbell.png";
 import {FaBook, FaUser} from "react-icons/fa";
-import {GiMeal} from "react-icons/gi";
 import {CgGym} from "react-icons/cg";
 import moment from "moment";
 
@@ -96,7 +94,7 @@ export default function DashboardCustomer() {
         }
         getInfo();
 
-    }, [fetchContext,setReport,setReportList,setReport,setProtocollo,setUser]);
+    }, [fetchContext,setReport,setReportList,setProtocolliList,setProtocollo,setUser]);
     return (
 
         <WrapperBox >
