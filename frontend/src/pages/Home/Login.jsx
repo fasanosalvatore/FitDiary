@@ -8,7 +8,7 @@ import {
     FormErrorMessage,
     FormLabel,
     GridItem,
-    Heading, HStack,
+    Heading, HStack, Image,
     Input,
     InputGroup,
     InputRightElement,
@@ -25,6 +25,7 @@ import {GradientBar} from "../../components/GradientBar";
 import Footer from "../../components/Footer";
 import Logo from "../../components/Logo";
 import {FetchContext} from "../../context/FetchContext";
+import imbBg from "../../images/fitness2.jpg";
 
 export default function Login() {
     const authContext = useContext(AuthContext);
@@ -92,6 +93,7 @@ export default function Login() {
                     </Link>
                 </Box>
             </Flex>
+
         <VStack w="full" h="full" p={[5, 10, 20]}>
 
             <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
@@ -146,7 +148,20 @@ export default function Login() {
             </Box>
 
         </VStack>
-            <Footer width={"full"} />
+            <Flex width={"full"} justify={"center"} align={"center"}>
+                <Image w={"full"} src={imbBg} filter={"grayscale(100%)"} />
+                <VStack pos={"absolute"} textAlign={"center"}>
+                    <Text fontSize={["0.1em", "1.5em", "3em", "4em"]} color={"whiteAlpha.900"}>
+                        Un nuovo modo di interagire con i tuoi clienti
+                    </Text>
+                    <Flex>
+                        <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"whiteAlpha.900"}>FitD</Heading>
+                        <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"fitdiary.600"}>ia</Heading>
+                        <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"whiteAlpha.900"}>ry</Heading>
+                    </Flex>
+                </VStack>
+            </Flex>
+            <Footer width={"full"} mt={"0"}/>
         </VStack>
     );
 

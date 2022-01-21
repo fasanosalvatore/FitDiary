@@ -83,7 +83,7 @@ export default function View() {
                     <Button ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}
                         onClick={() => history(-1)}>Torna ai Progressi</Button>
                     <Heading w={"full"} mb={5} textAlign={"center"}>Report n.{report.report.id}</Heading>
-                    <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
+                    <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={{base:0,md:10}} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
                             <VStack w="full" h="full" align="start">
                                 <HStack w="full" h="full" align="start">
@@ -97,13 +97,14 @@ export default function View() {
 
                                 <HStack w="full" h="full" align="start">
                                     <Flex width="full" justify="center">
-                                        <HStack alignItems="center" p={{base:1,md:20}} w={"full"}>
-                                            <Box backgroundColor={"white"} p={3} borderRadius={15} w={"full"}>
+                                        <HStack alignItems="center" p={{base:0,lg:20}} w={"full"}>
+                                            <Box backgroundColor={"white"} borderRadius={15} w={"full"}>
                                                 <Table variant={"striped"} colorScheme={"gray"}  size="md" w={"full"}>
                                                     <Thead>
                                                         <Tr >
-                                                            <Th textAlign={"start"} fontSize={20} fontWeight={800}>Caratteristiche</Th>
-                                                            <Th textAlign={"start"} fontSize={20} fontWeight={800}>Valori</Th>
+                                                            <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Caratteristiche</Th>
+                                                            <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Valori</Th>
+                                                            <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800} textAlign={"center"}>Andamento</Th>
                                                         </Tr>
 
                                                     </Thead>
@@ -111,24 +112,24 @@ export default function View() {
                                                     {report ?
                                                     <Tbody>
                                                         <Tr w={"full"}>
-                                                            <Td fontSize={25} fontWeight={500} >Peso</Td>
-                                                            <Td fontSize={25} fontWeight={400} >{report.report.peso}Kg<Icon as={BsGraphUp} color='green.500'
-                                                                marginLeft={4} /></Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={500} >Peso</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.peso}Kg</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} textAlign={"center"}><Icon as={BsGraphUp} color='green.500'  /></Td>
                                                         </Tr>
                                                         <Tr>
-                                                            <Td fontSize={25} fontWeight={500} >Circonferenza Bicipite{ }</Td>
-                                                            <Td fontSize={25} fontWeight={400}  >{report.report.crfBicipite}cm<Icon as={BsGraphDown} color='red.500'
-                                                                marginLeft={4} /></Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Bicipite{ }</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400}  >{report.report.crfBicipite}cm</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400}  textAlign={"center"}><Icon as={BsGraphDown} color='red.500'/></Td>
                                                         </Tr>
                                                         <Tr>
-                                                            <Td fontSize={25} fontWeight={500} >Circonferenza Addome</Td>
-                                                            <Td fontSize={25} fontWeight={400} >{report.report.crfAddome}cm<Icon as={BsGraphDown} color='red.500'
-                                                                marginLeft={4} /></Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Addome</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.crfAddome}cm</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} textAlign={"center"}><Icon as={BsGraphDown} color='red.500' /></Td>
                                                         </Tr>
-                                                        <Tr>
-                                                            <Td fontSize={25} fontWeight={500} >Circonferenza Quadricipite</Td>
-                                                            <Td fontSize={25} fontWeight={400} >{report.report.crfQuadricipite}cm<Icon as={BsGraphUp} color='green.500'
-                                                                marginLeft={4} /></Td>
+                                                        <Tr >
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Quadricipite</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.crfQuadricipite}cm</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} textAlign={"center"}><Icon as={BsGraphUp} color='green.500'/></Td>
                                                         </Tr>
                                                     </Tbody>
                                                         : <Text>il report non e' stato creato</Text>}
