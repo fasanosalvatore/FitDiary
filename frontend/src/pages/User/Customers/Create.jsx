@@ -9,7 +9,7 @@ export default function Create() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const urlCreateCustomer = "utenti";
     const toast = useToast({
-        duration: 30000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+        duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })

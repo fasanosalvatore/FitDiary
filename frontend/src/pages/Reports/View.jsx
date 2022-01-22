@@ -4,7 +4,6 @@ import {
     Flex,
     Heading,
     HStack,
-    Icon,
     Image,
     Table,
     Tbody,
@@ -17,7 +16,6 @@ import {
     VStack
 } from '@chakra-ui/react';
 import moment from "moment";
-import {BsGraphDown, BsGraphUp} from "react-icons/bs";
 import {useParams} from "react-router";
 import {FetchContext} from "../../context/FetchContext";
 import {Carousel} from "react-responsive-carousel";
@@ -104,7 +102,6 @@ export default function View() {
                                                         <Tr >
                                                             <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Caratteristiche</Th>
                                                             <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Valori</Th>
-                                                            <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Andamento</Th>
                                                         </Tr>
                                                     </Thead>
                                                     {report ?
@@ -112,22 +109,18 @@ export default function View() {
                                                         <Tr w={"full"}>
                                                             <Td fontSize={{base:20,md:15}} fontWeight={500} >Peso</Td>
                                                             <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.peso}Kg</Td>
-                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} textAlign={"center"}><Icon as={BsGraphUp} color='green.500'  /></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Bicipite{ }</Td>
                                                             <Td fontSize={{base:20,md:15}} fontWeight={400}  >{report.report.crfBicipite}cm</Td>
-                                                            <Td fontSize={{base:20,md:15}} fontWeight={400}  textAlign={"center"}><Icon as={BsGraphDown} color='red.500'/></Td>
                                                         </Tr>
                                                         <Tr>
                                                             <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Addome</Td>
                                                             <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.crfAddome}cm</Td>
-                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} textAlign={"center"}><Icon as={BsGraphDown} color='red.500' /></Td>
                                                         </Tr>
                                                         <Tr >
                                                             <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Quadricipite</Td>
                                                             <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.crfQuadricipite}cm</Td>
-                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} textAlign={"center"}><Icon as={BsGraphUp} color='green.500'/></Td>
                                                         </Tr>
                                                     </Tbody>
                                                         : <Text>il report non e' stato creato</Text>}
