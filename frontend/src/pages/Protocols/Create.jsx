@@ -92,6 +92,7 @@ const Create = () => {
       formData.append("schedaAlimentare", values.schedaAlimentare[0])
     try {
       const { data } = await fetchContext.authAxios.post(urlProtocolli, formData)
+      console.log(data)
       setToastMessage({title:"Creato!",body:"Protocollo creato correttamente",stat:"success"})
       navigate("/protocols")
     } catch (error) {

@@ -9,7 +9,6 @@ import {
     HStack,
     Icon,
     IconButton,
-    Link,
     Menu,
     MenuButton,
     MenuDivider,
