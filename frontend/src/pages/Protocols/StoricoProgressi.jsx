@@ -29,6 +29,9 @@ ChartJS.register(
 
 export const options = {
     responsive: true,
+    scales:{
+        y:{beginAtZero:true}
+    },
     elements: {
         point: {
             radius: 5,
@@ -117,14 +120,14 @@ function StoricoProgressi() {
     useEffect(() => {
         function extractData() {
             const newData = {
-                labels: [0],  // ci sta almeno una riga in tabella
+                labels: [0],  // c'è' almeno una riga in tabella
                 datasets: [
                     {
-                        label: "peso", //nome cliente,
+                        label: "peso", //peso,
                         "data": []
                     },
                     {
-                        label: "peso stimato", //nome cliente,
+                        label: "peso stimato", //peso stimato,
                         borderDash: [5, 5],
                         "data": [null] // per far partire il peso stimato dal peso stimato
                     },

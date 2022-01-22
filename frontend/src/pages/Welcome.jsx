@@ -1,4 +1,4 @@
-import {Box, Button, Flex, Heading, HStack, Image, Link, Text, VStack} from "@chakra-ui/react";
+import {Box, Button, Flex, Heading, HStack, Image, Text, VStack} from "@chakra-ui/react";
 import {Link as ReactLink} from "react-router-dom";
 import Logo from "../components/Logo";
 import TierPrice from "../components/TierPrice";
@@ -15,16 +15,16 @@ export default function Welcome() {
                         <Heading>FitDiary</Heading>
                     </HStack>
                     <Box pr={[0, 5, 10, 20]}>
-                        <Link as={ReactLink} to={"/signup"}>
+                        <ReactLink  to={"/signup"}>
                             <Button colorScheme='fitdiary' mr='4'>
                                 Registrati
                             </Button>
-                        </Link>
-                        <Link as={ReactLink} to={"/login"}>
+                        </ReactLink>
+                        <ReactLink to={"/login"}>
                             <Button colorScheme='fitdiary'>
                                 Login
                             </Button>
-                        </Link>
+                        </ReactLink>
                     </Box>
                 </Flex>
                 <Flex width={"full"} justify={"center"} align={"center"}>

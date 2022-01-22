@@ -15,7 +15,6 @@ import {
     Input,
     InputGroup,
     InputRightElement,
-    Link,
     SimpleGrid,
     Text,
     useToast,
@@ -83,17 +82,17 @@ export default function Login() {
         <VStack >
             <Flex width={"full"} justify={"space-between"} align={"center"} bg={"white"}>
                 <HStack pl={[0, 5, 10, 20]}>
-                    <Link as={ReactLink} to={"/"}>
+                    <ReactLink to={"/"}>
                     <Logo penColor="black" viewBox={"0 0 250 200"} boxSize={"5em"} />
-                    </Link>
+                    </ReactLink>
                     <Heading>FitDiary</Heading>
                 </HStack>
                 <Box pr={[0, 5, 10, 20]}>
-                    <Link as={ReactLink} to={"/signup"}>
+                    <ReactLink to={"/signup"}>
                         <Button colorScheme='fitdiary' mr='4'>
                             Registrati
                         </Button>
-                    </Link>
+                    </ReactLink>
                 </Box>
             </Flex>
 
@@ -142,8 +141,11 @@ export default function Login() {
                                     type='submit'>
                                     Login
                                 </Button>
-                                <Text mt={3} fontSize="medium" align={"center"}>Non hai ancora un account su FitDiary? <Link color="fitdiary.900" as={ReactLink} to={"/signup"}>Registrati</Link>
-                                </Text>
+                                <Flex alignContent={"center"} justifyContent={"center"} w={"full"}>
+                                    <Text mt={3} fontSize="medium" align={"center"}>Non hai ancora un account su FitDiary?</Text>
+                                    <ReactLink to={"/signup"}><Text color={"fitdiary.300"} mt={3} ml={1} >Registrati </Text></ReactLink>
+                                </Flex>
+
                             </GridItem>
                         </SimpleGrid>
                     </form>

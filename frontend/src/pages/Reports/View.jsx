@@ -59,7 +59,7 @@ export default function View() {
 
     useEffect(() => {
         console.log("pages/protocols/view");
-        const listaProtocolli = async () => {
+        const listaReport = async () => {
             try {
                 const { data } = await fetchContext.authAxios("reports/" + id);
                 setReport(data.data);
@@ -68,7 +68,7 @@ export default function View() {
                 setToastMessage({title: "Error", body: error.message, stat: "error"});
             }
         }
-        listaProtocolli();
+        listaReport();
 
     }, [fetchContext,id]);
 

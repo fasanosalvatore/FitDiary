@@ -1,7 +1,7 @@
-import WrapperBox from "./WrapperBox";
+import {Navigate} from "react-router";
 
 export default function DashboardAdmin() {
     return (
-        <WrapperBox></WrapperBox>
+        <Navigate to={"/users"}></Navigate>
     )
 }

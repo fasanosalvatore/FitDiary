@@ -28,6 +28,7 @@ import {Link as ReactLink} from "react-router-dom";
 import {AccordionMeal} from "../../components/AccordionMeal";
 import {AccordionTraining} from "../../components/AccordionTraining";
 import {ViewProtocolTitle} from "../../components/ViewProtocolTitle";
+import {AuthContext} from "../../context/AuthContext";
 
 export default function View() {
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
@@ -36,6 +37,7 @@ export default function View() {
     const [report, setReport] = useState();
     const { id } = useParams();
     const colSpan = useBreakpointValue({ base: 2, xl: 1 })
+    const authContext = useContext(AuthContext);
 
     const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
@@ -107,7 +109,7 @@ export default function View() {
                     </Flex>
                     <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
                         <GradientBar />
-                        <ViewProtocolTitle protocollo={protocollo} />
+                        <ViewProtocolTitle protocollo={protocollo} authContext={authContext}/>
                         <SimpleGrid columns={2} p={5}>
                             {protocollo.schedaAlimentare ? (
                                 <GridItem colSpan={colSpan}>
@@ -146,8 +148,8 @@ export default function View() {
                         <Flex p={5}>
                             <VStack>
                                 <ButtonGroup>
-                                    {report && (
-                                        <ReactLink to={`/reports/${report.report.id}`}>
+                                    {report && report !== null && (
+                                        <ReactLink to={`/reports/${report.id}`}>
                                             <Button colorScheme={"fitdiary"}>Visualizza Report</Button>
                                         </ReactLink>
                                     )}
