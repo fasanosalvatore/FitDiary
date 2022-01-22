@@ -23,10 +23,12 @@ import {
 import {AtSignIcon, PhoneIcon, ViewIcon, ViewOffIcon} from "@chakra-ui/icons";
 import {FetchContext} from "../../context/FetchContext";
 import {GradientBar} from "../../components/GradientBar";
+import {useNavigate} from "react-router";
 
 const urlGetInfo = `utenti/profilo`;
 
 export default function Edit() {
+    const navigate = useNavigate();
     const urlEditInfo = `utenti`;
     const fetchContext = useContext(FetchContext);
     const {register, handleSubmit, getValues, setValue, formState: {errors, isSubmitting}} = useForm();
@@ -73,6 +75,7 @@ export default function Edit() {
                 description: "Dati aggiornati correttamente",
                 status: data.status
             })
+            navigate("/profile")
         } catch (error) {
             console.log(error.response)
             toast({

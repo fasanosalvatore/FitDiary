@@ -21,12 +21,14 @@ import {FetchContext} from "../../context/FetchContext";
 import {CloseIcon} from "@chakra-ui/icons";
 import Select from "react-select";
 import {GradientBar} from "../../components/GradientBar";
+import {useNavigate} from "react-router";
 
 const urlProtocolli = "protocolli";
 const urlUtenti = "utenti";
 
 const Create = () => {
   const fetchContext = useContext(FetchContext);
+  const navigate = useNavigate();
   const [options, setOptions] = useState([{}]);
   const [isLoading, setisLoading] = useState(false);
   const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
@@ -82,7 +84,6 @@ const Create = () => {
 
   const onSubmit = async (values) => {
     const formData = new FormData();
-    console.log(values);
     formData.append("dataScadenza", values.dataScadenza)
     formData.append("idCliente", values.idCliente)
     if (values.schedaAllenamento)
@@ -91,22 +92,19 @@ const Create = () => {
       formData.append("schedaAlimentare", values.schedaAlimentare[0])
     try {
       const { data } = await fetchContext.authAxios.post(urlProtocolli, formData)
-      console.log(data);
       setToastMessage({title:"Creato!",body:"Protocollo creato correttamente",stat:"success"})
+      navigate("/protocols")
     } catch (error) {
-      console.log(error.response)
       setToastMessage({title:"Errore",body:error.response.data.data,stat:"error"})
     }
 
   }
 
   useEffect(() => {
-    console.log("pages/protocols/create");
     setselectedSchedaAllenamento(acceptedSchedaAllenamento[0]);
   }, [acceptedSchedaAllenamento]);
 
   useEffect(() => {
-    console.log("pages/protocols/create2");
     setisLoading(true);
     const getUsers = async () => {
       try {

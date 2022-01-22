@@ -149,7 +149,7 @@ export default function View() {
                             <VStack>
                                 <ButtonGroup>
                                     {report && report !== null && (
-                                        <ReactLink to={`/reports/${report.id}`}>
+                                        <ReactLink to={`/reports/${report.report.id}`}>
                                             <Button colorScheme={"fitdiary"}>Visualizza Report</Button>
                                         </ReactLink>
                                     )}
