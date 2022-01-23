@@ -1,16 +1,18 @@
 import {
-  Box,
-  Button,
-  FormControl, FormErrorMessage,
-  FormLabel,
-  GridItem,
-  Heading,
-  HStack,
-  Input,
-  SimpleGrid,
-  Text,
-  useToast,
-  VStack
+    Box,
+    Button,
+    Flex,
+    FormControl,
+    FormErrorMessage,
+    FormLabel,
+    GridItem,
+    Heading,
+    HStack,
+    Input,
+    SimpleGrid,
+    Text,
+    useToast,
+    VStack
 } from "@chakra-ui/react";
 import {useForm} from "react-hook-form"
 import React, {useCallback, useContext, useEffect, useState} from "react";
@@ -19,12 +21,14 @@ import {FetchContext} from "../../context/FetchContext";
 import {CloseIcon} from "@chakra-ui/icons";
 import Select from "react-select";
 import {GradientBar} from "../../components/GradientBar";
+import {useNavigate} from "react-router";
 
 const urlProtocolli = "protocolli";
 const urlUtenti = "utenti";
 
 const Create = () => {
   const fetchContext = useContext(FetchContext);
+  const navigate = useNavigate();
   const [options, setOptions] = useState([{}]);
   const [isLoading, setisLoading] = useState(false);
   const [selectedSchedaAllenamento, setselectedSchedaAllenamento] = useState(null);
@@ -80,7 +84,6 @@ const Create = () => {
 
   const onSubmit = async (values) => {
     const formData = new FormData();
-    console.log(values);
     formData.append("dataScadenza", values.dataScadenza)
     formData.append("idCliente", values.idCliente)
     if (values.schedaAllenamento)
@@ -89,22 +92,20 @@ const Create = () => {
       formData.append("schedaAlimentare", values.schedaAlimentare[0])
     try {
       const { data } = await fetchContext.authAxios.post(urlProtocolli, formData)
-      console.log(data);
+      console.log(data)
       setToastMessage({title:"Creato!",body:"Protocollo creato correttamente",stat:"success"})
+      navigate("/protocols")
     } catch (error) {
-      console.log(error.response)
       setToastMessage({title:"Errore",body:error.response.data.data,stat:"error"})
     }
 
   }
 
   useEffect(() => {
-    console.log("pages/protocols/create");
     setselectedSchedaAllenamento(acceptedSchedaAllenamento[0]);
   }, [acceptedSchedaAllenamento]);
 
   useEffect(() => {
-    console.log("pages/protocols/create2");
     setisLoading(true);
     const getUsers = async () => {
       try {
@@ -139,11 +140,13 @@ const Create = () => {
 
   return (
     <>
-      <VStack w="full" h="full" p={[5, 10, 20]}>
-        <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
+      <Flex wrap={"wrap"} p={5}>
+        <Flex alignItems={"center"} mb={5}>
+          <Heading w={"full"}>Crea Protocollo</Heading>
+        </Flex>
+        <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
           <GradientBar />
           <VStack spacing={3} alignItems="center" pb={5} mt={5}>
-            <Heading size="2xl">Crea Protocollo</Heading>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
               <SimpleGrid columns={2} columnGap={5} rowGap={5} pl={[0, 5, 10]} pr={[0, 5, 10]} w="full">
                 <GridItem colSpan={2}>
@@ -240,7 +243,7 @@ const Create = () => {
             </form>
           </VStack>
         </Box>
-      </VStack>
+      </Flex>
     </>
   )
 }

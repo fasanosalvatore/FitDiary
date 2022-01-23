@@ -9,7 +9,6 @@ import {
     HStack,
     Icon,
     IconButton,
-    Link,
     Menu,
     MenuButton,
     MenuDivider,
@@ -17,11 +16,10 @@ import {
     MenuList,
     Text,
     useColorModeValue,
-    useDisclosure,
+    useDisclosure, useMediaQuery,
     VStack,
 } from '@chakra-ui/react';
 import {
-    FiBell,
     FiBook,
     FiChevronDown,
     FiHome,
@@ -80,7 +78,7 @@ const navItems = [
       allowedRoles: ['admin']
   },
   {
-    name: 'Impostazioni',
+    name: 'Modifica Profilo',
     icon: FiSettings,
     to: "/account",
     allowedRoles: ['admin', 'cliente', 'preparatore']
@@ -90,7 +88,7 @@ const navItems = [
 
 const NavItem = ({ navItem, ...rest }) => {
   return (
-    <Link as={ReactLink} to={navItem.to} style={{ textDecoration: 'none' }} textAlign={"center"}>
+    <ReactLink to={navItem.to} style={{ textDecoration: 'none' }} textAlign={"center"}>
       <Flex
         textAlign={"left"}
         color="gray.700"
@@ -112,11 +110,12 @@ const NavItem = ({ navItem, ...rest }) => {
         )}
         {navItem.name}
       </Flex>
-    </Link>
+    </ReactLink>
   );
 };
 
 export default function SidebarWithHeader({ children }) {
+    const [isMobile] = useMediaQuery("(max-width: 768px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box bg={useColorModeValue("fitdiary.50", "gray.900")}>
@@ -125,6 +124,7 @@ export default function SidebarWithHeader({ children }) {
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
       />
+        {isMobile && (
       <Drawer
         autoFocus={false}
         isOpen={isOpen}
@@ -138,6 +138,7 @@ export default function SidebarWithHeader({ children }) {
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
+        )}
       {/* mobilenav */}
       <MobileNav minHeight="10vh" onOpen={onOpen} />
       <Box minHeight="70vh" ml={{ base: 0, md: 60 }} bg={"fitdiary.50"}>
@@ -165,11 +166,11 @@ const SidebarContent = ({ onClose, ...rest }) => {
       h="full"
       {...rest}>
       <Flex h="20" alignItems="center" mx="8" justifyContent={{ base: "space-evenly", md: "center" }}>
-        <Link href={"/"}>
+        <ReactLink to={"/dashboard"}>
           <Text fontSize="8xl" fontFamily="monospace" fontWeight="bold">
             <Logo penColor="black" viewBox={"0 -35 250 250"} />
           </Text>
-        </Link>
+        </ReactLink>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       <Box pt={5}>
@@ -186,6 +187,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+
   const authContext = useContext(AuthContext);
   const { authState } = authContext;
   return (
@@ -215,13 +217,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
         <Logo penColor="black" viewBox={"0 -35 250 250"} boxSize="3em" />
       </Text>
       <HStack spacing={{ base: "0", md: "6" }}>
-        <IconButton
-          color={"blue.500"}
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
         <Flex alignItems={"center"}>
           <Menu>
             <MenuButton
@@ -251,14 +246,14 @@ const MobileNav = ({ onOpen, ...rest }) => {
             </MenuButton>
             <MenuList>
               <ReactLink to={"/profile"}>
-                <MenuItem>Profile</MenuItem>
+                <MenuItem>Profilo</MenuItem>
               </ReactLink>
               <ReactLink to={"/account"}>
-                <MenuItem>Settings</MenuItem>
+                <MenuItem>Modifica Profilo</MenuItem>
               </ReactLink>
               <MenuDivider />
               <ReactLink to={"/logout"}>
-                <MenuItem>Logout</MenuItem>
+                <MenuItem>Esci</MenuItem>
               </ReactLink>
             </MenuList>
           </Menu>

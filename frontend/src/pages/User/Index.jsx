@@ -15,7 +15,8 @@ import {
     Td,
     Text,
     Th,
-    Thead, Tooltip,
+    Thead,
+    Tooltip,
     Tr,
     useMediaQuery,
     useToast
@@ -251,8 +252,9 @@ export default function Index() {
                                                                title={`Elimina ${c.nome}`}
                                                                body={`Sei sicuro di voler eliminare l'utente ${c.nome} ${c.cognome}?`}
                                                                buttonCancel={"Annulla"} buttonColor="red"
-                                                               buttonLabel="Elimina Utente"
+                                                               buttonLabel={"Elimina"}
                                                                buttonOk={<DeleteIcon/>}
+                                                               buttonOkText={"Elimina"}
                                                                onClick={() => deleteUser(c.id)}
                                                         />
                                                     ) : (

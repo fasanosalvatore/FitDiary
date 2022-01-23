@@ -1,16 +1,6 @@
 import React, {useContext} from 'react';
 import {useForm} from 'react-hook-form';
-import {
-    Box,
-    Button,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Heading,
-    Input,
-    useToast,
-    VStack
-} from "@chakra-ui/react";
+import {Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, useToast} from "@chakra-ui/react";
 import {FetchContext} from "../../../context/FetchContext";
 import {GradientBar} from "../../../components/GradientBar";
 
@@ -19,7 +9,7 @@ export default function Create() {
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const urlCreateCustomer = "utenti";
     const toast = useToast({
-        duration: 30000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+        duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })
@@ -46,11 +36,13 @@ export default function Create() {
     }
 
     return (
-        <VStack w="full" h="full" px={[0, 5, 10, 20]} py={10}>
-            <Heading size="2xl" textAlign={"center"} pt={5}>Invita Cliente</Heading>
-            <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
-                <GradientBar/>
-                <Box pl={[0, 5, 20]} pr={[0, 5, 20]} pb={5} pt={5}>
+        <Flex wrap={"wrap"} p={5}>
+            <Flex alignItems={"center"} mb={5}>
+                <Heading w={"full"}>Invita Nuovo Cliente</Heading>
+            </Flex>
+            <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+                <GradientBar />
+                <Box pl={[0, 5, 20]} pr={[0, 5, 20]} pb={10} pt={5}>
                     <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                         <FormControl id={"nome"} isInvalid={errors.nome} pt={5}>
                             <FormLabel htmlFor="nome">Nome</FormLabel>
@@ -84,6 +76,6 @@ export default function Create() {
                     </form>
                 </Box>
             </Box>
-        </VStack>
+        </Flex>
     )
 }

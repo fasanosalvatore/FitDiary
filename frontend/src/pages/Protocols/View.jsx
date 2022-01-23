@@ -1,51 +1,44 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
+    Accordion,
+    AccordionButton,
+    AccordionItem,
     Box,
     Button,
-    Divider,
+    ButtonGroup,
     Flex,
+    GridItem,
     Heading,
-    HStack,
-    Icon,
     Image,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Table,
-    TableCaption,
-    Tbody,
-    Td,
+    SimpleGrid,
     Text,
-    Th,
-    Thead,
-    Tr,
-    useDisclosure,
+    Tooltip,
+    useBreakpointValue,
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {ArrowLeftIcon, ArrowRightIcon} from '@chakra-ui/icons';
-import {RiArrowGoBackLine} from 'react-icons/ri';
 import moment from "moment";
-import {BsGraphDown, BsGraphUp} from "react-icons/bs";
 import {useNavigate, useParams} from "react-router";
 import {FetchContext} from "../../context/FetchContext";
-import dish from "../../images/dish.png";
+import {GradientBar} from "../../components/GradientBar";
 import training from "../../images/dumbbell.png";
-import photo from "../../images/photos.png";
+import meal from "../../images/dish.png";
+import _ from "lodash";
+import {Link as ReactLink} from "react-router-dom";
+import {AccordionMeal} from "../../components/AccordionMeal";
+import {AccordionTraining} from "../../components/AccordionTraining";
+import {ViewProtocolTitle} from "../../components/ViewProtocolTitle";
+import {AuthContext} from "../../context/AuthContext";
 
 export default function View() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
-    const [protocollo, setProtocolli] = useState();
-    const [report,setReport]=useState();
+    const [protocollo, setProtocollo] = useState();
+    const [report, setReport] = useState();
     const { id } = useParams();
+    const colSpan = useBreakpointValue({ base: 2, xl: 1 })
+    const authContext = useContext(AuthContext);
 
-    let history = useNavigate();
     const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
         duration: 3000,
@@ -69,7 +62,7 @@ export default function View() {
         return () => {
             setTimeout(() => {
                 setToastMessage(undefined);
-            },1000);
+            }, 1000);
         }
     }, [toastMessage, toast]);
 
@@ -78,181 +71,94 @@ export default function View() {
         const listaProtocolli = async () => {
             try {
                 const { data } = await fetchContext.authAxios("protocolli/" + id);
-                setProtocolli(data.data);
+                setProtocollo(data.data.protocollo);
+                console.log(data.data);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
-                setToastMessage({title: "Error", body: error.message, stat: "error"});
+                setToastMessage({ title: "Error", body: error.message, stat: "error" });
             }
         }
         listaProtocolli();
 
-    }, [fetchContext,id]);
+    }, [fetchContext, id]);
 
     useEffect(() => {
         const report = async () => {
             try {
-                if(protocollo){
-                    const {data} = await fetchContext.authAxios("reports/search?data=" + protocollo.protocollo.dataScadenza + "&clienteId=" + protocollo.protocollo.cliente.id);// path da aggiungere quando il backend sarà pronto
+                if (protocollo) {
+                    const { data } = await fetchContext.authAxios("reports/search?data=" + protocollo.dataScadenza + "&clienteId=" + protocollo.cliente.id);// path da aggiungere quando il backend sarà pronto
                     console.log(data);
                     setReport(data.data);
                     setLoading(false);
                 }
             } catch (error) {
-                setToastMessage({title: "Error", body: error.message, stat: "error"});
+                setToastMessage({ title: "Error", body: error.message, stat: "error" });
             }
         }
         report();
-    },[fetchContext,protocollo]);
+    }, [fetchContext, protocollo]);
 
     moment.locale("it-IT");
     const navigate = useNavigate();
     return (
         <>
             {!isLoading && (
-                <Flex wrap={"wrap"}>
-                    <Button ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}
-                        onClick={() => history(-1)}>Torna al protocollo</Button>
-                    <Heading w={"full"} mb={5} textAlign={"center"}>Protocollo n.{protocollo.protocollo.id}</Heading>
-                    <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
-                        <Flex width="full" justify="space-between">
-                            <VStack w="full" h="full" align="start">
-                                <HStack w="full" h="full" align="start">
-                                    <Flex width="full" justify="space-between">
-                                        <HStack>
-                                            <Heading size={"sx"} textAlign="start"> Data inizio:</Heading>
-                                            <Text>{moment(protocollo.protocollo.dataCreazione).format("DD/MM/yyyy")}</Text>
-                                        </HStack>
-                                        <HStack>
-                                            <Heading size={"sx"} textAlign="center"> Nome preparatore:</Heading>
-                                            <Text>{protocollo.protocollo.preparatore.nome} {protocollo.protocollo.preparatore.cognome}</Text>
-                                        </HStack>
-                                        <HStack>
-                                            <Heading size={"sx"} textAlign="center">Data fine:</Heading>
-                                            <Text>{moment(protocollo.protocollo.dataScadenza).format("DD/MM/yyyy")}</Text>
-                                        </HStack>
-                                    </Flex>
-                                </HStack>
-
-                                <HStack w="full" h="full" align="start">
-                                    <Flex width="full" justify="space-between">
-                                        <HStack alignItems="center" p={20}>
-                                            <Box backgroundColor={"white"} p={3} borderRadius={15}>
-                                                <Table variant={"unstyled"} colorScheme={"gray"} size="md">
-                                                    <TableCaption>PROGRESSI</TableCaption>
-                                                    <Thead color>
-                                                        <Tr>
-                                                            <Th></Th>
-                                                            <Th></Th>
-                                                        </Tr>
-                                                    </Thead>
-                                                    {report ?
-                                                    <Tbody>
-                                                        <Tr>
-                                                            <Td>Peso</Td>
-                                                            <Td>{report.report.peso}Kg<Icon as={BsGraphUp} color='green.500'
-                                                                marginLeft={4} /></Td>
-                                                        </Tr>
-                                                        <Tr>
-                                                            <Td>Circonferenza Bicipite{ }</Td>
-                                                            <Td>{report.report.crfBicipite}cm<Icon as={BsGraphDown} color='red.500'
-                                                                marginLeft={4} /></Td>
-                                                        </Tr>
-                                                        <Tr>
-                                                            <Td>Circonferenza Addome</Td>
-                                                            <Td>{report.report.crfAddome}cm<Icon as={BsGraphDown} color='red.500'
-                                                                marginLeft={4} /></Td>
-                                                        </Tr>
-                                                        <Tr>
-                                                            <Td>Circonferenza Quadricipite</Td>
-                                                            <Td>{report.report.crfQuadricipite}cm<Icon as={BsGraphUp} color='green.500'
-                                                                marginLeft={4} /></Td>
-                                                        </Tr>
-                                                    </Tbody>
-                                                        : <Text>il report non e' stato creato</Text>}
-                                                </Table>
-                                            </Box>
-                                        </HStack>
-
-                                        <HStack alignItems={"center"} marginTop={"auto"} marginBottom={"auto"}>
-                                            <Box backgroundColor={"white"} p={3} borderRadius={15} w={450} h={310} mr={30} ml={25}>
-                                                <VStack alignItems={"center"}>
-                                                    <Heading size="xs" mb={5}> Vuoi visualizzare le tue schede?</Heading>
-                                                </VStack>
-                                            <Flex justify="center">
-                                                <HStack >
-                                                    <VStack alignItems={"center"}>
-                                                        <Image
-                                                            boxSize='70px'
-                                                            htmlHeight='10px'
-                                                            objectFit='cover'
-                                                            src={training}>
-                                                        </Image>
-                                                        <Button colorScheme='fitdiary' onClick={() => {
-                                                            navigate("/trainingcard/" + protocollo.protocollo.id)
-                                                        }}>Vedi Allenamento
-                                                        </Button>
-                                                    </VStack>
-                                                    <VStack alignItems={"center"}>
-                                                        <Image
-                                                            boxSize='70px'
-                                                            objectFit='cover'
-                                                            src={dish}>
-                                                        </Image>
-                                                        <Button colorScheme='fitdiary' onClick={() => {
-                                                            navigate("/dietcard/" + protocollo.protocollo.id)
-                                                        }}>Vedi Alimentazione</Button>
-                                                    </VStack>
-                                                </HStack>
-                                                </Flex>
-                                                <Divider mt={5}></Divider>
-                                                <VStack alignItems={"center"}>
-                                                    <Heading size="xs" mb={5} mt={5}> Qui puoi visionare le foto del report</Heading>
-                                                </VStack>
-                                                <Flex justify="center">
-                                                <HStack alignItems={"center"}>
-                                                    <VStack align="center">
-                                                        <Image
-                                                            boxSize='60px'
-                                                            objectFit='cover'
-                                                            src={photo}>
-                                                        </Image>
-                                                        <Button colorScheme='fitdiary' onClick={onOpen}>Visualizza Foto</Button>
-                                                        <Modal colorScheme='blue' isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl" }>
-                                                            <ModalOverlay />
-                                                            <ModalContent>
-                                                                <ModalHeader textAlign={"center"}>Foto del cliente</ModalHeader>
-                                                                <ModalCloseButton/>
-                                                                <ModalBody align={"center"}>
-                                                                    <Flex justify="center">
-                                                                        <HStack align="center">
-                                                                            <Button variant='ghost' textAlign="center" align="start" leftIcon={<ArrowLeftIcon/>}></Button>
-                                                                            {report ? report.report.immaginiReports.map((img,i)=> {
-                                                                                return <Image boxSize={550} src={img.url} alt='Dan Abramov'/>
-                                                                            }): " "}
-                                                                            <Button variant='ghost' textAlign="center" align="end" leftIcon={<ArrowRightIcon/>}></Button>
-                                                                        </HStack>
-                                                                    </Flex>
-                                                                </ModalBody>
-                                                                <ModalFooter>
-                                                                </ModalFooter>
-                                                            </ModalContent>
-                                                        </Modal>
-                                                    </VStack>
-                                                </HStack>
-                                                </Flex>
-                                            </Box>
-                                        </HStack>
-                                    </Flex>
-                                </HStack>
-                                <HStack>
-
-                                </HStack>
-                                <HStack>
-                                    <Heading size="s">Hai completato il protocollo?</Heading>
-                                    <Button onClick={() => {
-                                        navigate("/reports/create")
-                                    }} colorScheme='fitdiary'>Inserisci report</Button>
-                                </HStack>
+                <Flex wrap={"wrap"} p={5}>
+                    <Flex alignItems={"center"} mb={5}>
+                        <Heading w={"full"}>Protocollo {protocollo.id}</Heading>
+                    </Flex>
+                    <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+                        <GradientBar />
+                        <ViewProtocolTitle protocollo={protocollo} authContext={authContext}/>
+                        <SimpleGrid columns={2} p={5}>
+                            {protocollo.schedaAlimentare ? (
+                                <GridItem colSpan={colSpan}>
+                                    <Heading size={"md"} mb={2} textAlign={"center"}>Il pasto del giorno</Heading>
+                                    <AccordionMeal schedaAlimentare={protocollo.schedaAlimentare} nome="Spuntino" />
+                                    <AccordionMeal schedaAlimentare={protocollo.schedaAlimentare} nome="Colazione" />
+                                    <AccordionMeal schedaAlimentare={protocollo.schedaAlimentare} nome="Pranzo" />
+                                    <AccordionMeal schedaAlimentare={protocollo.schedaAlimentare} nome="Cena" />
+                                    <Accordion>
+                                        <AccordionItem>
+                                            <AccordionButton onClick={() => navigate("/dietcards/" + protocollo.id)}>
+                                                <Image boxSize='30px' htmlHeight='10px' objectFit='cover' src={meal} mr={3} />
+                                                <Text color={"fitdiary.900"}>Vedi l'alimentazione completa</Text>
+                                            </AccordionButton>
+                                        </AccordionItem>
+                                    </Accordion>
+                                </GridItem>
+                            ) : (<Text>Niente da mangiare oggi....</Text>)}
+                            {protocollo.schedaAllenamento ? (
+                                <GridItem colSpan={colSpan}>
+                                    <Heading size={"md"} mb={2} textAlign={"center"}>L'allenamento</Heading>
+                                    {_(protocollo.schedaAllenamento.frequenza).times(i => {
+                                        return (<AccordionTraining key={i} schedaAllenamento={protocollo.schedaAllenamento} nome={"Allenamento " + (i + 1)} numeroAllenamento={(i + 1).toString()} />)
+                                    })}
+                                    <Accordion>
+                                        <AccordionItem>
+                                            <AccordionButton onClick={() => navigate("/trainingcards/" + protocollo.id)}>
+                                                <Image boxSize='30px' htmlHeight='10px' objectFit='cover' src={training} mr={3} />
+                                                <Text color={"fitdiary.900"}>Vedi la scheda completa</Text>
+                                            </AccordionButton>
+                                        </AccordionItem>
+                                    </Accordion>
+                                </GridItem>
+                            ) : (<Text>Non hai allenamenti oggi....</Text>)}
+                        </SimpleGrid>
+                        <Flex p={5}>
+                            <VStack>
+                                <ButtonGroup>
+                                    {report && report !== null && (
+                                        <ReactLink to={`/reports/${report.report.id}`}>
+                                            <Button colorScheme={"fitdiary"}>Visualizza Report</Button>
+                                        </ReactLink>
+                                    )}
+                                    <Tooltip label="Hai completato il protocollo?">
+                                        <Button onClick={() => {
+                                            navigate("/reports/create")
+                                        }} colorScheme='fitdiary'>Inserisci report</Button>
+                                    </Tooltip>
+                                </ButtonGroup>
                             </VStack>
                         </Flex>
                     </Box>

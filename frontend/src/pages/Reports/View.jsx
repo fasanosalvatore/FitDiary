@@ -1,14 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
     Box,
-    Button,
     Flex,
     Heading,
     HStack,
-    Icon,
     Image,
     Table,
-    TableCaption,
     Tbody,
     Td,
     Text,
@@ -18,13 +15,12 @@ import {
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {RiArrowGoBackLine} from 'react-icons/ri';
 import moment from "moment";
-import {BsGraphDown, BsGraphUp} from "react-icons/bs";
-import {useNavigate, useParams} from "react-router";
+import {useParams} from "react-router";
 import {FetchContext} from "../../context/FetchContext";
 import {Carousel} from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import {GradientBar} from "../../components/GradientBar";
 
 export default function View() {
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
@@ -32,7 +28,6 @@ export default function View() {
     const [report,setReport]=useState();
     const { id } = useParams();
 
-    let history = useNavigate();
     const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
         duration: 3000,
@@ -62,7 +57,7 @@ export default function View() {
 
     useEffect(() => {
         console.log("pages/protocols/view");
-        const listaProtocolli = async () => {
+        const listaReport = async () => {
             try {
                 const { data } = await fetchContext.authAxios("reports/" + id);
                 setReport(data.data);
@@ -71,7 +66,7 @@ export default function View() {
                 setToastMessage({title: "Error", body: error.message, stat: "error"});
             }
         }
-        listaProtocolli();
+        listaReport();
 
     }, [fetchContext,id]);
 
@@ -79,11 +74,14 @@ export default function View() {
     return (
         <>
             {!isLoading && (
-                <Flex wrap={"wrap"}>
-                    <Button ml={5} mt={5} colorScheme={"fitdiary"} leftIcon={<RiArrowGoBackLine />}
-                        onClick={() => history(-1)}>Torna ai Progressi</Button>
-                    <Heading w={"full"} mb={5} textAlign={"center"}>Report n.{report.report.id}</Heading>
-                    <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={10} minW={"full"} height={"auto"}>
+                <Flex wrap={"wrap"} p={5}>
+                    <Flex alignItems={"center"} mb={5}>
+                        <Heading w={"full"}>Report n.{report.report.id}</Heading>
+                    </Flex>
+                    <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+                        <GradientBar />
+
+                    <Box bg={"white"} rounded={20} borderBottomRadius={0} padding={{base:0,md:10}} minW={"full"} height={"auto"}>
                         <Flex width="full" justify="space-between">
                             <VStack w="full" h="full" align="start">
                                 <HStack w="full" h="full" align="start">
@@ -97,37 +95,32 @@ export default function View() {
 
                                 <HStack w="full" h="full" align="start">
                                     <Flex width="full" justify="center">
-                                        <HStack alignItems="center" p={20}>
-                                            <Box backgroundColor={"white"} p={3} borderRadius={15}>
-                                                <Table variant={"unstyled"} colorScheme={"gray"} size="md">
-                                                    <TableCaption>PROGRESSI</TableCaption>
-                                                    <Thead color>
-                                                        <Tr>
-                                                            <Th></Th>
-                                                            <Th></Th>
+                                        <HStack alignItems="center"  px={{base:0,lg:20}} py={{base:0,lg:10}} w={"full"}>
+                                            <Box backgroundColor={"white"} borderRadius={15} w={"full"}>
+                                                <Table variant={"striped"} colorScheme={"gray"}  size="md" w={"full"}>
+                                                    <Thead>
+                                                        <Tr >
+                                                            <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Caratteristiche</Th>
+                                                            <Th textAlign={"start"} fontSize={{base:15,md:20}} fontWeight={800}>Valori</Th>
                                                         </Tr>
                                                     </Thead>
                                                     {report ?
                                                     <Tbody>
-                                                        <Tr>
-                                                            <Td>Peso</Td>
-                                                            <Td>{report.report.peso}Kg<Icon as={BsGraphUp} color='green.500'
-                                                                marginLeft={4} /></Td>
+                                                        <Tr w={"full"}>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={500} >Peso</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.peso}Kg</Td>
                                                         </Tr>
                                                         <Tr>
-                                                            <Td>Circonferenza Bicipite{ }</Td>
-                                                            <Td>{report.report.crfBicipite}cm<Icon as={BsGraphDown} color='red.500'
-                                                                marginLeft={4} /></Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Bicipite{ }</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400}  >{report.report.crfBicipite}cm</Td>
                                                         </Tr>
                                                         <Tr>
-                                                            <Td>Circonferenza Addome</Td>
-                                                            <Td>{report.report.crfAddome}cm<Icon as={BsGraphDown} color='red.500'
-                                                                marginLeft={4} /></Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Addome</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.crfAddome}cm</Td>
                                                         </Tr>
-                                                        <Tr>
-                                                            <Td>Circonferenza Quadricipite</Td>
-                                                            <Td>{report.report.crfQuadricipite}cm<Icon as={BsGraphUp} color='green.500'
-                                                                marginLeft={4} /></Td>
+                                                        <Tr >
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={500} >Circonferenza Quadricipite</Td>
+                                                            <Td fontSize={{base:20,md:15}} fontWeight={400} >{report.report.crfQuadricipite}cm</Td>
                                                         </Tr>
                                                     </Tbody>
                                                         : <Text>il report non e' stato creato</Text>}
@@ -136,20 +129,28 @@ export default function View() {
                                         </HStack>
                                     </Flex>
                                 </HStack>
-                                <Heading w={"full"} mb={5} textAlign={"center"}>Foto</Heading>
-                                <Flex justify="center">
-                                    <VStack>
-                                        <HStack alignItems={"center"} width={{base:"80%",sm:"60%",md:"50%"}}>
-                                            <Carousel infiniteLoop={true} emulateTouch={true}>
+                                <>
+                                <Flex justify="center" w={"full"}>
+                                    {report.report.immaginiReports.length > 0 && (
+                                    <VStack alignContent={"center"}>
+                                        <Heading w={"full"} mb={5} textAlign={"center"}>Foto</Heading>
+                                        <HStack width={{base:"80%",sm:"60%",md:"50%"}}>
+                                            <Carousel infiniteLoop={true} emulateTouch={true} dynamicHeight={true} >
                                                 {report ? report.report.immaginiReports.map((img,i)=> {
-                                                    return <Image boxSize={550} h={"auto"} w={200} src={img.url} alt='Foto non disponibile'/>
+                                                    return(
+                                                    <Box bg={"fitdiary.50"} borderRadius={"md"}>
+                                                        <Image objectFit='contain'  boxSize={550} src={img.url} alt='Foto non disponibile'/>
+                                                    </Box>)
                                                 }): " "}
                                             </Carousel>
                                         </HStack>
                                     </VStack>
+                                        )}
                                 </Flex>
+                                </>
                             </VStack>
                         </Flex>
+                    </Box>
                     </Box>
                 </Flex>
             )}

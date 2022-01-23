@@ -31,9 +31,11 @@ public final class ResponseHandler {
 <span class="fc bfc" id="L31" title="All 2 branches covered.">        } else if (status.is4xxClientError()) {</span>
 <span class="fc" id="L32">            map.put(&quot;data&quot;, responseObj);</span>
 <span class="fc" id="L33">            statusMessage = &quot;fail&quot;;</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        } else if (status.is5xxServerError()) {</span>
+<span class="fc" id="L35">            generateResponse(status, responseObj.toString());</span>
         }
-<span class="fc" id="L35">        map.put(&quot;status&quot;, statusMessage);</span>
-<span class="fc" id="L36">        return new ResponseEntity&lt;&gt;(map, status);</span>
+<span class="fc" id="L37">        map.put(&quot;status&quot;, statusMessage);</span>
+<span class="fc" id="L38">        return new ResponseEntity&lt;&gt;(map, status);</span>
     }
 
     /**
@@ -46,35 +48,35 @@ public final class ResponseHandler {
             final HttpStatus status,
             final String objectName,
             final Object responseObj) {
-<span class="fc" id="L49">        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L50">        String statusMessage = &quot;&quot;;</span>
-<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (status.is1xxInformational()</span>
-<span class="fc bfc" id="L52" title="All 2 branches covered.">                || status.is2xxSuccessful()</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">                || status.is3xxRedirection()) {</span>
-<span class="fc" id="L54">            Map&lt;String, Object&gt; objectMap = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L55">            objectMap.put(objectName, responseObj);</span>
-<span class="fc" id="L56">            map.put(&quot;data&quot;, objectMap);</span>
-<span class="fc" id="L57">            statusMessage = &quot;success&quot;;</span>
-<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        } else if (status.is4xxClientError()) {</span>
-<span class="nc" id="L59">            map.put(&quot;data&quot;, responseObj);</span>
-<span class="nc" id="L60">            statusMessage = &quot;fail&quot;;</span>
+<span class="fc" id="L51">        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L52">        String statusMessage = &quot;&quot;;</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (status.is1xxInformational()</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">                || status.is2xxSuccessful()</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">                || status.is3xxRedirection()) {</span>
+<span class="fc" id="L56">            Map&lt;String, Object&gt; objectMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L57">            objectMap.put(objectName, responseObj);</span>
+<span class="fc" id="L58">            map.put(&quot;data&quot;, objectMap);</span>
+<span class="fc" id="L59">            statusMessage = &quot;success&quot;;</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        } else if (status.is4xxClientError()) {</span>
+<span class="nc" id="L61">            map.put(&quot;data&quot;, responseObj);</span>
+<span class="nc" id="L62">            statusMessage = &quot;fail&quot;;</span>
         }
-<span class="fc" id="L62">        map.put(&quot;status&quot;, statusMessage);</span>
-<span class="fc" id="L63">        return new ResponseEntity&lt;&gt;(map, status);</span>
+<span class="fc" id="L64">        map.put(&quot;status&quot;, statusMessage);</span>
+<span class="fc" id="L65">        return new ResponseEntity&lt;&gt;(map, status);</span>
     }
 
     /**
-     * @param status status
+     * @param status  status
      * @param message message
      * @return ResponseEntity
      */
-    public static ResponseEntity&lt;Object&gt; generateResponse(
+    private static ResponseEntity&lt;Object&gt; generateResponse(
             final HttpStatus status,
             final String message) {
-<span class="fc" id="L74">        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
-<span class="fc" id="L75">        map.put(&quot;message&quot;, message);</span>
-<span class="fc" id="L76">        map.put(&quot;status&quot;, &quot;error&quot;);</span>
-<span class="fc" id="L77">        return new ResponseEntity&lt;&gt;(map, status);</span>
+<span class="fc" id="L76">        Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L77">        map.put(&quot;message&quot;, message);</span>
+<span class="fc" id="L78">        map.put(&quot;status&quot;, &quot;error&quot;);</span>
+<span class="fc" id="L79">        return new ResponseEntity&lt;&gt;(map, status);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -21,7 +21,7 @@ public final class FileUtility {
      */
     public static File getFile(final MultipartFile multiPartFile)
             throws IOException {
-<span class="pc bpc" id="L24" title="1 of 4 branches missed.">        if (multiPartFile == null || multiPartFile.isEmpty()) {</span>
+<span class="fc bfc" id="L24" title="All 4 branches covered.">        if (multiPartFile == null || multiPartFile.isEmpty()) {</span>
 <span class="fc" id="L25">            return null;</span>
         }
 <span class="fc" id="L27">        var file = new File(multiPartFile.getOriginalFilename());</span>

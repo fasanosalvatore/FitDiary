@@ -21,20 +21,6 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "236b1aff-8a7a-4ea2-a302-165ebe8fcafd",
-      "comment": "",
-      "command": "click",
-      "target": "id=email",
-      "targets": [
-        ["id=email", "id"],
-        ["name=email", "name"],
-        ["css=#email", "css:finder"],
-        ["xpath=//input[@id='email']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "7bc01a67-4f6d-41a3-9d3a-2bf932eb539c",
       "comment": "",
       "command": "type",
@@ -48,20 +34,6 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "mariorossigmail.com"
-    }, {
-      "id": "1a2d8d0b-cf13-4cc8-bf52-c4239c230058",
-      "comment": "",
-      "command": "click",
-      "target": "id=password",
-      "targets": [
-        ["id=password", "id"],
-        ["name=password", "name"],
-        ["css=#password", "css:finder"],
-        ["xpath=//input[@id='password']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[2]/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div/input", "xpath:position"]
-      ],
-      "value": ""
     }, {
       "id": "5fd1cede-4a9c-4f33-aeea-6652022e8ca7",
       "comment": "",
@@ -121,48 +93,6 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "1ae30384-b3d0-41a6-b461-79e5e9dc280d",
-      "comment": "",
-      "command": "click",
-      "target": "id=email",
-      "targets": [
-        ["id=email", "id"],
-        ["name=email", "name"],
-        ["css=#email", "css:finder"],
-        ["xpath=//input[@id='email']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "4bd01ce0-7bc9-4c9e-994e-9b8b6dc72673",
-      "comment": "",
-      "command": "type",
-      "target": "id=email",
-      "targets": [
-        ["id=email", "id"],
-        ["name=email", "name"],
-        ["css=#email", "css:finder"],
-        ["xpath=//input[@id='email']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "mariorossi@gmail.com"
-    }, {
-      "id": "77ba0c26-3f89-4876-a89f-24c8b7b24964",
-      "comment": "",
-      "command": "click",
-      "target": "id=email",
-      "targets": [
-        ["id=email", "id"],
-        ["name=email", "name"],
-        ["css=#email", "css:finder"],
-        ["xpath=//input[@id='email']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "67523aaf-bdf1-4b9c-9877-1ae42ca36e16",
       "comment": "",
       "command": "type",
@@ -176,20 +106,6 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "mariorossi@gmail.com"
-    }, {
-      "id": "3c384137-17a3-419e-a8d9-6e0b8cdbf8f0",
-      "comment": "",
-      "command": "click",
-      "target": "id=password",
-      "targets": [
-        ["id=password", "id"],
-        ["name=password", "name"],
-        ["css=#password", "css:finder"],
-        ["xpath=//input[@id='password']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[2]/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div/input", "xpath:position"]
-      ],
-      "value": ""
     }, {
       "id": "146dfc25-b43b-47a3-8afb-48350a9681b6",
       "comment": "",
@@ -248,48 +164,6 @@
       "targets": [],
       "value": ""
     }, {
-      "id": "41ff5f92-4e2c-4d1d-bb3b-204360c3af2f",
-      "comment": "",
-      "command": "click",
-      "target": "id=email",
-      "targets": [
-        ["id=email", "id"],
-        ["name=email", "name"],
-        ["css=#email", "css:finder"],
-        ["xpath=//input[@id='email']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
-      "id": "7586f52d-cd2f-4c20-87a1-fb4a825f4202",
-      "comment": "",
-      "command": "type",
-      "target": "id=email",
-      "targets": [
-        ["id=email", "id"],
-        ["name=email", "name"],
-        ["css=#email", "css:finder"],
-        ["xpath=//input[@id='email']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": "mariorossi@gmail.com"
-    }, {
-      "id": "6950f61b-3d6d-4bb8-8eeb-487ef72ed14e",
-      "comment": "",
-      "command": "click",
-      "target": "id=email",
-      "targets": [
-        ["id=email", "id"],
-        ["name=email", "name"],
-        ["css=#email", "css:finder"],
-        ["xpath=//input[@id='email']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div/div/input", "xpath:idRelative"],
-        ["xpath=//input", "xpath:position"]
-      ],
-      "value": ""
-    }, {
       "id": "02a3bbb2-a9ae-493a-a5a0-f908c616598d",
       "comment": "",
       "command": "type",
@@ -303,20 +177,6 @@
         ["xpath=//input", "xpath:position"]
       ],
       "value": "mariorossi@gmail.com"
-    }, {
-      "id": "c16fda97-378f-422e-a4bc-c535b75bee2c",
-      "comment": "",
-      "command": "click",
-      "target": "id=password",
-      "targets": [
-        ["id=password", "id"],
-        ["name=password", "name"],
-        ["css=#password", "css:finder"],
-        ["xpath=//input[@id='password']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[2]/div/div/input", "xpath:idRelative"],
-        ["xpath=//div[2]/div/div/input", "xpath:position"]
-      ],
-      "value": ""
     }, {
       "id": "21167654-ffbb-4399-bff8-72ade8fe337c",
       "comment": "",
@@ -335,19 +195,6 @@
       "id": "8401522b-7ab9-44e0-b322-d103df7ca967",
       "comment": "",
       "command": "click",
-      "target": "css=.css-1nety07",
-      "targets": [
-        ["css=.css-1nety07", "css:finder"],
-        ["xpath=//button[@type='submit']", "xpath:attributes"],
-        ["xpath=//div[@id='root']/div/div/div/div[3]/form/div/div[3]/button", "xpath:idRelative"],
-        ["xpath=//div[3]/button", "xpath:position"],
-        ["xpath=//button[contains(.,'Login')]", "xpath:innerText"]
-      ],
-      "value": ""
-    }, {
-      "id": "7e4051d4-caee-42fe-9c42-f50778c492d1",
-      "comment": "",
-      "command": "mouseOver",
       "target": "css=.css-1nety07",
       "targets": [
         ["css=.css-1nety07", "css:finder"],

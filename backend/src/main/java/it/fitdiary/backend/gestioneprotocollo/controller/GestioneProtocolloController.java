@@ -156,7 +156,7 @@ public class GestioneProtocolloController {
             protocollo =
                     gestioneProtocolloService.getByIdProtocollo(idProtocollo);
         } catch (IllegalArgumentException e) {
-            return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     (Object)
                             "Il protocollo da modificare non esiste");
         }
@@ -245,8 +245,15 @@ public class GestioneProtocolloController {
                 RequestContextHolder.getRequestAttributes()).getRequest();
         var principal =
                 Long.parseLong(request.getUserPrincipal().getName());
-        Protocollo protocollo =
-                gestioneProtocolloService.getByIdProtocollo(id);
+        Protocollo protocollo;
+        try {
+            protocollo =
+                    gestioneProtocolloService.getByIdProtocollo(id);
+        } catch (IllegalArgumentException e) {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                    (Object)
+                            "Il protocollo non esiste");
+        }
         if (protocollo.getCliente().getId() == principal
                 || protocollo.getPreparatore().getId() == principal) {
             return ResponseHandler.generateResponse(HttpStatus.OK,

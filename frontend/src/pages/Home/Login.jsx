@@ -3,16 +3,18 @@ import {useForm} from 'react-hook-form';
 import {Link as ReactLink, useNavigate} from "react-router-dom";
 import {
     Box,
-    Button, Flex,
+    Button,
+    Flex,
     FormControl,
     FormErrorMessage,
     FormLabel,
     GridItem,
-    Heading, HStack,
+    Heading,
+    HStack,
+    Image,
     Input,
     InputGroup,
     InputRightElement,
-    Link,
     SimpleGrid,
     Text,
     useToast,
@@ -25,6 +27,7 @@ import {GradientBar} from "../../components/GradientBar";
 import Footer from "../../components/Footer";
 import Logo from "../../components/Logo";
 import {FetchContext} from "../../context/FetchContext";
+import imbBg from "../../images/fitness2.jpg";
 
 export default function Login() {
     const authContext = useContext(AuthContext);
@@ -46,7 +49,7 @@ export default function Login() {
             const formData = new FormData();
             formData.append("email", values.email);
             formData.append("password", values.password);
-            const { data } = await publicFetch.post('utenti/login', formData, {withCredentials: true});
+            const { data } = await publicFetch.post('utenti/login', formData);
             console.log(data);
             setIsSuccessfullySubmitted(true);
             authContext.setAuthState(data.data);
@@ -79,19 +82,20 @@ export default function Login() {
         <VStack >
             <Flex width={"full"} justify={"space-between"} align={"center"} bg={"white"}>
                 <HStack pl={[0, 5, 10, 20]}>
-                    <Link as={ReactLink} to={"/"}>
+                    <ReactLink to={"/"}>
                     <Logo penColor="black" viewBox={"0 0 250 200"} boxSize={"5em"} />
-                    </Link>
+                    </ReactLink>
                     <Heading>FitDiary</Heading>
                 </HStack>
                 <Box pr={[0, 5, 10, 20]}>
-                    <Link as={ReactLink} to={"/signup"}>
+                    <ReactLink to={"/signup"}>
                         <Button colorScheme='fitdiary' mr='4'>
                             Registrati
                         </Button>
-                    </Link>
+                    </ReactLink>
                 </Box>
             </Flex>
+
         <VStack w="full" h="full" p={[5, 10, 20]}>
 
             <Box bg={"white"} borderRadius='xl' pb={5} w={"full"}>
@@ -137,8 +141,11 @@ export default function Login() {
                                     type='submit'>
                                     Login
                                 </Button>
-                                <Text mt={3} fontSize="medium" align={"center"}>Non hai ancora un account su FitDiary? <Link color="fitdiary.900" as={ReactLink} to={"/signup"}>Registrati</Link>
-                                </Text>
+                                <Flex alignContent={"center"} justifyContent={"center"} w={"full"}>
+                                    <Text mt={3} fontSize="medium" align={"center"}>Non hai ancora un account su FitDiary?</Text>
+                                    <ReactLink to={"/signup"}><Text color={"fitdiary.300"} mt={3} ml={1} >Registrati </Text></ReactLink>
+                                </Flex>
+
                             </GridItem>
                         </SimpleGrid>
                     </form>
@@ -146,7 +153,20 @@ export default function Login() {
             </Box>
 
         </VStack>
-            <Footer width={"full"} />
+            <Flex width={"full"} justify={"center"} align={"center"}>
+                <Image w={"full"} src={imbBg} filter={"grayscale(100%)"} />
+                <VStack pos={"absolute"} textAlign={"center"}>
+                    <Text fontSize={["0.1em", "1.5em", "3em", "4em"]} color={"whiteAlpha.900"}>
+                        Un nuovo modo di interagire con i tuoi clienti
+                    </Text>
+                    <Flex>
+                        <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"whiteAlpha.900"}>FitD</Heading>
+                        <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"fitdiary.600"}>ia</Heading>
+                        <Heading fontSize={["1em", "2em", "3em", "5em"]} color={"whiteAlpha.900"}>ry</Heading>
+                    </Flex>
+                </VStack>
+            </Flex>
+            <Footer width={"full"} mt={"0"}/>
         </VStack>
     );
 

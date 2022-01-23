@@ -23,7 +23,7 @@ export default function Logout() {
 
     return (
         <>
-            <Text>Successfull Logout</Text>
+            <Text p={10} fontSize={"xl"}>Logout eseguito con successo!</Text>
         </>
     );
 }

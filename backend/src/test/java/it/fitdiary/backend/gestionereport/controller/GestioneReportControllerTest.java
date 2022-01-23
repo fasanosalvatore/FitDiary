@@ -8,6 +8,8 @@ import it.fitdiary.backend.gestionereport.service.GestioneReportServiceImpl;
 import it.fitdiary.backend.gestionestimaprogressi.service.GestioneStimaProgressiServiceImpl;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.FileUtility;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,6 +67,18 @@ class GestioneReportControllerTest {
     private Report report;
     private ImmaginiReport img;
     private ArrayList<ImmaginiReport> immaginiReports;
+
+    private static MockedStatic<FileUtility> fileUtility;
+
+    @BeforeAll
+    public static void init() {
+        fileUtility = Mockito.mockStatic(FileUtility.class);
+    }
+
+    @AfterAll
+    public static void close() {
+        fileUtility.close();
+    }
 
     @BeforeEach
     void setUp() {
@@ -142,8 +156,6 @@ class GestioneReportControllerTest {
         MockMultipartFile multipartFoto = new MockMultipartFile(
                 "immagini", foto.getAbsolutePath(), null,
                 new FileInputStream(foto));
-        MockedStatic<FileUtility> fileUtility=
-                Mockito.mockStatic(FileUtility.class);
         fileUtility.when(()->FileUtility.getFile(multipartFoto)).thenReturn(foto);
         when(gestioneUtenzaService.getById(1l)).thenReturn(cliente);
         when(gestioneReportService.inserimentoReport(reportNotSave,urlString)).thenReturn(report);
