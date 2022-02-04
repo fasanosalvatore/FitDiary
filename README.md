@@ -1,6 +1,8 @@
 # FitDiary
 
-![FitDiary Logo](.github/FitDiaryLogo.png)
+<p align="center">
+<img alt="FitDiary Logo" width="460" height="300" src=".github/Asset 2.svg">
+</p>
 
 ![Testing](https://github.com/fasanosalvatore/FitDiary/actions/workflows/test.yml/badge.svg)
 ![Branch Coverage](.github/badges/branches.svg)
