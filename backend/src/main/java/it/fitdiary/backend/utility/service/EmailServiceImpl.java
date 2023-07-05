@@ -1597,12 +1597,11 @@ public class EmailServiceImpl implements EmailService {
                                   final String oggetto, final String testo)
             throws MailException {
         String[] destination =
-                {"demarcodaniele98@gmail.com", "giaqui@gmail.com",
-                        "leonardo.monaco45@gmail.com"};
+                {"simone.spera.13@gmail.com","metaclass.cux@gmail.com"};
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
             message.setTo(destination);
-            message.setFrom(new InternetAddress("noreply@fitdiary.it"));
+            message.setFrom(new InternetAddress("simone.spera.13@gmail.com"));
             message.setSubject(oggetto);
             message.setSentDate(new Date());
             message.setText(testo);
@@ -1629,13 +1628,12 @@ public class EmailServiceImpl implements EmailService {
         mailHtml = mailHtml.replace("#PASSWORD#", password);
 
         String[] destination =
-                {"demarcodaniele98@gmail.com", "giaqui@gmail.com",
-                        "leonardo.monaco45@gmail.com"};
+                {"simone.spera.13@gmail.com","metaclass.cux@gmail.com"};
         String finalHtml = mailHtml;
         MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
             message.setTo(destination);
-            message.setFrom(new InternetAddress("noreply@fitdiary.it"));
+            message.setFrom(new InternetAddress("simone.spera.13@gmail.com"));
             message.setSubject(String.format(
                     "Ciao %s, il tuo personal trainer %s, "
                            + "ti ha invitato in FitDiary!", newUtente.getNome(),
