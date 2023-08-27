@@ -46,7 +46,8 @@ public class Protocollo {
     /**
      * scheda alimentare.
      */
-    @OneToOne(mappedBy = "protocollo")
+    @ManyToOne
+    @JoinColumn(name = "scheda_alimentare_id")
     @EqualsAndHashCode.Exclude
     private SchedaAlimentare schedaAlimentare;
     /**

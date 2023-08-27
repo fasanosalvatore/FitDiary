@@ -2,6 +2,9 @@ package it.fitdiary.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +21,8 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Data
@@ -25,12 +30,31 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SchedaAlimentare {
+
+    /**
+     * Lunghezza massima campo nome.
+     */
+    private static final int MAX_NAME_LENGTH = 50;
+    private static final int MIN_NAME_LENGTH = 1;
+
+
     /**
      * id della scheda alimentare.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * Nome Scheda alimentare.
+     */
+    @NotNull(message = "Il nome non può essere nullo")
+    @Column(length = MAX_NAME_LENGTH)
+    @Size(min = MIN_NAME_LENGTH, max = MAX_NAME_LENGTH,
+        message = "Lunghezza nome non valida")
+    @NotBlank(message = "Il nome non può essere vuoto")
+    private String nome;
+
     /**
      * kcalAssunte della scheda alimentare.
      */
@@ -39,16 +63,23 @@ public class SchedaAlimentare {
     @Min(value = 0, message = "Le kcal assunte non possono essere minori di 0")
     private Float kcalAssunte;
     /**
-     * listaAlimenti della scheda alimentare.
+     * listaIstanzaAlimenti della scheda alimentare.
      */
-    @OneToMany(mappedBy = "schedaAlimentare")
-    private List<Alimento> listaAlimenti;
+    @OneToMany(mappedBy = "scheda_alimentare_id")
+    private List<IstanzaAlimento> listaAlimenti;
+
     /**
-     * protocollo al quale è associata la scheda alimentare.
+     * La data creazione della tupla.
      */
-    @OneToOne
-    @JoinColumn(name = "protocollo_id")
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    private Protocollo protocollo;
+    @Column(name = "data_creazione", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime dataCreazione;
+
+    /**
+     * La data aggiornamento della tupla.
+     */
+    @Column(name = "data_aggiornamento")
+    @UpdateTimestamp
+    private LocalDateTime dataAggiornamento;
+
 }
