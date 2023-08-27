@@ -64,8 +64,8 @@ public class GestioneProtocolloController {
     private ResponseEntity<Object> creazioneProtocollo(
             @RequestParam("dataScadenza") final String dataScadenza,
             @RequestParam("idCliente") final Long idCliente,
-            @RequestParam(value = "schedaAlimentare", required = false)
-            final MultipartFile schedaAlimentareMultipartFile,
+            @RequestParam(name="idSchedaAlimentare", required = false) final Long idSchedaAlimentare,
+
             @RequestParam(value = "schedaAllenamento", required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
@@ -81,12 +81,8 @@ public class GestioneProtocolloController {
                     (Object) "Il preparatore non può creare "
                             + "un protocollo per questo cliente");
         }
-        if ((schedaAllenamentoMultipartFile == null
-                && schedaAlimentareMultipartFile == null)
-                || ((schedaAllenamentoMultipartFile != null
-                && schedaAllenamentoMultipartFile.isEmpty())
-                || (schedaAlimentareMultipartFile != null
-                && schedaAlimentareMultipartFile.isEmpty()))) {
+        if ((schedaAllenamentoMultipartFile == null && idSchedaAlimentare == null)
+                || ((schedaAllenamentoMultipartFile != null && schedaAllenamentoMultipartFile.isEmpty()))) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
         }
@@ -95,21 +91,11 @@ public class GestioneProtocolloController {
         protocollo.setDataScadenza(LocalDate.parse(dataScadenza));
         protocollo.setCliente(gestioneUtenzaService.getById(idCliente));
         protocollo.setPreparatore(gestioneUtenzaService.getById(idPreparatore));
-        File schedaAlimentareFile;
         File schedaAllenamentoFile;
         try {
-            schedaAlimentareFile =
-                    FileUtility.getFile(schedaAlimentareMultipartFile);
             schedaAllenamentoFile =
                     FileUtility.getFile(schedaAllenamentoMultipartFile);
-            if ((schedaAlimentareFile != null)
-                    && (schedaAlimentareFile.length() > MAX_FILE_UPLOAD)) {
-                return ResponseHandler.generateResponse(
-                        HttpStatus.BAD_REQUEST,
-                        (Object) "il file " + schedaAlimentareFile
-                                .getName()
-                                + " ha dimensioni elevate");
-            } else if ((schedaAllenamentoFile != null)
+           if ((schedaAllenamentoFile != null)
                     && (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD)) {
                 return ResponseHandler.generateResponse(
                         HttpStatus.BAD_REQUEST,
@@ -125,7 +111,7 @@ public class GestioneProtocolloController {
         try {
             Protocollo newProtocollo =
                     gestioneProtocolloService.creazioneProtocollo(protocollo,
-                            schedaAlimentareFile, schedaAllenamentoFile);
+                            idSchedaAlimentare, schedaAllenamentoFile);
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "protocollo", newProtocollo);
         } catch (IOException e) {
@@ -141,8 +127,7 @@ public class GestioneProtocolloController {
     @PutMapping("{idProtocollo}")
     private ResponseEntity<Object> modificaProtocollo(
             @PathVariable("idProtocollo") final Long idProtocollo,
-            @RequestParam(value = "schedaAlimentare", required = false)
-            final MultipartFile schedaAlimentareMultipartFile,
+            @RequestParam(name="idSchedaAlimentare", required = false) final Long idSchedaAlimentare,
             @RequestParam(value = "schedaAllenamento", required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
@@ -168,31 +153,16 @@ public class GestioneProtocolloController {
                             "Il preparatore non può modificare "
                             + "un protocollo per questo cliente");
         }
-        if ((schedaAllenamentoMultipartFile == null
-                && schedaAlimentareMultipartFile == null)
-                || ((schedaAllenamentoMultipartFile != null
-                && schedaAllenamentoMultipartFile.isEmpty())
-                || (schedaAlimentareMultipartFile != null
-                && schedaAlimentareMultipartFile.isEmpty()))) {
+        if ((schedaAllenamentoMultipartFile == null && idSchedaAlimentare == null)
+                || ((schedaAllenamentoMultipartFile != null && schedaAllenamentoMultipartFile.isEmpty()))) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
         }
 
-        File schedaAlimentareFile;
         File schedaAllenamentoFile;
         try {
-            schedaAlimentareFile =
-                    FileUtility.getFile(schedaAlimentareMultipartFile);
-            schedaAllenamentoFile =
-                    FileUtility.getFile(schedaAllenamentoMultipartFile);
-            if ((schedaAlimentareFile != null)
-                    && (schedaAlimentareFile.length() > MAX_FILE_UPLOAD)) {
-                return ResponseHandler.generateResponse(
-                        HttpStatus.BAD_REQUEST,
-                        (Object) "il file " + schedaAlimentareFile
-                                .getName()
-                                + " ha dimensioni elevate");
-            } else if ((schedaAllenamentoFile != null)
+            schedaAllenamentoFile = FileUtility.getFile(schedaAllenamentoMultipartFile);
+            if ((schedaAllenamentoFile != null)
                     && (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD)) {
                 return ResponseHandler.generateResponse(
                         HttpStatus.BAD_REQUEST,
@@ -206,10 +176,10 @@ public class GestioneProtocolloController {
                     "errore nella lettura dei file");
         }
         try {
-            if (schedaAlimentareFile != null) {
+            if (idSchedaAlimentare != null) {
                 gestioneProtocolloService.inserisciSchedaAlimentare(
                         protocollo,
-                        schedaAlimentareFile);
+                        idSchedaAlimentare);
             }
             if (schedaAllenamentoFile != null) {
                 gestioneProtocolloService.inserisciSchedaAllenamento(

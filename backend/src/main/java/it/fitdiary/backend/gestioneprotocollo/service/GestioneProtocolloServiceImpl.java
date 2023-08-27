@@ -1,19 +1,13 @@
 package it.fitdiary.backend.gestioneprotocollo.service;
 
-import it.fitdiary.backend.entity.Alimento;
 import it.fitdiary.backend.entity.Esercizio;
 import it.fitdiary.backend.entity.Protocollo;
-import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
-import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapter;
-import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAlimentareAdapterImpl;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapter;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapterImpl;
-import it.fitdiary.backend.gestioneprotocollo.repository.AlimentoRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
-import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,11 +44,7 @@ public class GestioneProtocolloServiceImpl
      * Repository della Scheda alimentare.
      */
     private final SchedaAlimentareRepository schedaAlimentareRepository;
-    /**
-     * Adapter della scheda alimentare.
-     */
-    private final SchedaAlimentareAdapter schedaAlimentareAdapter =
-            new SchedaAlimentareAdapterImpl();
+
     /**
      * Adapter della scheda allenamento.
      */
@@ -71,7 +61,7 @@ public class GestioneProtocolloServiceImpl
 
     /**
      * @param protocollo            nuovo protocollo
-     * @param schedaAlimentareFile  file scheda alimentare del nuovo protocollo
+     * @param isSchedaAlimentare  file scheda alimentare del nuovo protocollo
      * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
      * @return
      * @throws IOException
@@ -79,15 +69,15 @@ public class GestioneProtocolloServiceImpl
      */
     @Override
     public Protocollo creazioneProtocollo(final Protocollo protocollo,
-                                          final File schedaAlimentareFile,
+                                          final Long idSchedaAlimentare,
                                           final File schedaAllenamentoFile)
             throws IOException, IllegalArgumentException {
-        if (schedaAllenamentoFile == null && schedaAlimentareFile == null) {
+        if (schedaAllenamentoFile == null && idSchedaAlimentare == null) {
             throw new IllegalArgumentException("Nessun file presente");
         }
         Protocollo newProtocollo = protocolloRepository.save(protocollo);
-        if (schedaAlimentareFile != null) {
-            inserisciSchedaAlimentare(newProtocollo, schedaAlimentareFile);
+        if (idSchedaAlimentare != null) {
+            inserisciSchedaAlimentare(newProtocollo, idSchedaAlimentare);
         }
         if (schedaAllenamentoFile != null) {
             inserisciSchedaAllenamento(newProtocollo, schedaAllenamentoFile);
@@ -104,7 +94,7 @@ public class GestioneProtocolloServiceImpl
      * @throws IOException
      */
     public Protocollo inserisciSchedaAlimentare(final Protocollo protocollo,
-                                                final File schedaAlimentareFile)
+                                                final Long schedaAlimentareFile)
             throws IOException, IllegalArgumentException {
         if (schedaAlimentareFile != null) {
             if (protocollo.getSchedaAlimentare() != null) {
@@ -113,7 +103,7 @@ public class GestioneProtocolloServiceImpl
                 schedaAlimentareRepository.deleteAllByProtocolloId(
                         protocollo.getId());
             }
-            if (FilenameUtils.getExtension(schedaAlimentareFile.getName())
+            /*if (FilenameUtils.getExtension(schedaAlimentareFile.getName())
                     .equals("csv")) {
                 List<Alimento> alimenti =
                         schedaAlimentareAdapter.parse(schedaAlimentareFile);
@@ -135,6 +125,7 @@ public class GestioneProtocolloServiceImpl
             } else {
                 throw new IllegalArgumentException("Formato file non valido");
             }
+             */
         }
         return protocollo;
     }

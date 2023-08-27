@@ -10,7 +10,7 @@ import java.util.List;
 public interface GestioneProtocolloService {
     /**
      * @param protocollo            nuovo protocollo
-     * @param schedaAlimentareFile  file scheda alimentare del nuovo protocollo
+     * @param idSchedaAlimentare  id scheda alimentare del nuovo protocollo
      * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
      * @return Protocollo creato
      * @throws IOException
@@ -18,7 +18,7 @@ public interface GestioneProtocolloService {
      */
     Protocollo creazioneProtocollo(
             Protocollo protocollo,
-            File schedaAlimentareFile,
+            Long idSchedaAlimentare,
             File schedaAllenamentoFile
     ) throws IOException, IllegalArgumentException;
 
@@ -46,12 +46,12 @@ public interface GestioneProtocolloService {
 
     /**
      * @param protocollo protocollo
-     * @param schedaAlimentareFile file della scheda alimentare
+     * @param idSchedaAlimentare id della scheda alimentare
      * @return nuovo protocollo
      * @throws IOException
      */
     Protocollo inserisciSchedaAlimentare(Protocollo protocollo,
-                                         File schedaAlimentareFile)
+                                         Long idSchedaAlimentare)
             throws IOException;
 
     /**
