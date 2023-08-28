@@ -3,6 +3,7 @@ package it.fitdiary.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -67,6 +68,12 @@ public class SchedaAlimentare {
      */
     @OneToMany(mappedBy = "scheda_alimentare_id")
     private List<IstanzaAlimento> listaAlimenti;
+
+
+    @ManyToOne
+    @JoinColumn(name = "utente_id")
+    private Utente creatore;
+
 
     /**
      * La data creazione della tupla.

@@ -1,7 +1,7 @@
 package it.fitdiary.backend.gestionealimento.service;
 
 import it.fitdiary.backend.entity.Alimento;
-import it.fitdiary.backend.gestionealimento.repository.AlimentoService;
+import it.fitdiary.backend.gestionealimento.repository.AlimentoRepository;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class GestioneAlimentoServiceImpl implements GestioneAlimentoService{
 
 
-  AlimentoService alimentoService;
+  AlimentoRepository alimentoService;
 
   @Override
   public Alimento getById(final Long idAlimento) {

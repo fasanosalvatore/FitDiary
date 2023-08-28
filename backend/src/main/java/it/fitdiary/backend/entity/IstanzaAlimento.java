@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -47,12 +48,15 @@ public class IstanzaAlimento {
   private PASTO pasto;
 
   @NotNull(message = "I grammi non possono essere nulli")
+  @Min(1)
   @Column(name = "grammi")
-  private int grammi;
+  private Integer grammi;
 
+  @NotNull
   @ManyToOne
   @JoinColumn(name = "alimento_id")
   private Alimento alimento;
+
 
   @ManyToOne
   @JoinColumn(name = "scheda_alimentare_id")

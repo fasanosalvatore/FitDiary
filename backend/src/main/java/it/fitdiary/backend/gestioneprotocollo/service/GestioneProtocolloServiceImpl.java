@@ -2,12 +2,14 @@ package it.fitdiary.backend.gestioneprotocollo.service;
 
 import it.fitdiary.backend.entity.Esercizio;
 import it.fitdiary.backend.entity.Protocollo;
+import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapter;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapterImpl;
 import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
+import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,10 +39,6 @@ public class GestioneProtocolloServiceImpl
      */
     private final ProtocolloRepository protocolloRepository;
     /**
-     * Repository dell'alimento.
-     */
-    private final AlimentoRepository alimentoRepository;
-    /**
      * Repository della Scheda alimentare.
      */
     private final SchedaAlimentareRepository schedaAlimentareRepository;
@@ -61,7 +59,7 @@ public class GestioneProtocolloServiceImpl
 
     /**
      * @param protocollo            nuovo protocollo
-     * @param isSchedaAlimentare  file scheda alimentare del nuovo protocollo
+     * @param idSchedaAlimentare  file scheda alimentare del nuovo protocollo
      * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
      * @return
      * @throws IOException
@@ -89,43 +87,25 @@ public class GestioneProtocolloServiceImpl
     /**
      * @param protocollo           protocollo per cui inserire
      *                             la scheda alimentare
-     * @param schedaAlimentareFile file della scheda alimentare
+     * @param schedaAlimentareId file della scheda alimentare
      * @return protocollo modificato
      * @throws IOException
      */
     public Protocollo inserisciSchedaAlimentare(final Protocollo protocollo,
-                                                final Long schedaAlimentareFile)
+                                                final Long schedaAlimentareId)
             throws IOException, IllegalArgumentException {
-        if (schedaAlimentareFile != null) {
-            if (protocollo.getSchedaAlimentare() != null) {
-                alimentoRepository.deleteAllBySchedaAlimentareId(
-                        protocollo.getSchedaAlimentare().getId());
-                schedaAlimentareRepository.deleteAllByProtocolloId(
-                        protocollo.getId());
+        if (schedaAlimentareId != null) {
+
+            SchedaAlimentare schedaAlimentare = schedaAlimentareRepository.getById(schedaAlimentareId);
+            if(schedaAlimentare == null)
+            {
+                throw new IllegalArgumentException("la scheda alimentare con id " + schedaAlimentareId + " non esiste");
             }
-            /*if (FilenameUtils.getExtension(schedaAlimentareFile.getName())
-                    .equals("csv")) {
-                List<Alimento> alimenti =
-                        schedaAlimentareAdapter.parse(schedaAlimentareFile);
-                float kcal = 0;
-                for (Alimento alimento : alimenti) {
-                    kcal = kcal + alimento.getKcal();
-                }
-                SchedaAlimentare schedaAlimentare = new SchedaAlimentare();
-                schedaAlimentare.setKcalAssunte(kcal);
-                schedaAlimentare.setProtocollo(protocollo);
-                SchedaAlimentare newSchedaAlimentare =
-                        schedaAlimentareRepository.save(schedaAlimentare);
-                for (Alimento alimento : alimenti) {
-                    alimento.setSchedaAlimentare(newSchedaAlimentare);
-                    alimentoRepository.save(alimento);
-                }
-                protocollo.setSchedaAlimentare(schedaAlimentare);
-                schedaAlimentare.setListaAlimenti(alimenti);
-            } else {
-                throw new IllegalArgumentException("Formato file non valido");
+            if(protocollo.getPreparatore().getId() != schedaAlimentare.getCreatore().getId())
+            {
+                throw new IllegalArgumentException("non hai i permessi per gestire la scheda alimentare di id " + schedaAlimentareId);
             }
-             */
+            protocollo.setSchedaAlimentare(schedaAlimentare);
         }
         return protocollo;
     }
