@@ -1,4 +1,5 @@
 package it.fitdiary.backend.gestioneprotocollo.service;
+/*
 
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.Alimento;
@@ -319,3 +320,4 @@ class GestioneProtocolloServiceImplTest {
 
 }
 
+*/

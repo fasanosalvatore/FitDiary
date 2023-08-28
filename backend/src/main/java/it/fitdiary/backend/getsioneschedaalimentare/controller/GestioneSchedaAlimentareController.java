@@ -2,6 +2,8 @@ package it.fitdiary.backend.getsioneschedaalimentare.controller;
 
 import it.fitdiary.backend.entity.IstanzaAlimento;
 import it.fitdiary.backend.entity.SchedaAlimentare;
+import it.fitdiary.backend.getsioneschedaalimentare.controller.dto.CreaSchedaAlimentareDTO;
+import it.fitdiary.backend.getsioneschedaalimentare.controller.dto.ModificaSchedaDTO;
 import it.fitdiary.backend.getsioneschedaalimentare.service.GestioneSchedaAlimentareService;
 import it.fitdiary.backend.utility.ResponseHandler;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -35,13 +38,17 @@ public class GestioneSchedaAlimentareController {
   }
   @PostMapping("creaScheda")
   public ResponseEntity<Object> creaSchedaAlimentare(
-     @Valid @RequestBody List<IstanzaAlimento> istanzeAlimento,
-      @RequestBody String name) {
+      @Valid @RequestBody CreaSchedaAlimentareDTO creaSchedaAlimentareParametri) {
 
-    if(name == null || name.isEmpty())
+    if(creaSchedaAlimentareParametri.getName() == null || creaSchedaAlimentareParametri.getName().isEmpty())
     {
       return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
           "il nome non può essere vuoto");
+    }
+    if(creaSchedaAlimentareParametri.getIstanzeAlimenti() == null || creaSchedaAlimentareParametri.getIstanzeAlimenti().isEmpty())
+    {
+      return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+          "le istanze alimenti non possono essere vuote");
     }
     SchedaAlimentare schedaAlimentare;
     var request = ((ServletRequestAttributes)
@@ -51,7 +58,7 @@ public class GestioneSchedaAlimentareController {
     Long idPreparatore =
         Long.parseLong(request.getUserPrincipal().getName());
     try {
-      schedaAlimentare = service.creaSchedaAlimentare(istanzeAlimento,name,idPreparatore);
+      schedaAlimentare = service.creaSchedaAlimentare(creaSchedaAlimentareParametri.getIstanzeAlimenti(),creaSchedaAlimentareParametri.getName(),idPreparatore);
     }
     catch (Exception e)
     {
@@ -67,14 +74,18 @@ public class GestioneSchedaAlimentareController {
 
   @PostMapping("modificaScheda")
   public ResponseEntity<Object> modificaSchedaAlimentare(
-      @Valid @RequestBody List<IstanzaAlimento> istanzeAlimento,
-      @RequestBody String name,
-      @RequestBody Long idScheda) {
+      @Valid @RequestBody ModificaSchedaDTO modificaSchedaDTO) {
 
-    if(name == null || name.isEmpty())
+    if(modificaSchedaDTO.getName() == null || modificaSchedaDTO.getName().isEmpty())
     {
       return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
           "il nome non può essere vuoto");
+    }
+
+    if(modificaSchedaDTO.getIstanzeAlimenti() == null || modificaSchedaDTO.getIstanzeAlimenti().isEmpty())
+    {
+      return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+          "le istanze alimenti non possono essere vuote");
     }
 
     SchedaAlimentare schedaAlimentare;
@@ -85,7 +96,7 @@ public class GestioneSchedaAlimentareController {
     Long idPreparatoreRichiedente =
         Long.parseLong(request.getUserPrincipal().getName());
     try {
-      schedaAlimentare = service.modificaSchedaAlimentare(istanzeAlimento,name,idPreparatoreRichiedente,idScheda);
+      schedaAlimentare = service.modificaSchedaAlimentare(modificaSchedaDTO.getIstanzeAlimenti(),modificaSchedaDTO.getName(),idPreparatoreRichiedente,modificaSchedaDTO.getSchedaId());
     }
     catch (Exception e)
     {

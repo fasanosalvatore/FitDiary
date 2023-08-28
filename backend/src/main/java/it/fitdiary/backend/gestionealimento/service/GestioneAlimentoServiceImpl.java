@@ -2,6 +2,7 @@ package it.fitdiary.backend.gestionealimento.service;
 
 import it.fitdiary.backend.entity.Alimento;
 import it.fitdiary.backend.gestionealimento.repository.AlimentoRepository;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,20 +12,24 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class GestioneAlimentoServiceImpl implements GestioneAlimentoService{
+public class GestioneAlimentoServiceImpl implements GestioneAlimentoService {
 
 
-  AlimentoRepository alimentoService;
+  private final AlimentoRepository alimentoService;
 
   @Override
   public Alimento getById(final Long idAlimento) {
     if (idAlimento == null) {
       throw new IllegalArgumentException("Id alimento non valido");
     }
-    Alimento alimento = alimentoService.getById(idAlimento);
-    if (alimento == null) {
+    Optional<Alimento> alimento;
+    alimento = alimentoService.findById(idAlimento);
+
+    if(alimento.isEmpty())
+    {
       throw new IllegalArgumentException("Alimento non trovato");
     }
-    return alimento;
+
+    return alimento.get();
   }
 }

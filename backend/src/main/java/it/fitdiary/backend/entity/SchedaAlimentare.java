@@ -3,6 +3,7 @@ package it.fitdiary.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -66,7 +67,8 @@ public class SchedaAlimentare {
     /**
      * listaIstanzaAlimenti della scheda alimentare.
      */
-    @OneToMany(mappedBy = "scheda_alimentare_id")
+    @OneToMany(mappedBy = "schedaAlimentare",cascade = CascadeType.ALL)
+
     private List<IstanzaAlimento> listaAlimenti;
 
 
