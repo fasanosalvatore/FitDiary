@@ -23,10 +23,7 @@ INSERT INTO `scheda_alimentare` (`id`, `kcal_assunte`, `nome`,`utente_id`) VALUE
 /*Scheda Allenamento*/
 INSERT INTO `scheda_allenamento` (`id`, `frequenza`, `protocollo_id`) VALUES (1, '4', 1);
 
-/*Alimenti*/
-INSERT INTO `alimento` (`id`, `nome`, `kcal`, `grassi`, `proteine`, `carboidrati`,`path_foto`) VALUES (1,'cereali', 20, 40, 4,5, 'foto/path');
-INSERT INTO `alimento` (`id`, `nome`, `kcal`, `grassi`, `proteine`, `carboidrati`,`path_foto`) VALUES (2,'panckakus', 24, 20, 20,5, 'foto/path');
-INSERT INTO `alimento` (`id`, `nome`, `kcal`, `grassi`, `proteine`, `carboidrati`,`path_foto`) VALUES (3,'franch tostato', 22, 10, 10,5, 'foto/path');
+
 /*Istanze Alimento*/
 INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alimento_id`, `scheda_alimentare_id`,`pasto`) VALUES (1,100, 2, 1, 1,1);
 INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alimento_id`, `scheda_alimentare_id`,`pasto`) VALUES (2,200, 0, 2, 1,0);

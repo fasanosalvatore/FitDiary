@@ -29,7 +29,7 @@ public class Alimento {
     /**
      * Lunghezza massima campo nome.
      */
-    private static final int MAX_NAME_LENGTH = 50;
+    private static final int MAX_NAME_LENGTH = 150;
     private static final int MIN_NAME_LENGTH = 1;
 
     private static final long MIN_KCAL_VALUE = 0;
