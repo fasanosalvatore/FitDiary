@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -128,9 +129,28 @@ public class GestioneSchedaAlimentareController {
           e.getMessage());
     }
     Map<String,Object> response = new HashMap<>();
-    response.put("scheda_alimentari",mySchedeAlimentari);
+    response.put("schede_alimentari",mySchedeAlimentari);
     return ResponseHandler.generateResponse(HttpStatus.OK, "response",
         response);
+
+  }
+
+  @GetMapping("getSchedaAlimentareById")
+  public ResponseEntity<Object> getSchedaAlimentareById(
+      @RequestParam Long idScheda
+  ) {
+
+    SchedaAlimentare schedaAlimentare;
+    try {
+      schedaAlimentare = service.getSchedeAlimentariById(idScheda);
+    }
+    catch (Exception e)
+    {
+      return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+          e.getMessage());
+    }
+    return ResponseHandler.generateResponse(HttpStatus.OK, "scheda_alimentare",
+        schedaAlimentare);
 
   }
 

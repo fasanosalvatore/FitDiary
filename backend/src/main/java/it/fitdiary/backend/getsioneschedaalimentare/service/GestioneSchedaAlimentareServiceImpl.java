@@ -16,6 +16,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -114,5 +115,15 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
   @Override
   public List<SchedaAlimentare> getSchedeAlimentariByPreparaore(Long idPreparatoreRichiedente) {
     return schedaAlimentareRepository.findAllByPreparatoreId(idPreparatoreRichiedente);
+  }
+
+  @Override
+  public SchedaAlimentare getSchedeAlimentariById(Long idScheda) {
+    Optional<SchedaAlimentare> schedaAlimentareOptional = schedaAlimentareRepository.findById(idScheda);
+    if(schedaAlimentareOptional.isEmpty())
+    {
+      throw new IllegalStateException("scheda alimentare con id " + idScheda + " non trovata");
+    }
+    return schedaAlimentareOptional.get();
   }
 }
