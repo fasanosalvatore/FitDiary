@@ -35,12 +35,12 @@ import {
     VStack
 } from '@chakra-ui/react';
 import {CloseIcon, EditIcon} from '@chakra-ui/icons';
-import {AuthContext} from "../../../context/AuthContext";
+import {AuthContext} from "../../context/AuthContext";
 import moment from "moment";
 import {useParams} from "react-router";
-import {FetchContext} from "../../../context/FetchContext";
+import {FetchContext} from "../../context/FetchContext";
 import {useForm} from "react-hook-form"
-import {GradientBar} from "../../../components/GradientBar";
+import {GradientBar} from "../../components/GradientBar";
 
 export default function View() {
     const urlProtocolli = "protocolli";

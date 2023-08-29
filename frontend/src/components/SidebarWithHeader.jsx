@@ -28,8 +28,11 @@ import {
     FiTrendingUp,
     FiUser,
     FiUserPlus,
-    FiUsers
+    FiUsers,
 } from 'react-icons/fi';
+
+import { GiMeal } from "react-icons/gi";
+import {IoIosFitness} from "react-icons/io";
 import Logo from "./Logo";
 import {Link as ReactLink} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
@@ -42,23 +45,23 @@ const navItems = [
     allowedRoles: ['admin', 'cliente', 'preparatore']
   },
   {
-    name: 'Profilo',
-    icon: FiUser,
-    to: "/profile",
-    allowedRoles: ['cliente', 'preparatore']
-  },
-  {
-    name: 'Aggiungi Cliente',
-    icon: FiUserPlus,
-    to: "/customers/create",
-    allowedRoles: ['preparatore']
-  },
-  {
     name: 'Protocolli',
     icon: FiBook,
     to: "/protocols",
     allowedRoles: ['cliente', 'preparatore']
   },
+    {
+        name: 'Diete',
+        icon: GiMeal,
+        to: "/dietcards",
+        allowedRoles: ['preparatore']
+    },
+    {
+        name: 'Allenamenti',
+        icon: IoIosFitness,
+        to: "/trainingcards",
+        allowedRoles: ['preparatore']
+    },
   {
     name: 'Progressi',
     icon: FiTrendingUp,
@@ -71,12 +74,24 @@ const navItems = [
     to: "/customers",
     allowedRoles: ['preparatore']
   },
+    {
+        name: 'Aggiungi Cliente',
+        icon: FiUserPlus,
+        to: "/customers/create",
+        allowedRoles: ['preparatore']
+    },
   {
       name: 'Utenti',
       icon: FiUsers,
       to: "/users",
       allowedRoles: ['admin']
   },
+    {
+        name: 'Profilo',
+        icon: FiUser,
+        to: "/profile",
+        allowedRoles: ['cliente', 'preparatore']
+    },
   {
     name: 'Modifica Profilo',
     icon: FiSettings,
@@ -105,7 +120,7 @@ const NavItem = ({ navItem, ...rest }) => {
         }}
         {...rest}>
         {navItem.icon && (
-          <Icon color="fitdiary.500" fontWeight="bolder" mr="4" fontSize="20" _groupHover={{ color: 'white', }}
+          <Icon color="fitdiary.500" fontWeight="bolder" mr="4" fontSize="25" _groupHover={{ color: 'white', }}
             as={navItem.icon} />
         )}
         {navItem.name}
