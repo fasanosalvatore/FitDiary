@@ -28,6 +28,7 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
   private final IstanzaAlimentoRepository istanzaAlimentoRepository;
   private final AlimentoRepository alimentoRepository;
 
+  @Transactional
   @Override
   public SchedaAlimentare creaSchedaAlimentare(List<IstanzaAlimentoDTO> istanzeAlimentoDto, String name,
                                                Long idPreparatore) {
@@ -64,6 +65,7 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
     return schedaAlimentareRepository.save(schedaAlimentare);
   }
 
+  @Transactional
   @Override
   public SchedaAlimentare modificaSchedaAlimentare(List<IstanzaAlimentoDTO> istanzeAlimentoDTO,
                                                    String name, Long idPreparatoreRichiedente,
