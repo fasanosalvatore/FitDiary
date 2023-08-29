@@ -35,11 +35,11 @@ import {
     VStack
 } from '@chakra-ui/react';
 import {CloseIcon, EditIcon} from '@chakra-ui/icons';
-import {AuthContext} from "../../../context/AuthContext";
+import {AuthContext} from "../../context/AuthContext";
 import moment from "moment";
-import {FetchContext} from "../../../context/FetchContext";
+import {FetchContext} from "../../context/FetchContext";
 import {useForm} from "react-hook-form"
-import {GradientBar} from "../../../components/GradientBar";
+import {GradientBar} from "../../components/GradientBar";
 import {useParams} from "react-router";
 
 export default function View() {
@@ -98,7 +98,6 @@ export default function View() {
             console.log(error.response);
             toast(toastParam("Errore", error.response.data.data, "error"))
         }
-
     }
 
     useEffect(() => {
