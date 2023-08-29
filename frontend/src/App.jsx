@@ -34,6 +34,10 @@ import TrainingCardsIndex from "./pages/TrainingCards/Index";
 import TrainingCardsView from "./pages/TrainingCards/View";
 import TrainingCardsCreate from "./pages/TrainingCards/Create";
 
+import AlimentiIndex from "./pages/Alimento/Index.jsx";
+import EserciziIndex from "./pages/Esercizio/Index.jsx";
+
+
 import CustomersView from "./pages/User/Customers/View";
 import CustomerInsertInfo from "./pages/User/Customers/CustomerInsertInfo";
 
@@ -61,6 +65,7 @@ const AppRoutes = () => {
                 <Route path="account" element={<UsersEdit />} />
                 <Route path="profile" element={<UsersProfile />} />
                 <Route path="logout" element={<Logout />} />
+
                 <Route path="protocols" element={<ProtocolsIndex />} />
                 <Route path="protocols/:id" element={<ProtocolsView />} />
                 <Route path="protocols/create" element={<ProtocolsCreate />} />
@@ -72,6 +77,10 @@ const AppRoutes = () => {
                 <Route path="trainingcards" element={<TrainingCardsIndex />} />
                 <Route path="trainingcards/:id" element={<TrainingCardsView />} />
                 <Route path="trainingcards/create" element={<TrainingCardsCreate />} />
+
+                <Route path="alimenti" element={<AlimentiIndex />} />
+                <Route path="esercizi" element={<EserciziIndex />} />
+
 
                 <Route path="users" element={<UsersIndex/>}/>
                 <Route path="customers" element={<UsersIndex/>}/>

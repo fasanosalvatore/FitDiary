@@ -157,9 +157,9 @@ export default function View() {
                                             authState.userInfo.roles[0].toLowerCase() === 'preparatore' && (
                                                 <HStack>
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
-                                                        <IconButton
-                                                            colorScheme='fitdiary'
-                                                            onClick={onOpen}
+                                                            <IconButton
+                                                                colorScheme='fitdiary'
+                                                                onClick={onOpen}
                                                             icon={<EditIcon/>}
                                                         />
                                                     </Tooltip>
