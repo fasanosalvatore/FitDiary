@@ -101,7 +101,7 @@ public class GestioneProtocolloServiceImpl
             {
                 throw new IllegalArgumentException("la scheda alimentare con id " + schedaAlimentareId + " non esiste");
             }
-            if(protocollo.getPreparatore().getId() != schedaAlimentare.getCreatore().getId())
+            if(protocollo.getPreparatore().getId() != schedaAlimentare.getPreparatore().getId())
             {
                 throw new IllegalArgumentException("non hai i permessi per gestire la scheda alimentare di id " + schedaAlimentareId);
             }

@@ -1,6 +1,5 @@
 package it.fitdiary.backend.getsioneschedaalimentare.controller;
 
-import it.fitdiary.backend.entity.IstanzaAlimento;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.getsioneschedaalimentare.controller.dto.CreaSchedaAlimentareDTO;
 import it.fitdiary.backend.getsioneschedaalimentare.controller.dto.ModificaSchedaDTO;
@@ -13,13 +12,12 @@ import java.util.Objects;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -105,6 +103,32 @@ public class GestioneSchedaAlimentareController {
     }
     Map<String,Object> response = new HashMap<>();
     response.put("scheda_alimentare_id",schedaAlimentare.getId());
+    return ResponseHandler.generateResponse(HttpStatus.OK, "response",
+        response);
+
+  }
+
+  @GetMapping("getMySchedeAlimentari")
+  public ResponseEntity<Object> getMySchedeAlimentari() {
+
+    var request = ((ServletRequestAttributes)
+        Objects.requireNonNull(
+            RequestContextHolder.getRequestAttributes()))
+        .getRequest();
+    Long idPreparatoreRichiedente =
+        Long.parseLong(request.getUserPrincipal().getName());
+
+    List<SchedaAlimentare> mySchedeAlimentari;
+    try {
+      mySchedeAlimentari = service.getSchedeAlimentariByPreparaore(idPreparatoreRichiedente);
+    }
+    catch (Exception e)
+    {
+      return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+          e.getMessage());
+    }
+    Map<String,Object> response = new HashMap<>();
+    response.put("scheda_alimentari",mySchedeAlimentari);
     return ResponseHandler.generateResponse(HttpStatus.OK, "response",
         response);
 

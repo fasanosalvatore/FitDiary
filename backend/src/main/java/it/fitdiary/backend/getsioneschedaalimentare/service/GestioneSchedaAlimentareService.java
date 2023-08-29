@@ -9,4 +9,6 @@ public interface GestioneSchedaAlimentareService {
                                         Long idPreparatore);
 
   SchedaAlimentare modificaSchedaAlimentare(List<IstanzaAlimentoDTO> istanzeAlimento, String name, Long idPreparatoreRichiedente, Long idScheda);
+
+  List<SchedaAlimentare> getSchedeAlimentariByPreparaore(Long idPreparatoreRichiedente);
 }

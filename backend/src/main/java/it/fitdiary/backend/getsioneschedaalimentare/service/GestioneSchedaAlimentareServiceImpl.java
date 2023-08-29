@@ -53,7 +53,7 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
     schedaAlimentare.setListaAlimenti(istanzeAlimento);
     Utente creatore = new Utente();
     creatore.setId(idPreparatore);
-    schedaAlimentare.setCreatore(creatore);
+    schedaAlimentare.setPreparatore(creatore);
     LocalDateTime adesso = LocalDateTime.now();
     schedaAlimentare.setDataCreazione(adesso);
     schedaAlimentare.setDataAggiornamento(adesso);
@@ -76,7 +76,7 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
       throw new IllegalStateException("scheda da modifcare con id " + idScheda + " non esiste");
     }
     SchedaAlimentare schedaAlimentareDaModificare = schedaAlimentareDaModificareOptional.get();
-    if(!Objects.equals(schedaAlimentareDaModificare.getCreatore().getId(),
+    if(!Objects.equals(schedaAlimentareDaModificare.getPreparatore().getId(),
         idPreparatoreRichiedente))
     {
       throw new IllegalStateException("non hai i permessi per modificare la scheda con id " + idScheda);
@@ -109,5 +109,10 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
     }
     schedaAlimentareDaModificare.setKcalAssunte(kcalTotali);
     return schedaAlimentareRepository.save(schedaAlimentareDaModificare);
+  }
+
+  @Override
+  public List<SchedaAlimentare> getSchedeAlimentariByPreparaore(Long idPreparatoreRichiedente) {
+    return schedaAlimentareRepository.findAllByPreparatoreId(idPreparatoreRichiedente);
   }
 }
