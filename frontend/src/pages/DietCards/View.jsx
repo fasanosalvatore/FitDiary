@@ -46,13 +46,11 @@ export default function View() {
     const authContext = useContext(AuthContext);
     const { authState } = authContext;
     const { id } = useParams();
-    const [protocollo, setProtocolli] = useState();
+    const [schedaAlimentare, setSchedaAlimentare] = useState();
     const fetchContext = useContext(FetchContext);
+
     const [isLoading, setLoading] = useState(true);
-    const urlProtocolli = "protocolli";
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const [selectedSchedaAlimentare, setselectedSchedaAlimentare] = useState(null);
-    const { handleSubmit, setValue } = useForm();
+    const [fetchCompleted, setFetchCompleted] = useState(false); // Nuovo stato
 
     const days = ["Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato", "Domenica"];
 
@@ -72,56 +70,26 @@ export default function View() {
         };
     }
 
-    const onDropAlimentare = useCallback(acceptedSchedaAlimentare => {
-        console.log(acceptedSchedaAlimentare)
-        setValue("schedaAlimentare", acceptedSchedaAlimentare);
-    }, [setValue])
-
-    const {
-        acceptedFiles: acceptedSchedaAlimentare,
-        getRootProps: getRootPropsAlimentare,
-        getInputProps: getInputPropsAlimentare,
-        isDragActive: isDragActiveAlimentare
-    } = useDropzone({ onDrop: onDropAlimentare, maxFiles: 1 })
-
-    const onSubmit = async (values) => {
-        const formData = new FormData();
-        console.log(values)
-        if (values.schedaAlimentare)
-            formData.append("schedaAlimentare", values.schedaAlimentare[0])
-        try {
-            const { data } = await fetchContext.authAxios.put(urlProtocolli + "/" + id, formData)
-            console.log(data);
-            setProtocolli(data.data);
-            toast(toastParam("Modifica effettuata con successo!", "Scheda Alimentare modificata correttamente", data.status))
-        } catch (error) {
-            console.log(error.response);
-            toast(toastParam("Errore", error.response.data.data, "error"))
-        }
-    }
-
     useEffect(() => {
-        console.log("pages/protocols/dietcard/view");
-        setselectedSchedaAlimentare(acceptedSchedaAlimentare[0]);
-    }, [acceptedSchedaAlimentare]);
-
-    useEffect(() => {
-        const listaProtocolli = async () => {
-            try {
-                const { data } = await fetchContext.authAxios("protocolli/" + id);
-                setProtocolli(data.data);
-                setLoading(false);
-            } catch (error) {
-                console.log(error);
-                toast({
-                    title: "ERROR",
-                    description: "NOT AUTHORIZED",
-                    status: "error"
-                })
+        const getSchedaAlimentare = async () => {
+            if (!fetchCompleted) {
+                try {
+                    const {data} = await fetchContext.authAxios("schedaalimentare/getSchedaAlimentareById?idScheda=" + id);
+                    setSchedaAlimentare(data.data.scheda_alimentare);
+                    setLoading(false);
+                    setFetchCompleted(true); // Imposta fetchCompleted a true dopo il completamento
+                } catch (error) {
+                    console.log(error);
+                    toast({
+                        title: "ERROR",
+                        description: "NOT AUTHORIZED",
+                        status: "error"
+                    })
+                }
             }
         }
-        listaProtocolli();
-    }, [fetchContext, id, toast])
+        getSchedaAlimentare();
+    }, [fetchContext, id, toast,fetchCompleted])
 
     return (
         <>
@@ -138,13 +106,10 @@ export default function View() {
                                 <HStack w="full" h="full" align="start">
                                     <Flex width="full" justify="space-between">
                                         <HStack>
-                                            <Heading size={"sx"} textAlign="start"> Cliente:</Heading>
-                                            <Text>{protocollo.protocollo.cliente.nome} {protocollo.protocollo.cliente.cognome}</Text>
+                                            <Heading size={"sx"} textAlign="start"> Nome scheda:</Heading>
+                                            <Text>{schedaAlimentare.nome} </Text>
                                         </HStack>
-                                        <HStack>
-                                            <Heading size={"sx"} textAlign="center"> Data scadenza:</Heading>
-                                            <Text>{moment(protocollo.protocollo.dataScadenza).format("DD/MM/yyyy")}</Text>
-                                        </HStack>
+
                                     </Flex>
 
                                 </HStack>
@@ -152,69 +117,18 @@ export default function View() {
                                     <Flex width="full" justify="space-between">
                                         <HStack>
                                             <Heading size={"sx"} textAlign="start">Kcal totali:</Heading>
-                                            <Text>{protocollo.protocollo.schedaAlimentare.kcalAssunte}</Text>
+                                            <Text>{schedaAlimentare.kcalAssunte}</Text>
                                         </HStack>
-
                                         {
                                             authState.userInfo.roles[0].toLowerCase() === 'preparatore' && (
 
                                                 <HStack>
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
                                                         <IconButton
-                                                            onClick={onOpen}
                                                             colorScheme='fitdiary'
                                                             icon={<EditIcon />}
                                                         />
                                                     </Tooltip>
-                                                    <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"2xl"}>
-                                                        <ModalOverlay />
-                                                        <ModalContent>
-                                                            <form onSubmit={handleSubmit(onSubmit)}>
-                                                                <ModalHeader textAlign={"center"}>Carica la nuova scheda modificata</ModalHeader>
-                                                                <ModalCloseButton />
-                                                                <ModalBody align={"center"}>
-                                                                    <Flex justify="center">
-                                                                        <HStack align="center">
-                                                                            <FormControl id={"schedaAlimentare"}>
-                                                                                {selectedSchedaAlimentare != null && (
-                                                                                    <HStack>
-                                                                                        <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
-                                                                                            setselectedSchedaAlimentare(null);
-                                                                                            setValue("schedaAlimentare", null);
-                                                                                        }} />
-                                                                                        <Text>
-                                                                                            {selectedSchedaAlimentare.path}
-                                                                                        </Text>
-                                                                                    </HStack>
-                                                                                )}
-                                                                                {!selectedSchedaAlimentare && (
-                                                                                    <div {...getRootPropsAlimentare()}>
-                                                                                        <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
-                                                                                            borderColor={"gray.200"}>
-                                                                                            <Input {...getInputPropsAlimentare()} />
-                                                                                            {
-                                                                                                isDragActiveAlimentare ?
-                                                                                                    <p style={{ color: "gray", textAlign: "center" }}>
-                                                                                                        Lascia il file qui ...
-                                                                                                    </p> :
-                                                                                                    <p style={{ color: "gray", textAlign: "center" }}>
-                                                                                                        Clicca e trascina un file qui, oppure clicca per
-                                                                                                        selezionare un file
-                                                                                                    </p>
-                                                                                            }
-                                                                                        </Box>
-                                                                                    </div>
-                                                                                )}
-                                                                            </FormControl>
-                                                                        </HStack>
-                                                                    </Flex>
-                                                                </ModalBody>
-                                                                <ModalFooter>
-                                                                    <Button colorScheme='fitdiary' type={"submit"}>Carica</Button>
-                                                                </ModalFooter>
-                                                            </form>
-                                                        </ModalContent>
-                                                    </Modal>
                                                 </HStack>
                                             )}
                                     </Flex>
@@ -224,7 +138,6 @@ export default function View() {
                                     {
                                         days.map((d, i) => {
                                             return (
-
                                                 <AccordionItem key={i}>
                                                     <h2>
                                                         <AccordionButton>
@@ -235,9 +148,10 @@ export default function View() {
                                                         </AccordionButton>
                                                     </h2>
                                                     <AccordionPanel pb={4}>
-                                                        {protocollo.protocollo.schedaAlimentare.listaAlimenti
-                                                            .filter((alimento) => alimento.giorno === (i + 1) + "")
-                                                            .map((c, key) => {
+                                                        {schedaAlimentare.listaAlimenti
+                                                            .filter((al) =>
+                                                                al.giornoDellaSettimana.toLowerCase() === d.toLowerCase() )
+                                                            .map((alimento, key) => {
 
                                                                 return (
                                                                     <Table borderBottom={"solid 1px "}
@@ -245,22 +159,34 @@ export default function View() {
                                                                         variant="unstyled" size="md">
                                                                         <Thead>
                                                                             <Tr>
+                                                                                <Th pasto="center"
+                                                                                    w={"25%"}>{alimento.pasto}</Th>
                                                                                 <Th textAlign="center"
-                                                                                    w={"33%"}>{c.pasto}</Th>
+                                                                                    w={"15%"}>Quantità</Th>
                                                                                 <Th textAlign="center"
-                                                                                    w={"33%"}>Quantità</Th>
+                                                                                    w={"15%"}>Kcal</Th>
                                                                                 <Th textAlign="center"
-                                                                                    w={"33%"}>Kcal</Th>
+                                                                                    w={"15%"}>Proteine</Th>
+                                                                                <Th textAlign="center"
+                                                                                    w={"15%"}>Grassi</Th>
+                                                                                <Th textAlign="center"
+                                                                                    w={"15%"}>Carboidrati</Th>
                                                                             </Tr>
                                                                         </Thead>
                                                                         <Tbody>
                                                                             <Tr>
                                                                                 <Td textAlign="center"
-                                                                                    w={"33%"}>{c.nome}</Td>
-                                                                                <Td textAlign="center" w={"33%"}
-                                                                                    isNumeric>{c.grammi}</Td>
-                                                                                <Td textAlign="center" w={"33%"}
-                                                                                    isNumeric>{c.kcal}</Td>
+                                                                                    w={"25%"}>{alimento.alimento.nome}</Td>
+                                                                                <Td textAlign="center" w={"25%"}
+                                                                                    isNumeric>{alimento.grammi}</Td>
+                                                                                <Td textAlign="center" w={"15%"}
+                                                                                    isNumeric>{alimento.alimento.kcal}</Td>
+                                                                                <Td textAlign="center" w={"15%"}
+                                                                                    isNumeric>{alimento.alimento.proteine}</Td>
+                                                                                <Td textAlign="center" w={"15%"}
+                                                                                    isNumeric>{alimento.alimento.grassi}</Td>
+                                                                                <Td textAlign="center" w={"15%"}
+                                                                                    isNumeric>{alimento.alimento.carboidrati}</Td>
                                                                             </Tr>
                                                                         </Tbody>
                                                                     </Table>
