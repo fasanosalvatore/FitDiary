@@ -2,6 +2,8 @@ package it.fitdiary.backend.gestionealimento.service;
 
 import it.fitdiary.backend.entity.Alimento;
 import it.fitdiary.backend.gestionealimento.repository.AlimentoRepository;
+
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +33,10 @@ public class GestioneAlimentoServiceImpl implements GestioneAlimentoService {
     }
 
     return alimento.get();
+  }
+
+  @Override
+  public List<Alimento> getAllAlimenti() {
+    return alimentoService.findAll();
   }
 }

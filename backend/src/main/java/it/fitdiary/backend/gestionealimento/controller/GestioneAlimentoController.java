@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @Slf4j
 @RequestMapping(path = "api/v1/alimenti")
@@ -28,10 +31,10 @@ public class GestioneAlimentoController {
 
   @GetMapping("getAlimento")
   private ResponseEntity<Object> VisualizzaAlimento(
-      @RequestParam("idAlimento") final Long idCliente) {
+      @RequestParam("idAlimento") final Long idAlimento) {
 
     try {
-      Alimento alimento = service.getById(idCliente);
+      Alimento alimento = service.getById(idAlimento);
       return ResponseHandler.generateResponse(HttpStatus.OK, "alimento",
           alimento
       );
@@ -42,5 +45,19 @@ public class GestioneAlimentoController {
 
   }
 
+  @GetMapping("getAllAlimenti")
+  private ResponseEntity<Object> VisualizzaListaAlimenti() {
+
+    try {
+      List<Alimento> listaAlimenti = service.getAllAlimenti();
+      return ResponseHandler.generateResponse(HttpStatus.OK, "lista_alimenti",
+              listaAlimenti
+      );
+    } catch (IllegalArgumentException e) {
+      return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+              (Object) e.getMessage());
+    }
+
+  }
 
 }
