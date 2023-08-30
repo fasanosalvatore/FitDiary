@@ -40,7 +40,7 @@ import {
 } from "@chakra-ui/react";
 import {FetchContext} from "../../context/FetchContext";
 import {GradientBar} from "../../components/GradientBar";
-import {AddIcon, SearchIcon} from "@chakra-ui/icons";
+import {AddIcon, SearchIcon, DeleteIcon} from "@chakra-ui/icons";
 import moment from "moment/moment";
 import {AuthContext} from "../../context/AuthContext";
 import {getFakeSchedaAlimentare, getSchedaAlimentare} from "../../fakeBackend";
@@ -57,11 +57,13 @@ export default function Create() {
             width: '100%', maxWidth: '100%',
         },
     })
+    const onAddAlimento=useState("");
     const authContext = useContext(AuthContext)
     const {authState} = authContext;
     const [search, setSearch] = useState("");
     const [fetchCompleted, setFetchCompleted] = useState(false); // Nuovo stato
-    const [schedaAlimentare, setSchedaAlimentare] = useState();
+    let [schedaAlimentare, setSchedaAlimentare] = useState([[],[],[],[],[],[],[]]);
+    const [indexGiorno, setIndexGiorno] = useState(0);
     const {id} = useParams();
     const onChange = (e) => {
         setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
@@ -84,6 +86,7 @@ export default function Create() {
 
     moment.locale("it-IT");
 
+
     useEffect(() => {
         if (toastMessage) {
             const {title, body, stat} = toastMessage;
@@ -100,7 +103,7 @@ export default function Create() {
                 try {
                     const {data} = await fetchContext.authAxios("alimenti/getAllAlimenti");
                     setAlimenti(data.data);
-                    //setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
+                    setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
                 } catch (error) {
                     setToastMessage({title: "Errore", body: error.message, stat: "error"});
                 }
@@ -109,27 +112,31 @@ export default function Create() {
 
         loadlistaAlimenti();
     }, [fetchContext, fetchCompleted]);
+    
 
-    useEffect(() => {
-        const getSchedaAlimentare = async () => {
-            if (!fetchCompleted) {
-                try {
-                    const {data} = await fetchContext.authAxios("schedaalimentare/getSchedaAlimentareById?idScheda=1");
-                    console.log("Prendo le schede alimentari")
-                    console.log(data.data.scheda_alimentare)
-                    setSchedaAlimentare(data.data.scheda_alimentare);
-                    setLoading(false);
-                    setFetchCompleted(true); // Imposta fetchCompleted a true dopo il completamento
-                } catch (error) {
-                    console.log(error);
-                    toast({
-                        title: "ERROR", description: "NOT AUTHORIZED", status: "error"
-                    })
-                }
-            }
-        }
-        getSchedaAlimentare();
-    }, [fetchContext, toast, fetchCompleted])
+
+    /*
+        "Lunedi":[
+            {
+                "IDCibo":1,
+                "Pasto":2,
+                "Qnt":2
+            },{}
+        ]
+     */
+
+    function addAlimento(alimento,pasto,qnt)
+    {
+        let objTest={};
+        objTest.alimento=alimento;
+        objTest.Pasto=pasto;
+        objTest.Qnt=qnt;
+
+        let tmp=schedaAlimentare;
+        tmp[indexGiorno].push(objTest);
+        setSchedaAlimentare(tmp);
+    }
+
 
     const onSubmit = async (values) => {
         try {
@@ -232,7 +239,9 @@ export default function Create() {
                                                                                         <Td>{alimento.carboidrati}</Td>
                                                                                         <Td><Button
                                                                                             colorScheme='fitdiary'
-                                                                                            onClick={onOpen}
+                                                                                            onClick={()=>{
+                                                                                                addAlimento(alimento,1,150);
+                                                                                            }}
                                                                                             fontSize={"s"}>
                                                                                             <AddIcon/>
                                                                                         </Button></Td>
@@ -259,43 +268,71 @@ export default function Create() {
 
                         <Accordion allowToggle defaultIndex={[0]} w="full" mt={"60px"}>
                             {days.map((d, i) => {
+                                console.log(schedaAlimentare);
                                 return (<AccordionItem key={i}>
                                         <h2>
                                             <AccordionButton>
-                                                <Box flex='1' textAlign='left'>
+                                                <Box flex='1' textAlign='left' fontWeight={"extrabold"} fontSize={"xl"}>
                                                     {d}
                                                 </Box>
                                                 <AccordionIcon/>
                                             </AccordionButton>
                                         </h2>
                                         <AccordionPanel pb={4}>
-                                            {schedaAlimentare.listaAlimenti
-                                                .filter((al) => al.giornoDellaSettimana.toLowerCase() === d.toLowerCase())
-                                                .map((alimento, key) => {
+                                            {schedaAlimentare[i]
+                                                .map((al, key) => {
+                                                    let alimento=al.alimento;
+
+                                                    let caloreCalc=(alimento.kcal/100)*al.Qnt;
                                                     return (<>
                                                         <Table borderBottom={"solid 1px "}
                                                                borderColor={"blue.200"} key={key}
                                                                variant="unstyled" size="md">
                                                             <Thead>
                                                                 <Tr>
-                                                                    <Th w={"15%"}>Immagine</Th>
-                                                                    <Th w={"15%"}>Nome</Th>
-                                                                    <Th w={"14%"}>Kcal</Th>
-                                                                    <Th w={"14%"}>Proteine</Th>
-                                                                    <Th w={"14%"}>Grassi</Th>
-                                                                    <Th w={"14%"}>Carboidrati</Th>
-                                                                    <Th w={"14%"}>Quantità</Th>
+                                                                    <Th>Immagine</Th>
+                                                                    <Th>Nome</Th>
+                                                                    <Th>Kcal</Th>
+                                                                    <Th>Proteine</Th>
+                                                                    <Th>Grassi</Th>
+                                                                    <Th>Carboidrati</Th>
+                                                                    <Th>Quantità</Th>
+                                                                    <Th>Azioni</Th>
                                                                 </Tr>
                                                             </Thead>
                                                             <Tbody>
                                                                 <Tr>
-                                                                    <Td w={"15%"} isNumeric>{}</Td>
-                                                                    <Td w={"15%"} isNumeric>{}</Td>
-                                                                    <Td w={"14%"} isNumeric>{}</Td>
-                                                                    <Td w={"14%"} isNumeric>{}</Td>
-                                                                    <Td w={"14%"} isNumeric>{}</Td>
-                                                                    <Td w={"14%"} isNumeric>{}</Td>
-                                                                    <Td w={"14%"} isNumeric>{}</Td>
+                                                                    <Td p={1}
+                                                                        m={0}>
+                                                                        <Image
+                                                                            objectFit='contain'
+                                                                            boxSize={100}
+                                                                            src={full + "/" + alimento.pathFoto}
+                                                                            alt='Foto non disponibile'/>
+                                                                    </Td>
+                                                                    <Td>{alimento.nome}</Td>
+                                                                    <Td>{caloreCalc}</Td>
+                                                                    <Td>{alimento.proteine}</Td>
+                                                                    <Td>{alimento.grassi}</Td>
+                                                                    <Td>{alimento.carboidrati}</Td>
+                                                                    <Td>
+                                                                        <Input type={"text"} defaultValue={al.Qnt} onChange={(e)=>{
+                                                                            schedaAlimentare[i][key].Qnt=e.target.value;
+                                                                            let newV=[...schedaAlimentare];
+                                                                            setSchedaAlimentare(newV)
+                                                                        }}></Input>
+                                                                    </Td>
+                                                                    <Td>
+                                                                        <IconButton colorScheme={"red"} onClick={()=>{
+                                                                            if(window.confirm("Sei sicuro di voler eliminare l'almento?")) {
+                                                                                schedaAlimentare[i].splice(key,1);
+                                                                                let newV=[...schedaAlimentare];
+                                                                                setSchedaAlimentare(newV);
+                                                                            }
+                                                                        }} aria-label={"Pulsante che elimina elemento"}>
+                                                                            <DeleteIcon/>
+                                                                        </IconButton>
+                                                                    </Td>
                                                                 </Tr>
                                                             </Tbody>
                                                         </Table>
@@ -306,7 +343,10 @@ export default function Create() {
                                                 <Button
                                                     w="full"
                                                     colorScheme='fitdiary'
-                                                    onClick={onOpen}>
+                                                    onClick={()=>{
+                                                        onOpen();
+                                                        setIndexGiorno(i);
+                                                    }}>
                                                     Aggiungi alimenti</Button>
                                             </Flex>
                                         </AccordionPanel>
