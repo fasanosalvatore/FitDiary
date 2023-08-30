@@ -58,7 +58,7 @@ public class InseritoreDiAlimenti implements ApplicationListener<ApplicationRead
       alimento.setProteine(Float.valueOf(record.get("protein")));
       alimento.setCarboidrati(Float.valueOf(record.get("carbohydrate")));
       alimento.setGrassi(Float.valueOf(record.get("total_fat")));
-      alimento.setPathFoto("fotoAlimento/" + alimento.getId());
+      alimento.setPathFoto("Alimenti/" + alimento.getId() + ".jpg");
       System.out.println(alimento);
       alimenti.add(alimento);
       i++;
