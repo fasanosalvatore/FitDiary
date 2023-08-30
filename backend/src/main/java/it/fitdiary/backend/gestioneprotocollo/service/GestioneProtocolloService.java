@@ -5,22 +5,24 @@ import it.fitdiary.backend.entity.Utente;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface GestioneProtocolloService {
     /**
-     * @param protocollo            nuovo protocollo
+     * @param  cliente il cliente del protocollo
+     * @param preparatore il preparatore del protocollo
+     * @param dataScadenza            la data di scadenza
      * @param idSchedaAlimentare  id scheda alimentare del nuovo protocollo
      * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
      * @return Protocollo creato
      * @throws IOException
      * @throws IllegalArgumentException
      */
-    Protocollo creazioneProtocollo(
-            Protocollo protocollo,
-            Long idSchedaAlimentare,
-            File schedaAllenamentoFile
-    ) throws IOException, IllegalArgumentException;
+    Protocollo creazioneProtocollo(LocalDate dataScadenza, Utente cliente, Utente preparatore,
+                                          final Long idSchedaAlimentare,
+                                          final File schedaAllenamentoFile)
+        throws IOException, IllegalArgumentException;
 
     /**
      * @param idProtocollo id del protocollo
@@ -45,19 +47,11 @@ public interface GestioneProtocolloService {
             throws IOException;
 
     /**
-     * @param protocollo protocollo
-     * @param idSchedaAlimentare id della scheda alimentare
-     * @return nuovo protocollo
-     * @throws IOException
-     */
-    Protocollo inserisciSchedaAlimentare(Protocollo protocollo,
-                                         Long idSchedaAlimentare)
-            throws IOException;
-
-    /**
      * @param preparatore preparatore
      * @param page numero pagine
      * @return lista protocolli creati da un preparatore divisi in pagine
      */
     List<Protocollo> getAllProtocolliPreparatore(Utente preparatore, int page);
+
+    void modificaSchedaAlimentare(Protocollo protocollo, Long idSchedaAlimentare);
 }

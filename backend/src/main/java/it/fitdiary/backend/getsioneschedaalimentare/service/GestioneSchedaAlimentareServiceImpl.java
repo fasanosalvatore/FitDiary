@@ -55,9 +55,6 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
     Utente creatore = new Utente();
     creatore.setId(idPreparatore);
     schedaAlimentare.setPreparatore(creatore);
-    LocalDateTime adesso = LocalDateTime.now();
-    schedaAlimentare.setDataCreazione(adesso);
-    schedaAlimentare.setDataAggiornamento(adesso);
     float kcalTotali = 0;
     for (IstanzaAlimento istanzaAlimento: istanzeAlimento) {
       kcalTotali += istanzaAlimento.getGrammi() * istanzaAlimento.getAlimento().getKcal()/100;
@@ -102,8 +99,6 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
     }
     istanzaAlimentoRepository.deleteAll(schedaAlimentareDaModificare.getListaAlimenti());
     schedaAlimentareDaModificare.setListaAlimenti(istanzeAlimento);
-    LocalDateTime adesso = LocalDateTime.now();
-    schedaAlimentareDaModificare.setDataAggiornamento(adesso);
     float kcalTotali = 0;
     for (IstanzaAlimento istanzaAlimento: istanzeAlimento) {
       kcalTotali += istanzaAlimento.getGrammi() * istanzaAlimento.getAlimento().getKcal()/100;
