@@ -15,7 +15,9 @@ import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapter;
 import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
+import it.fitdiary.backend.gestioneprotocollo.repository.GestioneProtocolloSchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
 import it.fitdiary.backend.getsioneschedaalimentare.repository.SchedaAlimentareRepository;
@@ -35,6 +37,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.internal.matchers.Any;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,12 +65,15 @@ class GestioneProtocolloServiceImplTest {
   private SchedaAlimentare schedaAlimentare;
   private File fileSchedaAllenamento;
   private File fileNotCsv;
+
+  @Mock
+  private SchedaAllenamentoAdapter schedaAllenamentoAdapter;
   @Mock
   private EsercizioRepository esercizioRepository;
   @Mock
   private SchedaAllenamentoRepository schedaAllenamentoRepository;
   @Mock
-  private SchedaAlimentareRepository schedaAlimentareRepository;
+  private GestioneProtocolloSchedaAlimentareRepository schedaAlimentareRepository;
 
   @InjectMocks
   private GestioneProtocolloServiceImpl gestioneProtocolloServiceImpl;
@@ -146,23 +152,23 @@ class GestioneProtocolloServiceImplTest {
 
   @Test
   void creazioneProtocolloOnSuccess() throws IOException {
-
+    LocalDateTime dataTest=LocalDateTime.now();
     LocalDate dieciGiorniDaOggi = LocalDate.now().plusDays(10);
     when(protocolloRepository.save(any(Protocollo.class))).thenAnswer(args -> {
       Protocollo p = args.getArgument(0);
       p.setId(1L);
+      p.setDataCreazione(dataTest);
+      p.setDataAggiornamento(dataTest);
       return p;
     });
     Optional<SchedaAlimentare> schedaAlimentareOptional = Optional.ofNullable(schedaAlimentare);
     when(schedaAlimentareRepository.findById(schedaAlimentare.getId())).thenReturn(
         schedaAlimentareOptional);
-    when(mock(
-        GestioneProtocolloServiceImpl.class).inserisciSchedaAllenamento(
-        protocollo,
-        fileSchedaAllenamento)).thenReturn(protocollo);
 
-    protocollo.setSchedaAllenamento(schedaAllenamento);
-    Protocollo expected = new Protocollo(1L,dieciGiorniDaOggi,schedaAlimentare,schedaAllenamento,cliente,preparatore,LocalDateTime.now(),LocalDateTime.now());
+    when(schedaAllenamentoAdapter.parse(any())).thenReturn(schedaAllenamento.getListaEsercizi());
+    when(schedaAllenamentoRepository.save(any())).thenReturn(schedaAllenamento);
+
+    Protocollo expected = new Protocollo(1L,dieciGiorniDaOggi,schedaAlimentare,schedaAllenamento,cliente,preparatore,dataTest,dataTest);
     assertEquals(expected,
         gestioneProtocolloServiceImpl.creazioneProtocollo(dieciGiorniDaOggi
             , cliente, preparatore, schedaAlimentare.getId()

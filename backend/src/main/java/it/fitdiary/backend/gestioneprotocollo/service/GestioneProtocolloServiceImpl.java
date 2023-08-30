@@ -158,7 +158,7 @@ public class GestioneProtocolloServiceImpl
           esercizio.setSchedaAllenamento(newSchedaAllenamento);
           esercizioRepository.save(esercizio);
         }
-        protocollo.setSchedaAllenamento(schedaAllenamento);
+        protocollo.setSchedaAllenamento(newSchedaAllenamento);
         schedaAllenamento.setListaEsercizi(esercizi);
       } else {
         throw new IllegalArgumentException("Formato file non valido");
