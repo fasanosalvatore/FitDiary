@@ -9,6 +9,7 @@ import it.fitdiary.backend.utility.FileUtility;
 import it.fitdiary.backend.utility.ResponseHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +63,9 @@ public class GestioneProtocolloController {
 
     @PostMapping
     private ResponseEntity<Object> creazioneProtocollo(
-            @RequestParam("dataScadenza") final String dataScadenza,
+            @RequestParam("dataScadenza")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            final LocalDate dataScadenza,
             @RequestParam("idCliente") final Long idCliente,
             @RequestParam(name="idSchedaAlimentare", required = false) final Long idSchedaAlimentare,
 
@@ -78,19 +81,17 @@ public class GestioneProtocolloController {
         if (!gestioneUtenzaService.existsByPreparatoreAndId(
                 preparatore, idCliente)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                    (Object) "Il preparatore non può creare "
+                    "Il preparatore non può creare "
                             + "un protocollo per questo cliente");
         }
         if ((schedaAllenamentoMultipartFile == null && idSchedaAlimentare == null)
-                || ((schedaAllenamentoMultipartFile != null && schedaAllenamentoMultipartFile.isEmpty()))) {
+                || (schedaAllenamentoMultipartFile != null && schedaAllenamentoMultipartFile.isEmpty())
+        ) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
         }
 
-        Protocollo protocollo = new Protocollo();
-        protocollo.setDataScadenza(LocalDate.parse(dataScadenza));
-        protocollo.setCliente(gestioneUtenzaService.getById(idCliente));
-        protocollo.setPreparatore(gestioneUtenzaService.getById(idPreparatore));
+        Utente cliente = gestioneUtenzaService.getById(idCliente);
         File schedaAllenamentoFile;
         try {
             schedaAllenamentoFile =
@@ -110,7 +111,7 @@ public class GestioneProtocolloController {
         }
         try {
             Protocollo newProtocollo =
-                    gestioneProtocolloService.creazioneProtocollo(protocollo,
+                    gestioneProtocolloService.creazioneProtocollo(dataScadenza,cliente,preparatore,
                             idSchedaAlimentare, schedaAllenamentoFile);
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "protocollo", newProtocollo);
@@ -177,7 +178,7 @@ public class GestioneProtocolloController {
         }
         try {
             if (idSchedaAlimentare != null) {
-                gestioneProtocolloService.inserisciSchedaAlimentare(
+                gestioneProtocolloService.modificaSchedaAlimentare(
                         protocollo,
                         idSchedaAlimentare);
             }
