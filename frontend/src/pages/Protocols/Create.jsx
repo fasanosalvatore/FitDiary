@@ -18,6 +18,8 @@ import {useForm} from "react-hook-form"
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useDropzone} from 'react-dropzone';
 import {FetchContext} from "../../context/FetchContext";
+import { GiMeal } from "react-icons/gi";
+import {IoIosFitness} from "react-icons/io";
 import {CloseIcon} from "@chakra-ui/icons";
 import Select from "react-select";
 import {GradientBar} from "../../components/GradientBar";
@@ -169,9 +171,11 @@ const Create = () => {
                     <FormErrorMessage>{errors.dataScadenza && errors.dataScadenza.message}</FormErrorMessage>
                   </FormControl>
                 </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={1}>
                   <FormControl id={"schedaAlimentare"}>
-                    <FormLabel>Scheda Alimentare</FormLabel>
+                    <Box w={"80%"} bg={"gray.50"} p={5} border={"linen"}
+                         borderColor={"gray.200"} borderRadius={"xl"} justifyContent={"center"}>
+                    <FormLabel textAlign={"center"}>Scheda Alimentare</FormLabel>
                     {selectedSchedaAlimentare != null && (
                       <HStack>
                         <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
@@ -182,61 +186,53 @@ const Create = () => {
                           {selectedSchedaAlimentare.path}
                         </Text>
                       </HStack>)}
-                    {!selectedSchedaAlimentare && (
-                      <div {...getRootPropsAlimentare()}>
-                        <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
-                          borderColor={"gray.200"}>
-                          <Input {...getInputPropsAlimentare()} />
-                          {
-                            isDragActiveAlimentare ?
-                              <p style={{ color: "gray", textAlign: "center" }}>
-                                Lascia il file qui ...
-                              </p> :
-                              <p style={{ color: "gray", textAlign: "center" }}>
-                                Clicca e trascina un file qui, oppure clicca per
-                                selezionare un file
-                              </p>
-                          }
-                        </Box>
-                      </div>
-                    )}
+                      <Flex direction="column" alignItems="center">
+                        <GiMeal size={"40%"} color="#00a9ff" />
+                      </Flex>
+                      <Flex direction="column" alignItems="center">
+                        <Button colorScheme="fitdiary" type="submit" w="80%" margin="0.1rem">
+                          Crea nuova
+                        </Button>
+                        <Button background="#8BC0FF" color="white" type="submit" w="80%" margin="0.1rem">
+                          Seleziona esistente
+                        </Button>
+                      </Flex>
+                    </Box>
                   </FormControl>
                 </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={1}>
                   <FormControl id={"schedaAllenamento"}>
-                    <FormLabel>Scheda Allenamento</FormLabel>
-                    {selectedSchedaAllenamento != null && (
-                      <HStack>
-                        <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
-                          setselectedSchedaAllenamento(null);
-                          setValue("schedaAllenamento", null);
-                        }} />
-                        <Text>
-                          {selectedSchedaAllenamento.path}
-                        </Text>
-                      </HStack>
-                    )}
-                    {!selectedSchedaAllenamento && (
-                      <div {...getRootPropsAllenamento()}>
-                        <Box w={"full"} bg={"gray.50"} p={5} border={"dotted"}
-                          borderColor={"gray.200"}>
-                          <Input {...getInputPropsAllenamento()} />
-                          {
-                            isDragActiveAllenamento ?
-                              <p style={{ color: "gray", textAlign: "center" }}>
-                                Lascia il file qui ...
-                              </p> :
-                              <p style={{ color: "gray", textAlign: "center" }}>
-                                Clicca e trascina un file qui, oppure clicca per
-                                selezionare un file
-                              </p>
-                          }
-                        </Box>
-                      </div>
-                    )}
+                    <Box w={"80%"} bg={"gray.50"} p={5} border={"linen"}
+                         borderColor={"gray.200"} borderRadius={"xl"} justifyContent={"center"}>
+                      <FormLabel textAlign={"center"}>Scheda Allenamento</FormLabel>
+                      {selectedSchedaAlimentare != null && (
+                          <HStack>
+                            <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
+                              setselectedSchedaAlimentare(null);
+                              setValue("schedaAlimentare", null);
+                            }} />
+                            <Text>
+                              {selectedSchedaAlimentare.path}
+                            </Text>
+                          </HStack>)}
+                      <Flex direction="column" alignItems="center">
+                        <IoIosFitness size={"40%"} color="#00a9ff" />
+                      </Flex>
+                      <Flex direction="column" alignItems="center">
+                        <Button colorScheme="fitdiary" type="submit" w="80%" margin="0.1rem">
+                          Crea nuova
+                        </Button>
+                        <Button background="#8BC0FF" color="white" type="submit" w="80%" margin="0.1rem">
+                          Seleziona esistente
+                        </Button>
+                      </Flex>
+                    </Box>
                   </FormControl>
                 </GridItem>
-                <GridItem colSpan={2} >
+                <GridItem colSpan={1} >
+                  <Button background="#BDC7D3" color="white" type={"submit"} w="full">Annulla</Button>
+                </GridItem>
+                <GridItem colSpan={1} >
                   <Button colorScheme="fitdiary" type={"submit"} w="full">Carica</Button>
                 </GridItem>
               </SimpleGrid>

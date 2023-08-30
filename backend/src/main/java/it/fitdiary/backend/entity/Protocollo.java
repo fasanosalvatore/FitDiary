@@ -1,6 +1,7 @@
 package it.fitdiary.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -87,4 +88,11 @@ public class Protocollo {
     @UpdateTimestamp
     private LocalDateTime dataAggiornamento;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Protocollo that = (Protocollo) o;
+        return Objects.equal(id, that.id) && Objects.equal(dataScadenza, that.dataScadenza) && Objects.equal(schedaAlimentare, that.schedaAlimentare) && Objects.equal(schedaAllenamento, that.schedaAllenamento) && Objects.equal(cliente, that.cliente) && Objects.equal(preparatore, that.preparatore) && Objects.equal(dataCreazione, that.dataCreazione) && Objects.equal(dataAggiornamento, that.dataAggiornamento);
+    }
 }

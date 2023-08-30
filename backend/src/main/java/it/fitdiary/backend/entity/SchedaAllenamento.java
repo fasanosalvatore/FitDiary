@@ -2,6 +2,7 @@ package it.fitdiary.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,4 +59,13 @@ public class SchedaAllenamento {
     @JsonIgnore
     @EqualsAndHashCode.Exclude
     private Protocollo protocollo;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SchedaAllenamento that = (SchedaAllenamento) o;
+        return Objects.equal(id, that.id) && Objects.equal(frequenza, that.frequenza) && Objects.equal(listaEsercizi, that.listaEsercizi) && Objects.equal(protocollo, that.protocollo);
+    }
+
 }

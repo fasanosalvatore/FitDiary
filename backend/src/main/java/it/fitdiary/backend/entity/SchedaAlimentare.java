@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -91,4 +93,11 @@ public class SchedaAlimentare {
     @UpdateTimestamp
     private LocalDateTime dataAggiornamento;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SchedaAlimentare that = (SchedaAlimentare) o;
+        return Objects.equal(id, that.id) && Objects.equal(nome, that.nome) && Objects.equal(kcalAssunte, that.kcalAssunte) && Objects.equal(listaAlimenti, that.listaAlimenti) && Objects.equal(preparatore, that.preparatore) && Objects.equal(dataCreazione, that.dataCreazione) && Objects.equal(dataAggiornamento, that.dataAggiornamento);
+    }
 }
