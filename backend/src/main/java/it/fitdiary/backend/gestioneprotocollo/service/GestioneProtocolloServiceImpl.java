@@ -17,6 +17,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +60,9 @@ public class GestioneProtocolloServiceImpl
    * Repository dell'esercizio.
    */
   private final EsercizioRepository esercizioRepository;
+
+
+
 
   /**
    * @param  cliente il cliente del protocollo
