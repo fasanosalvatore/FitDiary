@@ -45,6 +45,75 @@ let user = {
     "status": "success"
 };
 
+const schedaAlimentare = {
+    "data": {
+        "scheda_alimentare": {
+            "id": 1,
+            "nome": "scheda da 100kcla",
+            "kcalAssunte": 100.0,
+            "listaAlimenti": [
+                {
+                    "id": 1,
+                    "giornoDellaSettimana": "MERCOLEDI",
+                    "pasto": "SPUNTINO_COLAZIONE",
+                    "grammi": 100,
+                    "alimento": {
+                        "id": 1,
+                        "nome": "cereali",
+                        "kcal": 20.0,
+                        "proteine": 4.0,
+                        "grassi": 40.0,
+                        "carboidrati": 5.0,
+                        "pathFoto": "foto/path"
+                    },
+                    "schedaAlimentare": 1
+                },
+                {
+                    "id": 2,
+                    "giornoDellaSettimana": "LUNEDI",
+                    "pasto": "COLAZIONE",
+                    "grammi": 200,
+                    "alimento": {
+                        "id": 2,
+                        "nome": "panckakus",
+                        "kcal": 24.0,
+                        "proteine": 20.0,
+                        "grassi": 20.0,
+                        "carboidrati": 5.0,
+                        "pathFoto": "foto/path"
+                    },
+                    "schedaAlimentare": 1
+                }
+            ],
+            "preparatore": {
+                "id": 2,
+                "nome": "Daniele",
+                "cognome": "Giaquinto",
+                "email": "giaqui@gmail.com",
+                "attivo": true,
+                "dataNascita": "1989-02-25",
+                "sesso": "M",
+                "telefono": "3406683793",
+                "via": "Via Antinori, 2",
+                "cap": "84085",
+                "citta": "Mercato San Severino",
+                "preparatore": null,
+                "ruolo": {
+                    "id": 2,
+                    "nome": "Preparatore",
+                    "dataCreazione": "2000-01-01T00:00:01",
+                    "dataAggiornamento": "2000-01-01T00:00:01"
+                },
+                "dataCreazione": "2000-01-01T00:00:01",
+                "dataAggiornamento": "2000-01-01T00:00:01"
+            },
+            "dataCreazione": null,
+            "dataAggiornamento": null
+        }
+    },
+    "status": "success"
+};
+
 const trainer = {
     "data": {
         "utente": {
@@ -2040,9 +2109,6 @@ export function getProtocolList() {
     return listaProtocolli;
 }
 
-export function getSchedaAlimentare() {
-    return protocollo.listaAlimenti;
-}
 
 export function getReport() {
     return report;
@@ -2051,4 +2117,9 @@ export function getReport() {
 export function getListaReport() {
 
     return listaReport;
+}
+
+export function getFakeSchedaAlimentare() {
+
+    return schedaAlimentare;
 }

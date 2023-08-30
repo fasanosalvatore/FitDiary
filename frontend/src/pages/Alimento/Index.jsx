@@ -4,7 +4,7 @@ import {
     Button,
     Flex,
     Heading,
-    HStack,
+    HStack, Image,
     Input,
     InputGroup,
     InputLeftElement,
@@ -26,6 +26,13 @@ import {GradientBar} from "../../components/GradientBar";
 import {Link as ReactLink} from "react-router-dom"
 
 const urlScheda = "/listaAlimenti"
+
+const protocol = window.location.protocol;
+const domain = window.location.host;
+const port = window.location.port;
+
+
+const full = `${protocol}//${domain}`
 
 function Index() {
     moment.locale("it-IT");
@@ -122,7 +129,7 @@ function Index() {
                                         <TableCaption>Lista Alimenti</TableCaption>
                                         <Thead bg="fitdiary.100">
                                             <Tr>
-                                                <Th>ID</Th>
+                                                <Th>Immagine</Th>
                                                 <Th>Nome</Th>
                                                 <Th>Kcal</Th>
                                                 <Th>Proteine</Th>
@@ -137,7 +144,12 @@ function Index() {
                                                     (alimento.nome.toLowerCase().startsWith(search.toLowerCase()) ||
                                                         search === "") && (
                                                         <Tr key={alimento.id}>
-                                                            <Td>{alimento.id}</Td>
+                                                            <Td  p={1} m={0}>
+                                                                    <Image
+                                                                        objectFit='contain'  boxSize={100}
+                                                                           src={full + "/"+alimento.pathFoto}
+                                                                           alt='Foto non disponibile'/>
+                                                            </Td>
                                                             <Td>{alimento.nome}</Td>
                                                             <Td>{alimento.kcal}</Td>
                                                             <Td>{alimento.proteine}</Td>
