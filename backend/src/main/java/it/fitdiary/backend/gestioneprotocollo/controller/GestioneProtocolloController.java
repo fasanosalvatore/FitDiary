@@ -7,6 +7,7 @@ import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.FileUtility;
 import it.fitdiary.backend.utility.ResponseHandler;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -308,11 +309,11 @@ public class GestioneProtocolloController {
         }
         try {
             Utente utenteCliente = gestioneUtenzaService.getById(idCliente);
+            List<Protocollo> protocolloList = gestioneProtocolloService
+                .visualizzaStoricoProtocolliCliente(
+                    utenteCliente);
             return ResponseHandler.generateResponse(HttpStatus.OK,
-                    "protocollo",
-                    gestioneProtocolloService
-                            .visualizzaStoricoProtocolliCliente(
-                                    utenteCliente));
+                    "protocollo", protocolloList);
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     (Object) e.getMessage());
