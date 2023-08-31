@@ -1,12 +1,6 @@
 package it.fitdiary.backend.gestioneprotocollo.controller;
 
-import it.fitdiary.backend.entity.Alimento;
-import it.fitdiary.backend.entity.Esercizio;
-import it.fitdiary.backend.entity.Protocollo;
-import it.fitdiary.backend.entity.Ruolo;
-import it.fitdiary.backend.entity.SchedaAlimentare;
-import it.fitdiary.backend.entity.SchedaAllenamento;
-import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.entity.*;
 import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloServiceImpl;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaServiceImpl;
 import it.fitdiary.backend.utility.FileUtility;
@@ -94,134 +88,138 @@ class GestioneProtocolloControllerTest {
     }
 
     @BeforeEach
-//    public void setUp() throws IOException {
-//        ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
-//        ruoloPreparatore = new Ruolo(2L, "PREPARATORE", null, null);
-//        cliente = new Utente(1L, "Rebecca", "Di Matteo",
-//                "beccadimatteoo@gmail.com", "Becca123*", true, null, null, null,
-//                null, null, null, null, ruoloCliente, null, null, null, null,
-//                null);
-//        clienteAggiornato = new Utente(1L, "Rebecca", "Di Matteo",
-//                "beccadimatteoo@gmail.com", "Becca123*", true,
-//                LocalDate.parse("2000-10-30"), null, "3894685921",
-//                "Francesco rinaldo", "94061", "Agropoli", null,
-//                ruoloCliente, null, null, null, null, null);
-//        preparatore =
-//                new Utente(1L, "Daniele", "De Marco", "diodani5@gmail.com",
-//                        "Trappo#98", true, null, null, null, null,
-//                        null, null, null, ruoloPreparatore, null, null, null,
-//                        null, null);
-//        updatedPreparatore =
-//                new Utente(1L, "Michele", "De Marco", "diodani5@gmail.com",
-//                        "Trappo#98", true,
-//                        LocalDate.parse("2000-03-03"), null, "3459666587",
-//                        "Francesco La Francesca", "84126", "Salerno", null,
-//                        ruoloPreparatore, null, null, null, null, null);
-//        protocollo =
-//                new Protocollo(1L, LocalDate.now(), null, null, cliente,
-//                        preparatore, LocalDateTime.now(), null);
-//        protocolloConSchedaAlimentare =
-//                new Protocollo(1L, LocalDate.now(), schedaAlimentare, null, cliente,
-//                        preparatore, LocalDateTime.now(), null);
-//        protocolloConSchedaAllenamento =
-//                new Protocollo(1L, LocalDate.now(), null, schedaAllenamento, cliente,
-//                        preparatore, LocalDateTime.now(), null);
-//        protocolloPieno = new Protocollo(1L, LocalDate.now(), schedaAlimentare, schedaAllenamento, cliente,
-//                preparatore, LocalDateTime.now(), null);
-//         cliente1 = new Utente(1L, "Rebecca", "Di Matteo",
-//                "beccadimatteoo@gmail.com", "Becca123*", true,
-//                LocalDate.parse("2000-10-30"), null, "3894685921",
-//                "Francesco rinaldo", "94061", "Agropoli", null,
-//                ruoloCliente, null, null, null, null, null);
-//
-//
-//         preparatore1 =
-//                new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
-//                        , "Davide123*", true, LocalDate.parse("2000-03" +
-//                        "-03"), "M", null, null, null,
-//                        null, null, ruoloPreparatore, null, null, null, null, null);
-//        cliente2 = new Utente(1L, "Rebecca", "Di Matteo",
-//                "beccadimatteoo@gmail.com", "Becca123*", true,
-//                LocalDate.parse("2000-10-30"), null, "3894685921",
-//                "Francesco rinaldo", "94061", "Agropoli", preparatore,
-//                ruoloCliente, null, null, null, null, null);
-//        cliente3 = new Utente(2L, "Rebecca", "Di Matteo",
-//                "beccadimatteoo@gmail.com", "Becca123*", true,
-//                LocalDate.parse("2000-10-30"), null, "3894685921",
-//                "Francesco rinaldo", "94061", "Agropoli", preparatore,
-//                ruoloCliente, null, null, null, null, null);
-//        alimento = new Alimento(null,"Pasta","pranzo","1",200f,"100",
-//                null);
-//        esercizio = new Esercizio(null, "pushup", "3", "10", "1", "1", "petto",
-//                null);
-//        schedaAlimentare = new SchedaAlimentare(1L, 2000f, null, protocollo);
-//        schedaAllenamento = new SchedaAllenamento(1L, "3", null, protocollo);
-//        fileSchedaAllenamento = Files.writeString(Path.of("schedaAllenamento.csv"),
-//                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
-//                        "pushup;3;10;1;1;petto\n" +
-//                        "pushup;3;10;1;1;petto\n" +
-//                        "pushup;3;10;1;1;petto\n" +
-//                        "pushup;3;10;1;1;petto\n" +
-//                        "pushup;3;10;1;2;petto\n" +
-//                        "pushup;3;10;1;2;petto\n" +
-//                        "pushup;3;10;1;2;petto\n" +
-//                        "pushup;3;10;1;2;petto\n" +
-//                        "pushup;3;10;1;3;petto\n" +
-//                        "pushup;3;10;1;3;petto\n" +
-//                        "pushup;3;10;1;3;petto").toFile();
-//        fileSchedaAlimentare = Files.writeString(Path.of("schedaAlimentare.csv"),
-//                "Nome;Pasto;Giorno;kcal;grammi\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n" +
-//                        "Pasta;pranzo;1;200;100\n").toFile();
-//        fileSchedaAllenamentoError = Files.writeString(Path.of("schedaAllenamento.csv"),
-//                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento\n" +
-//                        "pushup;3;10;1;1\n" +
-//                        "pushup;3;10;1;1\n" +
-//                        "pushup;3;10;1;1\n" +
-//                        "pushup;3;10;1;1\n" +
-//                        "pushup;3;10;1;2\n" +
-//                        "pushup;3;10;1;2\n" +
-//                        "pushup;3;10;1;2\n" +
-//                        "pushup;3;10;1;2\n" +
-//                        "pushup;3;10;1;3\n" +
-//                        "pushup;3;10;1;3\n" +
-//                        "pushup;3;10;1;3").toFile();
-//        fileSchedaAlimentareError = Files.writeString(Path.of("schedaAlimentare.csv"),
-//                "Nome;Pasto;Giorno;kcal\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n" +
-//                        "Pasta;pranzo;1;200\n").toFile();
-//        fileNotCsv = Files.writeString(Path.of("schedaAllenamento.txt"),
-//                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
-//                        "pushup;3;10;1;1;petto\n" +
-//                        "pushup;3;10;1;1;petto\n" +
-//                        "pushup;3;10;1;1;petto\n" +
-//                        "pushup;3;10;1;1;petto\n" +
-//                        "pushup;3;10;1;2;petto\n" +
-//                        "pushup;3;10;1;2;petto\n" +
-//                        "pushup;3;10;1;2;petto\n" +
-//                        "pushup;3;10;1;2;petto\n" +
-//                        "pushup;3;10;1;3;petto\n" +
-//                        "pushup;3;10;1;3;petto\n" +
-//                        "pushup;3;10;1;3;petto").toFile();
-//    }
+    public void setUp() throws IOException {
+        ruoloCliente = new Ruolo(3L, "CLIENTE", null, null);
+        ruoloPreparatore = new Ruolo(2L, "PREPARATORE", null, null);
+        cliente = new Utente(1L, "Rebecca", "Di Matteo",
+                "beccadimatteoo@gmail.com", "Becca123*", true, null, null, null,
+                null, null, null, null, ruoloCliente, null, null, null, null,
+                null);
+        clienteAggiornato = new Utente(1L, "Rebecca", "Di Matteo",
+                "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, "3894685921",
+                "Francesco rinaldo", "94061", "Agropoli", null,
+                ruoloCliente, null, null, null, null, null);
+        preparatore =
+                new Utente(1L, "Daniele", "De Marco", "diodani5@gmail.com",
+                        "Trappo#98", true, null, null, null, null,
+                        null, null, null, ruoloPreparatore, null, null, null,
+                        null, null);
+        updatedPreparatore =
+                new Utente(1L, "Michele", "De Marco", "diodani5@gmail.com",
+                        "Trappo#98", true,
+                        LocalDate.parse("2000-03-03"), null, "3459666587",
+                        "Francesco La Francesca", "84126", "Salerno", null,
+                        ruoloPreparatore, null, null, null, null, null);
+        protocollo =
+                new Protocollo(1L, LocalDate.now(), null, null, cliente,
+                        preparatore, LocalDateTime.now(), null);
+
+        protocolloConSchedaAlimentare =
+                new Protocollo(1L, LocalDate.now(), schedaAlimentare, null, cliente,
+                        preparatore, LocalDateTime.now(), null);
+        protocolloConSchedaAllenamento =
+                new Protocollo(1L, LocalDate.now(), null, schedaAllenamento, cliente,
+                        preparatore, LocalDateTime.now(), null);
+        protocolloPieno = new Protocollo(1L, LocalDate.now(), schedaAlimentare, schedaAllenamento, cliente,
+                preparatore, LocalDateTime.now(), null);
+         cliente1 = new Utente(1L, "Rebecca", "Di Matteo",
+                "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, "3894685921",
+                "Francesco rinaldo", "94061", "Agropoli", null,
+                ruoloCliente, null, null, null, null, null);
+
+
+         preparatore1 =
+                new Utente(1L, "Davide", "La Gamba", "davide@gmail.com"
+                        , "Davide123*", true, LocalDate.parse("2000-03" +
+                        "-03"), "M", null, null, null,
+                        null, null, ruoloPreparatore, null, null, null, null, null);
+        cliente2 = new Utente(1L, "Rebecca", "Di Matteo",
+                "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, "3894685921",
+                "Francesco rinaldo", "94061", "Agropoli", preparatore,
+                ruoloCliente, null, null, null, null, null);
+        cliente3 = new Utente(2L, "Rebecca", "Di Matteo",
+                "beccadimatteoo@gmail.com", "Becca123*", true,
+                LocalDate.parse("2000-10-30"), null, "3894685921",
+                "Francesco rinaldo", "94061", "Agropoli", preparatore,
+                ruoloCliente, null, null, null, null, null);
+        //alimento = new Alimento(null,"Pasta","pranzo","1",200f,"100",
+        //        null);
+        esercizio = new Esercizio(null, "pushup", "3", "10", "1", "1", "petto",
+                null);
+        schedaAlimentare =
+                new SchedaAlimentare(1L, "schedaBuona", 2000f, new ArrayList<IstanzaAlimento>(),
+                        preparatore,
+                        LocalDateTime.now(), LocalDateTime.now());
+        schedaAllenamento = new SchedaAllenamento(1L, "3", null, protocollo);
+        fileSchedaAllenamento = Files.writeString(Path.of("schedaAllenamento.csv"),
+                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto").toFile();
+        fileSchedaAlimentare = Files.writeString(Path.of("schedaAlimentare.csv"),
+                "Nome;Pasto;Giorno;kcal;grammi\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n" +
+                        "Pasta;pranzo;1;200;100\n").toFile();
+        fileSchedaAllenamentoError = Files.writeString(Path.of("schedaAllenamento.csv"),
+                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento\n" +
+                        "pushup;3;10;1;1\n" +
+                        "pushup;3;10;1;1\n" +
+                        "pushup;3;10;1;1\n" +
+                        "pushup;3;10;1;1\n" +
+                        "pushup;3;10;1;2\n" +
+                        "pushup;3;10;1;2\n" +
+                        "pushup;3;10;1;2\n" +
+                        "pushup;3;10;1;2\n" +
+                        "pushup;3;10;1;3\n" +
+                        "pushup;3;10;1;3\n" +
+                        "pushup;3;10;1;3").toFile();
+        fileSchedaAlimentareError = Files.writeString(Path.of("schedaAlimentare.csv"),
+                "Nome;Pasto;Giorno;kcal\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n" +
+                        "Pasta;pranzo;1;200\n").toFile();
+        fileNotCsv = Files.writeString(Path.of("schedaAllenamento.txt"),
+                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;1;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;2;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto\n" +
+                        "pushup;3;10;1;3;petto").toFile();
+    }
 
     @Test
     void visualizzaStoricoProtocolliCliente() throws Exception {
@@ -387,44 +385,41 @@ class GestioneProtocolloControllerTest {
 
     }
 
-//    @Test
-//    public void creazioneProtocolloSuccess()
-//            throws Exception {
-//        String dataScadenza= "2023-12-12";
-//        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
-//        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
-//        Principal principal = () -> "1";
-//        Long idCliente = 2L;
-//        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
-//        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
-//        when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
-//
-//        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
-//        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
-//        Protocollo protocolloPre = new Protocollo();
-//        protocolloPre.setDataScadenza(LocalDate.parse(dataScadenza));
-//        protocolloPre.setCliente(cliente3);
-//        protocolloPre.setPreparatore(preparatore);
-//       when(gestioneProtocolloServiceImpl.creazioneProtocollo(protocolloPre, fileSchedaAlimentare, fileSchedaAllenamento)).thenReturn(protocollo);
-//        MockHttpServletRequestBuilder requestBuilder =
-//                MockMvcRequestBuilders.multipart(
-//                                "/api/v1/protocolli").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
-//                        .param("dataScadenza", dataScadenza).param("idCliente", idCliente.toString())
-//
-//                        .principal(principal);
-//        ResultActions actualPerformResult =
-//                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
-//                        .build()
-//                        .perform(requestBuilder);
-//        actualPerformResult.andExpect(
-//                MockMvcResultMatchers.status().is2xxSuccessful());
-//    }
+    @Test
+    public void creazioneProtocolloSuccess()
+            throws Exception {
+        String dataScadenza= "2023-12-12";
+        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
+        Principal principal = () -> "1";
+        Long idCliente = 2L;
+        when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
+        when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
+        when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
+
+        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
+        Protocollo protocolloPre = new Protocollo();
+        protocolloPre.setDataScadenza(LocalDate.parse(dataScadenza));
+        protocolloPre.setCliente(cliente3);
+        protocolloPre.setPreparatore(preparatore);
+       when(gestioneProtocolloServiceImpl.creazioneProtocollo(LocalDate.parse(dataScadenza), cliente3, preparatore,schedaAlimentare.getId(),fileSchedaAllenamento)).thenReturn(protocollo);
+        MockHttpServletRequestBuilder requestBuilder =
+                MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli").file(multipartSchedaAllenamento)
+                        .param("dataScadenza", dataScadenza).param("idCliente", idCliente.toString())
+
+                        .principal(principal);
+        ResultActions actualPerformResult =
+                MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
+                        .build()
+                        .perform(requestBuilder);
+        actualPerformResult.andExpect(
+                MockMvcResultMatchers.status().is2xxSuccessful());
+    }
 
     @Test
     public void creazioneProtocolloErrorUnauthorized()
             throws Exception {
         String dataScadenza= "2023-12-12";
-        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
         MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
         Principal principal = () -> "1";
         Long idCliente = 2L;
@@ -432,7 +427,7 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(false);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                                "/api/v1/protocolli").file(multipartSchedaAllenamento)
                         .param("dataScadenza", dataScadenza).param("idCliente", idCliente.toString())
 
                         .principal(principal);
@@ -449,7 +444,6 @@ class GestioneProtocolloControllerTest {
     public void creazioneProtocolloErrorSchedeVuote()
             throws Exception {
         String dataScadenza= "2023-12-12";
-        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", new byte[0]);
         MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", new byte[0]);
         Principal principal = () -> "1";
         Long idCliente = 2L;
@@ -457,11 +451,10 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
         when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                                "/api/v1/protocolli").file(multipartSchedaAllenamento)
                         .param("dataScadenza", dataScadenza).param("idCliente", idCliente.toString())
 
                         .principal(principal);
@@ -473,10 +466,9 @@ class GestioneProtocolloControllerTest {
                 MockMvcResultMatchers.status().isBadRequest());
     }
 
-  /* @Test
+   @Test
     public void modificaProtocolloSuccess()
             throws Exception {
-        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
         MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
         Principal principal = () -> "1";
         Long idCliente = 1L;
@@ -485,14 +477,12 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
 
-       when(gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileSchedaAlimentare)).thenReturn(protocolloConSchedaAlimentare);
        when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocolloConSchedaAlimentare, fileSchedaAllenamento)).thenReturn(protocolloPieno);
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                                "/api/v1/protocolli/1").file(multipartSchedaAllenamento)
                       .param("idProtocollo", idProtocollo.toString())
                         .principal(principal);
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
@@ -502,12 +492,11 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().is2xxSuccessful());
-    }*/
+    }
 
-   /* @Test
+    @Test
     public void modificaProtocolloErrorUnauthorized()
             throws Exception {
-        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
         MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
         Principal principal = () -> "1";
         Long idCliente = 1L;
@@ -516,15 +505,13 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(false);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
 
-        when(gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileSchedaAlimentare)).thenReturn(protocolloConSchedaAlimentare);
         when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocolloConSchedaAlimentare, fileSchedaAllenamento)).thenReturn(protocolloPieno);
 
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                                "/api/v1/protocolli/1").file(multipartSchedaAllenamento)
                         .param("idProtocollo", idProtocollo.toString())
                         .principal(principal);
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
@@ -534,9 +521,9 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
                 MockMvcResultMatchers.status().isUnauthorized());
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void modificaProtocolloSuccessSchedaAllenamentoEmpty()
             throws Exception {
         MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
@@ -549,14 +536,11 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(fileSchedaAlimentare);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(null);
-
-        when(gestioneProtocolloServiceImpl.inserisciSchedaAlimentare(protocollo, fileSchedaAlimentare)).thenReturn(protocolloConSchedaAlimentare);
 
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                                "/api/v1/protocolli/1").file(multipartSchedaAllenamento)
                         .param("idProtocollo", idProtocollo.toString())
                         .principal(principal);
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
@@ -566,13 +550,13 @@ class GestioneProtocolloControllerTest {
                         .perform(requestBuilder);
         actualPerformResult.andDo(print()).andExpect(
                 MockMvcResultMatchers.status().is4xxClientError());
-    }*/
+    }
 
     @Test
     public void modificaProtocolloSuccessSchedaAlimentareEmpty()
             throws Exception {
         MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", new byte[0]);
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
+        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", new byte[0]);
         Principal principal = () -> "1";
         Long idCliente = 1L;
         Long idProtocollo = 1L;
@@ -583,11 +567,12 @@ class GestioneProtocolloControllerTest {
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(null);
         fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
 
+
         when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocollo, fileSchedaAllenamento)).thenReturn(protocolloConSchedaAllenamento);
 
         MockHttpServletRequestBuilder requestBuilder =
                 MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
+                                "/api/v1/protocolli/1").file(multipartSchedaAllenamento)
                         .param("idProtocollo", idProtocollo.toString())
                         .principal(principal);
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
