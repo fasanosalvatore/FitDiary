@@ -176,7 +176,7 @@ public class GestioneProtocolloControllerIntegrationTest {
                 return fileSchedaAllenamento.getPath();
             }
         };
-        multipartRequest.add("dataScadenza","2022-12-12");
+        multipartRequest.add("dataScadenza","2023-12-12");
         multipartRequest.add("idCliente", 4);
         multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
         HttpHeaders headers = new HttpHeaders();

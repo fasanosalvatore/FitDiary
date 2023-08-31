@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @Slf4j
@@ -123,6 +124,10 @@ public class GestioneProtocolloController {
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(BAD_REQUEST,
                     (Object) e.getMessage());
+        }catch (Exception e)
+        {
+            return ResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                (Object) e.getMessage());
         }
     }
 
