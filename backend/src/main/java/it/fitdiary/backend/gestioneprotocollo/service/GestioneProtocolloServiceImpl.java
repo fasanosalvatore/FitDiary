@@ -17,6 +17,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -62,18 +63,16 @@ public class GestioneProtocolloServiceImpl
   private final EsercizioRepository esercizioRepository;
 
 
-
-
   /**
-   * @param  cliente il cliente del protocollo
-   * @param preparatore il preparatore del protocollo
-   * @param dataScadenza            la data di scadenza
-   * @param idSchedaAlimentare  id scheda alimentare del nuovo protocollo
+   * @param cliente               il cliente del protocollo
+   * @param preparatore           il preparatore del protocollo
+   * @param dataScadenza          la data di scadenza
+   * @param idSchedaAlimentare    id scheda alimentare del nuovo protocollo
    * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
    * @return Protocollo creato
    * @throws IOException
    * @throws IllegalArgumentException
-   * **/
+   **/
   @Override
   public Protocollo creazioneProtocollo(LocalDate dataScadenza, Utente cliente, Utente preparatore,
                                         final Long idSchedaAlimentare,
@@ -87,17 +86,18 @@ public class GestioneProtocolloServiceImpl
     newProtocollo.setPreparatore(preparatore);
     newProtocollo.setDataScadenza(dataScadenza);
     if (idSchedaAlimentare != null) {
-      newProtocollo.setSchedaAlimentare(getSchedaAlimentare(preparatore.getId(),idSchedaAlimentare));
+      newProtocollo.setSchedaAlimentare(
+          getSchedaAlimentare(preparatore.getId(), idSchedaAlimentare));
     }
     if (schedaAllenamentoFile != null) {
       inserisciSchedaAllenamento(newProtocollo, schedaAllenamentoFile);
     }
 
-    return  protocolloRepository.save(newProtocollo);
+    return protocolloRepository.save(newProtocollo);
   }
 
   /**
-   * @param preparatoreId         preparatore che possiede la scheda
+   * @param preparatoreId      preparatore che possiede la scheda
    * @param schedaAlimentareId file della scheda alimentare
    * @return protocollo modificato
    */
@@ -175,15 +175,13 @@ public class GestioneProtocolloServiceImpl
     if (idProtocollo == null) {
       throw new IllegalArgumentException("Id non valido");
     }
-    Protocollo protocollo = null;
-    if (protocolloRepository.existsById(idProtocollo)) {
-      protocollo = protocolloRepository.
-          getById(idProtocollo);
-    } else {
+    Optional<Protocollo> protocolloOptional = protocolloRepository.findById(idProtocollo);
+    if (protocolloOptional.isEmpty()) {
+
       throw new IllegalArgumentException("Il protocollo non esiste");
     }
 
-    return protocollo;
+    return protocolloOptional.get();
   }
 
   /**
@@ -215,7 +213,8 @@ public class GestioneProtocolloServiceImpl
 
   @Override
   public void modificaSchedaAlimentare(Protocollo protocollo, Long idSchedaAlimentare) {
-    protocollo.setSchedaAlimentare(getSchedaAlimentare(protocollo.getPreparatore().getId(),idSchedaAlimentare));
+    protocollo.setSchedaAlimentare(
+        getSchedaAlimentare(protocollo.getPreparatore().getId(), idSchedaAlimentare));
     protocolloRepository.save(protocollo);
   }
 }
