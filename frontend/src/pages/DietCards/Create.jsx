@@ -240,13 +240,13 @@ export default function Create() {
                                                             <Text fontWeight={"bold"} mt={"4"} align={"left"}>Seleziona
                                                                 un pasto:</Text>
                                                             <Select placeholder='Seleziona pasto' id={"selectPasto"}>
-                                                                <option value='1'>Colazione</option>
-                                                                <option value='2'>Spuntino Mattina</option>
-                                                                <option value='3'>Pranzo</option>
-                                                                <option value='4'>Spuntino Pomeriggio</option>
-                                                                <option value='5'>Cena</option>
-                                                                <option value='6'>Spuntino Serale</option>
-                                                                <option value='7'>Extra</option>
+                                                                <option value='0'>Colazione</option>
+                                                                <option value='1'>Spuntino Mattina</option>
+                                                                <option value='2'>Pranzo</option>
+                                                                <option value='3'>Spuntino Pomeriggio</option>
+                                                                <option value='4'>Cena</option>
+                                                                <option value='5'>Spuntino Serale</option>
+                                                                <option value='6'>Extra</option>
                                                             </Select>
                                                             {listAlimenti.lista_alimenti.length > 0 ? (<>
                                                                 <Text fontSize="xl" my={5}>
