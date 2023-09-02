@@ -54,7 +54,7 @@ export default function Create() {
     const {isOpen, onOpen, onClose} = useDisclosure()
     const {handleSubmit, setValue} = useForm();
     const toast = useToast({
-        duration: 3000, isClosable: true, variant: "solid", position: "top", containerStyle: {
+        duration: 1000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })
@@ -93,7 +93,7 @@ export default function Create() {
             const {title, body, stat} = toastMessage;
 
             toast({
-                title, description: body, status: stat, duration: 9000, isClosable: true
+                title, description: body, status: stat, duration: 1000, isClosable: true
             });
         }
     }, [toastMessage, toast]);
@@ -138,16 +138,36 @@ export default function Create() {
 
     function addAlimento(alimento,pasto,qnt)
     {
-        let objTest={};
-        objTest.alimento=alimento;
-        objTest.Pasto=pasto;
-        objTest.Qnt=qnt;
+        let esiste=false;
+        let i=0;
+        let pastiGiorno=schedaAlimentare[indexGiorno];
+        while(i<pastiGiorno.length && !esiste)
+        {
+            let pastoObj=pastiGiorno[i];
+            if(pastoObj.Pasto==pasto && pastoObj.alimento.id==alimento.id)
+            {
+                esiste=true;
+            }
+            i++;
+        }
 
-        let tmp=schedaAlimentare;
-        tmp[indexGiorno].push(objTest);
-        setSchedaAlimentare(tmp);
+        if(!esiste)
+        {
+            let objTest={};
+            objTest.alimento=alimento;
+            objTest.Pasto=pasto;
+            objTest.Qnt=qnt;
 
-        toast(toastParam("Operazione eseguita!", "Alimento aggiunto con successo", "success"));
+            let tmp=schedaAlimentare;
+            tmp[indexGiorno].push(objTest);
+            setSchedaAlimentare(tmp);
+
+            toast(toastParam("Operazione eseguita!", "Alimento aggiunto con successo", "success"));
+        }
+        else
+        {
+            toast(toastParam("Attenzione!", "Hai già inserito questo alimento", "warning"));
+        }
     }
 
 
@@ -311,67 +331,72 @@ export default function Create() {
                                             </AccordionButton>
                                         </h2>
                                         <AccordionPanel pb={4}>
-                                            {vettPasti.map((pasto)=>{
+                                            {vettPasti.map((pasto, index) => {
                                                 return (
-                                                    schedaAlimentare[i].map((al, key) =>{
-                                                            let alimento=al.alimento;
-
-                                                            let caloreCalc=(alimento.kcal/100)*al.Qnt;
+                                                    <div key={index}>
+                                                        <Text fontSize={"21"} color={"blue"} fontWeight={"semibold"}>{pasto.Nome}</Text>
+                                                        {schedaAlimentare[i].filter((t) => pasto.ID == t.Pasto).map((al, key) => {
+                                                            let alimento = al.alimento;
+                                                            let caloreCalc = (alimento.kcal / 100) * al.Qnt;
                                                             console.log(caloreCalc);
-                                                            return (<>
-                                                                <Table borderBottom={"solid 1px "}
-                                                                       borderColor={"blue.200"} key={key}
-                                                                       variant="unstyled" size="md">
-                                                                    <Thead>
-                                                                        <Tr>
-                                                                            <Th>Immagine</Th>
-                                                                            <Th>Nome</Th>
-                                                                            <Th>Kcal</Th>
-                                                                            <Th>Proteine</Th>
-                                                                            <Th>Grassi</Th>
-                                                                            <Th>Carboidrati</Th>
-                                                                            <Th>Quantità</Th>
-                                                                            <Th>Azioni</Th>
-                                                                        </Tr>
-                                                                    </Thead>
-                                                                    <Tbody>
-                                                                        <Tr>
-                                                                            <Td p={1}
-                                                                                m={0}>
-                                                                                <Image
-                                                                                    objectFit='contain'
-                                                                                    boxSize={100}
-                                                                                    src={full + "/" + alimento.pathFoto}
-                                                                                    alt='Foto non disponibile'/>
-                                                                            </Td>
-                                                                            <Td>{alimento.nome}</Td>
-                                                                            <Td>{caloreCalc}</Td>
-                                                                            <Td>{alimento.proteine}</Td>
-                                                                            <Td>{alimento.grassi}</Td>
-                                                                            <Td>{alimento.carboidrati}</Td>
-                                                                            <Td>
-                                                                                <Input type={"text"} defaultValue={al.Qnt} onChange={(e)=>{
-                                                                                    schedaAlimentare[i][key].Qnt=e.target.value;
-                                                                                    let newV=[...schedaAlimentare];
-                                                                                    setSchedaAlimentare(newV)
-                                                                                }}></Input>
-                                                                            </Td>
-                                                                            <Td>
-                                                                                <IconButton colorScheme={"red"} onClick={()=>{
-                                                                                    if(window.confirm("Sei sicuro di voler eliminare l'alimento?")) {
-                                                                                        schedaAlimentare[i].splice(key,1);
+                                                            return (
+                                                                <>
+                                                                    <Table borderBottom={"solid 1px "}
+                                                                           borderColor={"blue.200"} key={key}
+                                                                           variant="unstyled" size="md">
+                                                                        <Thead>
+                                                                            <Tr>
+                                                                                <Th>Immagine</Th>
+                                                                                <Th>Nome</Th>
+                                                                                <Th>Kcal</Th>
+                                                                                <Th>Proteine</Th>
+                                                                                <Th>Grassi</Th>
+                                                                                <Th>Carboidrati</Th>
+                                                                                <Th>Quantità</Th>
+                                                                                <Th>Azioni</Th>
+                                                                            </Tr>
+                                                                        </Thead>
+                                                                        <Tbody>
+                                                                            <Tr>
+                                                                                <Td p={1}
+                                                                                    m={0}>
+                                                                                    <Image
+                                                                                        objectFit='contain'
+                                                                                        boxSize={100}
+                                                                                        src={full + "/" + alimento.pathFoto}
+                                                                                        alt='Foto non disponibile'/>
+                                                                                </Td>
+                                                                                <Td>{alimento.nome}</Td>
+                                                                                <Td>{caloreCalc}</Td>
+                                                                                <Td>{alimento.proteine}</Td>
+                                                                                <Td>{alimento.grassi}</Td>
+                                                                                <Td>{alimento.carboidrati}</Td>
+                                                                                <Td>
+                                                                                    <Input type={"text"} defaultValue={al.Qnt} onChange={(e)=>{
+                                                                                        schedaAlimentare[i][key].Qnt=e.target.value;
                                                                                         let newV=[...schedaAlimentare];
-                                                                                        setSchedaAlimentare(newV);
-                                                                                    }
-                                                                                }} aria-label={"Pulsante che elimina elemento"}>
-                                                                                    <DeleteIcon/>
-                                                                                </IconButton>
-                                                                            </Td>
-                                                                        </Tr>
-                                                                    </Tbody>
-                                                                </Table>
-                                                            </>)
-                                                        }))
+                                                                                        setSchedaAlimentare(newV)
+                                                                                    }}></Input>
+                                                                                </Td>
+                                                                                <Td>
+                                                                                    <IconButton colorScheme={"red"} onClick={()=>{
+                                                                                        if(window.confirm("Sei sicuro di voler eliminare l'alimento?")) {
+                                                                                            schedaAlimentare[i].splice(key,1);
+                                                                                            let newV=[...schedaAlimentare];
+                                                                                            setSchedaAlimentare(newV);
+                                                                                        }
+                                                                                    }} aria-label={"Pulsante che elimina elemento"}>
+                                                                                        <DeleteIcon/>
+                                                                                    </IconButton>
+                                                                                </Td>
+                                                                            </Tr>
+                                                                        </Tbody>
+                                                                    </Table>
+                                                                </>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                );
                                             })}
                                             <Flex pt={5}>
                                                 <Button
