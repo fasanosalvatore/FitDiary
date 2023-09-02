@@ -113,18 +113,8 @@ export default function Create() {
 
         loadlistaAlimenti();
     }, [fetchContext, fetchCompleted]);
-    
 
 
-    /*
-        "Lunedi":[
-            {
-                "IDCibo":1,
-                "Pasto":2,
-                "Qnt":2
-            },{}
-        ]
-     */
 
     let vettPasti=[
         {"ID":1,"Nome":"Colazione"},
@@ -173,9 +163,7 @@ export default function Create() {
 
     const onSubmit = async (values) => {
         try {
-            console.log(schedaAlimentare);
             const {data} = await fetchContext.authAxios.post(urlCreateSchedaALimentare, values);
-            console.log(data);
             toast(toastParam("Sceheda Alimentare creata con successo", "Scheda aggiunta all'elenco", "success"));
         } catch (error) {
             console.log(error.response.data.message)
@@ -203,14 +191,12 @@ export default function Create() {
                         <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"5xl"}>
                             <ModalOverlay/>
                             <ModalContent>
-                                <form onSubmit={handleSubmit(onSubmit)}>
                                     <ModalHeader fontSize={'3xl'} textAlign={"center"}>Aggiungi alimenti alla
                                         scheda</ModalHeader>
                                     <ModalCloseButton/>
                                     <ModalBody align={"center"}>
                                         <Flex justify="center">
                                             <HStack align="center">
-                                                <FormControl id={"elencoAlimenti"}>
                                                     <HStack>
                                                         {!isLoading && listAlimenti && (<Flex wrap={"wrap"} p={5}>
                                                             <Box bg={"white"} roundedTop={20}
@@ -309,13 +295,11 @@ export default function Create() {
                                                             </Box>
                                                         </Flex>)}
                                                     </HStack>
-                                                </FormControl>
                                             </HStack>
                                         </Flex>
                                     </ModalBody>
                                     <ModalFooter alignItems={"center"}>
                                     </ModalFooter>
-                                </form>
                             </ModalContent>
                         </Modal>
 
@@ -347,18 +331,19 @@ export default function Create() {
                                                                         <Thead>
                                                                             <Tr>
                                                                                 <Th>Immagine</Th>
-                                                                                <Th>Nome</Th>
-                                                                                <Th>Kcal</Th>
-                                                                                <Th>Proteine</Th>
-                                                                                <Th>Grassi</Th>
-                                                                                <Th>Carboidrati</Th>
-                                                                                <Th>Quantità</Th>
-                                                                                <Th>Azioni</Th>
+                                                                                <Th >Nome</Th>
+                                                                                <Th >Kcal</Th>
+                                                                                <Th >Proteine</Th>
+                                                                                <Th >Grassi</Th>
+                                                                                <Th >Carboidrati</Th>
+                                                                                <Th >Grammi</Th>
+                                                                                <Th >Azioni</Th>
                                                                             </Tr>
                                                                         </Thead>
                                                                         <Tbody>
                                                                             <Tr>
-                                                                                <Td p={1}
+                                                                                <Td
+                                                                                    p={1}
                                                                                     m={0}>
                                                                                     <Image
                                                                                         objectFit='contain'
@@ -366,17 +351,35 @@ export default function Create() {
                                                                                         src={full + "/" + alimento.pathFoto}
                                                                                         alt='Foto non disponibile'/>
                                                                                 </Td>
-                                                                                <Td>{alimento.nome}</Td>
-                                                                                <Td>{caloreCalc}</Td>
-                                                                                <Td>{alimento.proteine}</Td>
-                                                                                <Td>{alimento.grassi}</Td>
-                                                                                <Td>{alimento.carboidrati}</Td>
-                                                                                <Td>
-                                                                                    <Input type={"text"} defaultValue={al.Qnt} onChange={(e)=>{
-                                                                                        schedaAlimentare[i][key].Qnt=e.target.value;
-                                                                                        let newV=[...schedaAlimentare];
-                                                                                        setSchedaAlimentare(newV)
-                                                                                    }}></Input>
+                                                                                <Td maxWidth={100}>{alimento.nome}</Td>
+                                                                                <Td maxWidth={100}>{parseInt(caloreCalc)}</Td>
+                                                                                <Td maxWidth={100}>{parseInt(alimento.proteine)}</Td>
+                                                                                <Td maxWidth={100}>{parseInt(alimento.grassi)}</Td>
+                                                                                <Td maxWidth={100}>{parseInt(alimento.carboidrati)}</Td>
+                                                                                <Td maxWidth={100}>
+                                                                                    <FormControl id={"nome"} isInvalid={errors.nome} pt={5}>
+                                                                                        <Input
+                                                                                            placeholder={al.Qnt}
+                                                                                            w={20}
+                                                                                            min={1}
+                                                                                            max={2000}
+                                                                                            type={"number"} defaultValue={al.Qnt} onChange={(e)=>{
+                                                                                            if(e.target.value >0) {
+                                                                                                if(e.target.value >2000) {
+                                                                                                    e.target.value = 2000
+                                                                                                }
+                                                                                                schedaAlimentare[i][key].Qnt=e.target.value;
+                                                                                            }
+                                                                                            else {
+                                                                                                schedaAlimentare[i][key].Qnt=100;
+
+                                                                                            }
+                                                                                            let newV=[...schedaAlimentare];
+                                                                                            setSchedaAlimentare(newV)
+                                                                                        }}/>
+                                                                                        <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
+                                                                                    </FormControl>
+
                                                                                 </Td>
                                                                                 <Td>
                                                                                     <IconButton colorScheme={"red"} onClick={()=>{
