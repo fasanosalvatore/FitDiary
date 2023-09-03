@@ -17,6 +17,7 @@ import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapter;
 import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapterImpl;
+import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.GestioneProtocolloSchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
@@ -64,6 +65,9 @@ class GestioneProtocolloServiceImplTest {
   private SchedaAllenamentoRepository schedaAllenamentoRepository;
   @Mock
   private GestioneProtocolloSchedaAlimentareRepository schedaAlimentareRepository;
+
+  @Mock
+  private EsercizioRepository esercizioRepository;
 
   @InjectMocks
   private GestioneProtocolloServiceImpl gestioneProtocolloServiceImpl;

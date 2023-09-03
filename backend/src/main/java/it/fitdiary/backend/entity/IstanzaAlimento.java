@@ -64,7 +64,15 @@ public class IstanzaAlimento {
   private SchedaAlimentare schedaAlimentare;
 
 
-
-
+  @Override
+  public String toString() {
+    return "IstanzaAlimento{" +
+            "id=" + id +
+            ", giornoDellaSettimana=" + giornoDellaSettimana +
+            ", pasto=" + pasto +
+            ", grammi=" + grammi +
+            ", alimento=" + alimento +
+            '}';
+  }
 }
 
