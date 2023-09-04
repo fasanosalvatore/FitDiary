@@ -100,4 +100,17 @@ public class SchedaAlimentare {
         SchedaAlimentare that = (SchedaAlimentare) o;
         return Objects.equal(id, that.id) && Objects.equal(nome, that.nome) && Objects.equal(kcalAssunte, that.kcalAssunte) && Objects.equal(listaAlimenti, that.listaAlimenti) && Objects.equal(preparatore, that.preparatore) && Objects.equal(dataCreazione, that.dataCreazione) && Objects.equal(dataAggiornamento, that.dataAggiornamento);
     }
+
+    @Override
+    public String toString() {
+        return "SchedaAlimentare{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", kcalAssunte=" + kcalAssunte +
+                ", listaAlimenti=" + listaAlimenti +
+                ", preparatore=" + preparatore +
+                ", dataCreazione=" + dataCreazione +
+                ", dataAggiornamento=" + dataAggiornamento +
+                '}';
+    }
 }
