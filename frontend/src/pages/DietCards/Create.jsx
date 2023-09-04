@@ -33,39 +33,30 @@ import {
     Text,
     Th,
     Thead,
-    Tooltip,
     Select,
     Tr,
     useDisclosure,
-    useToast, Toast
+    useToast
 } from "@chakra-ui/react";
 import {FetchContext} from "../../context/FetchContext";
 import {GradientBar} from "../../components/GradientBar";
 import {AddIcon, SearchIcon, DeleteIcon} from "@chakra-ui/icons";
 import moment from "moment/moment";
-import {AuthContext} from "../../context/AuthContext";
-import {getFakeSchedaAlimentare, getSchedaAlimentare} from "../../fakeBackend";
-import {useParams} from "react-router";
 
 export default function Create() {
     const fetchContext = useContext(FetchContext);
-    const {setSchedaAlimentareSubmit, handleSubmitScheda, formState: {errors, isSubmitting}} = useForm();
-    const urlCreateSchedaALimentare = "schedaalimentare/create";
+    const {formState: {errors, isSubmitting}} = useForm();
+    const urlCreateSchedaALimentare = "schedaalimentare/creaScheda";
     const {isOpen, onOpen, onClose} = useDisclosure()
-    const {handleSubmit, setValue} = useForm();
     const toast = useToast({
         duration: 1000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })
-    const onAddAlimento=useState("");
-    const authContext = useContext(AuthContext)
-    const {authState} = authContext;
     const [search, setSearch] = useState("");
-    const [fetchCompleted, setFetchCompleted] = useState(false); // Nuovo stato
+    const [fetchCompleted] = useState(false); // Nuovo stato
     let [schedaAlimentare, setSchedaAlimentare] = useState([[],[],[],[],[],[],[]]);
     const [indexGiorno, setIndexGiorno] = useState(0);
-    const {id} = useParams();
     const onChange = (e) => {
         setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
     }
@@ -170,18 +161,53 @@ export default function Create() {
         }
     }
 
-
-    const onSubmit = async (values) => {
-        try {
-            console.log(schedaAlimentare);
-            const {data} = await fetchContext.authAxios.post(urlCreateSchedaALimentare, values);
-            console.log(data);
-            toast(toastParam("Sceheda Alimentare creata con successo", "Scheda aggiunta all'elenco", "success"));
-        } catch (error) {
-            console.log(error.response.data.message)
-            toast({
-                title: 'Errore', description: error.response.data.message, status: 'error',
-            })
+    async function CreaScheda()
+    {
+        let nomeScheda=document.getElementById("textScheda").value.trim();
+        if(nomeScheda.length>0)
+        {
+            let vettAlimenti=[];
+            for(let i=0;i<schedaAlimentare.length;i++)
+            {
+                let vettGiorno=schedaAlimentare[i];
+                for(let j=0;j<vettGiorno.length;j++)
+                {
+                    let alimento=vettGiorno[j];
+                    let obj={};
+                    obj.idAlimento=alimento.alimento.id;
+                    obj.pasto=alimento.Pasto;
+                    obj.grammi=alimento.Qnt;
+                    obj.giornoDellaSettimana=i;
+                    vettAlimenti.push(obj);
+                }
+            }
+            if(vettAlimenti.length>0)
+            {
+                try
+                {
+                    let json={};
+                    json.name=nomeScheda;
+                    json.istanzeAlimenti=vettAlimenti;
+                    const {data} = await fetchContext.authAxios.post(urlCreateSchedaALimentare,json);
+                    console.log(data);
+                    toast(toastParam("Fatto", "Scheda aggiunta all'elenco", "success"));
+                    document.getElementById("textScheda").value="";
+                    setSchedaAlimentare([[],[],[],[],[],[],[]]);
+                }
+                catch (error)
+                {
+                    console.log(error.response.data.message)
+                    toast(toastParam("Errore", error.response.data.message, "error"));
+                }
+            }
+            else
+            {
+                toast(toastParam("Attenzione!", "Inserisci almeno un alimento", "error"));
+            }
+        }
+        else
+        {
+            toast(toastParam("Attenzione!", "Inserisci un nome valido", "error"));
         }
     }
 
@@ -193,17 +219,17 @@ export default function Create() {
             <Box bg={"white"} roundedTop={20} minW={{base: "100%", xl: "100%"}} h={"full"}>
                 <GradientBar/>
                 <Box pl={[0, 5, 20]} pr={[0, 5, 20]} pb={10} pt={5}>
-                    <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
+                    <form style={{width: "100%"}}>
                         <FormControl id={"nome"} isInvalid={errors.nome} pt={5}>
                             <FormLabel htmlFor="nome">Nome delle scheda</FormLabel>
-                            <Input type="text" placeholder="Dieta di Martina"/>
+                            <Input type="text" placeholder="Dieta di Martina" id={"textScheda"}/>
                             <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
                         </FormControl>
 
                         <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"5xl"}>
                             <ModalOverlay/>
                             <ModalContent>
-                                <form onSubmit={handleSubmit(onSubmit)}>
+                                <form>
                                     <ModalHeader fontSize={'3xl'} textAlign={"center"}>Aggiungi alimenti alla
                                         scheda</ModalHeader>
                                     <ModalCloseButton/>
@@ -415,7 +441,7 @@ export default function Create() {
                             })}
 
                         </Accordion>
-                        <Button w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting} type='submit'>
+                        <Button w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting} onClick={CreaScheda}>
                             Salva Scheda
                         </Button>
                     </form>
