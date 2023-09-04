@@ -13,7 +13,7 @@ import {
     FormControl,
     Heading,
     HStack,
-    IconButton,
+    IconButton, Image,
     Input,
     Modal,
     ModalBody,
@@ -34,7 +34,7 @@ import {
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {CloseIcon, EditIcon} from '@chakra-ui/icons';
+import {CloseIcon, DeleteIcon, EditIcon} from '@chakra-ui/icons';
 import {AuthContext} from "../../context/AuthContext";
 import moment from "moment";
 import {FetchContext} from "../../context/FetchContext";
@@ -48,12 +48,13 @@ export default function View() {
     const { id } = useParams();
     const [schedaAlimentare, setSchedaAlimentare] = useState();
     const fetchContext = useContext(FetchContext);
+    const [listAlimenti, setAlimenti] = useState();
 
     const [isLoading, setLoading] = useState(true);
     const [fetchCompleted, setFetchCompleted] = useState(false); // Nuovo stato
 
     const days = ["Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato", "Domenica"];
-
+    const [toastMessage, setToastMessage] = useState(undefined);
     const toast = useToast({
         duration: 9000,
         isClosable: true,
@@ -64,11 +65,37 @@ export default function View() {
         },
 
     })
+
+    const protocol = window.location.protocol;
+    const domain = window.location.host;
+    const full = `${protocol}//${domain}`
+
     function toastParam(title, description, status) {
         return {
             title: title, description: description, status: status
         };
     }
+
+    useEffect(() => {
+        if (toastMessage) {
+            const {title, body, stat} = toastMessage;
+
+            toast({
+                title, description: body, status: stat, duration: 1000, isClosable: true
+            });
+        }
+    }, [toastMessage, toast]);
+
+
+    let vettPasti = [
+        {"ID": 0, "Nome": "Colazione","ID_DB":"COLAZIONE"},
+        {"ID": 1, "Nome": "Spuntino Mattina","ID_DB":"SPUNTINO_COLAZIONE"},
+        {"ID": 2, "Nome": "Pranzo","ID_DB":"PRANZO"},
+        {"ID": 3, "Nome": "Spuntino Pomeriggio","ID_DB":"SPUNTINO_PRANZO"},
+        {"ID": 4, "Nome": "Cena","ID_DB":"CENA"},
+        {"ID": 5, "Nome": "Spuntino Sera","ID_DB":"SPUNTINO_CENA"},
+        {"ID": 6, "Nome": "Extra","ID_DB":"EXTRA"},
+    ];
 
     useEffect(() => {
         const getSchedaAlimentare = async () => {
@@ -135,68 +162,76 @@ export default function View() {
                                 </HStack>
 
                                 <Accordion allowToggle defaultIndex={[0]} w="full" mt={"60px"}>
-                                    {
-                                        days.map((d, i) => {
-                                            return (
-                                                <AccordionItem key={i}>
-                                                    <h2>
-                                                        <AccordionButton>
-                                                            <Box flex='1' textAlign='left'>
-                                                                {d}
-                                                            </Box>
-                                                            <AccordionIcon />
-                                                        </AccordionButton>
-                                                    </h2>
-                                                    <AccordionPanel pb={4}>
-                                                        {schedaAlimentare.listaAlimenti
-                                                            .filter((al) =>
-                                                                al.giornoDellaSettimana.toLowerCase() === d.toLowerCase() )
-                                                            .map((alimento, key) => {
+                                    {days.map((d, i) => {
+                                        return (<AccordionItem key={i}>
+                                                <h2>
+                                                    <AccordionButton>
+                                                        <Box flex='1' textAlign='left' fontWeight={"extrabold"} fontSize={"xl"}>
+                                                            {d}
+                                                        </Box>
+                                                        <AccordionIcon/>
+                                                    </AccordionButton>
+                                                </h2>
+                                                <AccordionPanel pb={4}>
+                                                    {vettPasti.map((pasto, index) => {
+                                                        return (
+                                                            <div key={index}>
+                                                                <Text fontSize={"21"} color={"blue"}
+                                                                      fontWeight={"semibold"}>{pasto.Nome}</Text>
+                                                                {schedaAlimentare.listaAlimenti.
+                                                                filter((t) => pasto.ID_DB == t.pasto).map((al, key) => {
+                                                                    let alimento = al.alimento;
+                                                                    return (
+                                                                        <>
+                                                                            <Table borderBottom={"solid 1px "}
+                                                                                   borderColor={"blue.200"} key={key}
+                                                                                   variant="unstyled" size="md">
+                                                                                <Thead>
+                                                                                    <Tr>
+                                                                                        <Th>Immagine</Th>
+                                                                                        <Th>Nome</Th>
+                                                                                        <Th>Kcal</Th>
+                                                                                        <Th>Proteine</Th>
+                                                                                        <Th>Grassi</Th>
+                                                                                        <Th>Carboidrati</Th>
+                                                                                        <Th>Grammi</Th>
+                                                                                        <Th>Azioni</Th>
+                                                                                    </Tr>
+                                                                                </Thead>
+                                                                                <Tbody>
+                                                                                    <Tr>
+                                                                                        <Td
+                                                                                            p={1}
+                                                                                            m={0}>
+                                                                                            <Image
+                                                                                                objectFit='contain'
+                                                                                                boxSize={100}
+                                                                                                src={full + "/" + alimento.pathFoto}
+                                                                                                alt='Foto non disponibile'/>
+                                                                                        </Td>
+                                                                                        <Td maxWidth={100}>{alimento.nome}</Td>
+                                                                                        <Td maxWidth={100}>{parseInt(alimento.kcal)}</Td>
+                                                                                        <Td maxWidth={100}>{parseInt(alimento.proteine)}</Td>
+                                                                                        <Td maxWidth={100}>{parseInt(alimento.grassi)}</Td>
+                                                                                        <Td maxWidth={100}>{parseInt(alimento.carboidrati)}</Td>
+                                                                                        <Td maxWidth={100}>{parseInt(al.grammi)}</Td>
+                                                                                        <Td>
+                                                                                            <IconButton></IconButton>
+                                                                                        </Td>
+                                                                                    </Tr>
+                                                                                </Tbody>
+                                                                            </Table>
+                                                                        </>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </AccordionPanel>
+                                            </AccordionItem>
 
-                                                                return (
-                                                                    <Table borderBottom={"solid 1px "}
-                                                                        borderColor={"blue.200"} key={key}
-                                                                        variant="unstyled" size="md">
-                                                                        <Thead>
-                                                                            <Tr>
-                                                                                <Th pasto="center"
-                                                                                    w={"25%"}>{alimento.pasto}</Th>
-                                                                                <Th textAlign="center"
-                                                                                    w={"15%"}>Quantità</Th>
-                                                                                <Th textAlign="center"
-                                                                                    w={"15%"}>Kcal</Th>
-                                                                                <Th textAlign="center"
-                                                                                    w={"15%"}>Proteine</Th>
-                                                                                <Th textAlign="center"
-                                                                                    w={"15%"}>Grassi</Th>
-                                                                                <Th textAlign="center"
-                                                                                    w={"15%"}>Carboidrati</Th>
-                                                                            </Tr>
-                                                                        </Thead>
-                                                                        <Tbody>
-                                                                            <Tr>
-                                                                                <Td textAlign="center"
-                                                                                    w={"25%"}>{alimento.alimento.nome}</Td>
-                                                                                <Td textAlign="center" w={"25%"}
-                                                                                    isNumeric>{alimento.grammi}</Td>
-                                                                                <Td textAlign="center" w={"15%"}
-                                                                                    isNumeric>{alimento.alimento.kcal}</Td>
-                                                                                <Td textAlign="center" w={"15%"}
-                                                                                    isNumeric>{alimento.alimento.proteine}</Td>
-                                                                                <Td textAlign="center" w={"15%"}
-                                                                                    isNumeric>{alimento.alimento.grassi}</Td>
-                                                                                <Td textAlign="center" w={"15%"}
-                                                                                    isNumeric>{alimento.alimento.carboidrati}</Td>
-                                                                            </Tr>
-                                                                        </Tbody>
-                                                                    </Table>
-                                                                )
-                                                            })}
-                                                    </AccordionPanel>
-                                                </AccordionItem>
-
-                                            )
-                                        })}
+                                        )
+                                    })}
 
                                 </Accordion>
                             </VStack>
