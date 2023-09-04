@@ -33,35 +33,30 @@ import {
     Text,
     Th,
     Thead,
-    Tooltip,
     Select,
     Tr,
     useDisclosure,
-    useToast, Toast
+    useToast
 } from "@chakra-ui/react";
 import {FetchContext} from "../../context/FetchContext";
 import {GradientBar} from "../../components/GradientBar";
 import {AddIcon, SearchIcon, DeleteIcon} from "@chakra-ui/icons";
 import moment from "moment/moment";
-import {AuthContext} from "../../context/AuthContext";
 
 export default function Create() {
     const fetchContext = useContext(FetchContext);
+    const {formState: {errors, isSubmitting}} = useForm();
     const urlCreateSchedaALimentare = "schedaalimentare/creaScheda";
     const {isOpen, onOpen, onClose} = useDisclosure()
-    const {handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const toast = useToast({
         duration: 1000, isClosable: true, variant: "solid", position: "top", containerStyle: {
             width: '100%', maxWidth: '100%',
         },
     })
-    const authContext = useContext(AuthContext)
-    const {authState} = authContext;
     const [search, setSearch] = useState("");
-    const [fetchCompleted, setFetchCompleted] = useState(false); // Nuovo stato
-    let [schedaAlimentare, setSchedaAlimentare] = useState([[], [], [], [], [], [], []]);
+    const [fetchCompleted] = useState(false); // Nuovo stato
+    let [schedaAlimentare, setSchedaAlimentare] = useState([[],[],[],[],[],[],[]]);
     const [indexGiorno, setIndexGiorno] = useState(0);
-    const [nomeScheda, setNomeScheda] = useState("");
     const onChange = (e) => {
         setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
     }
@@ -109,80 +104,110 @@ export default function Create() {
 
         loadlistaAlimenti();
     }, [fetchContext, fetchCompleted]);
+    
 
-    let vettPasti = [
-        {"ID": 0, "Nome": "Colazione"},
-        {"ID": 1, "Nome": "Spuntino Mattina"},
-        {"ID": 2, "Nome": "Pranzo"},
-        {"ID": 3, "Nome": "Spuntino Pomeriggio"},
-        {"ID": 4, "Nome": "Cena"},
-        {"ID": 5, "Nome": "Spuntino Sera"},
-        {"ID": 6, "Nome": "Extra"},
+
+    /*
+        "Lunedi":[
+            {
+                "IDCibo":1,
+                "Pasto":2,
+                "Qnt":2
+            },{}
+        ]
+     */
+
+    let vettPasti=[
+        {"ID":1,"Nome":"Colazione"},
+        {"ID":2,"Nome":"Spuntino Mattina"},
+        {"ID":3,"Nome":"Pranzo"},
+        {"ID":4,"Nome":"Spuntino Pomeriggio"},
+        {"ID":5,"Nome":"Cena"},
+        {"ID":6,"Nome":"Spuntino Sera"},
+        {"ID":7,"Nome":"Extra"},
     ];
 
-    function addAlimento(alimento, pasto, grammi) {
-        let esiste = false;
-        let i = 0;
-        let pastiGiorno = schedaAlimentare[indexGiorno];
-        while (i < pastiGiorno.length && !esiste) {
-            let pastoObj = pastiGiorno[i];
-            if (pastoObj.Pasto == pasto && pastoObj.alimento.id == alimento.id) {
-                esiste = true;
+    function addAlimento(alimento,pasto,qnt)
+    {
+        let esiste=false;
+        let i=0;
+        let pastiGiorno=schedaAlimentare[indexGiorno];
+        while(i<pastiGiorno.length && !esiste)
+        {
+            let pastoObj=pastiGiorno[i];
+            if(pastoObj.Pasto==pasto && pastoObj.alimento.id==alimento.id)
+            {
+                esiste=true;
             }
             i++;
         }
 
-        if (!esiste) {
-            let newIstanzaAlimento = {};
-            newIstanzaAlimento.giornoDellaSettimana = indexGiorno;
-            newIstanzaAlimento.alimento = alimento;
-            newIstanzaAlimento.idAlimento = alimento.id;
-            newIstanzaAlimento.pasto = pasto;
-            newIstanzaAlimento.grammi = grammi;
+        if(!esiste)
+        {
+            let objTest={};
+            objTest.alimento=alimento;
+            objTest.Pasto=pasto;
+            objTest.Qnt=qnt;
 
-            let tmp = schedaAlimentare;
-            tmp[indexGiorno].push(newIstanzaAlimento);
+            let tmp=schedaAlimentare;
+            tmp[indexGiorno].push(objTest);
             setSchedaAlimentare(tmp);
 
             toast(toastParam("Operazione eseguita!", "Alimento aggiunto con successo", "success"));
-        } else {
+        }
+        else
+        {
             toast(toastParam("Attenzione!", "Hai già inserito questo alimento", "warning"));
         }
     }
 
-    function formatData(inputData) {
-        const formattedData = {
-            name: nomeScheda,
-            istanzeAlimenti: [],
-        };
-
-        if (inputData && Array.isArray(inputData[0])) {
-            const instances = inputData[0];
-            instances.forEach((instance) => {
-                if (instance && instance.alimento) {
-                    formattedData.istanzeAlimenti.push({
-                        grammi: instance.grammi || 0,
-                        giornoDellaSettimana: instance.giornoDellaSettimana || 0,
-                        pasto: instance.pasto || "0",
-                        idAlimento: instance.alimento.id || 0,
-                    });
+    async function CreaScheda()
+    {
+        let nomeScheda=document.getElementById("textScheda").value.trim();
+        if(nomeScheda.length>0)
+        {
+            let vettAlimenti=[];
+            for(let i=0;i<schedaAlimentare.length;i++)
+            {
+                let vettGiorno=schedaAlimentare[i];
+                for(let j=0;j<vettGiorno.length;j++)
+                {
+                    let alimento=vettGiorno[j];
+                    let obj={};
+                    obj.idAlimento=alimento.alimento.id;
+                    obj.pasto=alimento.Pasto;
+                    obj.grammi=alimento.Qnt;
+                    obj.giornoDellaSettimana=i;
+                    vettAlimenti.push(obj);
                 }
-            });
+            }
+            if(vettAlimenti.length>0)
+            {
+                try
+                {
+                    let json={};
+                    json.name=nomeScheda;
+                    json.istanzeAlimenti=vettAlimenti;
+                    const {data} = await fetchContext.authAxios.post(urlCreateSchedaALimentare,json);
+                    console.log(data);
+                    toast(toastParam("Fatto", "Scheda aggiunta all'elenco", "success"));
+                    document.getElementById("textScheda").value="";
+                    setSchedaAlimentare([[],[],[],[],[],[],[]]);
+                }
+                catch (error)
+                {
+                    console.log(error.response.data.message)
+                    toast(toastParam("Errore", error.response.data.message, "error"));
+                }
+            }
+            else
+            {
+                toast(toastParam("Attenzione!", "Inserisci almeno un alimento", "error"));
+            }
         }
-
-        return formattedData;
-    }
-
-    const onSubmit = async (values) => {
-        try {
-            let formattedScheda = formatData(schedaAlimentare)
-            const {data} = await fetchContext.authAxios.post(urlCreateSchedaALimentare, formattedScheda);
-            toast(toastParam("Sceheda Alimentare creata con successo", "Scheda aggiunta all'elenco", "success"));
-        } catch (error) {
-            console.log(error.response.data.message)
-            toast({
-                title: 'Errore', description: error.response.data.message, status: 'error',
-            })
+        else
+        {
+            toast(toastParam("Attenzione!", "Inserisci un nome valido", "error"));
         }
     }
 
@@ -194,127 +219,129 @@ export default function Create() {
             <Box bg={"white"} roundedTop={20} minW={{base: "100%", xl: "100%"}} h={"full"}>
                 <GradientBar/>
                 <Box pl={[0, 5, 20]} pr={[0, 5, 20]} pb={10} pt={5}>
-                    <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
-                        <FormControl id={"nome"} isInvalid={errors.nome} isRequired={"required"} pt={5}>
+                    <form style={{width: "100%"}}>
+                        <FormControl id={"nome"} isInvalid={errors.nome} pt={5}>
                             <FormLabel htmlFor="nome">Nome delle scheda</FormLabel>
-                            <Input required={"true"} type="text" placeholder="Dieta di Martina" name={"nome"}
-                                   onChange={(e) => {
-                                       let newNome = e.target.value;
-                                       setNomeScheda(newNome)
-                                   }}/>
+                            <Input type="text" placeholder="Dieta di Martina" id={"textScheda"}/>
                             <FormErrorMessage>{errors.nome && errors.nome.message}</FormErrorMessage>
                         </FormControl>
 
                         <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={"5xl"}>
                             <ModalOverlay/>
                             <ModalContent>
-                                <ModalHeader fontSize={'3xl'} textAlign={"center"}>Aggiungi alimenti alla
-                                    scheda</ModalHeader>
-                                <ModalCloseButton/>
-                                <ModalBody align={"center"}>
-                                    <Flex justify="center">
-                                        <HStack align="center">
-                                            <HStack>
-                                                {!isLoading && listAlimenti && (<Flex wrap={"wrap"} p={5}>
-                                                    <Box bg={"white"} roundedTop={20}
-                                                         minW={{base: "100%", xl: "100%"}}
-                                                         h={"full"}>
-                                                        <GradientBar/>
-                                                        <Box pl={10} pr={10} pb={5} pt={5}>
-                                                            <HStack>
-                                                                <InputGroup>
-                                                                    <InputLeftElement
-                                                                        pointerEvents="none"
-                                                                        children={<SearchIcon
-                                                                            color="gray.300"/>}
-                                                                    />
-                                                                    <Input
-                                                                        className="SearchInput"
-                                                                        type="text"
-                                                                        onChange={onChange}
-                                                                        placeholder="Cerca alimento"
-                                                                    />
-                                                                </InputGroup>
-                                                            </HStack>
-                                                            {/* Barra di ricerca*/}
-                                                            <Text fontWeight={"bold"} mt={"4"} align={"left"}>Seleziona
-                                                                un pasto:</Text>
-                                                            <Select placeholder='Seleziona pasto' id={"selectPasto"}>
-                                                                <option value='0'>Colazione</option>
-                                                                <option value='1'>Spuntino Mattina</option>
-                                                                <option value='2'>Pranzo</option>
-                                                                <option value='3'>Spuntino Pomeriggio</option>
-                                                                <option value='4'>Cena</option>
-                                                                <option value='5'>Spuntino Serale</option>
-                                                                <option value='6'>Extra</option>
-                                                            </Select>
-                                                            {listAlimenti.lista_alimenti.length > 0 ? (<>
-                                                                <Text fontSize="xl" my={5}>
-                                                                    Lista degli alimenti
-                                                                </Text>
+                                <form>
+                                    <ModalHeader fontSize={'3xl'} textAlign={"center"}>Aggiungi alimenti alla
+                                        scheda</ModalHeader>
+                                    <ModalCloseButton/>
+                                    <ModalBody align={"center"}>
+                                        <Flex justify="center">
+                                            <HStack align="center">
+                                                <FormControl id={"elencoAlimenti"}>
+                                                    <HStack>
+                                                        {!isLoading && listAlimenti && (<Flex wrap={"wrap"} p={5}>
+                                                            <Box bg={"white"} roundedTop={20}
+                                                                 minW={{base: "100%", xl: "100%"}}
+                                                                 h={"full"}>
+                                                                <GradientBar/>
+                                                                <Box pl={10} pr={10} pb={5} pt={5}>
+                                                                    <HStack>
+                                                                        <InputGroup>
+                                                                            <InputLeftElement
+                                                                                pointerEvents="none"
+                                                                                children={<SearchIcon
+                                                                                    color="gray.300"/>}
+                                                                            />
+                                                                            <Input
+                                                                                className="SearchInput"
+                                                                                type="text"
+                                                                                onChange={onChange}
+                                                                                placeholder="Cerca alimento"
+                                                                            />
+                                                                        </InputGroup>
+                                                                    </HStack>
+                                                                    {/* Barra di ricerca*/}
+                                                                    <Text fontWeight={"bold"} mt={"4"} align={"left"}>Seleziona un pasto:</Text>
+                                                                    <Select placeholder='Seleziona pasto' id={"selectPasto"}>
+                                                                        <option value='1'>Colazione</option>
+                                                                        <option value='2'>Spuntino Mattina</option>
+                                                                        <option value='3'>Pranzo</option>
+                                                                        <option value='4'>Spuntino Pomeriggio</option>
+                                                                        <option value='5'>Cena</option>
+                                                                        <option value='6'>Spuntino Serale</option>
+                                                                        <option value='7'>Extra</option>
+                                                                    </Select>
+                                                                    {listAlimenti.lista_alimenti.length > 0 ? (<>
+                                                                        <Text fontSize="xl" my={5}>
+                                                                            Lista degli alimenti
+                                                                        </Text>
 
-                                                                <Table variant={"striped"}
-                                                                       alignContent={"center"}
-                                                                       colorScheme={"gray"}
-                                                                       size="md">
-                                                                    <TableCaption>Lista
-                                                                        Alimenti</TableCaption>
-                                                                    <Thead bg="fitdiary.100">
-                                                                        <Tr>
-                                                                            <Th>Immagine</Th>
-                                                                            <Th>Nome</Th>
-                                                                            <Th>Kcal</Th>
-                                                                            <Th>Proteine</Th>
-                                                                            <Th>Grassi</Th>
-                                                                            <Th>Carboidrati</Th>
-                                                                            <Th>Azione</Th>
-                                                                        </Tr>
-                                                                    </Thead>
-                                                                    <Tbody>
-                                                                        {listAlimenti.lista_alimenti.map((alimento) => (alimento.nome.toLowerCase().startsWith(search.toLowerCase()) || search === "") && (
-                                                                            <Tr key={alimento.id}>
-                                                                                <Td p={1}
-                                                                                    m={0}>
-                                                                                    <Image
-                                                                                        objectFit='contain'
-                                                                                        boxSize={100}
-                                                                                        src={full + "/" + alimento.pathFoto}
-                                                                                        alt='Foto non disponibile'/>
-                                                                                </Td>
-                                                                                <Td>{alimento.nome}</Td>
-                                                                                <Td>{alimento.kcal}</Td>
-                                                                                <Td>{alimento.proteine}</Td>
-                                                                                <Td>{alimento.grassi}</Td>
-                                                                                <Td>{alimento.carboidrati}</Td>
-                                                                                <Td><Button
-                                                                                    colorScheme='fitdiary'
-                                                                                    onClick={() => {
-                                                                                        let idPasto = document.getElementById("selectPasto").value;
-                                                                                        if (idPasto.length > 0) {
-                                                                                            addAlimento(alimento, idPasto, 150);
-                                                                                        } else {
-                                                                                            toast(toastParam("Attenzione!", "Seleziona un pasto", "error"))
-                                                                                        }
-                                                                                    }}
-                                                                                    fontSize={"s"}>
-                                                                                    <AddIcon/>
-                                                                                </Button></Td>
-                                                                            </Tr>))}
-                                                                    </Tbody>
-                                                                </Table>
-                                                            </>) : (<Heading py={5}
-                                                                             textAlign={"center"}>
-                                                                Non c'è niente qui...
-                                                            </Heading>)}
-                                                        </Box>
-                                                    </Box>
-                                                </Flex>)}
+                                                                        <Table variant={"striped"}
+                                                                               alignContent={"center"}
+                                                                               colorScheme={"gray"}
+                                                                               size="md">
+                                                                            <TableCaption>Lista
+                                                                                Alimenti</TableCaption>
+                                                                            <Thead bg="fitdiary.100">
+                                                                                <Tr>
+                                                                                    <Th>Immagine</Th>
+                                                                                    <Th>Nome</Th>
+                                                                                    <Th>Kcal</Th>
+                                                                                    <Th>Proteine</Th>
+                                                                                    <Th>Grassi</Th>
+                                                                                    <Th>Carboidrati</Th>
+                                                                                    <Th>Azione</Th>
+                                                                                </Tr>
+                                                                            </Thead>
+                                                                            <Tbody>
+                                                                                {listAlimenti.lista_alimenti.map((alimento) => (alimento.nome.toLowerCase().startsWith(search.toLowerCase()) || search === "") && (
+                                                                                    <Tr key={alimento.id}>
+                                                                                        <Td p={1}
+                                                                                            m={0}>
+                                                                                            <Image
+                                                                                                objectFit='contain'
+                                                                                                boxSize={100}
+                                                                                                src={full + "/" + alimento.pathFoto}
+                                                                                                alt='Foto non disponibile'/>
+                                                                                        </Td>
+                                                                                        <Td>{alimento.nome}</Td>
+                                                                                        <Td>{alimento.kcal}</Td>
+                                                                                        <Td>{alimento.proteine}</Td>
+                                                                                        <Td>{alimento.grassi}</Td>
+                                                                                        <Td>{alimento.carboidrati}</Td>
+                                                                                        <Td><Button
+                                                                                            colorScheme='fitdiary'
+                                                                                            onClick={()=>{
+                                                                                                let idPasto=document.getElementById("selectPasto").value;
+                                                                                                if(idPasto.length>0)
+                                                                                                {
+                                                                                                    addAlimento(alimento,idPasto,150);
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    toast(toastParam("Attenzione!", "Seleziona un pasto", "error"))
+                                                                                                }
+                                                                                            }}
+                                                                                            fontSize={"s"}>
+                                                                                            <AddIcon/>
+                                                                                        </Button></Td>
+                                                                                    </Tr>))}
+                                                                            </Tbody>
+                                                                        </Table>
+                                                                    </>) : (<Heading py={5}
+                                                                                     textAlign={"center"}>
+                                                                        Non c'è niente qui...
+                                                                    </Heading>)}
+                                                                </Box>
+                                                            </Box>
+                                                        </Flex>)}
+                                                    </HStack>
+                                                </FormControl>
                                             </HStack>
-                                        </HStack>
-                                    </Flex>
-                                </ModalBody>
-                                <ModalFooter alignItems={"center"}>
-                                </ModalFooter>
+                                        </Flex>
+                                    </ModalBody>
+                                    <ModalFooter alignItems={"center"}>
+                                    </ModalFooter>
+                                </form>
                             </ModalContent>
                         </Modal>
 
@@ -333,11 +360,10 @@ export default function Create() {
                                             {vettPasti.map((pasto, index) => {
                                                 return (
                                                     <div key={index}>
-                                                        <Text fontSize={"21"} color={"blue"}
-                                                              fontWeight={"semibold"}>{pasto.Nome}</Text>
-                                                        {schedaAlimentare[i].filter((t) => pasto.ID == t.pasto).map((al, key) => {
+                                                        <Text fontSize={"21"} color={"blue"} fontWeight={"semibold"}>{pasto.Nome}</Text>
+                                                        {schedaAlimentare[i].filter((t) => pasto.ID == t.Pasto).map((al, key) => {
                                                             let alimento = al.alimento;
-                                                            let caloreCalc = (alimento.kcal / 100) * al.grammi;
+                                                            let caloreCalc = (alimento.kcal / 100) * al.Qnt;
                                                             console.log(caloreCalc);
                                                             return (
                                                                 <>
@@ -352,14 +378,13 @@ export default function Create() {
                                                                                 <Th>Proteine</Th>
                                                                                 <Th>Grassi</Th>
                                                                                 <Th>Carboidrati</Th>
-                                                                                <Th>Grammi</Th>
+                                                                                <Th>Quantità</Th>
                                                                                 <Th>Azioni</Th>
                                                                             </Tr>
                                                                         </Thead>
                                                                         <Tbody>
                                                                             <Tr>
-                                                                                <Td
-                                                                                    p={1}
+                                                                                <Td p={1}
                                                                                     m={0}>
                                                                                     <Image
                                                                                         objectFit='contain'
@@ -367,45 +392,26 @@ export default function Create() {
                                                                                         src={full + "/" + alimento.pathFoto}
                                                                                         alt='Foto non disponibile'/>
                                                                                 </Td>
-                                                                                <Td maxWidth={100}>{alimento.nome}</Td>
-                                                                                <Td maxWidth={100}>{parseInt(caloreCalc)}</Td>
-                                                                                <Td maxWidth={100}>{parseInt(alimento.proteine)}</Td>
-                                                                                <Td maxWidth={100}>{parseInt(alimento.grassi)}</Td>
-                                                                                <Td maxWidth={100}>{parseInt(alimento.carboidrati)}</Td>
-                                                                                <Td maxWidth={100}>
-                                                                                    <Input
-                                                                                        placeholder={al.grammi}
-                                                                                        w={20}
-                                                                                        min={1}
-                                                                                        max={2000}
-                                                                                        type={"number"}
-                                                                                        defaultValue={al.grammi}
-                                                                                        onChange={(e) => {
-                                                                                            if (e.target.value > 0) {
-                                                                                                if (e.target.value > 2000) {
-                                                                                                    e.target.value = 2000
-                                                                                                }
-                                                                                                schedaAlimentare[i][key].grammi = e.target.value;
-                                                                                            } else {
-                                                                                                schedaAlimentare[i][key].grammi = 100;
-
-                                                                                            }
-                                                                                            let newV = [...schedaAlimentare];
-                                                                                            setSchedaAlimentare(newV)
-                                                                                        }}/>
-
-
+                                                                                <Td>{alimento.nome}</Td>
+                                                                                <Td>{caloreCalc}</Td>
+                                                                                <Td>{alimento.proteine}</Td>
+                                                                                <Td>{alimento.grassi}</Td>
+                                                                                <Td>{alimento.carboidrati}</Td>
+                                                                                <Td>
+                                                                                    <Input type={"text"} defaultValue={al.Qnt} onChange={(e)=>{
+                                                                                        schedaAlimentare[i][key].Qnt=e.target.value;
+                                                                                        let newV=[...schedaAlimentare];
+                                                                                        setSchedaAlimentare(newV)
+                                                                                    }}></Input>
                                                                                 </Td>
                                                                                 <Td>
-                                                                                    <IconButton colorScheme={"red"}
-                                                                                                onClick={() => {
-                                                                                                    if (window.confirm("Sei sicuro di voler eliminare l'alimento?")) {
-                                                                                                        schedaAlimentare[i].splice(key, 1);
-                                                                                                        let newV = [...schedaAlimentare];
-                                                                                                        setSchedaAlimentare(newV);
-                                                                                                    }
-                                                                                                }}
-                                                                                                aria-label={"Pulsante che elimina elemento"}>
+                                                                                    <IconButton colorScheme={"red"} onClick={()=>{
+                                                                                        if(window.confirm("Sei sicuro di voler eliminare l'alimento?")) {
+                                                                                            schedaAlimentare[i].splice(key,1);
+                                                                                            let newV=[...schedaAlimentare];
+                                                                                            setSchedaAlimentare(newV);
+                                                                                        }
+                                                                                    }} aria-label={"Pulsante che elimina elemento"}>
                                                                                         <DeleteIcon/>
                                                                                     </IconButton>
                                                                                 </Td>
@@ -422,7 +428,7 @@ export default function Create() {
                                                 <Button
                                                     w="full"
                                                     colorScheme='fitdiary'
-                                                    onClick={() => {
+                                                    onClick={()=>{
                                                         onOpen();
                                                         setIndexGiorno(i);
                                                     }}>
@@ -435,7 +441,7 @@ export default function Create() {
                             })}
 
                         </Accordion>
-                        <Button w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting} type='submit'>
+                        <Button w="full" mt={4} colorScheme='fitdiary' isLoading={isSubmitting} onClick={CreaScheda}>
                             Salva Scheda
                         </Button>
                     </form>
