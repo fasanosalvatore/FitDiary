@@ -7,18 +7,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -47,25 +43,36 @@ public class SchedaAllenamento {
             message = "Lunghezza frequenza non valida")
     private String frequenza;
     /**
-     * lista esercizi scheda allenamento.
+     * lista esercizi scheda esercizi.
      */
-    @OneToMany(mappedBy = "schedaAllenamento")
-    private List<Esercizio> listaEsercizi;
+    @OneToMany(mappedBy = "schedaAllenamento",cascade = CascadeType.ALL)
+    private List<IstanzaEsercizio> listaEsercizi;
+
+    @ManyToOne
+    @JoinColumn(name = "utente_id")
+    private Utente preparatore;
+
+
     /**
-     * procotollo a cui è associata la scheda allenamento.
+     * La data creazione della tupla.
      */
-    @OneToOne
-    @JoinColumn(name = "protocollo_id")
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    private Protocollo protocollo;
+    @Column(name = "data_creazione", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime dataCreazione;
+
+    /**
+     * La data aggiornamento della tupla.
+     */
+    @Column(name = "data_aggiornamento")
+    @UpdateTimestamp
+    private LocalDateTime dataAggiornamento;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SchedaAllenamento that = (SchedaAllenamento) o;
-        return Objects.equal(id, that.id) && Objects.equal(frequenza, that.frequenza) && Objects.equal(listaEsercizi, that.listaEsercizi) && Objects.equal(protocollo, that.protocollo);
+        return Objects.equal(id, that.id) && Objects.equal(frequenza, that.frequenza) && Objects.equal(listaEsercizi, that.listaEsercizi);
     }
 
 }

@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -50,54 +51,20 @@ public class Esercizio {
     @Size(min = 1, max = INT50, message = "Lunghezza nome non valida")
     @NotBlank(message = "Il nome non può essere vuoto")
     private String nome;
+
     /**
-     * serie dell'esercizio.
+     * foto path.
      */
-    @NotNull(message = "La serie non può essere nulla")
-    @Column(length = INT20)
-    @Size(min = 1, max = INT20, message = "Lunghezza serie non valida")
-    @NotBlank(message = "La serie non può essere vuota")
-    private String serie;
+    @NotNull(message = "Il path della foto non può essere nullo")
+    @NotBlank(message = "Il path della foto non può essere vuoto")
+    @Pattern(regexp = "^(.+)\\/([^\\/]+)$")
+    private String pathFoto;
+
     /**
-     * ripetizione degli esercizio.
+     * id tipo esercizio.
      */
-    @NotNull(message = "La ripetizione non può essere nulla")
-    @Column(length = INT20)
-    @Size(min = 1, max = INT20, message = "Lunghezza ripetizione non è valida")
-    @NotBlank(message = "La ripetizione non può essere vuota")
-    private String ripetizioni;
-    /**
-     * recupero esercizio.
-     */
-    @NotNull(message = "Il recupero non può essere nulla")
-    @Column(length = INT10)
-    @Size(min = 1, max = INT10, message = "Lunghezza recupero non valida")
-    @NotBlank(message = "Il recupero non può essere vuoto")
-    private String recupero;
-    /**
-     * numero allenamento.
-     */
-    @NotNull(message = "Il numero allenamento non può essere nulla")
-    @Column(length = INT10, name = "numero_allenamento")
-    @Size(min = 1, max = INT10, message =
-            "Lunghezza numero allenamento non valida")
-    @NotBlank(message = "Il numero allenamento non può essere vuoto")
-    private String numeroAllenamento;
-    /**
-     * categoria esercizio.
-     */
-    @NotNull(message = "La categoria non può essere nulla")
-    @Column(length = INT20)
-    @Size(min = 1, max = INT20, message = "Lunghezza categoria non valida")
-    @NotBlank(message = "La categoria non può essere vuota")
-    private String categoria;
-    /**
-     * scheda allenamento.
-     */
-    @NotNull(message = "Scheda allenamento non può essere vuoto")
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "scheda_allenamento_id")
-    @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    private SchedaAllenamento schedaAllenamento;
+    @JoinColumn(name = "tipoesercizio_id")
+    private TipoEsercizio tipoEsercizio;
 }
