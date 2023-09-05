@@ -29,18 +29,18 @@ public class GestioneEsercizioController
     }
 
     @GetMapping("getEsercizio")
-    private ResponseEntity<Object> VisualizzaAlimento(@RequestParam("idAlimento") Long idAlimento)
+    private ResponseEntity<Object> VisualizzaEsercizio(@RequestParam("idEsercizio") Long idAlimento)
     {
         Optional<Esercizio> esercizio=service.getById(idAlimento);
         if(esercizio.isPresent())
         {
-            return ResponseHandler.generateResponse(HttpStatus.OK,"esercizio",esercizio);
+            return ResponseHandler.generateResponse(HttpStatus.OK,"esercizio",esercizio.get());
         }
         return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,"Esercizio non trovato");
     }
 
     @GetMapping("getAllEsercizi")
-    private ResponseEntity<Object> VisualizzaListaAlimenti()
+    private ResponseEntity<Object> VisualizzaListaEsercizi()
     {
         List<Esercizio> listEsercizi=service.getAll();
         return ResponseHandler.generateResponse(HttpStatus.OK,"esercizi",listEsercizi);
