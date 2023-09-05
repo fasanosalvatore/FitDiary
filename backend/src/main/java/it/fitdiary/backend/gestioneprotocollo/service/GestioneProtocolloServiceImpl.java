@@ -1,12 +1,9 @@
 package it.fitdiary.backend.gestioneprotocollo.service;
 
-import it.fitdiary.backend.entity.Esercizio;
 import it.fitdiary.backend.entity.Protocollo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
-import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapter;
-import it.fitdiary.backend.gestioneprotocollo.adapter.SchedaAllenamentoAdapterImpl;
 import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.GestioneProtocolloSchedaAlimentareRepository;
@@ -16,18 +13,12 @@ import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
-import org.checkerframework.checker.nullness.Opt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -49,11 +40,6 @@ public class GestioneProtocolloServiceImpl
   private final GestioneProtocolloSchedaAlimentareRepository schedaAlimentareRepository;
 
   /**
-   * Adapter della scheda allenamento.
-   */
-  private final SchedaAllenamentoAdapter schedaAllenamentoAdapter =
-      new SchedaAllenamentoAdapterImpl();
-  /**
    * Repository della scheda allenamento.
    */
   private final SchedaAllenamentoRepository schedaAllenamentoRepository;
@@ -68,19 +54,16 @@ public class GestioneProtocolloServiceImpl
    * @param preparatore           il preparatore del protocollo
    * @param dataScadenza          la data di scadenza
    * @param idSchedaAlimentare    id scheda alimentare del nuovo protocollo
-   * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
+   * @param idSchedaAllenamento  id scheda allenamento del nuovo protocollo
    * @return Protocollo creato
    * @throws IOException
    * @throws IllegalArgumentException
    **/
   @Override
   public Protocollo creazioneProtocollo(LocalDate dataScadenza, Utente cliente, Utente preparatore,
-                                        final Long idSchedaAlimentare,
-                                        final File schedaAllenamentoFile)
+                                        Long idSchedaAlimentare,
+                                        Long idSchedaAllenamento)
       throws IOException, IllegalArgumentException {
-    if (schedaAllenamentoFile == null && idSchedaAlimentare == null) {
-      throw new IllegalArgumentException("Nessun file presente");
-    }
     Protocollo newProtocollo = new Protocollo();
     newProtocollo.setCliente(cliente);
     newProtocollo.setPreparatore(preparatore);
@@ -89,8 +72,9 @@ public class GestioneProtocolloServiceImpl
       newProtocollo.setSchedaAlimentare(
           getSchedaAlimentare(preparatore.getId(), idSchedaAlimentare));
     }
-    if (schedaAllenamentoFile != null) {
-      inserisciSchedaAllenamento(newProtocollo, schedaAllenamentoFile);
+    if (idSchedaAllenamento != null) {
+      newProtocollo.setSchedaAllenamento(
+              getSchedaAllenamento(preparatore.getId(), idSchedaAlimentare));
     }
 
     return protocolloRepository.save(newProtocollo);
@@ -120,52 +104,25 @@ public class GestioneProtocolloServiceImpl
     return schedaAlimentare.get();
   }
 
-  /**
-   * @param protocollo            protocollo per cui
-   *                              inserire la scheda alimentare
-   * @param schedaAllenamentoFile file della scheda allenamento
-   * @return protocollo modificato
-   * @throws IOException
-   */
-  public Protocollo inserisciSchedaAllenamento(final Protocollo protocollo,
-                                               final File
-                                                   schedaAllenamentoFile)
-      throws IOException, IllegalArgumentException {
-    if (schedaAllenamentoFile != null) {
+  private SchedaAllenamento getSchedaAllenamento(final Long preparatoreId,
+                                               final Long schedaAllenamentoId)
+          throws IllegalArgumentException {
 
-      if (protocollo.getSchedaAllenamento() != null) {
-        esercizioRepository.deleteAllBySchedaAllenamentoId(
-            protocollo.getSchedaAllenamento().getId());
-        schedaAllenamentoRepository.deleteAllByProtocolloId(
-            protocollo.getId());
-      }
-      if (FilenameUtils.getExtension(schedaAllenamentoFile.getName())
-          .equals("csv")) {
-        List<Esercizio> esercizi =
-            schedaAllenamentoAdapter.parse(schedaAllenamentoFile);
-        Set<String> numeroAllenamenti = new HashSet<>();
-        for (Esercizio esercizio : esercizi) {
-          numeroAllenamenti.add(
-              esercizio.getNumeroAllenamento().toUpperCase());
-        }
-        SchedaAllenamento schedaAllenamento = new SchedaAllenamento();
-        schedaAllenamento.setFrequenza(
-            String.valueOf(numeroAllenamenti.size()));
-        schedaAllenamento.setProtocollo(protocollo);
-        SchedaAllenamento newSchedaAllenamento =
-            schedaAllenamentoRepository.save(schedaAllenamento);
-        for (Esercizio esercizio : esercizi) {
-          esercizio.setSchedaAllenamento(newSchedaAllenamento);
-          esercizioRepository.save(esercizio);
-        }
-        protocollo.setSchedaAllenamento(newSchedaAllenamento);
-        schedaAllenamento.setListaEsercizi(esercizi);
-      } else {
-        throw new IllegalArgumentException("Formato file non valido");
-      }
+    Optional<SchedaAllenamento> schedaAllenamento =
+            schedaAllenamentoRepository.findById(schedaAllenamentoId);
+    if (schedaAllenamento.isEmpty()) {
+      throw new IllegalArgumentException(
+              "la scheda allenamento con id " + schedaAllenamentoId + " non esiste");
     }
-    return protocollo;
+    if (!Objects.equals(preparatoreId,
+            schedaAllenamento.get().getPreparatore().getId())) {
+      throw new IllegalArgumentException(
+              "non hai i permessi per gestire la scheda allenamento di id " + schedaAllenamentoId);
+    }
+
+    return schedaAllenamento.get();
   }
+
 
   /**
    * @param idProtocollo id del protocollo
@@ -215,6 +172,13 @@ public class GestioneProtocolloServiceImpl
   public void modificaSchedaAlimentare(Protocollo protocollo, Long idSchedaAlimentare) {
     protocollo.setSchedaAlimentare(
         getSchedaAlimentare(protocollo.getPreparatore().getId(), idSchedaAlimentare));
+    protocolloRepository.save(protocollo);
+  }
+
+  @Override
+  public void modificaSchedaAllenamento(Protocollo protocollo, Long idSchedaAllenamento) {
+    protocollo.setSchedaAllenamento(
+            getSchedaAllenamento(protocollo.getPreparatore().getId(), idSchedaAllenamento));
     protocolloRepository.save(protocollo);
   }
 }

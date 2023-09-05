@@ -14,14 +14,14 @@ public interface GestioneProtocolloService {
      * @param preparatore il preparatore del protocollo
      * @param dataScadenza            la data di scadenza
      * @param idSchedaAlimentare  id scheda alimentare del nuovo protocollo
-     * @param schedaAllenamentoFile file scheda allenamento del nuovo protocollo
+     * @param idSchedaAllenamento  id scheda allenamento del nuovo protocollo
      * @return Protocollo creato
      * @throws IOException
      * @throws IllegalArgumentException
      */
     Protocollo creazioneProtocollo(LocalDate dataScadenza, Utente cliente, Utente preparatore,
                                           final Long idSchedaAlimentare,
-                                          final File schedaAllenamentoFile)
+                                          final Long idSchedaAllenamento)
         throws IOException, IllegalArgumentException;
 
     /**
@@ -36,15 +36,6 @@ public interface GestioneProtocolloService {
      */
     List<Protocollo> visualizzaStoricoProtocolliCliente(Utente cliente);
 
-    /**
-     * @param protocollo protocollo
-     * @param schedaAllenamentoFile file della scheda allenamento
-     * @return nuovo protocollo
-     * @throws IOException
-     */
-    Protocollo inserisciSchedaAllenamento(Protocollo protocollo,
-                                          File schedaAllenamentoFile)
-            throws IOException;
 
     /**
      * @param preparatore preparatore
@@ -54,4 +45,5 @@ public interface GestioneProtocolloService {
     List<Protocollo> getAllProtocolliPreparatore(Utente preparatore, int page);
 
     void modificaSchedaAlimentare(Protocollo protocollo, Long idSchedaAlimentare);
+    void modificaSchedaAllenamento(Protocollo protocollo, Long idSchedaAllenamento);
 }
