@@ -34,7 +34,7 @@ import {
     useToast,
     VStack
 } from '@chakra-ui/react';
-import {CloseIcon, DeleteIcon, EditIcon} from '@chakra-ui/icons';
+import {CloseIcon, DeleteIcon, EditIcon, InfoIcon} from '@chakra-ui/icons';
 import {AuthContext} from "../../context/AuthContext";
 import moment from "moment";
 import {FetchContext} from "../../context/FetchContext";
@@ -166,7 +166,7 @@ export default function View() {
                                         return (<AccordionItem key={i}>
                                                 <h2>
                                                     <AccordionButton>
-                                                        <Box flex='1' textAlign='left' fontWeight={"extrabold"} fontSize={"xl"}>
+                                                        <Box flex='1' textAlign='center' fontWeight={"extrabold"} fontSize={"xl"}>
                                                             {d}
                                                         </Box>
                                                         <AccordionIcon/>
@@ -176,15 +176,20 @@ export default function View() {
                                                     {vettPasti.map((pasto, index) => {
                                                         return (
                                                             <div key={index}>
-                                                                <Text fontSize={"21"} color={"blue"}
-                                                                      fontWeight={"semibold"}>{pasto.Nome}</Text>
-                                                                {schedaAlimentare.listaAlimenti.
-                                                                filter((t) => pasto.ID_DB == t.pasto).map((al, key) => {
+                                                                <Box flex='1' textAlign='center' fontWeight={"extrabold"} fontSize={"xl"}>
+                                                                    <Text fontSize={"21"} color={"blue"}
+                                                                          fontWeight={"semibold"}>{pasto.Nome}</Text>
+                                                                </Box>
+                                                                {schedaAlimentare.listaAlimenti
+                                                                    .filter((t) => pasto.ID_DB == t.pasto)
+                                                                    .filter((t1) => t1.giornoDellaSettimana.toLowerCase() == d.toLowerCase())
+                                                                    .map((al, key) => {
                                                                     let alimento = al.alimento;
                                                                     return (
                                                                         <>
                                                                             <Table borderBottom={"solid 1px "}
-                                                                                   borderColor={"blue.200"} key={key}
+                                                                                   borderColor={"blue.200"}
+                                                                                   key={key}
                                                                                    variant="unstyled" size="md">
                                                                                 <Thead>
                                                                                     <Tr>
@@ -195,7 +200,6 @@ export default function View() {
                                                                                         <Th>Grassi</Th>
                                                                                         <Th>Carboidrati</Th>
                                                                                         <Th>Grammi</Th>
-                                                                                        <Th>Azioni</Th>
                                                                                     </Tr>
                                                                                 </Thead>
                                                                                 <Tbody>
@@ -215,9 +219,6 @@ export default function View() {
                                                                                         <Td maxWidth={100}>{parseInt(alimento.grassi)}</Td>
                                                                                         <Td maxWidth={100}>{parseInt(alimento.carboidrati)}</Td>
                                                                                         <Td maxWidth={100}>{parseInt(al.grammi)}</Td>
-                                                                                        <Td>
-                                                                                            <IconButton></IconButton>
-                                                                                        </Td>
                                                                                     </Tr>
                                                                                 </Tbody>
                                                                             </Table>

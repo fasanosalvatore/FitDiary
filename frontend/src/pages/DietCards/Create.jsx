@@ -344,7 +344,7 @@ export default function Create() {
                                 return (<AccordionItem key={i}>
                                         <h2>
                                             <AccordionButton>
-                                                <Box flex='1' textAlign='left' fontWeight={"extrabold"} fontSize={"xl"}>
+                                                <Box flex='1' textAlign='center' fontWeight={"extrabold"} fontSize={"xl"}>
                                                     {d}
                                                 </Box>
                                                 <AccordionIcon/>
@@ -354,8 +354,10 @@ export default function Create() {
                                             {vettPasti.map((pasto, index) => {
                                                 return (
                                                     <div key={index}>
-                                                        <Text fontSize={"21"} color={"blue"}
-                                                              fontWeight={"semibold"}>{pasto.Nome}</Text>
+                                                        <Box flex='1' textAlign='center' fontWeight={"extrabold"} fontSize={"xl"}>
+                                                            <Text fontSize={"21"} color={"blue"}
+                                                                  fontWeight={"semibold"}>{pasto.Nome}</Text>
+                                                        </Box>
                                                         {schedaAlimentare[i].filter((t) => index == t.pasto).map((al, key) => {
                                                             let alimento = al.alimento;
                                                             let caloreCalc = (alimento.kcal / 100) * al.grammi;
