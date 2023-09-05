@@ -16,99 +16,21 @@ INSERT INTO `utente` (`id`, `attivo`, `cap`, `citta`, `cognome`, `data_aggiornam
 INSERT INTO `protocollo` (`id`, `data_aggiornamento`, `data_creazione`, `data_scadenza`, `cliente_id`, `preparatore_id`) VALUES (1, '2022-01-09 20:40:59', '2022-01-09 20:41:00', '2022-02-24', 4, 2);
 
 /*Scheda Alimentare*/
-INSERT INTO `scheda_alimentare` (`id`, `kcal_assunte`, `protocollo_id`) VALUES (1, 0, 1);
+INSERT INTO `scheda_alimentare` (`id`, `kcal_assunte`, `nome`,`utente_id`) VALUES (1, 100, 'scheda da 100kcla',2);
+INSERT INTO `scheda_alimentare` (`id`, `kcal_assunte`, `nome`,`utente_id`) VALUES (2, 400, 'scheda da 400kcla',2);
+
 
 /*Scheda Allenamento*/
 INSERT INTO `scheda_allenamento` (`id`, `frequenza`, `protocollo_id`) VALUES (1, '4', 1);
 
-/*Alimenti*/
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (1, '1', '250ml', 125.5, 'Latte a ridotto contenuto di grassi, 2%', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (2, '1', '30g', 102, 'Cereali muesli con frutta e nocciole', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (3, '1', '250g', 152.5, 'Kiwi', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (4, '1', '90g', 291.6, 'Pasta di semola integrale', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (5, '1', '100g', 24, 'Salsa di pomodoro', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (6, '1', '10g', 39.2, 'Parmigiano grattugiato', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (7, '1', '100g', 18, 'Lattuga', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (8, '1', '10g', 90, 'Olio extravergine di oliva ', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (9, '1', '250g', 140, 'Yogurt da latte scremato', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (10, '1', '200g', 220, 'Petto di pollo alla piastra', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (11, '1', '200g', 32, 'Zucchine', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (12, '1', '60g', 145.8, 'Pane integrale', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (13, '1', '15g', 135, 'Olio extravergine di oliva ', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (14, '2', '250ml', 125.5, 'Latte a ridotto contenuto di grassi, 2%', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (15, '2', '30g', 108, 'Corn flakes', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (16, '2', '250g', 130, 'Mela, con buccia', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (17, '2', '80g', 296, 'Riso a chicco lungo integrale', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (18, '2', '100g', 25, 'Rucola', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (19, '2', '10g', 39.2, 'Parmigiano grattugiato', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (20, '2', '100g', 23, 'Radicchio', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (21, '2', '10g', 90, 'Olio extravergine di oliva ', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (22, '2', '250g', 140, 'Yogurt da latte scremato', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (23, '2', '220g', 237.6, 'Filetto di tonno pinne gialle alla piastra', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (24, '2', '200g', 34, 'Indivia', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (25, '2', '60g', 145.8, 'Pane integrale', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (26, '2', '15g', 135, 'Olio extravergine di oliva ', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (27, '3', '250ml', 125.5, 'Latte a ridotto contenuto di grassi, 2%', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (28, '3', '30g', 102, 'Cereali muesli con frutta e nocciole', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (29, '3', '250g', 157.5, 'Arance', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (30, '3', '250g', 192.5, 'Patate lesse', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (31, '3', '180g', 186, 'fagioli secchi(60g) bolliti', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (32, '3', '10g', 39.2, 'Parmigiano grattugiato', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (33, '3', '10g', 90, 'Olio extravergine di oliva ', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (34, '3', '250g', 140, 'Yogurt da latte scremato', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (35, '3', '200g', 172, 'Fiocchi da latte a ridotto contenuto di grassi 2%', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (36, '3', '200g', 32, 'Pomodori arancioni', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (37, '3', '60g', 145.8, 'Pane integrale', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (38, '3', '15g', 135, 'Olio extravergine di oliva ', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (39, '4', '250ml', 125.5, 'Latte a ridotto contenuto di grassi, 2%', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (40, '4', '30g', 108, 'Corn flakes', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (41, '4', '250g', 145, 'Pere', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (42, '4', '150g', 406.5, 'Pizza margherita al taglio', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (43, '4', '30g', 64.5, 'Prosciutto cotto', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (44, '4', '10g', 90, 'Olio extravergine di oliva ', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (45, '4', '250g', 140, 'Yogurt da latte scremato', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (46, '4', '200g', 96, 'Frittata di albumi d\'uovo', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (47, '4', '200g', 94, 'Carciofi', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (48, '4', '60g', 145.8, 'Pane integrale', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (49, '4', '15g', 135, 'Olio extravergine di oliva ', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (50, '5', '250ml', 125.5, 'Latte a ridotto contenuto di grassi, 2%', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (51, '5', '30g', 102, 'Cereali muesli con frutta e nocciole', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (52, '5', '250g', 152.5, 'Kiwi', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (53, '5', '90g', 291.6, 'Pasta di semola integrale', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (54, '5', '100g', 16, 'Zucchine', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (55, '5', '10g', 39.2, 'Parmigiano grattugiato', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (56, '5', '100g', 18, 'Lattuga', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (57, '5', '10g', 90, 'Olio extravergine di oliva ', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (58, '5', '250g', 140, 'Yogurt da latte scremato', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (59, '5', '200g', 222, 'Petto di tacchino alla piastra', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (60, '5', '200g', 48, 'Melanzana', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (61, '5', '60g', 145.8, 'Pane integrale', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (62, '5', '15g', 135, 'Olio extravergine di oliva ', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (63, '6', '250ml', 125.5, 'Latte a ridotto contenuto di grassi, 2%', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (64, '6', '30g', 108, 'Corn flakes', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (65, '6', '250g', 145, 'Pere', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (66, '6', '80g', 296, 'Riso a chicco lungo integrale', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (67, '6', '100g', 22, 'Funghi champignon', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (68, '6', '10g', 39.2, 'Parmigiano grattugiato', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (69, '6', '100g', 23, 'Radicchio', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (70, '6', '10g', 90, 'Olio extravergine di oliva ', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (71, '6', '250g', 140, 'Yogurt da latte scremato', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (72, '6', '200g', 242.5, 'Spigola al forno', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (73, '6', '200g', 34, 'Indivia', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (74, '6', '60g', 145.8, 'Pane integrale', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (75, '6', '15g', 135, 'Olio extravergine di oliva ', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (76, '7', '250ml', 125.5, 'Latte a ridotto contenuto di grassi, 2%', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (77, '7', '30g', 102, 'Cereali muesli con frutta e nocciole', 'Colazione', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (78, '7', '250g', 130, 'Mela, con buccia', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (79, '7', '250g', 192.5, 'Patate lesse', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (80, '7', '180g', 183.6, 'Piselli secchi(60g) bolliti', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (81, '7', '10g', 39.2, 'Parmigiano grattugiato', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (82, '7', '10g', 90, 'Olio extravergine di oliva ', 'Pranzo', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (83, '7', '250g', 140, 'Yogurt da latte scremato', 'Spuntino', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (84, '7', '200g', 232, 'Vitello, lombo, carne magra', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (85, '7', '100g', 25, 'Rucola', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (86, '7', '60g', 145.8, 'Pane integrale', 'Cena', 1);
-INSERT INTO `alimento` (`id`, `giorno`, `grammi`, `kcal`, `nome`, `pasto`, `scheda_alimentare_id`) VALUES (87, '7', '15g', 135, 'Olio extravergine di oliva ', 'Cena', 1);
+
+/*Istanze Alimento*/
+INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alimento_id`, `scheda_alimentare_id`,`pasto`) VALUES (1,100, 2, 1, 1,1);
+INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alimento_id`, `scheda_alimentare_id`,`pasto`) VALUES (2,200, 0, 2, 1,0);
+INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alimento_id`, `scheda_alimentare_id`,`pasto`) VALUES (3,400, 3, 3, 2,2);
+INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alimento_id`, `scheda_alimentare_id`,`pasto`) VALUES (4,200, 4, 1, 2,3);
+
+
 
 /* Esercizi*/
 INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (1, 'pettorali', 'Chest press', '1', '15\'\' + 90\'', '8 MAX', '4', 1);

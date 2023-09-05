@@ -7,8 +7,10 @@ import it.fitdiary.backend.gestioneprotocollo.service.GestioneProtocolloService;
 import it.fitdiary.backend.gestioneutenza.service.GestioneUtenzaService;
 import it.fitdiary.backend.utility.FileUtility;
 import it.fitdiary.backend.utility.ResponseHandler;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @Slf4j
@@ -62,10 +65,12 @@ public class GestioneProtocolloController {
 
     @PostMapping
     private ResponseEntity<Object> creazioneProtocollo(
-            @RequestParam("dataScadenza") final String dataScadenza,
+            @RequestParam("dataScadenza")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            final LocalDate dataScadenza,
             @RequestParam("idCliente") final Long idCliente,
-            @RequestParam(value = "schedaAlimentare", required = false)
-            final MultipartFile schedaAlimentareMultipartFile,
+            @RequestParam(name="idSchedaAlimentare", required = false) final Long idSchedaAlimentare,
+
             @RequestParam(value = "schedaAllenamento", required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
@@ -78,38 +83,22 @@ public class GestioneProtocolloController {
         if (!gestioneUtenzaService.existsByPreparatoreAndId(
                 preparatore, idCliente)) {
             return ResponseHandler.generateResponse(HttpStatus.UNAUTHORIZED,
-                    (Object) "Il preparatore non può creare "
+                    "Il preparatore non può creare "
                             + "un protocollo per questo cliente");
         }
-        if ((schedaAllenamentoMultipartFile == null
-                && schedaAlimentareMultipartFile == null)
-                || ((schedaAllenamentoMultipartFile != null
-                && schedaAllenamentoMultipartFile.isEmpty())
-                || (schedaAlimentareMultipartFile != null
-                && schedaAlimentareMultipartFile.isEmpty()))) {
+        if ((schedaAllenamentoMultipartFile == null && idSchedaAlimentare == null)
+                || (schedaAllenamentoMultipartFile != null && schedaAllenamentoMultipartFile.isEmpty())
+        ) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
         }
 
-        Protocollo protocollo = new Protocollo();
-        protocollo.setDataScadenza(LocalDate.parse(dataScadenza));
-        protocollo.setCliente(gestioneUtenzaService.getById(idCliente));
-        protocollo.setPreparatore(gestioneUtenzaService.getById(idPreparatore));
-        File schedaAlimentareFile;
+        Utente cliente = gestioneUtenzaService.getById(idCliente);
         File schedaAllenamentoFile;
         try {
-            schedaAlimentareFile =
-                    FileUtility.getFile(schedaAlimentareMultipartFile);
             schedaAllenamentoFile =
                     FileUtility.getFile(schedaAllenamentoMultipartFile);
-            if ((schedaAlimentareFile != null)
-                    && (schedaAlimentareFile.length() > MAX_FILE_UPLOAD)) {
-                return ResponseHandler.generateResponse(
-                        HttpStatus.BAD_REQUEST,
-                        (Object) "il file " + schedaAlimentareFile
-                                .getName()
-                                + " ha dimensioni elevate");
-            } else if ((schedaAllenamentoFile != null)
+           if ((schedaAllenamentoFile != null)
                     && (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD)) {
                 return ResponseHandler.generateResponse(
                         HttpStatus.BAD_REQUEST,
@@ -124,8 +113,8 @@ public class GestioneProtocolloController {
         }
         try {
             Protocollo newProtocollo =
-                    gestioneProtocolloService.creazioneProtocollo(protocollo,
-                            schedaAlimentareFile, schedaAllenamentoFile);
+                    gestioneProtocolloService.creazioneProtocollo(dataScadenza,cliente,preparatore,
+                            idSchedaAlimentare, schedaAllenamentoFile);
             return ResponseHandler.generateResponse(HttpStatus.CREATED,
                     "protocollo", newProtocollo);
         } catch (IOException e) {
@@ -135,14 +124,17 @@ public class GestioneProtocolloController {
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(BAD_REQUEST,
                     (Object) e.getMessage());
+        }catch (Exception e)
+        {
+            return ResponseHandler.generateResponse(HttpStatus.INTERNAL_SERVER_ERROR,
+                (Object) e.getMessage());
         }
     }
 
     @PutMapping("{idProtocollo}")
     private ResponseEntity<Object> modificaProtocollo(
             @PathVariable("idProtocollo") final Long idProtocollo,
-            @RequestParam(value = "schedaAlimentare", required = false)
-            final MultipartFile schedaAlimentareMultipartFile,
+            @RequestParam(name="idSchedaAlimentare", required = false) final Long idSchedaAlimentare,
             @RequestParam(value = "schedaAllenamento", required = false)
             final MultipartFile schedaAllenamentoMultipartFile) {
         HttpServletRequest request = ((ServletRequestAttributes)
@@ -168,31 +160,16 @@ public class GestioneProtocolloController {
                             "Il preparatore non può modificare "
                             + "un protocollo per questo cliente");
         }
-        if ((schedaAllenamentoMultipartFile == null
-                && schedaAlimentareMultipartFile == null)
-                || ((schedaAllenamentoMultipartFile != null
-                && schedaAllenamentoMultipartFile.isEmpty())
-                || (schedaAlimentareMultipartFile != null
-                && schedaAlimentareMultipartFile.isEmpty()))) {
+        if ((schedaAllenamentoMultipartFile == null && idSchedaAlimentare == null)
+                || ((schedaAllenamentoMultipartFile != null && schedaAllenamentoMultipartFile.isEmpty()))) {
             return ResponseHandler.generateResponse(BAD_REQUEST, (Object)
                     "file assenti o corrotti ");
         }
 
-        File schedaAlimentareFile;
         File schedaAllenamentoFile;
         try {
-            schedaAlimentareFile =
-                    FileUtility.getFile(schedaAlimentareMultipartFile);
-            schedaAllenamentoFile =
-                    FileUtility.getFile(schedaAllenamentoMultipartFile);
-            if ((schedaAlimentareFile != null)
-                    && (schedaAlimentareFile.length() > MAX_FILE_UPLOAD)) {
-                return ResponseHandler.generateResponse(
-                        HttpStatus.BAD_REQUEST,
-                        (Object) "il file " + schedaAlimentareFile
-                                .getName()
-                                + " ha dimensioni elevate");
-            } else if ((schedaAllenamentoFile != null)
+            schedaAllenamentoFile = FileUtility.getFile(schedaAllenamentoMultipartFile);
+            if ((schedaAllenamentoFile != null)
                     && (schedaAllenamentoFile.length() > MAX_FILE_UPLOAD)) {
                 return ResponseHandler.generateResponse(
                         HttpStatus.BAD_REQUEST,
@@ -206,10 +183,10 @@ public class GestioneProtocolloController {
                     "errore nella lettura dei file");
         }
         try {
-            if (schedaAlimentareFile != null) {
-                gestioneProtocolloService.inserisciSchedaAlimentare(
+            if (idSchedaAlimentare != null) {
+                gestioneProtocolloService.modificaSchedaAlimentare(
                         protocollo,
-                        schedaAlimentareFile);
+                        idSchedaAlimentare);
             }
             if (schedaAllenamentoFile != null) {
                 gestioneProtocolloService.inserisciSchedaAllenamento(
@@ -337,11 +314,11 @@ public class GestioneProtocolloController {
         }
         try {
             Utente utenteCliente = gestioneUtenzaService.getById(idCliente);
+            List<Protocollo> protocolloList = gestioneProtocolloService
+                .visualizzaStoricoProtocolliCliente(
+                    utenteCliente);
             return ResponseHandler.generateResponse(HttpStatus.OK,
-                    "protocollo",
-                    gestioneProtocolloService
-                            .visualizzaStoricoProtocolliCliente(
-                                    utenteCliente));
+                    "protocollo", protocolloList);
         } catch (IllegalArgumentException e) {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     (Object) e.getMessage());

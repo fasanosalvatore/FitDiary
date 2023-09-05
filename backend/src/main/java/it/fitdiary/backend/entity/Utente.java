@@ -3,6 +3,7 @@ package it.fitdiary.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -226,5 +227,18 @@ public class Utente {
                 + ", cap='" + cap + '\''
                 + ", citta='" + citta + '\''
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Utente utente = (Utente) o;
+        return Objects.equal(id, utente.id) && Objects.equal(nome, utente.nome) && Objects.equal(cognome, utente.cognome) && Objects.equal(email, utente.email) && Objects.equal(password, utente.password) && Objects.equal(attivo, utente.attivo) && Objects.equal(dataNascita, utente.dataNascita) && Objects.equal(sesso, utente.sesso) && Objects.equal(telefono, utente.telefono) && Objects.equal(via, utente.via) && Objects.equal(cap, utente.cap) && Objects.equal(citta, utente.citta) && Objects.equal(preparatore, utente.preparatore) && Objects.equal(ruolo, utente.ruolo) && Objects.equal(listaProtocolli, utente.listaProtocolli) && Objects.equal(listaClienti, utente.listaClienti) && Objects.equal(listaReport, utente.listaReport) && Objects.equal(dataCreazione, utente.dataCreazione) && Objects.equal(dataAggiornamento, utente.dataAggiornamento);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, nome, cognome, email, password, attivo, dataNascita, sesso, telefono, via, cap, citta, preparatore, ruolo, listaProtocolli, listaClienti, listaReport, dataCreazione, dataAggiornamento);
     }
 }

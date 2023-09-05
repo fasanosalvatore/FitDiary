@@ -25,8 +25,19 @@ import ProtocolsCreate from "./pages/Protocols/Create"
 import ReportsCreate from "./pages/Reports/Create"
 import ReportsView from "./pages/Reports/View"
 import ProtocolsView from "./pages/Protocols/View";
-import ProtocolsDietCardsView from "./pages/Protocols/DietCards/View";
-import ProtocolsTrainingCardsView from "./pages/Protocols/TrainingCards/View";
+
+import DietCardsIndex from "./pages/DietCards/Index";
+import DietCardsView from "./pages/DietCards/View";
+import DietCardsCreate from "./pages/DietCards/Create";
+
+import TrainingCardsIndex from "./pages/TrainingCards/Index";
+import TrainingCardsView from "./pages/TrainingCards/View";
+import TrainingCardsCreate from "./pages/TrainingCards/Create";
+
+import AlimentiIndex from "./pages/Alimento/Index.jsx";
+import EserciziIndex from "./pages/Esercizio/Index.jsx";
+
+
 import CustomersView from "./pages/User/Customers/View";
 import CustomerInsertInfo from "./pages/User/Customers/CustomerInsertInfo";
 
@@ -54,11 +65,23 @@ const AppRoutes = () => {
                 <Route path="account" element={<UsersEdit />} />
                 <Route path="profile" element={<UsersProfile />} />
                 <Route path="logout" element={<Logout />} />
+
                 <Route path="protocols" element={<ProtocolsIndex />} />
                 <Route path="protocols/:id" element={<ProtocolsView />} />
                 <Route path="protocols/create" element={<ProtocolsCreate />} />
-                <Route path="dietcards/:id" element={<ProtocolsDietCardsView />} />
-                <Route path="trainingcards/:id" element={<ProtocolsTrainingCardsView />} />
+
+                <Route path="dietcards" element={<DietCardsIndex />} />
+                <Route path="dietcards/:id" element={<DietCardsView />} />
+                <Route path="dietcards/create" element={<DietCardsCreate />} />
+
+                <Route path="trainingcards" element={<TrainingCardsIndex />} />
+                <Route path="trainingcards/:id" element={<TrainingCardsView />} />
+                <Route path="trainingcards/create" element={<TrainingCardsCreate />} />
+
+                <Route path="alimenti" element={<AlimentiIndex />} />
+                <Route path="esercizi" element={<EserciziIndex />} />
+
+
                 <Route path="users" element={<UsersIndex/>}/>
                 <Route path="customers" element={<UsersIndex/>}/>
                 <Route path="insertInfo" element={<CustomerInsertInfo/>}/>
