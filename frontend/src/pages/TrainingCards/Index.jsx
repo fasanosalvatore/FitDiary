@@ -25,7 +25,7 @@ import {AuthContext} from "../../context/AuthContext";
 import {GradientBar} from "../../components/GradientBar";
 import {Link as ReactLink} from "react-router-dom"
 
-const urlProtocollo = "/protocols"
+const urlScheda = "/trainingcards"
 
 function Index() {
     moment.locale("it-IT");
@@ -60,47 +60,43 @@ function Index() {
     }, [toastMessage, toast]);
     const [isLoading, setLoading] = useState(true); // ricarica la pagina quando la variabile termina
     const fetchContext = useContext(FetchContext);
-    const [listProtocolli, setProtocolli] = useState();
+    const [listSchedeAllenamento, setSchedeAllenamento] = useState();
 
     useEffect(() => {
-        console.log("pages/protocols/index")
-        const listaProtocolli = async () => {
+        const loadlistaSchedeAllenamento = async () => {
             try {
-                let params = (new URL(document.location)).searchParams;
-                const idCliente = params.get("idCliente") || "";
-                const { data } = await fetchContext.authAxios("protocolli" + (idCliente !== "" ? "?clienteId=" + idCliente : ""));
+                const { data } = await fetchContext.authAxios("schedaallenamento/getMySchedeAllenamento");
                 console.log(data)
-                setProtocolli(data.data);
+                setSchedeAllenamento(data.data.response);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
             } catch (error) {
                 setToastMessage({title:"Errore", body:error.message, stat:"error"});
             }
 
         }
-        listaProtocolli();
+        loadlistaSchedeAllenamento();
     }, [fetchContext]);
 
     return (
         <>
 
-            {!isLoading && listProtocolli && (
+            {!isLoading && listSchedeAllenamento && (
                 <Flex wrap={"wrap"} p={5}>
                     <Flex w={"full"} alignItems={"center"} mb={5} justifyContent={"space-between"}>
-                        <Heading w={"full"}>Lista Schede Allenamento</Heading>
+                        <Heading w={"full"}>Lista Schede Alimentari</Heading>
                         {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
-                            <ReactLink to="/TrainingCards/create">
+                            <ReactLink to="/DietCards/create">
                                 <Button
                                     colorScheme={"fitdiary"}
                                     color={"white"}
                                 >
-                                    Crea Scheda Allenamento
+                                    Crea Scheda Alimentare
                                 </Button>
                             </ReactLink>
                         )}
                     </Flex>
                     <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
                         <GradientBar />
-
                         <Box pl={10} pr={10} pb={5} pt={5}>
                             <HStack>
                                 <InputGroup>
@@ -117,40 +113,30 @@ function Index() {
                                 </InputGroup>
                             </HStack>
                             {/* Barra di ricerca*/}
-                            {listProtocolli.protocollo.length > 0 ? (
+                            {listSchedeAllenamento.schede_allenamento.length > 0 ? (
                                 <>
                                     <Text fontSize="xl" my={5}>
                                         Lista dei protocolli
                                     </Text>
                                     <Table variant={"striped"} colorScheme={"gray"} size="md">
-                                        <TableCaption>Lista Protocolli</TableCaption>
+                                        <TableCaption>Lista Schede Allenamento</TableCaption>
                                         <Thead bg="fitdiary.100">
                                             <Tr>
                                                 <Th>ID</Th>
-                                                <Th>Data Creazione</Th>
-                                                <Th>Data Scadenza</Th>
+                                                <Th>Nome</Th>
                                                 <Th>Azione</Th>
                                             </Tr>
                                         </Thead>
                                         <Tbody>
-                                            {listProtocolli.protocollo.map(
-                                                (protocol) =>
-                                                    (protocol.id === parseInt(search) ||
+                                            {listSchedeAllenamento.schede_allenamento.map(
+                                                (scheda) =>
+                                                    (scheda.id === parseInt(search) ||
                                                         search === "") && (
-                                                        <Tr key={protocol.id}>
-                                                            <Td>{protocol.id}</Td>
+                                                        <Tr key={scheda.id}>
+                                                            <Td>{scheda.id}</Td>
+                                                            <Td>{scheda.nome}</Td>
                                                             <Td>
-                                                                {moment(protocol.dataCreazione).format(
-                                                                    "DD/MM/yyyy"
-                                                                )}
-                                                            </Td>
-                                                            <Td>
-                                                                {moment(protocol.dataScadenza).format(
-                                                                    "DD/MM/yyyy"
-                                                                )}
-                                                            </Td>
-                                                            <Td>
-                                                                <ReactLink to={urlProtocollo + "/" + protocol.id}>
+                                                                <ReactLink to={urlScheda + "/" + scheda.id}>
                                                                     <InfoIcon />
                                                                 </ReactLink>
                                                             </Td>
