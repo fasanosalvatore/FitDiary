@@ -1,7 +1,7 @@
 package it.fitdiary.backend.gestioneschedaallenamento.service;
 
 import it.fitdiary.backend.entity.*;
-import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
+import it.fitdiary.backend.gestioneesercizio.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneschedaallenamento.controller.dto.IstanzaEsercizioDTO;
 import it.fitdiary.backend.gestioneschedaallenamento.repository.IstanzaEsercizioRepository;
 import it.fitdiary.backend.gestioneschedaallenamento.repository.SchedaAllenamentoRepository;
