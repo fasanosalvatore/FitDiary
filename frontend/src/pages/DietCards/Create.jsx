@@ -341,7 +341,8 @@ export default function Create() {
 
                         <Accordion allowToggle defaultIndex={[0]} w="full" mt={"60px"}>
                             {days.map((d, i) => {
-                                return (<AccordionItem key={i}>
+                                return (
+                                    <AccordionItem key={i}>
                                         <h2>
                                             <AccordionButton>
                                                 <Box flex='1' textAlign='center' fontWeight={"extrabold"} fontSize={"xl"}>

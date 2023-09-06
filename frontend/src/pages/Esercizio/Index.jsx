@@ -86,7 +86,6 @@ function Index() {
 
     return (
         <>
-
             {!isLoading && listEsercizi && (
                 <Flex wrap={"wrap"} p={5}>
                     <Flex w={"full"} alignItems={"center"} mb={5} justifyContent={"space-between"}>
