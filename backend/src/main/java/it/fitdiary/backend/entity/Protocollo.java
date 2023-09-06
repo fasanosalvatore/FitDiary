@@ -54,7 +54,7 @@ public class Protocollo {
     /**
      * scheda allenamento.
      */
-    @OneToOne(mappedBy = "protocollo")
+    @ManyToOne
     @JoinColumn(name = "scheda_allenamento_id")
     @EqualsAndHashCode.Exclude
     private SchedaAllenamento schedaAllenamento;

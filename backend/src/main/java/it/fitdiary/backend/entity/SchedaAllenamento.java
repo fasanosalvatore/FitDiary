@@ -59,6 +59,7 @@ public class SchedaAllenamento {
      * lista esercizi scheda esercizi.
      */
     @OneToMany(mappedBy = "schedaAllenamento",cascade = CascadeType.ALL)
+
     private List<IstanzaEsercizio> listaEsercizi;
 
     @ManyToOne

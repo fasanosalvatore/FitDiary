@@ -4,13 +4,14 @@ import it.fitdiary.backend.entity.Protocollo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
-import it.fitdiary.backend.gestioneprotocollo.repository.OldEsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.GestioneProtocolloSchedaAlimentareRepository;
-import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
+
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Optional;
+
+import it.fitdiary.backend.gestioneschedaallenamento.repository.SchedaAllenamentoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -43,10 +44,6 @@ public class GestioneProtocolloServiceImpl
    * Repository della scheda allenamento.
    */
   private final SchedaAllenamentoRepository schedaAllenamentoRepository;
-  /**
-   * Repository dell'esercizio.
-   */
-  private final OldEsercizioRepository esercizioRepository;
 
 
   /**

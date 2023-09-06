@@ -13,12 +13,12 @@ import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
-import it.fitdiary.backend.gestioneprotocollo.repository.OldEsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.GestioneProtocolloSchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
-import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
+
 import java.io.File;
 
+import it.fitdiary.backend.gestioneschedaallenamento.repository.SchedaAllenamentoRepository;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -50,9 +50,6 @@ class GestioneProtocolloServiceImplTest {
   private SchedaAllenamentoRepository schedaAllenamentoRepository;
   @Mock
   private GestioneProtocolloSchedaAlimentareRepository schedaAlimentareRepository;
-
-  @Mock
-  private OldEsercizioRepository esercizioRepository;
 
   @InjectMocks
   private GestioneProtocolloServiceImpl gestioneProtocolloServiceImpl;
