@@ -4,7 +4,7 @@ import it.fitdiary.backend.entity.Protocollo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
-import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
+import it.fitdiary.backend.gestioneprotocollo.repository.OldEsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.GestioneProtocolloSchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
@@ -46,7 +46,7 @@ public class GestioneProtocolloServiceImpl
   /**
    * Repository dell'esercizio.
    */
-  private final EsercizioRepository esercizioRepository;
+  private final OldEsercizioRepository esercizioRepository;
 
 
   /**

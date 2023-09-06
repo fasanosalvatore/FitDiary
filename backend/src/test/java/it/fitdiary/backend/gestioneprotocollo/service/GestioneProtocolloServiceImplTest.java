@@ -5,31 +5,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.Esercizio;
-import it.fitdiary.backend.entity.IstanzaAlimento;
 import it.fitdiary.backend.entity.Protocollo;
 import it.fitdiary.backend.entity.Ruolo;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.SchedaAllenamento;
 import it.fitdiary.backend.entity.Utente;
-import it.fitdiary.backend.gestioneprotocollo.repository.EsercizioRepository;
+import it.fitdiary.backend.gestioneprotocollo.repository.OldEsercizioRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.GestioneProtocolloSchedaAlimentareRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.ProtocolloRepository;
 import it.fitdiary.backend.gestioneprotocollo.repository.SchedaAllenamentoRepository;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -63,7 +52,7 @@ class GestioneProtocolloServiceImplTest {
   private GestioneProtocolloSchedaAlimentareRepository schedaAlimentareRepository;
 
   @Mock
-  private EsercizioRepository esercizioRepository;
+  private OldEsercizioRepository esercizioRepository;
 
   @InjectMocks
   private GestioneProtocolloServiceImpl gestioneProtocolloServiceImpl;

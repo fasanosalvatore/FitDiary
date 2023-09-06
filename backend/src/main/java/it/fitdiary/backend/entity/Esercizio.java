@@ -1,10 +1,8 @@
 package it.fitdiary.backend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
@@ -66,5 +64,5 @@ public class Esercizio {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "tipoesercizio_id")
-    private TipoEsercizio tipoEsercizio;
+    private CategoriaEsercizio tipoEsercizio;
 }

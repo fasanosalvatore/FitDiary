@@ -4,9 +4,8 @@ import it.fitdiary.backend.entity.Alimento;
 
 import java.util.List;
 
-public interface GestioneAlimentoService {
-
-  public Alimento getById(final Long idAlimento);
-
-  public List<Alimento> getAllAlimenti();
+public interface GestioneAlimentoService
+{
+  Alimento getById(final Long idAlimento);
+  List<Alimento> getAllAlimenti();
 }

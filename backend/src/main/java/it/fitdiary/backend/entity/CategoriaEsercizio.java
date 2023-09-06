@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class TipoEsercizio {
+public class CategoriaEsercizio {
     /**
      * id del tipo esercizio.
      */
