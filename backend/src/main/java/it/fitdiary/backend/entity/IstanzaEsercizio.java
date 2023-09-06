@@ -68,4 +68,8 @@ public class IstanzaEsercizio {
     @JoinColumn(name = "esercizio_id")
     private Esercizio esercizio;
 
+    @ManyToOne
+    @JoinColumn(name = "scheda_allenamento_id")
+    private SchedaAllenamento schedaAllenamento;
+
 }

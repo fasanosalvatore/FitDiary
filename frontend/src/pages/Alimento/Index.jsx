@@ -91,16 +91,6 @@ function Index() {
                 <Flex wrap={"wrap"} p={5}>
                     <Flex w={"full"} alignItems={"center"} mb={5} justifyContent={"space-between"}>
                         <Heading w={"full"}>Lista Alimentii</Heading>
-                        {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
-                            <ReactLink to="/DietCards/create">
-                                <Button
-                                    colorScheme={"fitdiary"}
-                                    color={"white"}
-                                >
-                                    Aggiungi Alimenti Selezionati
-                                </Button>
-                            </ReactLink>
-                        )}
                     </Flex>
                     <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
                         <GradientBar />
@@ -135,31 +125,24 @@ function Index() {
                                                 <Th>Proteine</Th>
                                                 <Th>Grassi</Th>
                                                 <Th>Carboidrati</Th>
-                                                <Th>Azione</Th>
                                             </Tr>
                                         </Thead>
                                         <Tbody>
-                                            {listAlimenti.lista_alimenti.map(
-                                                (alimento) =>
-                                                    (alimento.nome.toLowerCase().startsWith(search.toLowerCase()) ||
-                                                        search === "") && (
-                                                        <Tr key={alimento.id}>
-                                                            <Td  p={1} m={0}>
-                                                                    <Image
-                                                                        objectFit='contain'  boxSize={100}
-                                                                           src={full + "/"+alimento.pathFoto}
-                                                                           alt='Foto non disponibile'/>
-                                                            </Td>
-                                                            <Td>{alimento.nome}</Td>
-                                                            <Td>{alimento.kcal}</Td>
-                                                            <Td>{alimento.proteine}</Td>
-                                                            <Td>{alimento.grassi}</Td>
-                                                            <Td>{alimento.carboidrati}</Td>
-                                                            <Td>
-                                                                <ReactLink to={urlScheda + "/" + alimento.id}>
-                                                                    <InfoIcon />
-                                                                </ReactLink>
-                                                            </Td>
+                                            {listAlimenti.lista_alimenti.map((alimento) => (alimento.nome.toLowerCase().startsWith(search.toLowerCase()) || search === "") && (
+                                                <Tr key={alimento.id}>
+                                                    <Td p={1}
+                                                        m={0}>
+                                                        <Image
+                                                            objectFit='contain'
+                                                            boxSize={100}
+                                                            src={full + "/" + alimento.pathFoto}
+                                                            alt='Foto non disponibile'/>
+                                                    </Td>
+                                                    <Td>{alimento.nome}</Td>
+                                                    <Td>{alimento.kcal}</Td>
+                                                    <Td>{alimento.proteine}</Td>
+                                                    <Td>{alimento.grassi}</Td>
+                                                    <Td>{alimento.carboidrati}</Td>
                                                         </Tr>
                                                     )
                                             )}
