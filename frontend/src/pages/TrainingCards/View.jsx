@@ -165,7 +165,7 @@ export default function View() {
                                     <Accordion allowToggle defaultIndex={[0]} w="full" mt={"60px"}>
                                         {Array.from({length: schedaAllenamento.frequenza}, (_, d) => {
                                             return (
-                                                <AccordionItem key={i}>
+                                                <AccordionItem key={d}>
                                                     <h2>
                                                         <AccordionButton>
                                                             <Box flex='1' textAlign='center' fontWeight={"extrabold"}
