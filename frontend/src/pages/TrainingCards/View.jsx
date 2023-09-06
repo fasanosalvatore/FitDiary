@@ -101,7 +101,7 @@ export default function View() {
         const getSchedaAllenamento = async () => {
             if (!fetchCompleted) {
                 try {
-                    const {data} = await fetchContext.authAxios("schedaAllenamento/getschedaAllenamentoById?idScheda=" + id);
+                    const {data} = await fetchContext.authAxios("schedaAllenamento/getSchedaAllenamentoById?idScheda=" + id);
                     setSchedaAllenamento(data.data.scheda_allenamento);
                     setLoading(false);
                     setFetchCompleted(true); // Imposta fetchCompleted a true dopo il completamento
@@ -170,7 +170,7 @@ export default function View() {
                                                         <AccordionButton>
                                                             <Box flex='1' textAlign='center' fontWeight={"extrabold"}
                                                                  fontSize={"xl"}>
-                                                                {"Giorno" + d}
+                                                                {"Giorno " + (d+1)}
                                                             </Box>
                                                             <AccordionIcon/>
                                                         </AccordionButton>

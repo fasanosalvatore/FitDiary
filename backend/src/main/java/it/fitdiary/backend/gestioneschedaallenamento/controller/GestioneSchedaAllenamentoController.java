@@ -20,7 +20,7 @@ import java.util.Objects;
 
 @RestController
 @Slf4j
-@RequestMapping(path = "api/v1/schedaallenamento")
+@RequestMapping(path = "api/v1/schedaAllenamento")
 public class GestioneSchedaAllenamentoController {
     private final GestioneSchedaAllenamentoService service;
 
@@ -123,7 +123,7 @@ public class GestioneSchedaAllenamentoController {
         return ResponseHandler.generateResponse(HttpStatus.OK, "response",
                 response);
     }
-    @GetMapping("getSchedaAllenamentoeById")
+    @GetMapping("getSchedaAllenamentoById")
     public ResponseEntity<Object> getSchedaAllenamentoById(
             @RequestParam Long idScheda
     ) {
@@ -137,7 +137,7 @@ public class GestioneSchedaAllenamentoController {
             return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
                     e.getMessage());
         }
-        return ResponseHandler.generateResponse(HttpStatus.OK, "scheda_alimentare",
+        return ResponseHandler.generateResponse(HttpStatus.OK, "scheda_allenamento",
                 schedaAllenamento);
 
     }

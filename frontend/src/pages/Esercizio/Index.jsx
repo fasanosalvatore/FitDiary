@@ -105,7 +105,7 @@ function Index() {
                                         className="SearchInput"
                                         type="text"
                                         onChange={onChange}
-                                        placeholder="Search"
+                                        placeholder="Inserisci il nome di un esercizio"
                                     />
                                 </InputGroup>
                             </HStack>
@@ -113,13 +113,13 @@ function Index() {
                             {listEsercizi.esercizi.length > 0 ? (
                                 <>
                                     <Text fontSize="xl" my={5}>
-                                        Lista degli alimenti
+                                        Lista degli esercizi
                                     </Text>
                                     <Table variant={"striped"} colorScheme={"gray"} size="md">
-                                        <TableCaption>Lista Alimenti</TableCaption>
+                                        <TableCaption>Lista Esercizi</TableCaption>
                                         <Thead bg="fitdiary.100">
                                             <Tr>
-                                                <Th>Immagine</Th>
+                                                <Th>Foto</Th>
                                                 <Th>Nome</Th>
                                                 <Th>Categoria</Th>
                                             </Tr>
@@ -130,8 +130,8 @@ function Index() {
                                                     <Td p={1}
                                                         m={0}>
                                                         <Image
-                                                            objectFit='contain'
-                                                            boxSize={100}
+                                                            objectFit='fill'
+                                                            boxSize={120}
                                                             src={full + "/" + esercizio.pathFoto}
                                                             alt='Foto non disponibile'/>
                                                     </Td>

@@ -34,7 +34,7 @@ export default function Footer(props) {
           </Box>
         </Link>
         <Text color={"white"} mb={[0, 2]}>
-          © 2022 FitDiary. All rights reserved
+          © 2023 FitDiary. All rights reserved
         </Text>
         <Stack
           direction={{ base: "column", lg: "row" }}

@@ -65,7 +65,7 @@ function Index() {
     useEffect(() => {
         const loadlistaSchedeAllenamento = async () => {
             try {
-                const { data } = await fetchContext.authAxios("schedaallenamento/getMySchedeAllenamento");
+                const { data } = await fetchContext.authAxios("schedaAllenamento/getMySchedeAllenamento");
                 console.log(data)
                 setSchedeAllenamento(data.data.response);
                 setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
@@ -83,14 +83,14 @@ function Index() {
             {!isLoading && listSchedeAllenamento && (
                 <Flex wrap={"wrap"} p={5}>
                     <Flex w={"full"} alignItems={"center"} mb={5} justifyContent={"space-between"}>
-                        <Heading w={"full"}>Lista Schede Alimentari</Heading>
+                        <Heading w={"full"}>Lista Schede Allenamento</Heading>
                         {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
                             <ReactLink to="/DietCards/create">
                                 <Button
                                     colorScheme={"fitdiary"}
                                     color={"white"}
                                 >
-                                    Crea Scheda Alimentare
+                                    Crea Scheda Allenamento
                                 </Button>
                             </ReactLink>
                         )}
