@@ -41,7 +41,7 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
             istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
             istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
             istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-            istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizione());
+            istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
         }
         schedaAllenamento.setListaEsercizi(istanzeEsercizio);
         Utente creatore = new Utente();
@@ -80,7 +80,7 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
             istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
             istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
             istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-            istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizione());
+            istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
             istanzeEsercizio.add(istanzaEsercizio);
         }
         istanzaEsercizioRepository.deleteAll(schedaAllenamentoDaModificare.getListaEsercizi());

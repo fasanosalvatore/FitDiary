@@ -1,9 +1,9 @@
-package it.fitdiary.backend.getsioneschedaalimentare.controller;
+package it.fitdiary.backend.gestioneschedaalimentare.controller;
 
 import it.fitdiary.backend.entity.SchedaAlimentare;
-import it.fitdiary.backend.getsioneschedaalimentare.controller.dto.CreaSchedaAlimentareDTO;
-import it.fitdiary.backend.getsioneschedaalimentare.controller.dto.ModificaSchedaDTO;
-import it.fitdiary.backend.getsioneschedaalimentare.service.GestioneSchedaAlimentareService;
+import it.fitdiary.backend.gestioneschedaalimentare.controller.dto.CreaSchedaAlimentareDTO;
+import it.fitdiary.backend.gestioneschedaalimentare.controller.dto.ModificaSchedaDTO;
+import it.fitdiary.backend.gestioneschedaalimentare.service.GestioneSchedaAlimentareService;
 import it.fitdiary.backend.utility.ResponseHandler;
 import java.util.HashMap;
 import java.util.List;

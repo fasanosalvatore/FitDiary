@@ -47,7 +47,7 @@ import {AuthContext} from "../../context/AuthContext";
 
 export default function Create() {
     const fetchContext = useContext(FetchContext);
-    const urlCreateSchedaAllenamento = "schedaallenamento/creaScheda";
+    const urlCreateSchedaAllenamento = "schedaAllenamento/creaScheda";
     const {isOpen, onOpen, onClose} = useDisclosure()
     const {handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const toast = useToast({
@@ -147,6 +147,7 @@ export default function Create() {
         const formattedData = {
             name: nomeScheda,
             istanzeEsercizi: [],
+            frequenza:frequenzaScheda
         };
 
         if (inputData && Array.isArray(inputData[0])) {
@@ -154,10 +155,11 @@ export default function Create() {
             instances.forEach((instance) => {
                 if (instance && instance.esercizio) {
                     formattedData.istanzeEsercizi.push({
-                        grammi: instance.grammi || 0,
-                        giornoDellaSettimana: instance.giornoDellaSettimana || 0,
-                        pasto: instance.pasto || "0",
-                        idAlimento: instance.alimento.id || 0,
+                        serie:instance.serie,
+                        ripetizioni:instance.ripetizioni,
+                        recupero:instance.recupero,
+                        descrizione:instance.descrizione,
+                        idEsercizio:instance.esercizio.id
                     });
                 }
             });
@@ -167,33 +169,44 @@ export default function Create() {
     }
 
     const onSubmit = async (values) => {
+        let filterScheda=[];
+        for(let i=0;i<frequenzaScheda;i++)
+        {
+            filterScheda[i]=schedaAllenamento[i];
+        }
+        console.log(filterScheda);
         try {
             if(nomeScheda.length <0){
                 toast(toastParam("Attenzione!", "Inserisci un nome valido", "error"));
                 throw new Error()
             }
             let numeroEserciziScheda = 0
-            schedaAllenamento.forEach(el =>{
+            let numGiorni=0;
+            filterScheda.forEach(el =>{
                 numeroEserciziScheda += el.length;
+                if(el.length>0)
+                {
+                    numGiorni++;
+                }
             })
+            if(numGiorni != frequenzaScheda)
+            {
+                throw new Error("Inserisci almeno un allenamento per ogni giorno");
+            }
             if(numeroEserciziScheda <= 0) {
                 toast(toastParam("Attenzione!", "Inserisci almeno un esercizio", "error"));
                 throw new Error()
             }
-        }catch (error) {
-            return
-        }
 
-        try {
-            let formattedScheda = formatData(schedaAllenamento)
+
+            let formattedScheda = formatData(filterScheda)
             const {data} = await fetchContext.authAxios.post(urlCreateSchedaAllenamento, formattedScheda);
             setSchedaAllenamento([[],[],[],[],[],[],[]]);
+            document.getElementById("textScheda").value="";
             toast(toastParam("Sceheda Allenamento creata con successo", "Scheda aggiunta all'elenco", "success"));
-        } catch (error) {
-            console.log(error.response.data.message)
-            toast({
-                title: 'Errore', description: error.response.data.message, status: 'error',
-            })
+        }
+        catch (error) {
+            alert(error);
         }
     }
 
@@ -208,7 +221,7 @@ export default function Create() {
                     <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                         <FormControl id={"nome"} isInvalid={errors.nome} isRequired={"required"} pt={5}>
                             <FormLabel htmlFor="nome">Nome delle scheda</FormLabel>
-                            <Input required={"true"} type="text" placeholder="Scheda pettorali e deltoidi" name={"nome"}
+                            <Input required={"true"} type="text" id={"textScheda"} placeholder="Scheda pettorali e deltoidi" name={"nome"}
                                    onChange={(e) => {
                                        let newNome = e.target.value;
                                        setNomeScheda(newNome)
@@ -377,11 +390,48 @@ export default function Create() {
                                                                             <Text fontWeight={"bold"}>{esercizio.tipoEsercizio.nome}</Text>
                                                                             <Text>{esercizio.nome}</Text>
                                                                         </Td>
-                                                                        <Td maxWidth={100}>{istanzaEsercizio.serie}</Td>
-                                                                        <Td maxWidth={100}>{istanzaEsercizio.ripetizioni}</Td>
-                                                                        <Td maxWidth={100}>{istanzaEsercizio.recupero}</Td>
                                                                         <Td maxWidth={100}>
-                                                                            <Text>{istanzaEsercizio.descrizione}</Text>
+                                                                            <Input
+                                                                                w={20}
+                                                                                min={1}
+                                                                                max={10000}
+                                                                                type={"number"}
+                                                                                defaultValue={istanzaEsercizio.serie}
+                                                                                onChange={(e) => {
+                                                                                   //TODO CAMBIO
+                                                                                }}/>
+                                                                                </Td>
+                                                                        <Td maxWidth={100}>
+                                                                            <Input
+                                                                                w={20}
+                                                                                min={1}
+                                                                                max={100}
+                                                                                type={"number"}
+                                                                                defaultValue={istanzaEsercizio.ripetizioni}
+                                                                                onChange={(e) => {
+                                                                                    //TODO CAMBIO
+                                                                                }}/>
+                                                                            </Td>
+                                                                        <Td maxWidth={100}>
+                                                                            <Input
+                                                                                w={20}
+                                                                                min={1}
+                                                                                max={10000}
+                                                                                type={"number"}
+                                                                                defaultValue={istanzaEsercizio.recupero}
+                                                                                onChange={(e) => {
+                                                                                    //TODO CAMBIO
+                                                                                }}/>
+                                                                            </Td>
+                                                                        <Td maxWidth={512}>
+                                                                            <Input
+                                                                                w={280}
+                                                                                h={100}
+                                                                                type={"text"}
+                                                                                defaultValue={istanzaEsercizio.descrizione}
+                                                                                onChange={(e) => {
+                                                                                    //TODO CAMBIO
+                                                                                }}/>
                                                                         </Td>
                                                                         <Td>
                                                                             <IconButton colorScheme={"red"}

@@ -1,8 +1,8 @@
-package it.fitdiary.backend.getsioneschedaalimentare.controller.dto;
+package it.fitdiary.backend.gestioneschedaalimentare.controller.dto;
 
 import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
 import it.fitdiary.backend.entity.enums.PASTO;
-import javax.persistence.Column;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Min;
