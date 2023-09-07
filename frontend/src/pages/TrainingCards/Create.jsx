@@ -398,7 +398,13 @@ export default function Create() {
                                                                                 type={"number"}
                                                                                 defaultValue={istanzaEsercizio.serie}
                                                                                 onChange={(e) => {
-                                                                                   //TODO CAMBIO
+                                                                                    let value=e.target.value;
+                                                                                    if(value.length>0)
+                                                                                    {
+                                                                                        let tmp=schedaAllenamento;
+                                                                                        tmp[d][key].serie=value;
+                                                                                        setSchedaAllenamento(tmp);
+                                                                                    }
                                                                                 }}/>
                                                                                 </Td>
                                                                         <Td maxWidth={100}>
@@ -409,7 +415,13 @@ export default function Create() {
                                                                                 type={"number"}
                                                                                 defaultValue={istanzaEsercizio.ripetizioni}
                                                                                 onChange={(e) => {
-                                                                                    //TODO CAMBIO
+                                                                                    let value=e.target.value;
+                                                                                    if(value.length>0)
+                                                                                    {
+                                                                                        let tmp=schedaAllenamento;
+                                                                                        tmp[d][key].ripetizioni=value;
+                                                                                        setSchedaAllenamento(tmp);
+                                                                                    }
                                                                                 }}/>
                                                                             </Td>
                                                                         <Td maxWidth={100}>
@@ -420,7 +432,13 @@ export default function Create() {
                                                                                 type={"number"}
                                                                                 defaultValue={istanzaEsercizio.recupero}
                                                                                 onChange={(e) => {
-                                                                                    //TODO CAMBIO
+                                                                                    let value=e.target.value;
+                                                                                    if(value.length>0)
+                                                                                    {
+                                                                                        let tmp=schedaAllenamento;
+                                                                                        tmp[d][key].recupero=value;
+                                                                                        setSchedaAllenamento(tmp);
+                                                                                    }
                                                                                 }}/>
                                                                             </Td>
                                                                         <Td maxWidth={512}>
@@ -430,7 +448,13 @@ export default function Create() {
                                                                                 type={"text"}
                                                                                 defaultValue={istanzaEsercizio.descrizione}
                                                                                 onChange={(e) => {
-                                                                                    //TODO CAMBIO
+                                                                                    let value=e.target.value;
+                                                                                    if(value.length>0)
+                                                                                    {
+                                                                                        let tmp=schedaAllenamento;
+                                                                                        tmp[d][key].descrizione=value;
+                                                                                        setSchedaAllenamento(tmp);
+                                                                                    }
                                                                                 }}/>
                                                                         </Td>
                                                                         <Td>

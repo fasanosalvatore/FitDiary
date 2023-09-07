@@ -2,6 +2,7 @@ package it.fitdiary.backend.gestioneschedaallenamento.controller.dto;
 
 import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
 
+import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.Min;

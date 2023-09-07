@@ -37,11 +37,14 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
             if(esercizio.isEmpty()){
                 throw new IllegalStateException("uno delle istanze esercizio fa riferimento ad un Esercizio insesistente");
             }
+            istanzaEsercizio.setSchedaAllenamento(schedaAllenamento);
             istanzaEsercizio.setEsercizio(esercizio.get());
+            istanzaEsercizio.setGiornoDellaSettimana(istanzaEsercizioDTO.getGiornoDellaSettimana());
             istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
             istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
             istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
             istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
+            istanzeEsercizio.add(istanzaEsercizio);
         }
         schedaAllenamento.setListaEsercizi(istanzeEsercizio);
         Utente creatore = new Utente();
@@ -76,7 +79,9 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
             {
                 throw new IllegalStateException("uno delle istanze alimento fa riferimento ad un Alimento insesistente");
             }
+            istanzaEsercizio.setSchedaAllenamento(schedaAllenamentoDaModificare);
             istanzaEsercizio.setEsercizio(esercizio.get());
+            istanzaEsercizio.setGiornoDellaSettimana(istanzaEsercizioDTO.getGiornoDellaSettimana());
             istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
             istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
             istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
