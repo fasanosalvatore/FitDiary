@@ -21,7 +21,7 @@ INSERT INTO `scheda_alimentare` (`id`, `kcal_assunte`, `nome`,`utente_id`) VALUE
 
 
 /*Scheda Allenamento*/
-INSERT INTO `scheda_allenamento` (`id`, `frequenza`, `protocollo_id`) VALUES (1, '4', 1);
+INSERT INTO `scheda_allenamento` (`id`,`nome`, `frequenza`,`utente_id`,`data_creazione`,`data_aggiornamento`) VALUES (1,"Test",4,2,"2022-01-09 20:40:59","2022-01-09 20:40:59");
 
 
 /*Istanze Alimento*/
@@ -30,26 +30,32 @@ INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alime
 INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alimento_id`, `scheda_alimentare_id`,`pasto`) VALUES (3,400, 3, 3, 2,2);
 INSERT INTO `istanza_alimento` (`id`, `grammi`, `giorno_della_settimana`, `alimento_id`, `scheda_alimentare_id`,`pasto`) VALUES (4,200, 4, 1, 2,3);
 
+-- Categoria Esercizio
+INSERT INTO categoria_esercizio(id,nome) VALUES(1,"Pettorali");
+INSERT INTO categoria_esercizio(id,nome) VALUES(2,"Braccia");
+INSERT INTO categoria_esercizio(id,nome) VALUES(3,"Gambe");
+INSERT INTO categoria_esercizio(id,nome) VALUES(4,"Lombari");
+INSERT INTO categoria_esercizio(id,nome) VALUES(5,"Spalle");
 
-
+-- `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`
 /* Esercizi*/
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (1, 'pettorali', 'Chest press', '1', '15\'\' + 90\'', '8 MAX', '4', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (2, 'pettorali', 'Manubri inclinata', '1', '15\'\' + 90\'', '8 MAX', '4', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (3, 'pettorali', 'Cavi incrociati', '1', '60\'\'', '6 - 12 -50% MAX-20%', '3', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (4, 'braccio', 'Tricipiti poliercolina', '1', '15\'\' + 60\'', '8 MAX', '4', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (5, 'braccio', 'French press bilanciere', '1', '60\'\'', '12 1/2 colpi', '4', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (6, 'braccio', 'Pull-up', '2', '15\'\' + 90\'', '8 MAX', '5', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (7, 'spalle', 'Rematore bilanciere', '2', '2\'', '12-10-8-8-6', '5', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (8, 'spalle', 'Pull down', '2', '60\'\'', '15', '5', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (9, 'gambe', 'Leg curl', '2', '90\'\'', '6 - 12 -50% MAX-20%', '5', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (10, 'lombari', 'Panca lombari', '2', '30\'\'', '20', '4', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (11, 'gambe', 'Camminata', '2', '0', '35\' 6km/h 5% pedenza', '1', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (12, 'gambe', 'Leg press', '3', '2\'', '10', '10', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (13, 'gambe ', 'Stacchi semitese', '3', '2\'', '10', '8', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (14, 'pettorali', 'Lento avanti mp', '4', '90\'\'', '6 - 12 -50% MAX-20%', '5', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (15, 'spalle', 'Alzate laterali', '4', '15\'\' + 90\'', '8 MAX', '5', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (16, 'spalle', 'Alzate 90°', '4', '15\'\' + 60\'', '8 MAX', '4', 1);
-INSERT INTO `esercizio` (`id`, `categoria`, `nome`, `numero_allenamento`, `recupero`, `ripetizioni`, `serie`, `scheda_allenamento_id`) VALUES (17, 'braccio', 'Curl manubri seduto', '4', '90\'\'', '6 - 12 -50% MAX-20%', '6', 1);
+INSERT INTO `esercizio` (`id`, `tipoesercizio_id`, `nome`, `path_foto`) VALUES (1, 1, 'Chest press','EserciziPalestra/Air-Twisting-Crunch_waist.gif');
+INSERT INTO `esercizio` (`id`, `tipoesercizio_id`, `nome`, `path_foto`) VALUES (2, 1, 'Manubri inclinata','EserciziPalestra/air-bike-m_waist_FIX-360x200.gif');
+INSERT INTO `esercizio` (`id`, `tipoesercizio_id`, `nome`, `path_foto`) VALUES (3, 1, 'Cavi incrociati','EserciziPalestra/Alternate-Lying-Floor-Leg-Raise_waist-360x200.gif');
+INSERT INTO `esercizio` (`id`, `tipoesercizio_id`, `nome`, `path_foto`) VALUES (4, 2, 'Tricipiti poliercolina','EserciziPalestra/Assisted-Chin-Tuck-female_Neck-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (5, 2, 'French press bilanciere','EserciziPalestra/Assisted-Pull-up_Back-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (6, 2, 'Pull-up','EserciziPalestra/Assisted-Weighted-Push-up_Chest-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (7, 5, 'Rematore bilanciere','EserciziPalestra/Band-bent-over-hip-extension_Hips-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (8, 5, 'Pull down','EserciziPalestra/Band-bent_Shoulders-over-rear-lateral-raise_Shoulders-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (9, 3, 'Leg curl','EserciziPalestra/Band-high-fly_Chest-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (10, 4, 'Panca lombari','EserciziPalestra/Band-kneeling-one-arm-pulldown_Back-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (11, 3, 'Camminata','EserciziPalestra/Band-Pull-Apart_Shoulders-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (12, 3, 'Leg press','EserciziPalestra/Band-Pushdown-Male_Upper-Arms-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (13, 3, 'Stacchi semitese','EserciziPalestra/Band-standing-external-shoulder-rotation_Back-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (14, 1, 'Lento avanti mp','EserciziPalestra/Band-twist-down-up_Waist-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (15, 5, 'Alzate laterali','EserciziPalestra/Band-twist-up-down_Waist-1-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (16, 5, 'Alzate 90°','EserciziPalestra/Band-Upright-Shoulder-External-Rotation_Back-360x200.gif');
+INSERT INTO `esercizio` (`id`,`tipoesercizio_id`, `nome`, `path_foto`) VALUES (17, 2, 'Curl manubri seduto','EserciziPalestra/Barbell-Hip-Thrust-female_Hips.gif');
 
 /* report*/
 INSERT INTO `report` (`id`, `crf_addome`, `crf_bicipite`, `crf_quadricipite`, `data_aggiornamento`, `data_creazione`, `peso`, `peso_stimato`, `cliente_id`) VALUES (1, 30, 30, 30, '2022-01-10 22:36:03', '2022-01-10 22:36:03', 100, 100, 4);
