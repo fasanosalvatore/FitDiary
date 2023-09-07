@@ -53,7 +53,6 @@ public class SchedaAllenamento {
      * frequenza della scheda allenamento.
      */
     @NotNull(message = "La frequenza non può essere nulla")
-    @NotBlank(message = "La frequenza non può essere vuota")
     private Integer frequenza;
     /**
      * lista esercizi scheda esercizi.

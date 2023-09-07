@@ -85,7 +85,7 @@ function Index() {
                     <Flex w={"full"} alignItems={"center"} mb={5} justifyContent={"space-between"}>
                         <Heading w={"full"}>Lista Schede Allenamento</Heading>
                         {authState.userInfo.roles[0].toLowerCase() === "preparatore" && (
-                            <ReactLink to="/DietCards/create">
+                            <ReactLink to="/TrainingCards/create">
                                 <Button
                                     colorScheme={"fitdiary"}
                                     color={"white"}

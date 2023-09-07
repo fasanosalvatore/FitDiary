@@ -1,7 +1,7 @@
-package it.fitdiary.backend.getsioneschedaalimentare.service;
+package it.fitdiary.backend.gestioneschedaalimentare.service;
 
 import it.fitdiary.backend.entity.SchedaAlimentare;
-import it.fitdiary.backend.getsioneschedaalimentare.controller.dto.IstanzaAlimentoDTO;
+import it.fitdiary.backend.gestioneschedaalimentare.controller.dto.IstanzaAlimentoDTO;
 import java.util.List;
 
 public interface GestioneSchedaAlimentareService {

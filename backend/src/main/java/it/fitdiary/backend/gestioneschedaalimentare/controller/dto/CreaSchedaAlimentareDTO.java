@@ -1,20 +1,18 @@
-package it.fitdiary.backend.getsioneschedaalimentare.controller.dto;
+package it.fitdiary.backend.gestioneschedaalimentare.controller.dto;
 
 import java.util.List;
 
-public class ModificaSchedaDTO {
+public class CreaSchedaAlimentareDTO {
   private String name;
   private List<IstanzaAlimentoDTO> istanzeAlimenti;
-  private Long schedaId;
 
-  public ModificaSchedaDTO() {
-  }
-
-  public ModificaSchedaDTO(String name,
-                           List<IstanzaAlimentoDTO> istanzeAlimenti, Long schedaId) {
+  public CreaSchedaAlimentareDTO(String name,
+                                 List<IstanzaAlimentoDTO> istanzeAlimenti) {
     this.name = name;
     this.istanzeAlimenti = istanzeAlimenti;
-    this.schedaId = schedaId;
+  }
+
+  public CreaSchedaAlimentareDTO() {
   }
 
   public String getName() {
@@ -32,13 +30,5 @@ public class ModificaSchedaDTO {
   public void setIstanzeAlimenti(
       List<IstanzaAlimentoDTO> istanzeAlimenti) {
     this.istanzeAlimenti = istanzeAlimenti;
-  }
-
-  public Long getSchedaId() {
-    return schedaId;
-  }
-
-  public void setSchedaId(Long schedaId) {
-    this.schedaId = schedaId;
   }
 }

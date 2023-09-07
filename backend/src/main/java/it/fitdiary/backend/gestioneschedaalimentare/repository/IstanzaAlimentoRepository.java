@@ -1,4 +1,4 @@
-package it.fitdiary.backend.getsioneschedaalimentare.repository;
+package it.fitdiary.backend.gestioneschedaalimentare.repository;
 
 import it.fitdiary.backend.entity.IstanzaAlimento;
 import org.springframework.data.jpa.repository.JpaRepository;

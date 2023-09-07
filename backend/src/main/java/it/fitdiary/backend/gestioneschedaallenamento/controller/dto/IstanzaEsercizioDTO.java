@@ -20,7 +20,7 @@ public class IstanzaEsercizioDTO {
     private Integer serie;
     @NotNull(message = "La ripetizione non può essere nulla")
     @Min(1)
-    private Integer ripetizione;
+    private Integer ripetizioni;
     @NotNull(message = "Il recupero non può essere nulla")
     @Min(1)
     private Integer recupero;
@@ -31,11 +31,11 @@ public class IstanzaEsercizioDTO {
     @NotNull(message = "L'id dell'esercizio non può essere nullo")
     private Long idEsercizio;
 
-    public IstanzaEsercizioDTO(GIORNO_SETTIMANA giornoDellaSettimana, Integer serie, Integer ripetizione,
+    public IstanzaEsercizioDTO(GIORNO_SETTIMANA giornoDellaSettimana, Integer serie, Integer ripetizioni,
                                Integer recupero, String descrizione, Long idEsercizio) {
         this.giornoDellaSettimana = giornoDellaSettimana;
         this.serie = serie;
-        this.ripetizione = ripetizione;
+        this.ripetizioni = ripetizioni;
         this.recupero = recupero;
         this.descrizione = descrizione;
         this.idEsercizio = idEsercizio;
@@ -60,12 +60,12 @@ public class IstanzaEsercizioDTO {
         this.serie = serie;
     }
 
-    public Integer getRipetizione() {
-        return ripetizione;
+    public Integer getRipetizioni() {
+        return ripetizioni;
     }
 
-    public void setRipetizione(Integer ripetizione) {
-        this.ripetizione = ripetizione;
+    public void setRipetizioni(Integer ripetizioni) {
+        this.ripetizioni = ripetizioni;
     }
 
     public Integer getRecupero() {
