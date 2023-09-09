@@ -21,7 +21,8 @@ INSERT INTO `scheda_alimentare` (`id`, `kcal_assunte`, `nome`,`utente_id`) VALUE
 
 
 /*Scheda Allenamento*/
-INSERT INTO `scheda_allenamento` (`id`,`nome`, `frequenza`,`utente_id`,`data_creazione`,`data_aggiornamento`) VALUES (1,"Test",4,2,"2022-01-09 20:40:59","2022-01-09 20:40:59");
+INSERT INTO `scheda_allenamento` (`id`,`nome`, `frequenza`,`utente_id`) VALUES (1,"Test",4,2);
+INSERT INTO `scheda_allenamento` (`id`,`nome`, `frequenza`,`utente_id`) VALUES (2,"Test2",6,2);
 
 
 /*Istanze Alimento*/

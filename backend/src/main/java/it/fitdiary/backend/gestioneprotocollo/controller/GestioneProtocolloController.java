@@ -70,8 +70,7 @@ public class GestioneProtocolloController {
             final LocalDate dataScadenza,
             @RequestParam("idCliente") final Long idCliente,
             @RequestParam(name="idSchedaAlimentare", required = false) final Long idSchedaAlimentare,
-
-            @RequestParam(value = "idSchedaAllenamento", required = false)
+            @RequestParam(name="idSchedaAllenamento", required = false)
             final Long idSchedaAllenamento) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();
@@ -134,7 +133,7 @@ public class GestioneProtocolloController {
     private ResponseEntity<Object> modificaProtocollo(
             @PathVariable("idProtocollo") final Long idProtocollo,
             @RequestParam(name="idSchedaAlimentare", required = false) final Long idSchedaAlimentare,
-            @RequestParam(value = "idSchedaAllenamento", required = false)
+            @RequestParam(name = "idSchedaAllenamento", required = false)
             final Long idSchedaAllenamento) {
         HttpServletRequest request = ((ServletRequestAttributes)
                 RequestContextHolder.getRequestAttributes()).getRequest();

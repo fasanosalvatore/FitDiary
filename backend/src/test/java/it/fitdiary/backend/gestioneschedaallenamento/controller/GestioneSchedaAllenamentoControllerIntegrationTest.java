@@ -1,5 +1,6 @@
 package it.fitdiary.backend.gestioneschedaallenamento.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.fitdiary.backend.entity.*;
 import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
 import it.fitdiary.backend.gestioneschedaallenamento.controller.dto.CreaSchedaAllenamentoDTO;
@@ -60,7 +61,8 @@ public class GestioneSchedaAllenamentoControllerIntegrationTest {
     private IstanzaEsercizio istanzaEsercizio;
     private Ruolo ruoloPreparatore;
     private String nome;
-
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setUp() throws IOException {
@@ -262,7 +264,7 @@ public class GestioneSchedaAllenamentoControllerIntegrationTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
     @Test
-    @Order(6)
+    @Order(7)
     public void getMySchedeAllenamentoSuccess() throws Exception {
 
         HttpHeaders headers = new HttpHeaders();
@@ -276,13 +278,11 @@ public class GestioneSchedaAllenamentoControllerIntegrationTest {
         assertEquals(HttpStatus.OK, c.getStatusCode());
     }
     @Test
-    @Order(6)
+    @Order(8)
     public void getSchedaAllenamentoByIdSuccess() throws Exception {
-
         HttpHeaders headers = new HttpHeaders();
         headers.add("Cookie", tokenPreparatore);
         HttpEntity<?> entity = new HttpEntity<>(headers);
-
 
         var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +

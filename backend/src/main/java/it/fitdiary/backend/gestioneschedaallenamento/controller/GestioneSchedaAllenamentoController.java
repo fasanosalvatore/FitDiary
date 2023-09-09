@@ -96,7 +96,7 @@ public class GestioneSchedaAllenamentoController {
         }
         Map<String,Object> response = new HashMap<>();
         response.put("scheda_allenamento_id",schedaAllenamento.getId());
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, "response",
+        return ResponseHandler.generateResponse(HttpStatus.OK, "response",
                 response);
     }
 

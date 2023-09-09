@@ -2,10 +2,7 @@ package it.fitdiary.backend.gestionecategoriaesercizio.service;
 
 import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.CategoriaEsercizio;
-import it.fitdiary.backend.gestionecategoriaesercizio.controller.GestioneCategoriaEsercizioController;
 import it.fitdiary.backend.gestionecategoriaesercizio.repository.GestioneCategoriaEsercizioRepository;
-import it.fitdiary.backend.gestionecategoriaesercizio.service.GestioneCategoriaEsercizioServiceImpl;
-import it.fitdiary.backend.getsioneschedaalimentare.service.GestioneSchedaAlimentareServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -54,7 +51,7 @@ public class GestioneCategoriaEsercizioServiceImplTest {
         categorieEsercizi.add(categoriaEsercizio);
         when(gestioneCategoriaEsercizioRepository.findAll()).thenReturn(categorieEsercizi);
         assertEquals(categorieEsercizi,
-                gestioneCategoriaEsercizioRepository.findAll());
+                gestioneCategoriaEsercizioService.getAllCategorie());
 
     }
 

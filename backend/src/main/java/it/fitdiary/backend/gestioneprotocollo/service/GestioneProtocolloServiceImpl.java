@@ -71,7 +71,7 @@ public class GestioneProtocolloServiceImpl
     }
     if (idSchedaAllenamento != null) {
       newProtocollo.setSchedaAllenamento(
-              getSchedaAllenamento(preparatore.getId(), idSchedaAlimentare));
+              getSchedaAllenamento(preparatore.getId(), idSchedaAllenamento));
     }
 
     return protocolloRepository.save(newProtocollo);

@@ -30,7 +30,7 @@ public class GestioneAlimentoServiceImplTest {
 
     private Alimento alimento;
     @Mock
-    private AlimentoRepository alimentoService;
+    private AlimentoRepository alimentoRepository;
 
     @InjectMocks
     private GestioneAlimentoServiceImpl gestioneAlimentoServiceImpl;
@@ -42,11 +42,10 @@ public class GestioneAlimentoServiceImplTest {
     public void getByIdTest(){
         alimento = new Alimento();
         alimento.setId(1L);
-        when(alimentoService.findById(alimento.getId())).thenReturn(Optional.ofNullable(alimento));
+        when(alimentoRepository.findById(alimento.getId())).thenReturn(Optional.ofNullable(alimento));
         assertEquals(alimento,
                 gestioneAlimentoServiceImpl.getById(
                         alimento.getId()));
-
     }
 
     @Test
@@ -55,7 +54,7 @@ public class GestioneAlimentoServiceImplTest {
         Alimento alimento = new Alimento(1L,"Pollo",100f,21f,46f,
                 3f,"Alimenti/1.jpg");
         alimenti.add(alimento);
-        when(alimentoService.findAll()).thenReturn(alimenti);
+        when(alimentoRepository.findAll()).thenReturn(alimenti);
         assertEquals(alimenti,
                 gestioneAlimentoServiceImpl.getAllAlimenti());
 

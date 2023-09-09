@@ -26,10 +26,10 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
 
     @Transactional
     @Override
-    public SchedaAllenamento creaSchedaAllenamento(List<IstanzaEsercizioDTO> istanzeEsercizioDto, String name,
+    public SchedaAllenamento creaSchedaAllenamento(List<IstanzaEsercizioDTO> istanzeEsercizioDto, String nome,
                                                   Long idPreparatore, Integer frequenza) {
         SchedaAllenamento schedaAllenamento = new SchedaAllenamento();
-        schedaAllenamento.setNome(name);
+        schedaAllenamento.setNome(nome);
         List<IstanzaEsercizio> istanzeEsercizio = new ArrayList<>();
         for(IstanzaEsercizioDTO istanzaEsercizioDTO: istanzeEsercizioDto){
             IstanzaEsercizio istanzaEsercizio = new IstanzaEsercizio();
@@ -57,7 +57,7 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
 
     @Transactional
     @Override
-    public SchedaAllenamento modificaSchedaAllenamento(List<IstanzaEsercizioDTO> istanzeEsercizioDto, String name,
+    public SchedaAllenamento modificaSchedaAllenamento(List<IstanzaEsercizioDTO> istanzeEsercizioDto, String nome,
                                                        Long idPreparatoreRichiedente, Long idScheda, Integer frequenza) {
 
         Optional<SchedaAllenamento> schedaAllenamentoDaModificareOptional = schedaAllenamentoRepository.findById(idScheda);
@@ -70,7 +70,7 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
         {
             throw new IllegalStateException("non hai i permessi per modificare la scheda con id " + idScheda);
         }
-        schedaAllenamentoDaModificare.setNome(name);
+        schedaAllenamentoDaModificare.setNome(nome);
         List<IstanzaEsercizio> istanzeEsercizio = new ArrayList<>();
         for (IstanzaEsercizioDTO istanzaEsercizioDTO: istanzeEsercizioDto) {
             IstanzaEsercizio istanzaEsercizio = new IstanzaEsercizio();
