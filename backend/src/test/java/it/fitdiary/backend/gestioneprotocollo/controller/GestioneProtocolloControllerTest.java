@@ -69,11 +69,7 @@ class GestioneProtocolloControllerTest {
     private Esercizio esercizio;
     private SchedaAllenamento schedaAllenamento;
     private SchedaAlimentare schedaAlimentare;
-    private File fileSchedaAllenamento;
-    private File fileSchedaAllenamentoError;
-    private File fileSchedaAlimentare;
-    private File fileSchedaAlimentareError;
-    private File fileNotCsv;
+    private CategoriaEsercizio categoriaEsercizio;
 
     private static MockedStatic<FileUtility> fileUtility;
 
@@ -147,78 +143,16 @@ class GestioneProtocolloControllerTest {
                 ruoloCliente, null, null, null, null, null);
         //alimento = new Alimento(null,"Pasta","pranzo","1",200f,"100",
         //        null);
-        esercizio = new Esercizio(null, "pushup", "3", "10", "1", "1", "petto",
-                null);
+        categoriaEsercizio = new CategoriaEsercizio(1L,"Pettorali");
+        esercizio = new Esercizio(1L, "Chest press", "EserciziPalestra/Air-Twisting-Crunch_waist.gif",
+                categoriaEsercizio);
         schedaAlimentare =
                 new SchedaAlimentare(1L, "schedaBuona", 2000f, new ArrayList<IstanzaAlimento>(),
                         preparatore,
                         LocalDateTime.now(), LocalDateTime.now());
-        schedaAllenamento = new SchedaAllenamento(1L, "3", null, protocollo);
-        fileSchedaAllenamento = Files.writeString(Path.of("schedaAllenamento.csv"),
-                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;3;petto\n" +
-                        "pushup;3;10;1;3;petto\n" +
-                        "pushup;3;10;1;3;petto").toFile();
-        fileSchedaAlimentare = Files.writeString(Path.of("schedaAlimentare.csv"),
-                "Nome;Pasto;Giorno;kcal;grammi\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n").toFile();
-        fileSchedaAllenamentoError = Files.writeString(Path.of("schedaAllenamento.csv"),
-                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento\n" +
-                        "pushup;3;10;1;1\n" +
-                        "pushup;3;10;1;1\n" +
-                        "pushup;3;10;1;1\n" +
-                        "pushup;3;10;1;1\n" +
-                        "pushup;3;10;1;2\n" +
-                        "pushup;3;10;1;2\n" +
-                        "pushup;3;10;1;2\n" +
-                        "pushup;3;10;1;2\n" +
-                        "pushup;3;10;1;3\n" +
-                        "pushup;3;10;1;3\n" +
-                        "pushup;3;10;1;3").toFile();
-        fileSchedaAlimentareError = Files.writeString(Path.of("schedaAlimentare.csv"),
-                "Nome;Pasto;Giorno;kcal\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n" +
-                        "Pasta;pranzo;1;200\n").toFile();
-        fileNotCsv = Files.writeString(Path.of("schedaAllenamento.txt"),
-                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;3;petto\n" +
-                        "pushup;3;10;1;3;petto\n" +
-                        "pushup;3;10;1;3;petto").toFile();
+        schedaAllenamento = new SchedaAllenamento(1L, "Test",4,null,preparatore,
+                LocalDateTime.now(), LocalDateTime.now());
+
     }
 
     @Test
@@ -389,25 +323,27 @@ class GestioneProtocolloControllerTest {
     public void creazioneProtocolloSuccess()
             throws Exception {
         String dataScadenza= "2023-12-12";
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
         Principal principal = () -> "1";
         Long idCliente = 2L;
         when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
         when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
+
         Protocollo protocolloPre = new Protocollo();
         protocolloPre.setDataScadenza(LocalDate.parse(dataScadenza));
         protocolloPre.setCliente(cliente3);
         protocolloPre.setPreparatore(preparatore);
-       when(gestioneProtocolloServiceImpl.creazioneProtocollo(LocalDate.parse(dataScadenza), cliente3, preparatore,schedaAlimentare.getId(),fileSchedaAllenamento)).thenReturn(protocollo);
+       when(gestioneProtocolloServiceImpl.creazioneProtocollo(LocalDate.parse(dataScadenza), cliente3, preparatore,
+               schedaAlimentare.getId(),schedaAllenamento.getId())).thenReturn(protocollo);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli").file(multipartSchedaAllenamento)
-                        .param("dataScadenza", dataScadenza).param("idCliente", idCliente.toString())
-
-                        .principal(principal);
+                (MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli")
+                        .param("dataScadenza", dataScadenza)
+                        .param("idCliente", idCliente.toString())
+                        .param("idSchedaAlimentare", schedaAlimentare.getId().toString())
+                        .param("idSchedaAllenamento",schedaAllenamento.getId().toString())
+                        .principal(principal));
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
                         .build()
@@ -420,17 +356,18 @@ class GestioneProtocolloControllerTest {
     public void creazioneProtocolloErrorUnauthorized()
             throws Exception {
         String dataScadenza= "2023-12-12";
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
         Principal principal = () -> "1";
         Long idCliente = 2L;
         when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(false);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli").file(multipartSchedaAllenamento)
-                        .param("dataScadenza", dataScadenza).param("idCliente", idCliente.toString())
-
-                        .principal(principal);
+                (MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli")
+                        .param("dataScadenza", dataScadenza)
+                        .param("idCliente", idCliente.toString())
+                        .param("idSchedaAlimentare", schedaAlimentare.getId().toString())
+                        .param("idSchedaAllenamento",schedaAllenamento.getId().toString())
+                        .principal(principal));
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
                         .build()
@@ -444,20 +381,20 @@ class GestioneProtocolloControllerTest {
     public void creazioneProtocolloErrorSchedeVuote()
             throws Exception {
         String dataScadenza= "2023-12-12";
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", new byte[0]);
         Principal principal = () -> "1";
         Long idCliente = 2L;
         when(gestioneUtenzaServiceImpl.getById(1L)).thenReturn(preparatore);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
         when(gestioneUtenzaServiceImpl.getById(idCliente)).thenReturn(cliente3);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli").file(multipartSchedaAllenamento)
-                        .param("dataScadenza", dataScadenza).param("idCliente", idCliente.toString())
-
-                        .principal(principal);
+                (MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli")
+                        .param("dataScadenza", dataScadenza)
+                        .param("idCliente", idCliente.toString())
+                        .param("idSchedaAlimentare", "")
+                        .param("idSchedaAllenamento","")
+                        .principal(principal));
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
                         .build()
@@ -469,7 +406,6 @@ class GestioneProtocolloControllerTest {
    @Test
     public void modificaProtocolloSuccess()
             throws Exception {
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
         Principal principal = () -> "1";
         Long idCliente = 1L;
         Long idProtocollo = 1L;
@@ -477,14 +413,13 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
 
-       when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocolloConSchedaAlimentare, fileSchedaAllenamento)).thenReturn(protocolloPieno);
-        MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAllenamento)
-                      .param("idProtocollo", idProtocollo.toString())
-                        .principal(principal);
+       MockHttpServletRequestBuilder requestBuilder =
+               (MockMvcRequestBuilders.multipart(
+                               "/api/v1/protocolli/1")
+                       .param("idSchedaAlimentare", schedaAlimentare.getId().toString())
+                       .param("idSchedaAllenamento",schedaAllenamento.getId().toString())
+                       .principal(principal));
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
@@ -497,7 +432,6 @@ class GestioneProtocolloControllerTest {
     @Test
     public void modificaProtocolloErrorUnauthorized()
             throws Exception {
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", fileSchedaAllenamento.getAbsolutePath(), null, new FileInputStream(fileSchedaAllenamento));
         Principal principal = () -> "1";
         Long idCliente = 1L;
         Long idProtocollo = 1L;
@@ -505,15 +439,14 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(false);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
 
-        when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocolloConSchedaAlimentare, fileSchedaAllenamento)).thenReturn(protocolloPieno);
 
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAllenamento)
-                        .param("idProtocollo", idProtocollo.toString())
-                        .principal(principal);
+                (MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1")
+                        .param("idSchedaAlimentare", schedaAlimentare.getId().toString())
+                        .param("idSchedaAllenamento",schedaAllenamento.getId().toString())
+                        .principal(principal));
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
@@ -526,8 +459,6 @@ class GestioneProtocolloControllerTest {
     @Test
     public void modificaProtocolloSuccessSchedaAllenamentoEmpty()
             throws Exception {
-        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", fileSchedaAlimentare.getAbsolutePath(), null, new FileInputStream(fileSchedaAlimentare));
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento",new byte[0]);
         Principal principal = () -> "1";
         Long idCliente = 1L;
         Long idProtocollo = 1L;
@@ -536,27 +467,26 @@ class GestioneProtocolloControllerTest {
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(null);
 
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAllenamento)
-                        .param("idProtocollo", idProtocollo.toString())
-                        .principal(principal);
+                (MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1")
+                        .param("idSchedaAlimentare", schedaAlimentare.getId().toString())
+                        .param("idSchedaAllenamento","")
+                        .principal(principal));
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andDo(print()).andExpect(
-                MockMvcResultMatchers.status().is4xxClientError());
+                MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
     @Test
     public void modificaProtocolloSuccessSchedaAlimentareEmpty()
             throws Exception {
-        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", new byte[0]);
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", new byte[0]);
+
         Principal principal = () -> "1";
         Long idCliente = 1L;
         Long idProtocollo = 1L;
@@ -564,31 +494,25 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(null);
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(fileSchedaAllenamento);
-
-
-        when(gestioneProtocolloServiceImpl.inserisciSchedaAllenamento(protocollo, fileSchedaAllenamento)).thenReturn(protocolloConSchedaAllenamento);
 
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAllenamento)
-                        .param("idProtocollo", idProtocollo.toString())
-                        .principal(principal);
+                (MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1")
+                        .param("idSchedaAlimentare", "")
+                        .param("idSchedaAllenamento",schedaAllenamento.getId().toString())
+                        .principal(principal));
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)
                         .build()
                         .perform(requestBuilder);
         actualPerformResult.andExpect(
-                MockMvcResultMatchers.status().is4xxClientError());
+                MockMvcResultMatchers.status().is2xxSuccessful());
     }
 
     @Test
     public void modificaProtocolloErrorSchedeEmpty()
             throws Exception {
-        MockMultipartFile multipartSchedaAlimentare= new MockMultipartFile("schedaAlimentare", new byte[0]);
-        MockMultipartFile multipartSchedaAllenamento= new MockMultipartFile("schedaAllenamento", new byte[0]);
         Principal principal = () -> "1";
         Long idCliente = 1L;
         Long idProtocollo = 1L;
@@ -596,15 +520,13 @@ class GestioneProtocolloControllerTest {
         when(gestioneProtocolloServiceImpl.getByIdProtocollo(idProtocollo)).thenReturn(protocollo);
         when(gestioneUtenzaServiceImpl.existsByPreparatoreAndId(preparatore, idCliente)).thenReturn(true);
 
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAlimentare)).thenReturn(null);
-        fileUtility.when(() -> FileUtility.getFile(multipartSchedaAllenamento)).thenReturn(null);
-
 
         MockHttpServletRequestBuilder requestBuilder =
-                MockMvcRequestBuilders.multipart(
-                                "/api/v1/protocolli/1").file(multipartSchedaAlimentare).file(multipartSchedaAllenamento)
-                        .param("idProtocollo", idProtocollo.toString())
-                        .principal(principal);
+                (MockMvcRequestBuilders.multipart(
+                                "/api/v1/protocolli/1")
+                        .param("idSchedaAlimentare","")
+                        .param("idSchedaAllenamento","")
+                        .principal(principal));
         requestBuilder.with(request -> {request.setMethod("PUT"); return request;});
         ResultActions actualPerformResult =
                 MockMvcBuilders.standaloneSetup(gestioneProtocolloController)

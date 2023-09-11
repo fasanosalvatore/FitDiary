@@ -89,7 +89,7 @@ class GestioneProtocolloServiceImplTest {
     schedaAlimentare =
         new SchedaAlimentare(1L, "schedaBuona", 2000f, new ArrayList<IstanzaAlimento>(),
             preparatore,
-            LocalDateTime.now(), LocalDateTime.now());
+                LocalDateTime.now(), LocalDateTime.now());
 
     istanzaEsercizio = new IstanzaEsercizio();
     istanzaEsercizio.setId(1L);
@@ -116,10 +116,10 @@ class GestioneProtocolloServiceImplTest {
   @Test
   void creazioneProtocolloSchedeNulle() throws IOException {
 
-    Protocollo p = gestioneProtocolloServiceImpl.creazioneProtocollo(LocalDate.now(), preparatore,
+    Protocollo p = gestioneProtocolloServiceImpl.creazioneProtocollo(LocalDateTime.now(), preparatore,
             cliente, 100L, null);
     assertThrows(IllegalArgumentException.class,
-        () -> gestioneProtocolloServiceImpl.creazioneProtocollo(LocalDate.now(), preparatore,
+        () -> gestioneProtocolloServiceImpl.creazioneProtocollo(LocalDateTime.now(), preparatore,
             cliente, 100L, null));
   }
 */
