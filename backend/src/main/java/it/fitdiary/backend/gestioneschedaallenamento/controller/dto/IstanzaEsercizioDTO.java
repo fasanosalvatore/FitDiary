@@ -1,6 +1,7 @@
 package it.fitdiary.backend.gestioneschedaallenamento.controller.dto;
 
 import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
+import lombok.Builder;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -25,9 +26,7 @@ public class IstanzaEsercizioDTO {
     @NotNull(message = "Il recupero non può essere nulla")
     @Min(1)
     private Integer recupero;
-    @NotNull(message = "La descrizione non può essere nulla")
-    @Min(1)
-    private String descrizione;
+    private String descrizione="";
 
     @NotNull(message = "L'id dell'esercizio non può essere nullo")
     private Long idEsercizio;
