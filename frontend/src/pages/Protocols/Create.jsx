@@ -59,7 +59,7 @@ const Create = () => {
   const [toastMessage, setToastMessage] = useState(undefined);
   const [search, setSearch] = useState("");
 
-  const {isOpenSchedaAlimentare, onOpenSchedaAlimentare, onCloseSchedaAlimentare} = useDisclosure()
+  const {isOpen:isOpenSchedaAlimentare,onOpen: onOpenSchedaAlimentare,onClose: onCloseSchedaAlimentare} = useDisclosure()
 
   const [listSchedeAlimentari, setListSchedeAlimentari] = useState();
   const [listSchedeAllenamento, setListSchedeAllenamento] = useState();
