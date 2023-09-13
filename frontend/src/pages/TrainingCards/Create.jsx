@@ -150,8 +150,6 @@ export default function Create() {
 
         if (inputData && Array.isArray(inputData)) {
             inputData.forEach((instance) => {
-                console.log(instance);
-                //TODO FIX HERE
                 for(let i=0;i<instance.length;i++)
                 {
                     let obj=instance[i];
@@ -166,7 +164,6 @@ export default function Create() {
                         });
                     }
                 }
-
             });
         }
         console.log("Format: ");

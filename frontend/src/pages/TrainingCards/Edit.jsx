@@ -48,7 +48,7 @@ import {useParams} from "react-router";
 
 export default function Edit() {
     const fetchContext = useContext(FetchContext);
-    const urlCreateSchedaAllenamento = "schedaAllenamento/modificaScheda";
+    const urlEditSchedaAllenamento = "schedaAllenamento/modificaScheda";
     const {isOpen, onOpen, onClose} = useDisclosure()
     const {handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const toast = useToast({
@@ -98,7 +98,6 @@ export default function Edit() {
         const loadlistaEsercizi = async () => {
             try {
                 const { data } = await fetchContext.authAxios("esercizi/getAllEsercizi");
-                console.log(data)
                 setEsercizi(data.data);
 
             } catch (error) {
@@ -106,15 +105,15 @@ export default function Edit() {
             }
         }
         const getSchedaAllenamento = async () => {
-            console.log("OOOK");
             if (!fetchCompleted) {
                 try {
                     const {data} = await fetchContext.authAxios("schedaAllenamento/getSchedaAllenamentoById?idScheda=" + id);
-                    console.log(data.data.scheda_allenamento);
-                    setFrequenzaScheda(data.data.scheda_allenamento.frequenza);
+                    let scheda=data.data.scheda_allenamento;
+                    let nome=scheda.nome;
+                    let freq=scheda.frequenza;
+                    setNomeScheda(nome);
+                    setFrequenzaScheda(freq);
                     let tmpList=data.data.scheda_allenamento.listaEsercizi;
-                    console.log("Ciao");
-                    console.log(tmpList)
 
                     const raggruppatoPerGiorno = {};
 
@@ -126,12 +125,14 @@ export default function Edit() {
                         raggruppatoPerGiorno[giorno].push(elemento);
                     });
                     const listaEs = Object.values(raggruppatoPerGiorno);
-
+                    while(listaEs.length<7)
+                    {
+                        listaEs.push([]);
+                    }
                     setSchedaAllenamento(listaEs);
                     setLoading(false);
                     setFetchCompleted(true); // Imposta fetchCompleted a true dopo il completamento
                 } catch (error) {
-                    console.log(error);
                     toast({
                         title: "ERROR",
                         description: "NOT AUTHORIZED",
@@ -164,6 +165,7 @@ export default function Edit() {
             let objTest={};
             objTest.esercizio=esercizio;
             objTest.serie=serie;
+            objTest.giornoDellaSettimana=indexGiorno;
             objTest.ripetizioni=ripetizioni;
             objTest.recupero=recupero;
             objTest.descrizione=descrizione;
@@ -178,27 +180,32 @@ export default function Edit() {
         {
             toast(toastParam("Attenzione!", "Hai già inserito questo esercizio", "warning"));
         }
-        console.log(schedaAllenamento)
     }
 
     function formatData(inputData) {
         const formattedData = {
             name: nomeScheda,
             istanzeEsercizi: [],
-            frequenza:frequenzaScheda
+            frequenza:frequenzaScheda,
+            schedaId:id
         };
 
-        if (inputData && Array.isArray(inputData[0])) {
-            const instances = inputData[0];
+        if (inputData && Array.isArray(inputData)) {
+            const instances = inputData;
             instances.forEach((instance) => {
-                if (instance && instance.esercizio) {
-                    formattedData.istanzeEsercizi.push({
-                        serie:instance.serie,
-                        ripetizioni:instance.ripetizioni,
-                        recupero:instance.recupero,
-                        descrizione:instance.descrizione,
-                        idEsercizio:instance.esercizio.id
-                    });
+                for(let i=0;i<instance.length;i++)
+                {
+                    let obj=instance[i];
+                    if (obj.esercizio) {
+                        formattedData.istanzeEsercizi.push({
+                            serie:obj.serie,
+                            giornoDellaSettimana:obj.giornoDellaSettimana,
+                            ripetizioni:obj.ripetizioni,
+                            recupero:obj.recupero,
+                            descrizione:obj.descrizione,
+                            idEsercizio:obj.esercizio.id
+                        });
+                    }
                 }
             });
         }
@@ -212,7 +219,6 @@ export default function Edit() {
         {
             filterScheda[i]=schedaAllenamento[i];
         }
-        console.log(filterScheda);
         try {
             if(nomeScheda.length <0){
                 toast(toastParam("Attenzione!", "Inserisci un nome valido", "error"));
@@ -236,9 +242,8 @@ export default function Edit() {
                 throw new Error()
             }
 
-
-            let formattedScheda = formatData(filterScheda)
-            const {data} = await fetchContext.authAxios.post(urlCreateSchedaAllenamento, formattedScheda);
+            let formattedScheda = formatData(filterScheda);
+            const {data} = await fetchContext.authAxios.post(urlEditSchedaAllenamento, formattedScheda);
             setSchedaAllenamento([[],[],[],[],[],[],[]]);
             document.getElementById("textScheda").value="";
             toast(toastParam("Sceheda Allenamento creata con successo", "Scheda aggiunta all'elenco", "success"));
@@ -251,7 +256,7 @@ export default function Edit() {
     return (<>
         {!isLoading && (<Flex wrap={"wrap"} p={5}>
             <Flex alignItems={"center"} mb={5}>
-                <Heading w={"full"}>Crea una scheda Allenamento</Heading>
+                <Heading w={"full"}>Modifca scheda allenamento</Heading>
             </Flex>
             <Box bg={"white"} roundedTop={20} minW={{base: "100%", xl: "100%"}} h={"full"}>
                 <GradientBar/>
@@ -259,7 +264,7 @@ export default function Edit() {
                     <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                         <FormControl id={"nome"} isInvalid={errors.nome} isRequired={"required"} pt={5}>
                             <FormLabel htmlFor="nome">Nome delle scheda</FormLabel>
-                            <Input required={"true"} type="text" id={"textScheda"} placeholder="Scheda pettorali e deltoidi" name={"nome"}
+                            <Input required={"true"} type="text" id={"textScheda"} placeholder="Nome scheda" value={nomeScheda}
                                    onChange={(e) => {
                                        let newNome = e.target.value;
                                        setNomeScheda(newNome)
@@ -268,15 +273,11 @@ export default function Edit() {
                         </FormControl>
                         <FormControl id={"frequenzaScheda"} isInvalid={errors.nome} isRequired={"required"} pt={5}>
                             <FormLabel htmlFor="frequenzaScheda">Frequenza Settiamanale</FormLabel>
-                            <Input required={"true"} type="number" min={1} max={7} placeholder="3" defaultValue={3} name={"frequenzaScheda"}
+                            <Input required={"true"} type="number" placeholder="3" defaultValue={3} value={frequenzaScheda}
                                    onChange={(e) => {
                                        let newValue = e.target.value;
-                                       if(newValue > 7) {
-                                           e.target.value=7
-                                           newValue=7
-                                       }
-                                       if(newValue < 1) {
-                                           newValue=1
+                                       if(newValue>7) {
+                                           newValue=7;
                                        }
                                        setFrequenzaScheda(newValue)
                                    }}/>
@@ -380,9 +381,7 @@ export default function Edit() {
                         </Modal>
 
                         <Accordion allowToggle defaultIndex={[0]} w="full" mt={"60px"}>
-                            {Array.from({length: parseInt(frequenzaScheda)}, (_, d) => {
-                                console.log("Giorni: "+d.toString());
-                                console.log("Vett: "+schedaAllenamento[d]);
+                            {Array.from({length: frequenzaScheda}, (_, d) => {
                                 return (
                                     <AccordionItem key={d}>
                                         <h2>

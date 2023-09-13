@@ -383,7 +383,7 @@ const Create = () => {
                 <GridItem colSpan={2}>
                   <FormControl id={"idCliente"}>
                     <FormLabel>Cliente</FormLabel>
-                    <Select options={options} isLoading={isLoading} onChange={(e) => {
+                    <Select options={options} isLoading={isLoading} placeholder={"Seleziona un cliente"} onChange={(e) => {
                       setValue("idCliente", e.value)
                     }} />
                   </FormControl>

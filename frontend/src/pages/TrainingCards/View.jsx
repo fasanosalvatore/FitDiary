@@ -212,7 +212,7 @@ export default function View() {
                                                                                     </Td>
                                                                                     <Td maxWidth={100}>{esercizio.nome}</Td>
                                                                                     <Td maxWidth={100}>{istanzaEsercizio.serie}</Td>
-                                                                                    <Td maxWidth={100}>{istanzaEsercizio.ripetizione}</Td>
+                                                                                    <Td maxWidth={100}>{istanzaEsercizio.ripetizioni}</Td>
                                                                                     <Td maxWidth={100}>{istanzaEsercizio.recupero}</Td>
                                                                                     <Td maxWidth={100}>
                                                                                         <Text fontWeight={"bold"}>{esercizio.tipoEsercizio.nome}</Text>

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -34,8 +33,7 @@ public class IstanzaEsercizio {
      */
     @NotNull(message = "Il giorno della settimana non può essere nullo")
     @Column(name = "giorno_della_settimana")
-    @Enumerated(EnumType.ORDINAL)
-    private GIORNO_SETTIMANA giornoDellaSettimana;
+    private int giornoDellaSettimana;
     /**
      * numero di serie.
      */
@@ -49,7 +47,7 @@ public class IstanzaEsercizio {
     @NotNull(message = "Il numero di ripetizioni non può essere nullo")
     @Min(value = MIN_RIPETIZIONE,
             message = "Il numero di ripetizioni non può essere minori di zero")
-    private int ripetizione;
+    private int ripetizioni;
     /**
      * recupero.
      */

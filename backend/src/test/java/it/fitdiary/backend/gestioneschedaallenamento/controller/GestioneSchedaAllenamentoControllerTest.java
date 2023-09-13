@@ -86,7 +86,7 @@ public class GestioneSchedaAllenamentoControllerTest {
         istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
         istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
         istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-        istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
+        istanzaEsercizio.setRipetizioni(istanzaEsercizioDTO.getRipetizioni());
         istanzeEsercizio.add(istanzaEsercizio);
 
         istanzeEsercizioDto.add(istanzaEsercizioDTO);
