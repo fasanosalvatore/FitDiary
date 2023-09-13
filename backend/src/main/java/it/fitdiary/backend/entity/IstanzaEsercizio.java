@@ -60,9 +60,7 @@ public class IstanzaEsercizio {
     /**
      * descrizione dell'esecuzione dell'esercizio.
      */
-    @NotNull(message = "La descrizione non può essere nulla")
-    @NotBlank(message = "La descrizione non può essere vuoto")
-    private String descrizione;
+    private String descrizione="";
     /**
      * id esercizio.
      */

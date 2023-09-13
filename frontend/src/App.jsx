@@ -33,6 +33,7 @@ import DietCardsCreate from "./pages/DietCards/Create";
 import TrainingCardsIndex from "./pages/TrainingCards/Index";
 import TrainingCardsView from "./pages/TrainingCards/View";
 import TrainingCardsCreate from "./pages/TrainingCards/Create";
+import TrainingCardsEdit from "./pages/TrainingCards/Edit";
 
 import AlimentiIndex from "./pages/Alimento/Index.jsx";
 import EserciziIndex from "./pages/Esercizio/Index.jsx";
@@ -77,6 +78,7 @@ const AppRoutes = () => {
                 <Route path="trainingcards" element={<TrainingCardsIndex />} />
                 <Route path="trainingcards/:id" element={<TrainingCardsView />} />
                 <Route path="trainingcards/create" element={<TrainingCardsCreate />} />
+                <Route path="trainingcards/edit/:id" element={<TrainingCardsEdit />} />
 
                 <Route path="alimenti" element={<AlimentiIndex />} />
                 <Route path="esercizi" element={<EserciziIndex />} />

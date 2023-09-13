@@ -33,19 +33,22 @@ import {
     Text,
     Th,
     Thead,
+    Tooltip,
+    Select,
     Tr,
     useDisclosure,
-    useToast
+    useToast, Toast
 } from "@chakra-ui/react";
 import {FetchContext} from "../../context/FetchContext";
 import {GradientBar} from "../../components/GradientBar";
-import {AddIcon, DeleteIcon, SearchIcon} from "@chakra-ui/icons";
+import {AddIcon, SearchIcon, DeleteIcon} from "@chakra-ui/icons";
 import moment from "moment/moment";
 import {AuthContext} from "../../context/AuthContext";
+import {useParams} from "react-router";
 
-export default function Create() {
+export default function Edit() {
     const fetchContext = useContext(FetchContext);
-    const urlCreateSchedaAllenamento = "schedaAllenamento/creaScheda";
+    const urlCreateSchedaAllenamento = "schedaAllenamento/modificaScheda";
     const {isOpen, onOpen, onClose} = useDisclosure()
     const {handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const toast = useToast({
@@ -53,14 +56,15 @@ export default function Create() {
             width: '100%', maxWidth: '100%',
         },
     })
+    const {id} = useParams();
+    const [schedaAllenamento, setSchedaAllenamento] = useState();
     const authContext = useContext(AuthContext)
     const {authState} = authContext;
     const [search, setSearch] = useState("");
     const [fetchCompleted, setFetchCompleted] = useState(false); // Nuovo stato
-    let [schedaAllenamento, setSchedaAllenamento] = useState([[], [], [], [], [], [], []]);
     const [indexGiorno, setIndexGiorno] = useState(0);
     const [nomeScheda, setNomeScheda] = useState("");
-    const [frequenzaScheda, setFrequenzaScheda] = useState(3);
+    const [frequenzaScheda, setFrequenzaScheda] = useState(0);
     const onChange = (e) => {
         setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
     }
@@ -96,15 +100,51 @@ export default function Create() {
                 const { data } = await fetchContext.authAxios("esercizi/getAllEsercizi");
                 console.log(data)
                 setEsercizi(data.data);
-                setLoading(false); //viene settato a false per far capire di aver caricato tutti i dati
+
             } catch (error) {
                 setToastMessage({title:"Errore", body:error.message, stat:"error"});
             }
+        }
+        const getSchedaAllenamento = async () => {
+            console.log("OOOK");
+            if (!fetchCompleted) {
+                try {
+                    const {data} = await fetchContext.authAxios("schedaAllenamento/getSchedaAllenamentoById?idScheda=" + id);
+                    console.log(data.data.scheda_allenamento);
+                    setFrequenzaScheda(data.data.scheda_allenamento.frequenza);
+                    let tmpList=data.data.scheda_allenamento.listaEsercizi;
+                    console.log("Ciao");
+                    console.log(tmpList)
 
+                    const raggruppatoPerGiorno = {};
+
+                    tmpList.forEach(elemento => {
+                        const giorno = elemento.giornoDellaSettimana;
+                        if (!raggruppatoPerGiorno[giorno]) {
+                            raggruppatoPerGiorno[giorno] = [];
+                        }
+                        raggruppatoPerGiorno[giorno].push(elemento);
+                    });
+                    const listaEs = Object.values(raggruppatoPerGiorno);
+
+                    setSchedaAllenamento(listaEs);
+                    setLoading(false);
+                    setFetchCompleted(true); // Imposta fetchCompleted a true dopo il completamento
+                } catch (error) {
+                    console.log(error);
+                    toast({
+                        title: "ERROR",
+                        description: "NOT AUTHORIZED",
+                        status: "error"
+                    })
+                }
+            }
         }
         loadlistaEsercizi();
-    }, [fetchContext]);
-    
+        getSchedaAllenamento();
+    }, [fetchContext,fetchCompleted]);
+
+
     function addEsercizio(esercizio, serie, ripetizioni,recupero, descrizione) {
         let esiste=false;
         let i=0;
@@ -124,7 +164,6 @@ export default function Create() {
             let objTest={};
             objTest.esercizio=esercizio;
             objTest.serie=serie;
-            objTest.indexGiorno=indexGiorno;
             objTest.ripetizioni=ripetizioni;
             objTest.recupero=recupero;
             objTest.descrizione=descrizione;
@@ -132,6 +171,7 @@ export default function Create() {
             let tmp=schedaAllenamento;
             tmp[indexGiorno].push(objTest);
             setSchedaAllenamento(tmp);
+
             toast(toastParam("Operazione eseguita!", "Esercizio aggiunto con successo", "success"));
         }
         else
@@ -148,40 +188,30 @@ export default function Create() {
             frequenza:frequenzaScheda
         };
 
-        if (inputData && Array.isArray(inputData)) {
-            inputData.forEach((instance) => {
-                console.log(instance);
-                //TODO FIX HERE
-                for(let i=0;i<instance.length;i++)
-                {
-                    let obj=instance[i];
-                    if (obj && obj.esercizio) {
-                        formattedData.istanzeEsercizi.push({
-                            serie:obj.serie,
-                            giornoDellaSettimana:obj.indexGiorno,
-                            ripetizioni:obj.ripetizioni,
-                            recupero:obj.recupero,
-                            descrizione:obj.descrizione,
-                            idEsercizio:obj.esercizio.id
-                        });
-                    }
+        if (inputData && Array.isArray(inputData[0])) {
+            const instances = inputData[0];
+            instances.forEach((instance) => {
+                if (instance && instance.esercizio) {
+                    formattedData.istanzeEsercizi.push({
+                        serie:instance.serie,
+                        ripetizioni:instance.ripetizioni,
+                        recupero:instance.recupero,
+                        descrizione:instance.descrizione,
+                        idEsercizio:instance.esercizio.id
+                    });
                 }
-
             });
         }
-        console.log("Format: ");
-        console.log(formattedData);
+
         return formattedData;
     }
 
     const onSubmit = async (values) => {
         let filterScheda=[];
-        console.log(schedaAllenamento);
         for(let i=0;i<frequenzaScheda;i++)
         {
-            filterScheda.push(schedaAllenamento[i]);
+            filterScheda[i]=schedaAllenamento[i];
         }
-        console.log("Ciao");
         console.log(filterScheda);
         try {
             if(nomeScheda.length <0){
@@ -206,11 +236,8 @@ export default function Create() {
                 throw new Error()
             }
 
-            console.log("Non forma");
-            console.log(filterScheda);
+
             let formattedScheda = formatData(filterScheda)
-            console.log("Formatted:");
-            console.log(formattedScheda);
             const {data} = await fetchContext.authAxios.post(urlCreateSchedaAllenamento, formattedScheda);
             setSchedaAllenamento([[],[],[],[],[],[],[]]);
             document.getElementById("textScheda").value="";
@@ -354,6 +381,8 @@ export default function Create() {
 
                         <Accordion allowToggle defaultIndex={[0]} w="full" mt={"60px"}>
                             {Array.from({length: parseInt(frequenzaScheda)}, (_, d) => {
+                                console.log("Giorni: "+d.toString());
+                                console.log("Vett: "+schedaAllenamento[d]);
                                 return (
                                     <AccordionItem key={d}>
                                         <h2>
