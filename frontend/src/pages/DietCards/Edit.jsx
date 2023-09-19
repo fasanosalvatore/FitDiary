@@ -44,10 +44,11 @@ import {GradientBar} from "../../components/GradientBar";
 import {AddIcon, SearchIcon, DeleteIcon} from "@chakra-ui/icons";
 import moment from "moment/moment";
 import {AuthContext} from "../../context/AuthContext";
+import {useParams} from "react-router";
 
-export default function Create() {
+export default function Edit() {
     const fetchContext = useContext(FetchContext);
-    const urlCreateSchedaALimentare = "schedaalimentare/creaScheda";
+    const urlCreateSchedaALimentare = "schedaalimentare/modificaScheda";
     const {isOpen, onOpen, onClose} = useDisclosure()
     const {handleSubmit, formState: {errors, isSubmitting}} = useForm();
     const toast = useToast({
@@ -55,13 +56,16 @@ export default function Create() {
             width: '100%', maxWidth: '100%',
         },
     })
+    const {id} = useParams();
     const authContext = useContext(AuthContext)
     const {authState} = authContext;
     const [search, setSearch] = useState("");
     const [fetchCompleted, setFetchCompleted] = useState(false); // Nuovo stato
-    let [schedaAlimentare, setSchedaAlimentare] = useState([[], [], [], [], [], [], []]);
+    const [schedaAlimentare, setSchedaAlimentare] = useState([[], [], [], [], [], [], []]);
     const [indexGiorno, setIndexGiorno] = useState(0);
     const [nomeScheda, setNomeScheda] = useState("");
+    const [kcalAssunte, setkcalAssunte] = useState(0);
+
     const onChange = (e) => {
         setSearch(e.target.value); // e evento target chi lancia l'evento e il value è il valore
     }
@@ -107,7 +111,64 @@ export default function Create() {
             }
         }
 
+        function getIndexByGiorno(giorno)
+        {
+            switch (giorno)
+            {
+                case "LUNEDI":
+                    return 0;
+                case "MARTEDI":
+                    return 1;
+                case "MERCOLEDI":
+                    return 2;
+                case "GIOVEDI":
+                    return 3;
+                case "VENERDI":
+                    return 4;
+                case "SABATO":
+                    return 5;
+                case "DOMENICA":
+                    return 6;
+
+
+            }
+            return -1;
+        }
+
+        const getSchedaAlimentare = async () => {
+            if (!fetchCompleted) {
+                try {
+                    const {data} = await fetchContext.authAxios("schedaalimentare/getSchedaAlimentareById?idScheda=" + id);
+                    let scheda=data.data.scheda_alimentare;
+                    let nome=scheda.nome;
+                    let kcalAssunte=scheda.kcalAssunte;
+                    setNomeScheda(nome);
+                    setkcalAssunte(kcalAssunte);
+                    let tmpList=data.data.scheda_alimentare.listaAlimenti;
+
+                    const raggruppatoPerGiorno = [[],[],[],[],[],[],[]];
+                    tmpList.forEach(elemento => {
+                        const giorno = elemento.giornoDellaSettimana;
+                        let tmpIndex = getIndexByGiorno(giorno);
+                        if(tmpIndex !== -1)
+                        {
+                            raggruppatoPerGiorno[tmpIndex].push(elemento);
+                        }
+                    });
+                    setSchedaAlimentare(raggruppatoPerGiorno);
+                    setLoading(false);
+                    setFetchCompleted(true); // Imposta fetchCompleted a true dopo il completamento
+                } catch (error) {
+                    toast({
+                        title: "ERROR",
+                        description: "NOT AUTHORIZED",
+                        status: "error"
+                    })
+                }
+            }
+        }
         loadlistaAlimenti();
+        getSchedaAlimentare()
     }, [fetchContext, fetchCompleted]);
 
     let vettPasti = [
@@ -218,7 +279,7 @@ export default function Create() {
     return (<>
         {!isLoading && (<Flex wrap={"wrap"} p={5}>
             <Flex alignItems={"center"} mb={5}>
-                <Heading w={"full"}>Crea una scheda Alimentare</Heading>
+                <Heading w={"full"}>Modifica Scheda Alimentare</Heading>
             </Flex>
             <Box bg={"white"} roundedTop={20} minW={{base: "100%", xl: "100%"}} h={"full"}>
                 <GradientBar/>
@@ -226,7 +287,7 @@ export default function Create() {
                     <form style={{width: "100%"}} onSubmit={handleSubmit(onSubmit)}>
                         <FormControl id={"nome"} isInvalid={errors.nome} isRequired={"required"} pt={5}>
                             <FormLabel htmlFor="nome">Nome delle scheda</FormLabel>
-                            <Input required={"true"} type="text" placeholder="Dieta di Martina" name={"nome"}
+                            <Input required={"true"} type="text" value={nomeScheda} name={"nome"}
                                    onChange={(e) => {
                                        let newNome = e.target.value;
                                        setNomeScheda(newNome)
@@ -368,6 +429,7 @@ export default function Create() {
                                                                   fontWeight={"semibold"}>{pasto.Nome}</Text>
                                                         </Box>
                                                         {schedaAlimentare[i].filter((t) => index == t.pasto).map((al, key) => {
+                                                            console.log("Test: "+al);
                                                             let alimento = al.alimento;
                                                             let caloreCalc = (alimento.kcal / 100) * al.grammi;
                                                             console.log(caloreCalc);

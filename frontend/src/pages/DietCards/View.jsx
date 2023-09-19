@@ -41,6 +41,7 @@ import {FetchContext} from "../../context/FetchContext";
 import {useForm} from "react-hook-form"
 import {GradientBar} from "../../components/GradientBar";
 import {useParams} from "react-router";
+import {Link as ReactLink} from "react-router-dom";
 
 export default function View() {
     const authContext = useContext(AuthContext);
@@ -151,10 +152,12 @@ export default function View() {
 
                                                 <HStack>
                                                     <Tooltip label='Modifica Scheda' fontSize='md'>
-                                                        <IconButton
-                                                            colorScheme='fitdiary'
-                                                            icon={<EditIcon />}
-                                                        />
+                                                        <ReactLink to={"/dietcards/edit/" + schedaAlimentare.id}>
+                                                            <IconButton
+                                                                colorScheme='fitdiary'
+                                                                icon={<EditIcon/>}
+                                                            />
+                                                        </ReactLink>
                                                     </Tooltip>
                                                 </HStack>
                                             )}
