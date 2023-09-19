@@ -1,6 +1,7 @@
 package it.fitdiary.backend.gestioneschedaalimentare.controller;
 
 import it.fitdiary.backend.entity.SchedaAlimentare;
+import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
 import it.fitdiary.backend.gestioneschedaalimentare.controller.dto.CreaSchedaAlimentareDTO;
 import it.fitdiary.backend.gestioneschedaalimentare.controller.dto.ModificaSchedaDTO;
 import it.fitdiary.backend.gestioneschedaalimentare.service.GestioneSchedaAlimentareService;
@@ -151,6 +152,27 @@ public class GestioneSchedaAlimentareController {
     }
     return ResponseHandler.generateResponse(HttpStatus.OK, "scheda_alimentare",
         schedaAlimentare);
+
+  }
+
+
+  @GetMapping("getAlimentiBySchedaAndGiorno")
+  public ResponseEntity<Object> getSchedaAlimentareById(
+      @RequestParam Long idScheda,
+      @RequestParam GIORNO_SETTIMANA giorno_settimana
+      ) {
+
+    SchedaAlimentare schedaAlimentare;
+    try {
+      schedaAlimentare = service.getSchedeAlimentariById(idScheda);
+    }
+    catch (Exception e)
+    {
+      return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+          e.getMessage());
+    }
+    return ResponseHandler.generateResponse(HttpStatus.OK, "alimenti",
+        service.getAlimentiBySchedaAlimentareAndGiornoDellaSettimana(schedaAlimentare,giorno_settimana));
 
   }
 
