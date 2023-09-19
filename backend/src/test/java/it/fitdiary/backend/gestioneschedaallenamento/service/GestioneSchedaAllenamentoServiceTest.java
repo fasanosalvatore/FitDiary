@@ -4,7 +4,6 @@ import it.fitdiary.BackendApplicationTest;
 import it.fitdiary.backend.entity.*;
 import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
 import it.fitdiary.backend.gestioneesercizio.repository.EsercizioRepository;
-import it.fitdiary.backend.gestioneschedaalimentare.repository.IstanzaAlimentoRepository;
 import it.fitdiary.backend.gestioneschedaallenamento.controller.dto.IstanzaEsercizioDTO;
 import it.fitdiary.backend.gestioneschedaallenamento.repository.IstanzaEsercizioRepository;
 import it.fitdiary.backend.gestioneschedaallenamento.repository.SchedaAllenamentoRepository;
@@ -21,7 +20,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -86,7 +84,7 @@ public class GestioneSchedaAllenamentoServiceTest {
         istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
         istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
         istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-        istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
+        istanzaEsercizio.setRipetizioni(istanzaEsercizioDTO.getRipetizioni());
         istanzeEsercizio.add(istanzaEsercizio);
 
         istanzeEsercizioDto.add(istanzaEsercizioDTO);
@@ -133,7 +131,7 @@ public class GestioneSchedaAllenamentoServiceTest {
         istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
         istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
         istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-        istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
+        istanzaEsercizio.setRipetizioni(istanzaEsercizioDTO.getRipetizioni());
         istanzeEsercizio.add(istanzaEsercizio);
 
         istanzeEsercizioDto.add(istanzaEsercizioDTO);
@@ -182,7 +180,7 @@ public class GestioneSchedaAllenamentoServiceTest {
         istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
         istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
         istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-        istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
+        istanzaEsercizio.setRipetizioni(istanzaEsercizioDTO.getRipetizioni());
         istanzeEsercizio.add(istanzaEsercizio);
 
         istanzeEsercizioDto.add(istanzaEsercizioDTO);
@@ -230,7 +228,7 @@ public class GestioneSchedaAllenamentoServiceTest {
         istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
         istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
         istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-        istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
+        istanzaEsercizio.setRipetizioni(istanzaEsercizioDTO.getRipetizioni());
         istanzeEsercizio.add(istanzaEsercizio);
 
         istanzeEsercizioDto.add(istanzaEsercizioDTO);

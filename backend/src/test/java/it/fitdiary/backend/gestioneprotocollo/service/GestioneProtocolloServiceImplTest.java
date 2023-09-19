@@ -93,10 +93,10 @@ class GestioneProtocolloServiceImplTest {
 
     istanzaEsercizio = new IstanzaEsercizio();
     istanzaEsercizio.setId(1L);
-    istanzaEsercizio.setGiornoDellaSettimana(GIORNO_SETTIMANA.LUNEDI);
+    istanzaEsercizio.setGiornoDellaSettimana(0);
     istanzaEsercizio.setSerie(5);
     istanzaEsercizio.setRecupero(1);
-    istanzaEsercizio.setRipetizione(1);
+    istanzaEsercizio.setRipetizioni(1);
     istanzaEsercizio.setEsercizio(esercizio);
     istanzaEsercizio.setDescrizione("Descr");
   }

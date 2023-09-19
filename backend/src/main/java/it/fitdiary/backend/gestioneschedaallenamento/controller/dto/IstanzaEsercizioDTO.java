@@ -1,6 +1,7 @@
 package it.fitdiary.backend.gestioneschedaallenamento.controller.dto;
 
 import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
+import lombok.Builder;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -13,8 +14,7 @@ public class IstanzaEsercizioDTO {
      * Giorno della settimana.
      */
     @NotNull(message = "Il giorno della settimana non può essere nullo")
-    @Enumerated(EnumType.ORDINAL)
-    private GIORNO_SETTIMANA giornoDellaSettimana;
+    private int giornoDellaSettimana;
 
     @NotNull(message = "La serie non può essere nulla")
     @Min(1)
@@ -25,14 +25,12 @@ public class IstanzaEsercizioDTO {
     @NotNull(message = "Il recupero non può essere nulla")
     @Min(1)
     private Integer recupero;
-    @NotNull(message = "La descrizione non può essere nulla")
-    @Min(1)
-    private String descrizione;
+    private String descrizione="";
 
     @NotNull(message = "L'id dell'esercizio non può essere nullo")
     private Long idEsercizio;
 
-    public IstanzaEsercizioDTO(GIORNO_SETTIMANA giornoDellaSettimana, Integer serie, Integer ripetizioni,
+    public IstanzaEsercizioDTO(int giornoDellaSettimana, Integer serie, Integer ripetizioni,
                                Integer recupero, String descrizione, Long idEsercizio) {
         this.giornoDellaSettimana = giornoDellaSettimana;
         this.serie = serie;
@@ -45,11 +43,11 @@ public class IstanzaEsercizioDTO {
     public IstanzaEsercizioDTO() {
     }
 
-    public GIORNO_SETTIMANA getGiornoDellaSettimana() {
+    public int getGiornoDellaSettimana() {
         return giornoDellaSettimana;
     }
 
-    public void setGiornoDellaSettimana(GIORNO_SETTIMANA giornoDellaSettimana) {
+    public void setGiornoDellaSettimana(int giornoDellaSettimana) {
         this.giornoDellaSettimana = giornoDellaSettimana;
     }
 

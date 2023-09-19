@@ -1,6 +1,9 @@
 package it.fitdiary.backend.gestioneprotocollo.controller;
 
-import it.fitdiary.backend.entity.Utente;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import it.fitdiary.backend.entity.*;
+import it.fitdiary.backend.gestioneschedaalimentare.controller.dto.CreaSchedaAlimentareDTO;
 import it.fitdiary.backend.gestioneutenza.repository.UtenteRepository;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
@@ -24,9 +24,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -51,8 +58,17 @@ public class GestioneProtocolloControllerIntegrationTest {
     private String tokenCliente2;
     private Utente admin;
     private String tokenAdmin;
-    private File fileSchedaAllenamento;
-    private File fileSchedaAlimentare;
+    private CategoriaEsercizio categoriaEsercizio;
+    private Esercizio esercizio;
+    private SchedaAllenamento schedaAllenamento;
+    private SchedaAlimentare schedaAlimentare;
+
+    private IstanzaAlimento istanzaAlimento;
+    private IstanzaEsercizio istanzaEsercizio;
+
+    private List<IstanzaAlimento> listIstanzeAlimenti;
+    private List<IstanzaEsercizio> listIstanzeEsercizi;
+    private ObjectMapper mapper;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -66,32 +82,18 @@ public class GestioneProtocolloControllerIntegrationTest {
         tokenCliente = setUpToken(cliente.getEmail(), "Password123!");
         tokenCliente2 = setUpToken(cliente2.getEmail(), "Password123!");
         tokenAdmin = setUpToken(admin.getEmail(), "Password123!");
-        fileSchedaAllenamento = Files.writeString(Path.of("schedaAllenamento.csv"),
-                "Nome;Serie;Ripetizioni;Recupero;Numero Allenamento;Categoria\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;1;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;2;petto\n" +
-                        "pushup;3;10;1;3;petto\n" +
-                        "pushup;3;10;1;3;petto\n" +
-                        "pushup;3;10;1;3;petto").toFile();
-        fileSchedaAlimentare = Files.writeString(Path.of("schedaAlimentare.csv"),
-                "Nome;Pasto;Giorno;kcal;grammi\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n" +
-                        "Pasta;pranzo;1;200;100\n").toFile();
+
+        categoriaEsercizio = new CategoriaEsercizio(1L,"Pettorali");
+        esercizio = new Esercizio(1L, "Chest press", "EserciziPalestra/Air-Twisting-Crunch_waist.gif",
+                categoriaEsercizio);
+        schedaAlimentare =
+                new SchedaAlimentare(1L, "schedaBuona", 2000f, new ArrayList<IstanzaAlimento>(),
+                        preparatore,
+                        LocalDateTime.now(), LocalDateTime.now());
+        schedaAllenamento = new SchedaAllenamento(1L, "Test",4,new ArrayList<IstanzaEsercizio>(),preparatore,
+                LocalDateTime.now(), LocalDateTime.now());
+        mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
     }
 
     private String setUpToken(String email, String password) {
@@ -166,98 +168,57 @@ public class GestioneProtocolloControllerIntegrationTest {
     @Test
     public void creazioneProtocolloSuccess() throws Exception{
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
-        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
-        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
-        schedaAllenamento.read(bSchedaAllenamento);
+        multipartRequest.add("dataScadenza", "2023-12-12");
+        multipartRequest.add("idCliente", "4");
+        multipartRequest.add("idSchedaAlimentare", schedaAlimentare.getId().toString());
+        multipartRequest.add("idSchedaAllenamento", schedaAllenamento.getId().toString());
 
-        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAllenamento.getPath();
-            }
-        };
-        multipartRequest.add("dataScadenza","2023-12-12");
-        multipartRequest.add("idCliente", 4);
-        multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenPreparatore2);
-        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
-        var c = restTemplate.exchange("http" +
-                "://localhost:" + port + "/api" +
-                "/v1/protocolli", HttpMethod.POST, entity, String.class);
+
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(multipartRequest, headers);
+        var c = restTemplate.exchange("http://localhost:" + port + "/api/v1/protocolli",
+                HttpMethod.POST,
+                entity,
+                String.class);
         assertEquals(HttpStatus.SC_CREATED, c.getStatusCodeValue());
     }
 
     @Test
     public void creazioneProtocolloBadRequest() throws Exception{
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
-        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
-        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
-        schedaAllenamento.read(bSchedaAllenamento);
-        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
-        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
-        schedaAlimentare.read(bSchedaAlimentare);
-        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAlimentare.getPath();
-            }
-        };
+        multipartRequest.add("dataScadenza", "2023-12-12");
+        multipartRequest.add("idCliente", "4");
+        multipartRequest.add("idSchedaAlimentare", null);
+        multipartRequest.add("idSchedaAllenamento", null);
 
-        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAllenamento.getPath();
-            }
-        };
-        multipartRequest.add("dataScadenza","2022-12-12");
-        multipartRequest.add("idCliente", 4);
-        multipartRequest.add("schedaAllenamento", schedaAlimentarebytes);
-        multipartRequest.add("schedaAlimentare", schedaAllenamentobytes);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenPreparatore2);
-        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
-        var c = restTemplate.exchange("http" +
-                "://localhost:" + port + "/api" +
-                "/v1/protocolli", HttpMethod.POST, entity, String.class);
+
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(multipartRequest, headers);
+        var c = restTemplate.exchange("http://localhost:" + port + "/api/v1/protocolli",
+                HttpMethod.POST,
+                entity,
+                String.class);
         assertEquals(HttpStatus.SC_BAD_REQUEST, c.getStatusCodeValue());
     }
 
     @Test
     public void creazioneProtocolloUnauthorized() throws Exception{
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
-        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
-        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
-        schedaAllenamento.read(bSchedaAllenamento);
-        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
-        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
-        schedaAlimentare.read(bSchedaAlimentare);
-        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAlimentare.getPath();
-            }
-        };
+        multipartRequest.add("dataScadenza", "2023-12-12");
+        multipartRequest.add("idCliente", "4");
+        multipartRequest.add("idSchedaAlimentare", schedaAlimentare.getId().toString());
+        multipartRequest.add("idSchedaAllenamento", schedaAllenamento.getId().toString());
 
-        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAllenamento.getPath();
-            }
-        };
-        multipartRequest.add("dataScadenza","2022-12-12");
-        multipartRequest.add("idCliente", 4);
-        multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
-        multipartRequest.add("schedaAlimentare", schedaAlimentarebytes);
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenPreparatore);
-        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
-        var c = restTemplate.exchange("http" +
-                "://localhost:" + port + "/api" +
-                "/v1/protocolli", HttpMethod.POST, entity, String.class);
+
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(multipartRequest, headers);
+        var c = restTemplate.exchange("http://localhost:" + port + "/api/v1/protocolli",
+                HttpMethod.POST,
+                entity,
+                String.class);
         assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
     }
 
@@ -265,20 +226,15 @@ public class GestioneProtocolloControllerIntegrationTest {
     @Test
     public void modificaProtocolloSuccess() throws Exception{
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
-        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
-        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
-        schedaAllenamento.read(bSchedaAllenamento);
-        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAllenamento.getPath();
-            }
-        };
-        multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
+        multipartRequest.add("idSchedaAlimentare", schedaAlimentare.getId().toString());
+        multipartRequest.add("idSchedaAllenamento", schedaAllenamento.getId().toString());
+
         HttpHeaders headers = new HttpHeaders();
+
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenPreparatore2);
-        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
+
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(multipartRequest, headers);
         var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/protocolli/1", HttpMethod.PUT, entity, String.class);
@@ -288,31 +244,15 @@ public class GestioneProtocolloControllerIntegrationTest {
     @Test
     public void modificaProtocolloBadRequest() throws Exception{
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
-        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
-        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
-        schedaAllenamento.read(bSchedaAllenamento);
-        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
-        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
-        schedaAlimentare.read(bSchedaAlimentare);
-        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAlimentare.getPath();
-            }
-        };
+        multipartRequest.add("idSchedaAlimentare", null);
+        multipartRequest.add("idSchedaAllenamento", null);
 
-        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAllenamento.getPath();
-            }
-        };
-        multipartRequest.add("schedaAllenamento", schedaAlimentarebytes);
-        multipartRequest.add("schedaAlimentare", schedaAllenamentobytes);
         HttpHeaders headers = new HttpHeaders();
+
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenPreparatore2);
-        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
+
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(multipartRequest, headers);
         var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/protocolli/1", HttpMethod.PUT, entity, String.class);
@@ -322,34 +262,19 @@ public class GestioneProtocolloControllerIntegrationTest {
     @Test
     public void modificaProtocolloUnauthorized() throws Exception{
         MultiValueMap<String, Object> multipartRequest = new LinkedMultiValueMap<>();
-        var schedaAllenamento=new FileInputStream(fileSchedaAllenamento);
-        byte[] bSchedaAllenamento=new byte[schedaAllenamento.available()];
-        schedaAllenamento.read(bSchedaAllenamento);
-        var schedaAlimentare=new FileInputStream(fileSchedaAlimentare);
-        byte[] bSchedaAlimentare=new byte[schedaAllenamento.available()];
-        schedaAlimentare.read(bSchedaAlimentare);
-        ByteArrayResource schedaAlimentarebytes = new ByteArrayResource(bSchedaAlimentare) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAlimentare.getPath();
-            }
-        };
+        multipartRequest.add("idSchedaAlimentare", schedaAlimentare.getId().toString());
+        multipartRequest.add("idSchedaAllenamento", schedaAllenamento.getId().toString());
 
-        ByteArrayResource schedaAllenamentobytes = new ByteArrayResource(bSchedaAllenamento) {
-            @Override
-            public String getFilename() {
-                return fileSchedaAllenamento.getPath();
-            }
-        };
-        multipartRequest.add("schedaAllenamento", schedaAllenamentobytes);
-        multipartRequest.add("schedaAlimentare", schedaAlimentarebytes);
         HttpHeaders headers = new HttpHeaders();
+
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.add("Cookie", tokenPreparatore);
-        HttpEntity<?> entity = new HttpEntity<>(multipartRequest,headers);
+
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>(multipartRequest, headers);
         var c = restTemplate.exchange("http" +
                 "://localhost:" + port + "/api" +
                 "/v1/protocolli/1", HttpMethod.PUT, entity, String.class);
         assertEquals(HttpStatus.SC_UNAUTHORIZED, c.getStatusCodeValue());
     }
+
 }

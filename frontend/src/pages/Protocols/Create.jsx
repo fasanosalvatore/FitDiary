@@ -60,10 +60,17 @@ const Create = () => {
   const [search, setSearch] = useState("");
 
   const {isOpen:isOpenSchedaAlimentare,onOpen: onOpenSchedaAlimentare,onClose: onCloseSchedaAlimentare} = useDisclosure()
+  const {isOpen:isOpenSchedaAllenamento,onOpen: onOpenSchedaAllenamento,onClose: onCloseSchedaAllenamento} = useDisclosure()
 
   const [listSchedeAlimentari, setListSchedeAlimentari] = useState();
   const [listSchedeAllenamento, setListSchedeAllenamento] = useState();
 
+
+  function toastParam(title, description, status) {
+    return {
+      title: title, description: description, status: status
+    };
+  }
   const toast = useToast({
     duration: 3000,
     isClosable: true,
@@ -73,6 +80,7 @@ const Create = () => {
       maxWidth: '100%',
     },
   })
+
   useEffect(() => {
     if (toastMessage) {
       const { title, body, stat } = toastMessage;
@@ -97,11 +105,21 @@ const Create = () => {
   const onSubmit = async (values) => {
     const formData = new FormData();
     formData.append("dataScadenza", values.dataScadenza)
+      if(values.idCliente == null){
+          setToastMessage({title:"Errore",body:"Seleziona un cliente",stat:"error"})
+          return
+      }
     formData.append("idCliente", values.idCliente)
-    if (values.schedaAllenamento)
-      formData.append("schedaAllenamento", values.schedaAllenamento[0])
-    if (values.schedaAlimentare)
-      formData.append("schedaAlimentare", values.schedaAlimentare[0])
+      if(selectedSchedaAlimentare == null && selectedSchedaAllenamento == null){
+          setToastMessage({title:"Errore",body:"Il protocollo deve avere almeno una scheda",stat:"error"})
+          return
+      }
+    if (selectedSchedaAlimentare!==null){
+        formData.append("idSchedaAlimentare", selectedSchedaAlimentare.id)
+    }
+    if (selectedSchedaAlimentare!==null){
+        formData.append("idSchedaAllenamento", selectedSchedaAllenamento.id)
+    }
     try {
       const { data } = await fetchContext.authAxios.post(urlProtocolli, formData)
       console.log(data)
@@ -152,14 +170,6 @@ const Create = () => {
   }, [fetchContext])
 
 
-  function selectSchedaAlimentare(idSchedaAlimentare){
-
-  }
-
-  function selectSchedaAllenamento(idSchedaAllenamento){
-
-  }
-
   //Verifica se una data inserita è precedenta alla odierna
   function isValidDate(value) {
     var date = new Date();
@@ -173,7 +183,7 @@ const Create = () => {
         <Flex alignItems={"center"} mb={5}>
           <Heading w={"full"}>Crea Protocollo</Heading>
         </Flex>
-        <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+        <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"} >
           <GradientBar />
 
           <Modal isOpen={isOpenSchedaAlimentare} onClose={onCloseSchedaAlimentare} isCentered={true} size={"5xl"}>
@@ -191,7 +201,7 @@ const Create = () => {
                              minW={{base: "100%", xl: "100%"}}
                              h={"full"}>
                           <GradientBar/>
-                          <Box pl={10} pr={10} pb={5} pt={5}>
+                          <Box pl={2} pr={2} pb={5} pt={5}>
                             <HStack>
                               <InputGroup>
                                 <InputLeftElement
@@ -219,13 +229,14 @@ const Create = () => {
                                         <Th>ID</Th>
                                         <Th>Nome</Th>
                                         <Th>Kcal</Th>
+                                        <Th>Info Scheda</Th>
                                         <Th>Azione</Th>
                                       </Tr>
                                     </Thead>
                                     <Tbody>
                                       {listSchedeAlimentari.schede_alimentari.map(
                                           (scheda) =>
-                                              (scheda.id === parseInt(search) ||
+                                              (scheda.nome.toLowerCase().startsWith(search.toLowerCase()) ||
                                                   search === "") && (
                                                   <Tr key={scheda.id}>
                                                     <Td>{scheda.id}</Td>
@@ -235,6 +246,18 @@ const Create = () => {
                                                       <ReactLink to={urlSchedaAlimentazione + "/" + scheda.id}>
                                                         <InfoIcon />
                                                       </ReactLink>
+                                                    </Td>
+                                                    <Td>
+                                                      <Button
+                                                          colorScheme='fitdiary'
+                                                          onClick={() => {
+                                                            setselectedSchedaAlimentare(scheda)
+                                                            toast(toastParam("Scheda Selezionata con successo!","", "success"))
+                                                            onCloseSchedaAlimentare()
+                                                          }}
+                                                          fontSize={"s"}>
+                                                        <AddIcon/>
+                                                      </Button>
                                                     </Td>
                                                   </Tr>
                                               )
@@ -258,6 +281,101 @@ const Create = () => {
               </ModalFooter>
             </ModalContent>
           </Modal>
+          <Modal isOpen={isOpenSchedaAllenamento} onClose={onCloseSchedaAllenamento} isCentered={true} size={"5xl"}>
+            <ModalOverlay/>
+            <ModalContent>
+              <ModalHeader fontSize={'3xl'} textAlign={"center"}>Aggiungi alimenti alla
+                scheda</ModalHeader>
+              <ModalCloseButton/>
+              <ModalBody align={"center"}>
+                <Flex justify="center">
+                  <HStack align="center">
+                    <HStack>
+                      {!isLoading && listSchedeAllenamento && (<Flex wrap={"wrap"} p={5}>
+                        <Box bg={"white"} roundedTop={20}
+                             minW={{base: "100%", xl: "100%"}}
+                             h={"full"}>
+                          <Box bg={"white"} roundedTop={20} minW={{ base: "100%", xl: "100%" }} h={"full"}>
+                            <GradientBar />
+                            <Box pl={10} pr={10} pb={5} pt={5}>
+                              <HStack>
+                                <InputGroup>
+                                  <InputLeftElement
+                                      pointerEvents="none"
+                                      children={<SearchIcon color="gray.300" />}
+                                  />
+                                  <Input
+                                      className="SearchInput"
+                                      type="text"
+                                      onChange={onChange}
+                                      placeholder="Search"
+                                  />
+                                </InputGroup>
+                              </HStack>
+                              {/* Barra di ricerca*/}
+                              {listSchedeAllenamento.schede_allenamento.length > 0 ? (
+                                  <>
+                                    <Text fontSize="xl" my={5}>
+                                      Lista dei protocolli
+                                    </Text>
+                                    <Table variant={"striped"} colorScheme={"gray"} size="md">
+                                      <TableCaption>Lista Schede Allenamento</TableCaption>
+                                      <Thead bg="fitdiary.100">
+                                        <Tr>
+                                          <Th>ID</Th>
+                                          <Th>Nome</Th>
+                                          <Th>Info scheda</Th>
+                                          <Th>Azione</Th>
+                                        </Tr>
+                                      </Thead>
+                                      <Tbody>
+                                        {listSchedeAllenamento.schede_allenamento.map(
+                                            (scheda) =>
+                                                (scheda.nome.toLowerCase().startsWith(search.toLowerCase()) ||
+                                                    search === "") && (
+                                                    <Tr key={scheda.id}>
+                                                      <Td>{scheda.id}</Td>
+                                                      <Td>{scheda.nome}</Td>
+                                                      <Td>
+                                                        <ReactLink to={urlSchedaAllenamento + "/" + scheda.id}>
+                                                          <InfoIcon />
+                                                        </ReactLink>
+                                                      </Td>
+                                                      <Td>
+                                                        <Button
+                                                            colorScheme='fitdiary'
+                                                            onClick={() => {
+                                                              setselectedSchedaAllenamento(scheda)
+                                                              toast(toastParam("Scheda Selezionata con successo!","", "success"))
+                                                              onCloseSchedaAllenamento()
+                                                            }}
+                                                            fontSize={"s"}>
+                                                          <AddIcon/>
+                                                        </Button>
+                                                      </Td>
+                                                    </Tr>
+                                                )
+                                        )}
+                                      </Tbody>
+                                    </Table>
+                                  </>
+                              ) : (
+                                  <Heading py={5} textAlign={"center"}>
+                                    Non c'è niente qui...
+                                  </Heading>
+                              )}
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Flex>)}
+                    </HStack>
+                  </HStack>
+                </Flex>
+              </ModalBody>
+              <ModalFooter alignItems={"center"}>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
 
           <VStack spacing={3} alignItems="center" pb={5} mt={5}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
@@ -265,7 +383,7 @@ const Create = () => {
                 <GridItem colSpan={2}>
                   <FormControl id={"idCliente"}>
                     <FormLabel>Cliente</FormLabel>
-                    <Select options={options} isLoading={isLoading} onChange={(e) => {
+                    <Select options={options} isLoading={isLoading} placeholder={"Seleziona un cliente"} onChange={(e) => {
                       setValue("idCliente", e.value)
                     }} />
                   </FormControl>
@@ -287,32 +405,44 @@ const Create = () => {
                     <Box w={"80%"} bg={"gray.50"} p={5} border={"linen"}
                          borderColor={"gray.200"} borderRadius={"xl"} justifyContent={"center"}>
                     <FormLabel textAlign={"center"}>Scheda Alimentare</FormLabel>
-                    {selectedSchedaAlimentare != null && (
-                      <HStack>
-                        <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
-                          setselectedSchedaAlimentare(null);
-                          setValue("schedaAlimentare", null);
-                        }} />
-                        <Text>
-                          {selectedSchedaAlimentare.path}
-                        </Text>
-                      </HStack>)}
-                      <Flex direction="column" alignItems="center">
-                        <GiMeal size={"40%"} color="#00a9ff" />
-                      </Flex>
-                      <Flex direction="column" alignItems="center">
-                          <Button colorScheme="fitdiary"  w="80%" margin="0.1rem">
-                            <ReactLink to={"../DietCards/create"} >
-                            Crea nuova
-                            </ReactLink>
-                          </Button>
-                        <Button background="#8BC0FF" color="white" w="80%" margin="0.1rem"
-                                onClick={() => {
-                                  onOpenSchedaAlimentare();
-                                }}>
-                          Seleziona esistente
-                        </Button>
-                      </Flex>
+                    {selectedSchedaAlimentare != null ? (
+                        <>
+                                <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
+                                    setselectedSchedaAlimentare(null);
+                                    setValue("schedaAlimentare", null);
+                                }} />
+                                <VStack>
+                                    <GiMeal size={"40%"} color="#00a9ff" />
+                                    <HStack>
+                                        <Text fontWeight={"extrabold"}>Nome: </Text>
+                                        <Text>{selectedSchedaAlimentare.nome}</Text>
+                                    </HStack>
+                                    <HStack>
+                                        <Text fontWeight={"extrabold"}>Kcal: </Text>
+                                        <Text>{selectedSchedaAlimentare.kcalAssunte}</Text>
+                                    </HStack>
+                                </VStack>
+                        </>)
+                    :(
+                        <>
+                            <Flex direction="column" alignItems="center">
+                                <GiMeal size={"40%"} color="#00a9ff" />
+                            </Flex>
+                            <Flex direction="column" alignItems="center">
+                                <Button colorScheme="fitdiary"  w="80%" margin="0.1rem">
+                                    <ReactLink to={"../DietCards/create"} >
+                                        Crea nuova
+                                    </ReactLink>
+                                </Button>
+                                <Button background="#8BC0FF" color="white" w="80%" margin="0.1rem"
+                                        onClick={() => {
+                                            onOpenSchedaAlimentare();
+                                        }}>
+                                    Seleziona esistente
+                                </Button>
+                            </Flex>
+                        </>
+                        )}
                     </Box>
                   </FormControl>
                 </GridItem>
@@ -321,29 +451,41 @@ const Create = () => {
                     <Box w={"80%"} bg={"gray.50"} p={5} border={"linen"}
                          borderColor={"gray.200"} borderRadius={"xl"} justifyContent={"center"}>
                       <FormLabel textAlign={"center"}>Scheda Allenamento</FormLabel>
-                      {selectedSchedaAlimentare != null && (
-                          <HStack>
+                      {selectedSchedaAllenamento != null ? (
+                         <>
                             <CloseIcon cursor={"pointer"} color={"red"} onClick={() => {
-                              setselectedSchedaAlimentare(null);
-                              setValue("schedaAlimentare", null);
+                              setselectedSchedaAllenamento(null);
+                              setValue("schedaAllenamento", 0);
                             }} />
-                            <Text>
-                              {selectedSchedaAlimentare.path}
-                            </Text>
-                          </HStack>)}
-                      <Flex direction="column" alignItems="center">
-                        <IoIosFitness size={"40%"} color="#00a9ff" />
-                      </Flex>
-                      <Flex direction="column" alignItems="center">
-                        <Button colorScheme="fitdiary" w="80%" margin="0.1rem">
-                          <ReactLink to={"../TrainingCards/create"} >
-                            Crea nuova
-                          </ReactLink>
-                        </Button>
-                        <Button background="#8BC0FF" color="white" w="80%" margin="0.1rem">
-                          Seleziona esistente
-                        </Button>
-                      </Flex>
+                          <VStack>
+                              <IoIosFitness size={"40%"} color="#00a9ff" />
+                              <HStack>
+                                  <Text fontWeight={"extrabold"}>Nome: </Text>
+                                  <Text>{selectedSchedaAllenamento.nome}</Text>
+                              </HStack>
+                          </VStack>
+                         </>)
+                      :(
+                          <>
+                              <Flex direction="column" alignItems="center">
+                                  <IoIosFitness size={"40%"} color="#00a9ff" />
+                              </Flex>
+                              <Flex direction="column" alignItems="center">
+                                  <Button colorScheme="fitdiary" w="80%" margin="0.1rem">
+                                      <ReactLink to={"../TrainingCards/create"} >
+                                          Crea nuova
+                                      </ReactLink>
+                                  </Button>
+                                  <Button background="#8BC0FF" color="white" w="80%" margin="0.1rem"
+                                          onClick={() => {
+                                              onOpenSchedaAllenamento();
+                                          }}>
+                                      Seleziona esistente
+                                  </Button>
+                              </Flex>
+                          </>
+                          )}
+
                     </Box>
                   </FormControl>
                 </GridItem>

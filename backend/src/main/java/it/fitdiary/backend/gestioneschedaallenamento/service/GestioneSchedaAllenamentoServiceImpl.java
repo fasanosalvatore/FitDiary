@@ -43,7 +43,7 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
             istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
             istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
             istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-            istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
+            istanzaEsercizio.setRipetizioni(istanzaEsercizioDTO.getRipetizioni());
             istanzeEsercizio.add(istanzaEsercizio);
         }
         schedaAllenamento.setListaEsercizi(istanzeEsercizio);
@@ -85,11 +85,13 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
             istanzaEsercizio.setDescrizione(istanzaEsercizioDTO.getDescrizione());
             istanzaEsercizio.setRecupero(istanzaEsercizioDTO.getRecupero());
             istanzaEsercizio.setSerie(istanzaEsercizioDTO.getSerie());
-            istanzaEsercizio.setRipetizione(istanzaEsercizioDTO.getRipetizioni());
+            istanzaEsercizio.setRipetizioni(istanzaEsercizioDTO.getRipetizioni());
             istanzeEsercizio.add(istanzaEsercizio);
         }
         istanzaEsercizioRepository.deleteAll(schedaAllenamentoDaModificare.getListaEsercizi());
+        schedaAllenamentoDaModificare.setListaEsercizi(istanzeEsercizio);
         schedaAllenamentoDaModificare.setFrequenza(frequenza);
+
 
         return schedaAllenamentoRepository.save(schedaAllenamentoDaModificare);
     }

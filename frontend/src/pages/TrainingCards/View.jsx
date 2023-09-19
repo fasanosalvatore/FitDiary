@@ -41,6 +41,7 @@ import {FetchContext} from "../../context/FetchContext";
 import {useForm} from "react-hook-form"
 import {GradientBar} from "../../components/GradientBar";
 import {useParams} from "react-router";
+import {Link as ReactLink} from "react-router-dom";
 
 export default function View() {
     const authContext = useContext(AuthContext);
@@ -152,10 +153,12 @@ export default function View() {
 
                                                     <HStack>
                                                         <Tooltip label='Modifica Scheda' fontSize='md'>
-                                                            <IconButton
-                                                                colorScheme='fitdiary'
-                                                                icon={<EditIcon/>}
-                                                            />
+                                                            <ReactLink to={"/trainingcards/edit/" + schedaAllenamento.id}>
+                                                                <IconButton
+                                                                    colorScheme='fitdiary'
+                                                                    icon={<EditIcon/>}
+                                                                />
+                                                            </ReactLink>
                                                         </Tooltip>
                                                     </HStack>
                                                 )}
@@ -209,7 +212,7 @@ export default function View() {
                                                                                     </Td>
                                                                                     <Td maxWidth={100}>{esercizio.nome}</Td>
                                                                                     <Td maxWidth={100}>{istanzaEsercizio.serie}</Td>
-                                                                                    <Td maxWidth={100}>{istanzaEsercizio.ripetizione}</Td>
+                                                                                    <Td maxWidth={100}>{istanzaEsercizio.ripetizioni}</Td>
                                                                                     <Td maxWidth={100}>{istanzaEsercizio.recupero}</Td>
                                                                                     <Td maxWidth={100}>
                                                                                         <Text fontWeight={"bold"}>{esercizio.tipoEsercizio.nome}</Text>
