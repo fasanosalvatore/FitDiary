@@ -10,8 +10,7 @@ public class TestObjectMapperConfig {
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.registerModule(new JavaTimeModule()); // Registra il modulo JavaTime
         return objectMapper;
     }
-
 }

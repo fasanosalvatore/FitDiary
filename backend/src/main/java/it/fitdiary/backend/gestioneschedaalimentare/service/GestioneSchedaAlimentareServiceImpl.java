@@ -4,6 +4,7 @@ import it.fitdiary.backend.entity.Alimento;
 import it.fitdiary.backend.entity.IstanzaAlimento;
 import it.fitdiary.backend.entity.SchedaAlimentare;
 import it.fitdiary.backend.entity.Utente;
+import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
 import it.fitdiary.backend.gestionealimento.repository.AlimentoRepository;
 import it.fitdiary.backend.gestioneschedaalimentare.controller.dto.IstanzaAlimentoDTO;
 import it.fitdiary.backend.gestioneschedaalimentare.repository.IstanzaAlimentoRepository;
@@ -119,5 +120,11 @@ public class GestioneSchedaAlimentareServiceImpl implements GestioneSchedaAlimen
       throw new IllegalStateException("scheda alimentare con id " + idScheda + " non trovata");
     }
     return schedaAlimentareOptional.get();
+  }
+
+  @Override
+  public List<IstanzaAlimento> getAlimentiBySchedaAlimentareAndGiornoDellaSettimana(
+      SchedaAlimentare schedaAlimentare, GIORNO_SETTIMANA giornoDellaSettimana) {
+    return istanzaAlimentoRepository.findAllBySchedaAlimentareAndGiornoDellaSettimana(schedaAlimentare,giornoDellaSettimana);
   }
 }

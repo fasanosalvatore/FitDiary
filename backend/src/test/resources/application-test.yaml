@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/fitdiarytest
     username: root
-    password:
+    password: root
   mail:
     host: smtp.mailtrap.io
     port: 2525

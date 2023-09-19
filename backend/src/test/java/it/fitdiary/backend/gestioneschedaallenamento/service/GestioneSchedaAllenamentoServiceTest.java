@@ -76,7 +76,7 @@ public class GestioneSchedaAllenamentoServiceTest {
         esercizio = new Esercizio(1L,"Chest press",
                 "EserciziPalestra/Air-Twisting-Crunch_waist.gif",categoriaEsercizio);
 
-        istanzaEsercizioDTO = new IstanzaEsercizioDTO(GIORNO_SETTIMANA.LUNEDI,2,3,1,
+        istanzaEsercizioDTO = new IstanzaEsercizioDTO(1,2,3,1,
                 "Esercizio gambe",1L);
         istanzaEsercizio.setSchedaAllenamento(schedaAllenamento);
         istanzaEsercizio.setEsercizio(esercizio);
@@ -123,7 +123,7 @@ public class GestioneSchedaAllenamentoServiceTest {
         esercizio = new Esercizio(1L,"Chest press",
                 "EserciziPalestra/Air-Twisting-Crunch_waist.gif",categoriaEsercizio);
 
-        istanzaEsercizioDTO = new IstanzaEsercizioDTO(GIORNO_SETTIMANA.LUNEDI,2,3,1,
+        istanzaEsercizioDTO = new IstanzaEsercizioDTO(1,2,3,1,
                 "Esercizio gambe",1L);
         istanzaEsercizio.setSchedaAllenamento(schedaAllenamento);
         istanzaEsercizio.setEsercizio(esercizio);
@@ -172,7 +172,7 @@ public class GestioneSchedaAllenamentoServiceTest {
         esercizio = new Esercizio(1L,"Chest press",
                 "EserciziPalestra/Air-Twisting-Crunch_waist.gif",categoriaEsercizio);
 
-        istanzaEsercizioDTO = new IstanzaEsercizioDTO(GIORNO_SETTIMANA.LUNEDI,2,3,1,
+        istanzaEsercizioDTO = new IstanzaEsercizioDTO(1,2,3,1,
                 "Esercizio gambe",1L);
         istanzaEsercizio.setSchedaAllenamento(schedaAllenamento);
         istanzaEsercizio.setEsercizio(esercizio);
@@ -220,7 +220,7 @@ public class GestioneSchedaAllenamentoServiceTest {
         esercizio = new Esercizio(1L,"Chest press",
                 "EserciziPalestra/Air-Twisting-Crunch_waist.gif",categoriaEsercizio);
 
-        istanzaEsercizioDTO = new IstanzaEsercizioDTO(GIORNO_SETTIMANA.LUNEDI,2,3,1,
+        istanzaEsercizioDTO = new IstanzaEsercizioDTO(1,2,3,1,
                 "Esercizio gambe",1L);
         istanzaEsercizio.setSchedaAllenamento(schedaAllenamento);
         istanzaEsercizio.setEsercizio(esercizio);

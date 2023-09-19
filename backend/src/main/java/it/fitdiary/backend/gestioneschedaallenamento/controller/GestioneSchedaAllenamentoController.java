@@ -1,6 +1,7 @@
 package it.fitdiary.backend.gestioneschedaallenamento.controller;
 
 import it.fitdiary.backend.entity.SchedaAllenamento;
+import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
 import it.fitdiary.backend.gestioneschedaallenamento.controller.dto.CreaSchedaAllenamentoDTO;
 import it.fitdiary.backend.gestioneschedaallenamento.controller.dto.ModificaSchedaAllenamentoDTO;
 import it.fitdiary.backend.gestioneschedaallenamento.service.GestioneSchedaAllenamentoService;
@@ -139,6 +140,25 @@ public class GestioneSchedaAllenamentoController {
         }
         return ResponseHandler.generateResponse(HttpStatus.OK, "scheda_allenamento",
                 schedaAllenamento);
+
+    }
+
+    @GetMapping("getEserciziBySchedaAndGiorno")
+    public ResponseEntity<Object> getEserciziBySchedaAndGiorno(
+        @RequestParam Long idScheda,
+        @RequestParam int giorno){
+
+        SchedaAllenamento schedaAllenamento;
+        try {
+            schedaAllenamento = service.getSchedeAllenamentoById(idScheda);
+        }
+        catch (Exception e)
+        {
+            return ResponseHandler.generateResponse(HttpStatus.BAD_REQUEST,
+                e.getMessage());
+        }
+        return ResponseHandler.generateResponse(HttpStatus.OK, "esercizi",
+            service.getIstanzeEserciziBySchedaAndGiornoDellaSettimana(schedaAllenamento,giorno));
 
     }
 

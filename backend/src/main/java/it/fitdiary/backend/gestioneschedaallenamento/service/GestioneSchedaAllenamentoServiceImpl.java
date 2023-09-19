@@ -1,6 +1,7 @@
 package it.fitdiary.backend.gestioneschedaallenamento.service;
 
 import it.fitdiary.backend.entity.*;
+import it.fitdiary.backend.entity.enums.GIORNO_SETTIMANA;
 import it.fitdiary.backend.gestioneesercizio.repository.EsercizioRepository;
 import it.fitdiary.backend.gestioneschedaallenamento.controller.dto.IstanzaEsercizioDTO;
 import it.fitdiary.backend.gestioneschedaallenamento.repository.IstanzaEsercizioRepository;
@@ -109,5 +110,11 @@ public class GestioneSchedaAllenamentoServiceImpl implements GestioneSchedaAllen
             throw new IllegalStateException("scheda allenamento con id " + idScheda + " non trovata");
         }
         return schedaAllenamentoOptional.get();
+    }
+
+    @Override
+    public List<IstanzaEsercizio> getIstanzeEserciziBySchedaAndGiornoDellaSettimana(
+        SchedaAllenamento schedaAllenamento, int giorno_settimana) {
+        return istanzaEsercizioRepository.findAllBySchedaAllenamentoAndGiornoDellaSettimana(schedaAllenamento,giorno_settimana);
     }
 }

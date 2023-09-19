@@ -12,4 +12,6 @@ public interface SchedaAllenamentoRepository extends JpaRepository<SchedaAllenam
     List<SchedaAllenamento> findAllByPreparatoreId(Long preparatore_id);
 
     Optional<SchedaAllenamento> findById(Long id_scheda);
+
+
 }
