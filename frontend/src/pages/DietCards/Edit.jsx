@@ -155,7 +155,19 @@ export default function Edit() {
                             raggruppatoPerGiorno[tmpIndex].push(elemento);
                         }
                     });
-                    setSchedaAlimentare(raggruppatoPerGiorno);
+                    let newScheda=[];
+                    for(let i=0;i<7;i++)
+                    {
+                        let elemVett=[];
+                        let tmpVett=raggruppatoPerGiorno[i];
+                        for(let j=0;j<tmpVett.length;j++)
+                        {
+                            let objTmp=tmpVett[j];
+                            elemVett.push(objTmp)
+                        }
+                        newScheda.push(elemVett);
+                    }
+                    setSchedaAlimentare(newScheda);
                     setLoading(false);
                     setFetchCompleted(true); // Imposta fetchCompleted a true dopo il completamento
                 } catch (error) {
@@ -172,13 +184,13 @@ export default function Edit() {
     }, [fetchContext, fetchCompleted]);
 
     let vettPasti = [
-        {"ID": 0, "Nome": "Colazione"},
-        {"ID": 1, "Nome": "Spuntino Mattina"},
-        {"ID": 2, "Nome": "Pranzo"},
-        {"ID": 3, "Nome": "Spuntino Pomeriggio"},
-        {"ID": 4, "Nome": "Cena"},
-        {"ID": 5, "Nome": "Spuntino Sera"},
-        {"ID": 6, "Nome": "Extra"},
+        {"ID": 0, "Nome": "Colazione","Key":"COLAZIONE"},
+        {"ID": 1, "Nome": "Spuntino Mattina","Key":"SPUNTINO_COLAZIONE"},
+        {"ID": 2, "Nome": "Pranzo","Key":"PRANZO"},
+        {"ID": 3, "Nome": "Spuntino Pomeriggio","Key":"SPUNTINO_PRANZO"},
+        {"ID": 4, "Nome": "Cena","Key":"CENA"},
+        {"ID": 5, "Nome": "Spuntino Sera","Key":"SPUNTINO_CENA"},
+        {"ID": 6, "Nome": "Extra","Key":"EXTRA"},
     ];
 
     function addAlimento(alimento, pasto, grammi) {
@@ -217,6 +229,7 @@ export default function Edit() {
 
     function formatData(inputData) {
         const formattedData = {
+            schedaId: id,
             name: nomeScheda,
             istanzeAlimenti: [],
         };
@@ -267,7 +280,7 @@ export default function Edit() {
             const {data} = await fetchContext.authAxios.post(urlCreateSchedaALimentare, formattedScheda);
             setSchedaAlimentare([[],[],[],[],[],[],[]]);
             setNomeScheda("");
-            toast(toastParam("Sceheda Alimentare creata con successo", "Scheda aggiunta all'elenco", "success"));
+            toast(toastParam("Sceheda Alimentare modificata con successo", "Scheda modificata!", "success"));
         } catch (error) {
             console.log(error.response.data.message)
             toast({
@@ -428,11 +441,9 @@ export default function Edit() {
                                                             <Text fontSize={"21"} color={"blue"}
                                                                   fontWeight={"semibold"}>{pasto.Nome}</Text>
                                                         </Box>
-                                                        {schedaAlimentare[i].filter((t) => index == t.pasto).map((al, key) => {
-                                                            console.log("Test: "+al);
+                                                        {schedaAlimentare[i].filter((t) => t.pasto===pasto.Key && d.toUpperCase() === t.giornoDellaSettimana).map((al, key) => {
                                                             let alimento = al.alimento;
                                                             let caloreCalc = (alimento.kcal / 100) * al.grammi;
-                                                            console.log(caloreCalc);
                                                             return (
                                                                 <>
                                                                     <Table borderBottom={"solid 1px "}
